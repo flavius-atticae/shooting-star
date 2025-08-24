@@ -1,0 +1,169 @@
+name: Project Board Automation
+
+on:
+  issues:
+    types: [opened, assigned, closed, labeled, unlabeled]
+  pull_request:
+    types: [opened, closed, converted_to_draft, ready_for_review]
+  pull_request_review:
+    types: [submitted]
+  check_suite:
+    types: [completed]
+  release:
+    types: [published]
+  push:
+    branches: [main]
+
+jobs:
+  move-to-ready:
+    name: Move to À Faire
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'issues' && 
+      (github.event.action == 'assigned' || 
+       (github.event.action == 'labeled' && contains(github.event.label.name, 'ready')))
+    steps:
+      - name: Move issue to À Faire
+        uses: alex-page/github-project-automation-plus@v0.9.0
+        with:
+          project: Shooting Star Project
+          column: À Faire
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+  move-to-in-progress:
+    name: Move to En Cours
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' && 
+      (github.event.action == 'opened' || github.event.action == 'ready_for_review')
+    steps:
+      - name: Extract issue number from PR
+        id: issue
+        run: |
+          # Extract issue number from PR title or body
+          ISSUE_NUMBER=$(echo "${{ github.event.pull_request.title }}" | grep -oE '#[0-9]+' | head -1 | cut -d'#' -f2)
+          if [ -z "$ISSUE_NUMBER" ]; then
+            ISSUE_NUMBER=$(echo "${{ github.event.pull_request.body }}" | grep -oE '#[0-9]+' | head -1 | cut -d'#' -f2)
+          fi
+          echo "number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+      
+      - name: Move linked issue to En Cours
+        if: steps.issue.outputs.number
+        uses: alex-page/github-project-automation-plus@v0.9.0
+        with:
+          project: Shooting Star Project
+          column: En Cours
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue: ${{ steps.issue.outputs.number }}
+
+  move-to-review:
+    name: Move to Review
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' && 
+      github.event.action == 'ready_for_review' &&
+      !github.event.pull_request.draft
+    steps:
+      - name: Move PR to Review
+        uses: alex-page/github-project-automation-plus@v0.9.0
+        with:
+          project: Shooting Star Project
+          column: Review
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+  move-to-testing:
+    name: Move to Testing
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request_review' && 
+      github.event.review.state == 'approved'
+    steps:
+      - name: Check if all reviews are approved
+        id: check_reviews
+        run: |
+          # Get PR reviews
+          REVIEWS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews")
+          
+          # Check if there are any requested changes
+          REQUESTED_CHANGES=$(echo "$REVIEWS" | jq '[.[] | select(.state == "CHANGES_REQUESTED")] | length')
+          APPROVED=$(echo "$REVIEWS" | jq '[.[] | select(.state == "APPROVED")] | length')
+          
+          if [ "$REQUESTED_CHANGES" -eq 0 ] && [ "$APPROVED" -gt 0 ]; then
+            echo "approved=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Move PR to Testing
+        if: steps.check_reviews.outputs.approved == 'true'
+        uses: alex-page/github-project-automation-plus@v0.9.0
+        with:
+          project: Shooting Star Project
+          column: Testing
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+  move-to-done:
+    name: Move to Done
+    runs-on: ubuntu-latest
+    if: |
+      (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true) ||
+      (github.event_name == 'issues' && github.event.action == 'closed')
+    steps:
+      - name: Move to Done
+        uses: alex-page/github-project-automation-plus@v0.9.0
+        with:
+          project: Shooting Star Project
+          column: Done
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+  move-to-released:
+    name: Move to Released
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - name: Get issues from release
+        id: release_issues
+        run: |
+          # Extract issue numbers from release body and commits
+          RELEASE_BODY="${{ github.event.release.body }}"
+          ISSUES=$(echo "$RELEASE_BODY" | grep -oE '#[0-9]+' | cut -d'#' -f2 | sort -u)
+          echo "issues<<EOF" >> $GITHUB_OUTPUT
+          echo "$ISSUES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Move issues to Released
+        if: steps.release_issues.outputs.issues
+        run: |
+          for issue in ${{ steps.release_issues.outputs.issues }}; do
+            curl -X POST \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/${{ github.repository }}/issues/$issue/comments" \
+              -d "{\"body\":\"This issue has been released in version ${{ github.event.release.tag_name }}\"}"
+          done
+
+  quality-gates:
+    name: Quality Gates Check
+    runs-on: ubuntu-latest
+    if: github.event_name == 'check_suite' && github.event.check_suite.conclusion == 'success'
+    steps:
+      - name: Check if all CI checks passed
+        id: ci_status
+        run: |
+          # Get the PR associated with this check suite
+          PR_NUMBER=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            "https://api.github.com/repos/${{ github.repository }}/pulls?head=${{ github.event.check_suite.head_branch }}" | \
+            jq '.[0].number')
+          
+          if [ "$PR_NUMBER" != "null" ]; then
+            echo "pr_number=$PR_NUMBER" >> $GITHUB_OUTPUT
+            echo "ready_for_testing=true" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Move to Testing after CI success
+        if: steps.ci_status.outputs.ready_for_testing == 'true'
+        uses: alex-page/github-project-automation-plus@v0.9.0
+        with:
+          project: Shooting Star Project
+          column: Testing
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          issue: ${{ steps.ci_status.outputs.pr_number }}
