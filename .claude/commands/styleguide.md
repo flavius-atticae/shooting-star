@@ -51,12 +51,39 @@ This style guide defines the visual identity for Pauline Roussel's yoga instruct
 - Light green for harmony with primary
 - Use for: Success states, gentle backgrounds
 
-### Current Implementation (to be updated)
-- **Background**: `bg-white` (light mode), `bg-gray-950` (dark mode)
-- **Text Primary**: Default text, `text-gray-700` (light), `text-gray-200` (dark)
-- **Text Secondary**: `text-gray-600` (light), `text-gray-300` (dark)
-- **Links**: `text-blue-700` (light), `text-blue-500` (dark) with `hover:underline`
-- **Borders**: `border-gray-200` (light), `border-gray-700` (dark)
+### Tailwind CSS Implementation
+
+#### **Primary Colors (Clouded Pine)**
+- `bg-primary-50` to `bg-primary-900` - Backgrounds
+- `text-primary-500` - Main brand text
+- `border-primary-500` - Primary borders
+- Core brand color: #618462
+
+#### **Accent Colors (Rustling Leaves)**  
+- `text-accent-500` - Links and CTA
+- `bg-accent-50` to `bg-accent-900` - Accent backgrounds
+- `hover:text-accent-600` - Hover states
+- Core accent color: #AF6868
+
+#### **Neutral Colors (Pitch Mary Brown)**
+- `text-neutral-500` - Body text
+- `text-neutral-700` - Headings  
+- `bg-neutral-50` - Light backgrounds
+- Core neutral color: #5E4530
+
+#### **Supporting Colors**
+- **Secondary**: `bg-secondary-500`, `border-secondary-500` (#517982)
+- **Warm**: `bg-warm-400` (#CEAF9B) for cozy backgrounds  
+- **Soft**: `bg-soft-50` (#FFF8F6) for gentle backgrounds
+- **Cool**: `bg-cool-200` (#DAE6EA) for calm sections
+- **Success**: `text-success-500` (#7DBB7D) for positive states
+
+#### **Current Implementation**
+- **Background**: `bg-soft-50` (light), `bg-neutral-900` (dark)
+- **Text Primary**: `text-neutral-700` (light), `text-neutral-200` (dark)
+- **Text Secondary**: `text-neutral-500` (light), `text-neutral-300` (dark)  
+- **Links**: `text-accent-500` (light), `text-accent-300` (dark)
+- **Borders**: `border-primary-500` (light), `border-secondary-500` (dark)
 
 ## Typography
 

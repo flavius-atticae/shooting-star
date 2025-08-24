@@ -3,11 +3,109 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  
+  /* Pauline Roussel Brand Colors */
+  
+  /* Primary - Clouded Pine (main brand color) */
+  --color-primary-50: #f0f 3f0;
+  --color-primary-100: #dee5de;
+  --color-primary-200: #beccbe;
+  --color-primary-300: #9eb49e;
+  --color-primary-400: #7f9c80;
+  --color-primary-500: #618462;
+  --color-primary-600: #466047;
+  --color-primary-700: #2d3f2d;
+  --color-primary-800: #152016;
+  --color-primary-900: #030603;
+
+  /* Accent - Rustling Leaves (warm accent) */
+  --color-accent-50: #f9f2f2;
+  --color-accent-100: #f0e0df;
+  --color-accent-200: #e1c1c0;
+  --color-accent-300: #d1a3a2;
+  --color-accent-400: #c08584;
+  --color-accent-500: #af6868;
+  --color-accent-600: #814b4b;
+  --color-accent-700: #563030;
+  --color-accent-800: #2e1818;
+  --color-accent-900: #0b0404;
+
+  /* Neutral - Pitch Mary Brown (text/neutral) */
+  --color-neutral-50: #f5f3f1;
+  --color-neutral-100: #ddd7d2;
+  --color-neutral-200: #bcb0a7;
+  --color-neutral-300: #9c8b7d;
+  --color-neutral-400: #7c6756;
+  --color-neutral-500: #5e4530;
+  --color-neutral-600: #443121;
+  --color-neutral-700: #2b1e13;
+  --color-neutral-800: #140c06;
+  --color-neutral-900: #030201;
+
+  /* Secondary - Submerged (blue-gray) */
+  --color-secondary-50: #f2f5f6;
+  --color-secondary-100: #dbe3e5;
+  --color-secondary-200: #b7c8cb;
+  --color-secondary-300: #94adb2;
+  --color-secondary-400: #73929a;
+  --color-secondary-500: #517982;
+  --color-secondary-600: #3a585f;
+  --color-secondary-700: #24393e;
+  --color-secondary-800: #101d20;
+  --color-secondary-900: #020506;
+
+  /* Warm - Frappé (warm beige) */
+  --color-warm-50: #faf8f6;
+  --color-warm-100: #f5f0eb;
+  --color-warm-200: #e8ddd4;
+  --color-warm-300: #dbcabc;
+  --color-warm-400: #ceaf9b;
+  --color-warm-500: #b8956d;
+  --color-warm-600: #967a56;
+  --color-warm-700: #6b5640;
+  --color-warm-800: #3f322a;
+  --color-warm-900: #191411;
+
+  /* Soft - Glazed Sugar (soft peach) */
+  --color-soft-50: #fff8f6;
+  --color-soft-100: #ffeee8;
+  --color-soft-200: #ffddd3;
+  --color-soft-300: #ffccbe;
+  --color-soft-400: #ffbba8;
+  --color-soft-500: #ff9d7d;
+  --color-soft-600: #d17a5c;
+  --color-soft-700: #a3583e;
+  --color-soft-800: #753621;
+  --color-soft-900: #2e150a;
+
+  /* Cool - Smoke & Mirrors (light gray-blue) */
+  --color-cool-50: #fbfcfc;
+  --color-cool-100: #f7f9fa;
+  --color-cool-200: #dae6ea;
+  --color-cool-300: #bed3d9;
+  --color-cool-400: #a1c0c8;
+  --color-cool-500: #85adb7;
+  --color-cool-600: #6a8a95;
+  --color-cool-700: #4f6773;
+  --color-cool-800: #344451;
+  --color-cool-900: #19212f;
+
+  /* Success - Splashdown (light sage) */
+  --color-success-50: #f8fbf8;
+  --color-success-100: #f1f7f1;
+  --color-success-200: #d4e8d4;
+  --color-success-300: #b7d9b7;
+  --color-success-400: #9aca9a;
+  --color-success-500: #7dbb7d;
+  --color-success-600: #649664;
+  --color-success-700: #4b714b;
+  --color-success-800: #324c32;
+  --color-success-900: #192719;
 }
 
 html,
 body {
-  @apply bg-white dark:bg-gray-950;
+  @apply bg-soft-50 dark:bg-neutral-900 text-neutral-700 dark:text-neutral-200;
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;

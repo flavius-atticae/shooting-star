@@ -20,15 +20,15 @@ export function Welcome() {
           </div>
         </header>
         <div className="max-w-[300px] w-full space-y-6 px-4">
-          <nav className="rounded-3xl border border-[#618462] p-6 dark:border-[#517982] space-y-4 bg-[#FFF8F6] dark:bg-gray-800">
-            <p className="leading-6 text-[#5E4530] dark:text-gray-200 text-center">
+          <nav className="rounded-3xl border border-primary-500 p-6 dark:border-secondary-500 space-y-4 bg-soft-50 dark:bg-neutral-800">
+            <p className="leading-6 text-neutral-500 dark:text-neutral-200 text-center">
               Que souhaitez-vous découvrir ?
             </p>
             <ul>
               {services.map(({ href, text, icon }) => (
                 <li key={href}>
                   <a
-                    className="group flex items-center gap-3 self-stretch p-3 leading-normal text-[#AF6868] hover:underline dark:text-[#D1A3A2]"
+                    className="group flex items-center gap-3 self-stretch p-3 leading-normal text-accent-500 hover:underline dark:text-accent-300"
                     href={href}
                     target="_blank"
                     rel="noreferrer"
@@ -57,7 +57,7 @@ const services = [
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        className="stroke-[#618462] group-hover:stroke-current dark:stroke-[#D4E8D4]"
+        className="stroke-primary-500 group-hover:stroke-current dark:stroke-success-200"
       >
         <path
           d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 7.5V9M21 16V20C21 21.1 20.1 22 19 22H5C3.9 22 3 21.1 3 20V16L21 16ZM10 8.5C11.11 8.56 12.56 9.19 12.56 9.19L15.22 18H16.9V20L7.1 20V18H8.78L10 8.5Z"
@@ -78,7 +78,7 @@ const services = [
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        className="stroke-[#618462] group-hover:stroke-current dark:stroke-[#D4E8D4]"
+        className="stroke-primary-500 group-hover:stroke-current dark:stroke-success-200"
       >
         <path
           d="M12 21.35L10.55 20.03C5.4 15.36 2 12.28 2 8.5C2 5.42 4.42 3 7.5 3C9.24 3 10.91 3.81 12 5.09C13.09 3.81 14.76 3 16.5 3C19.58 3 22 5.42 22 8.5C22 12.28 18.6 15.36 13.45 20.04L12 21.35Z"
@@ -99,7 +99,7 @@ const services = [
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        className="stroke-[#618462] group-hover:stroke-current dark:stroke-[#D4E8D4]"
+        className="stroke-primary-500 group-hover:stroke-current dark:stroke-success-200"
       >
         <path
           d="M9 11H15L13 13.5L15 16H9L11 13.5L9 11ZM12 2L13.09 8.26L22 9L13.09 9.74L12 2ZM12 2L10.91 8.26L2 9L10.91 9.74L12 2Z"
@@ -120,7 +120,7 @@ const services = [
         height="24"
         viewBox="0 0 24 24"
         fill="none"
-        className="stroke-[#618462] group-hover:stroke-current dark:stroke-[#D4E8D4]"
+        className="stroke-primary-500 group-hover:stroke-current dark:stroke-success-200"
       >
         <path
           d="M12 3L14 8H19L15.5 11.5L17 17L12 14L7 17L8.5 11.5L5 8H10L12 3Z"
