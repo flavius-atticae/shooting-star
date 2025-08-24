@@ -76,7 +76,6 @@ This style guide defines the visual identity for Pauline Roussel's yoga instruct
 ### Available Formats
 - **SVG**: Best for web use (`.claude/commands/assets/logos/Logos - SVG/`)
 - **PNG**: High-resolution for various uses (`.claude/commands/assets/logos/Logos - PNG/`)
-- **JPEG**: Photography/print contexts (`.claude/commands/assets/logos/Logos - JPEG/`)
 
 ### Logo Variations
 
