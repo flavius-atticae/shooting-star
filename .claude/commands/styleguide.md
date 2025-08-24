@@ -87,16 +87,41 @@ This style guide defines the visual identity for Pauline Roussel's yoga instruct
 
 ## Typography
 
-### Font Stack
+### Font Families
+
+#### **Barlow** (Texte Courant & Sous-titres)
+- **Body Text**: `font-body` - Barlow Regular (400)
+- **Subtitles**: `font-subtitle` + `font-semibold` - Barlow SemiBold (600)
+- Usage: Texte principal, navigation, sous-titres
+- Caractère: Moderne, lisible, accessible
+
+#### **The Seasons** (Titres)
+- **Headings**: `font-heading` - The Seasons Regular
+- Usage: Titres principaux (H1, H2)
+- Caractère: Élégant, féminin, script décoratif
+
+#### **Moontime** (Accents)
+- **Accent Text**: `font-accent` - Moontime Regular
+- Usage: Citations, éléments décoratifs, mise en valeur
+- Caractère: Artistique, organique, distinctif
+
+### Tailwind Classes
 ```css
---font-sans: "Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+/* Font Families */
+font-body      → Barlow Regular
+font-subtitle  → Barlow (use with font-semibold)
+font-heading   → The Seasons
+font-accent    → Moontime
+
+/* Weights */
+font-normal    → 400 (Regular)
+font-semibold  → 600 (SemiBold)
 ```
 
-### Usage
-- **Body Text**: Inter 400 (regular)
-- **Headings**: Inter 500-600 (medium-semibold)  
-- **Logo Text**: Custom serif or script font (as seen in logo designs)
-- **Line Height**: `leading-6` for body, `leading-normal` for links
+### Implementation
+- All fonts loaded via `@font-face` from `/public/fonts/`
+- `font-display: swap` for optimal loading
+- Fallback fonts included for accessibility
 
 ## Logo Assets
 

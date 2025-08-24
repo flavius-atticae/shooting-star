@@ -1,8 +1,46 @@
 @import "tailwindcss";
 
+/* Custom Fonts */
+@font-face {
+  font-family: 'Barlow';
+  src: url('/fonts/barlow-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Barlow';
+  src: url('/fonts/barlow-semibold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Moontime';
+  src: url('/fonts/moontime-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'The Seasons';
+  src: url('/fonts/the-seasons-regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+  /* Typography Families */
+  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-body: "Barlow", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "The Seasons", serif;
+  --font-accent: "Moontime", cursive, serif;
+  --font-subtitle: "Barlow", ui-sans-serif, system-ui, sans-serif;
   
   /* Pauline Roussel Brand Colors */
   
