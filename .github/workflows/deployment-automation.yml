@@ -45,8 +45,9 @@ jobs:
       - name: Deploy to staging
         run: |
           echo "Deploying to staging environment..."
-          # Add your deployment commands here
-          # For example, deploy to Vercel, Netlify, or your cloud provider
+          flyctl deploy --app ${{ secrets.FLYIO_STAGING_APP_NAME }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       
       - name: Update project items
         run: |
@@ -92,7 +93,9 @@ jobs:
       - name: Deploy to production
         run: |
           echo "Deploying to production environment..."
-          # Add your production deployment commands here
+          flyctl deploy --app ${{ secrets.FLYIO_PRODUCTION_APP_NAME }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       
       - name: Create deployment record
         run: |
@@ -125,7 +128,9 @@ jobs:
       - name: Rollback to previous version
         run: |
           echo "Rolling back deployment..."
-          # Add rollback logic here
+          flyctl deploy --app ${{ secrets.FLYIO_PRODUCTION_APP_NAME }} --image-ref ${{ github.event.inputs.rollback_version || 'previous' }}
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       
       - name: Notify rollback
         run: |
@@ -151,10 +156,10 @@ jobs:
           # Add health check endpoints
           if [[ "${{ needs.deploy-production.result }}" == "success" ]]; then
             ENVIRONMENT="production"
-            HEALTH_URL="https://your-production-domain.com/health"
+            HEALTH_URL="${{ secrets.PRODUCTION_HEALTH_URL }}"
           else
             ENVIRONMENT="staging"
-            HEALTH_URL="https://your-staging-domain.com/health"
+            HEALTH_URL="${{ secrets.STAGING_HEALTH_URL }}"
           fi
           
           echo "Checking health of $ENVIRONMENT environment"
