@@ -15,6 +15,10 @@ on:
         options:
           - staging
           - production
+      rollback_version:
+        description: 'Version to rollback to (for rollback operations)'
+        required: false
+        type: string
 
 jobs:
   deploy-staging:
@@ -42,18 +46,15 @@ jobs:
         env:
           NODE_ENV: production
       
+      - name: Install flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      
       - name: Deploy to staging
         run: |
           echo "Deploying to staging environment..."
           flyctl deploy --app ${{ secrets.FLYIO_STAGING_APP_NAME }}
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
-      
-      - name: Update project items
-        run: |
-          # Move items from "Testing" to "Done" after successful staging deployment
-          echo "Updating project board after staging deployment"
-          # This would require more complex API calls to identify which items to move
       
       - name: Notify deployment
         run: |
@@ -90,6 +91,9 @@ jobs:
         env:
           NODE_ENV: production
       
+      - name: Install flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      
       - name: Deploy to production
         run: |
           echo "Deploying to production environment..."
@@ -109,15 +113,11 @@ jobs:
           }'
           echo "Deployment info: $DEPLOYMENT_INFO"
       
-      - name: Move items to Released
+      - name: Log release deployment
         if: github.event_name == 'release'
         run: |
-          # Extract issue numbers from release notes
-          RELEASE_BODY="${{ github.event.release.body }}"
-          echo "Processing release: ${{ github.event.release.tag_name }}"
-          
-          # This would move all related items to "Released" column
-          # Implementation depends on your project board setup
+          echo "Production deployment completed for release: ${{ github.event.release.tag_name }}"
+          echo "Release notes: ${{ github.event.release.body }}"
 
   rollback:
     name: Rollback Deployment
@@ -125,6 +125,9 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     environment: production
     steps:
+      - name: Install flyctl
+        uses: superfly/flyctl-actions/setup-flyctl@master
+      
       - name: Rollback to previous version
         run: |
           echo "Rolling back deployment..."
@@ -163,8 +166,26 @@ jobs:
           fi
           
           echo "Checking health of $ENVIRONMENT environment"
-          # curl -f $HEALTH_URL || exit 1
-          echo "Health check passed for $ENVIRONMENT"
+          
+          # Perform health check with retries
+          RETRY_COUNT=5
+          RETRY_DELAY=10
+          
+          for i in $(seq 1 $RETRY_COUNT); do
+            echo "Health check attempt $i/$RETRY_COUNT"
+            if curl -f -s --max-time 10 "$HEALTH_URL"; then
+              echo "Health check passed for $ENVIRONMENT"
+              exit 0
+            else
+              echo "Health check attempt $i failed, retrying in ${RETRY_DELAY}s..."
+              if [ $i -lt $RETRY_COUNT ]; then
+                sleep $RETRY_DELAY
+              fi
+            fi
+          done
+          
+          echo "Health check failed after $RETRY_COUNT attempts"
+          exit 1
       
       - name: Report health status
         if: success()

@@ -25,9 +25,6 @@ COPY --from=production-dependencies-env /app/node_modules /app/node_modules
 COPY --from=build-env /app/build /app/build
 WORKDIR /app
 
-# Create health check endpoint
-RUN echo '{"status":"ok","timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%S.%3NZ)'","environment":"'${NODE_ENV:-production}'"}' > ./build/client/health
-
 # Set proper ownership
 RUN chown -R reactuser:nodejs /app
 
