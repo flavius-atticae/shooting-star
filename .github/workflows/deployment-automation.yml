@@ -131,7 +131,12 @@ jobs:
       - name: Rollback to previous version
         run: |
           echo "Rolling back deployment..."
-          flyctl deploy --app ${{ vars.FLYIO_PRODUCTION_APP_NAME }} --image-ref ${{ github.event.inputs.rollback_version || 'previous' }}
+          if [[ -n "${{ github.event.inputs.rollback_version }}" ]]; then
+            flyctl machine rollback ${{ github.event.inputs.rollback_version }} --app ${{ vars.FLYIO_PRODUCTION_APP_NAME }}
+          else
+            echo "Rolling back to previous release..."
+            flyctl releases rollback --app ${{ vars.FLYIO_PRODUCTION_APP_NAME }}
+          fi
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
       
