@@ -44,3 +44,9 @@ No test framework or linting tools are currently configured in this project.
 
 ### Deployment
 The application supports Docker deployment and includes a Dockerfile. The build outputs to `build/client/` (static assets) and `build/server/` (server code).
+
+## Agent Coordination
+- **MANDATORY**: Follow protocols defined in `AGENT_COORDINATION.md` for all GitHub issue collaboration
+- Use appropriate handoff templates and validation checklists when working with specialized agents
+- Apply role-specific workflows based on issue type (bug, feature, technical debt, security)
+- Maintain transparent communication via GitHub issue comments during agent handoffs
