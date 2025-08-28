@@ -63,8 +63,60 @@ The application includes a health check endpoint at `/health` that returns:
 
 1. **Staging**: Triggered on push to `main` branch
 2. **Production**: Triggered on release publication or manual dispatch
-3. **Rollback**: Available via workflow dispatch with rollback version
+3. **Rollback**: Available via workflow dispatch with rollback options
 4. **Health checks**: Automated post-deployment verification
+
+### Rollback Guide
+
+#### Overview
+The deployment system supports robust rollback capabilities using Fly.io's deployment mechanism. Rollbacks redeploy a previous version of your application using `flyctl deploy --image`.
+
+#### Performing a Rollback
+
+1. **Access GitHub Actions**:
+   - Go to your repository → Actions tab
+   - Select "Deployment Automation" workflow
+   - Click "Run workflow"
+
+2. **Configure Rollback**:
+   - **Operation**: Select "rollback"
+   - **Environment**: Choose "staging" or "production"
+   - **Rollback Target** (optional):
+     - Leave empty for automatic rollback to previous successful release
+     - Specify version number (e.g., "v1.2.3")
+     - Specify Docker image reference for specific image rollback
+
+3. **Execution Process**:
+   - Workflow discovers available releases using `flyctl releases --image`
+   - Validates rollback target exists
+   - Deploys previous version using `flyctl deploy --image`
+   - Performs health checks to verify rollback success
+   - Sends team notification with rollback details
+
+#### Rollback Strategies
+
+- **Automatic**: Rolls back to the most recent successful deployment
+- **Version-specific**: Rolls back to a specific version tag
+- **Image-specific**: Rolls back to a specific Docker image reference
+
+#### Emergency Rollback
+
+For critical incidents, the workflow can be triggered immediately:
+```bash
+# Manual rollback via GitHub CLI
+gh workflow run deployment-automation.yml \
+  -f operation=rollback \
+  -f environment=production \
+  -f rollback_target=""  # Empty for automatic
+```
+
+#### Rollback Validation
+
+After rollback execution:
+- Health endpoint is checked for service availability
+- Application logs are monitored for errors
+- Team receives notification with rollback status
+- Manual verification recommended for production rollbacks
 
 ### Security
 
