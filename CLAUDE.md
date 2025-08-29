@@ -45,8 +45,24 @@ No test framework or linting tools are currently configured in this project.
 ### Deployment
 The application supports Docker deployment and includes a Dockerfile. The build outputs to `build/client/` (static assets) and `build/server/` (server code).
 
+## Documentation
+
+All project documentation is centralized in the `docs/` directory with a comprehensive structure. Start with the **[Documentation Hub](docs/README.md)** which provides:
+
+### Key Documentation Areas
+- **[Getting Started](docs/getting-started/)** - Setup, configuration, and environment guides
+- **[Architecture](docs/architecture/)** - Tech stack, system design, and technical decisions
+- **[Deployment](docs/deployment/)** - Fly.io deployment guides and rollback procedures
+- **[Security](docs/security/)** - Security guidelines, GDPR compliance, and best practices
+- **[Workflows](docs/workflows/)** - Agent coordination, GitHub automation, and project management
+- **[Design System](docs/design-system/)** - Brand guidelines and design standards
+- **[Reference](docs/reference/)** - Troubleshooting guides and technical references
+
+### Navigation
+The **[docs/README.md](docs/README.md)** serves as the central navigation hub with detailed descriptions and links to all documentation sections. Always refer to this index when looking for specific information.
+
 ## Agent Coordination
-- **MANDATORY**: Follow protocols defined in `AGENT_COORDINATION.md` for all GitHub issue collaboration
+- **MANDATORY**: Follow protocols defined in [Agent Coordination](docs/workflows/agent-coordination.md) for all GitHub issue collaboration
 - Use appropriate handoff templates and validation checklists when working with specialized agents
 - Apply role-specific workflows based on issue type (bug, feature, technical debt, security)
 - Maintain transparent communication via GitHub issue comments during agent handoffs
