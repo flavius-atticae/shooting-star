@@ -126,8 +126,8 @@ font-semibold  → 600 (SemiBold)
 ## Logo Assets
 
 ### Available Formats
-- **SVG**: Best for web use (`.claude/commands/assets/logos/Logos - SVG/`)
-- **PNG**: High-resolution for various uses (`.claude/commands/assets/logos/Logos - PNG/`)
+- **SVG**: Best for web use (`../.claude/commands/assets/logos/Logos - SVG/`)
+- **PNG**: High-resolution for various uses (`../.claude/commands/assets/logos/Logos - PNG/`)
 
 ### Logo Variations
 
@@ -193,12 +193,12 @@ font-semibold  → 600 (SemiBold)
 ## Asset References
 
 ### Color Swatches
-- Visual color references: `.claude/commands/assets/colors/`
+- Visual color references: `../.claude/commands/assets/colors/`
 - Each color family has detailed swatches with hex codes
 - Use these for accurate color matching
 
 ### Logo Library
-- Complete logo collection: `.claude/commands/assets/logos/`
+- Complete logo collection: `../.claude/commands/assets/logos/`
 - Organized by format and color variation
 - Source file: `Pauline_Logo-couleurs.ai`
 

@@ -260,6 +260,24 @@ The application can be deployed to any Node.js hosting platform:
 
 ---
 
+## 📚 Documentation
+
+For detailed technical documentation, visit our **[Documentation Hub](docs/README.md)**:
+
+### Essential Guides
+- **[Setup Guide](docs/getting-started/setup.md)** - Development environment setup
+- **[Tech Stack](docs/architecture/tech-stack.md)** - Complete technology overview  
+- **[Configuration Files](docs/getting-started/configuration-files.md)** - Project configuration
+- **[Security Guidelines](docs/security/guidelines.md)** - GDPR compliance and security
+- **[Troubleshooting](docs/reference/troubleshooting.md)** - Common issues and solutions
+
+### Workflows & Team
+- **[Agent Coordination](docs/workflows/agent-coordination.md)** - Multi-agent collaboration
+- **[Deployment Guide](docs/deployment/fly-io-guide.md)** - Production deployment
+- **[Brand Guidelines](docs/design-system/brand-guidelines.md)** - Design system usage
+
+---
+
 ## 📞 Project Contacts
 
 ### Stakeholders
