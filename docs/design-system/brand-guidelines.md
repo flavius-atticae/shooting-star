@@ -11,61 +11,95 @@ This style guide defines the visual identity for Pauline Roussel's yoga instruct
 
 ## Color Palette
 
-### Colors
+### Core Brand Colors
 
-**Rose** (#AF6868)
+The color system is implemented using CSS custom properties in `app/app.css` and follows a semantic naming convention with light/dark variations.
 
-**Rose pale** (#FFDDD3)
+#### **Primary - Vert (Main Brand Green)**
+- **Base**: `--color-primary` (#618462)
+- **Light**: `--color-primary-light` (#9eb49e)
+- **Dark**: `--color-primary-dark` (#2d3f2d)
 
-**Vert** (#618462)
+#### **Accent - Rose (Warm Rose Accent)**
+- **Base**: `--color-accent` (#af6868)
+- **Light**: `--color-accent-light` (#d1a3a2) 
+- **Dark**: `--color-accent-dark` (#563030)
 
-**Menthe** (#3D4E8D)
+#### **Secondary - Bleu (Calm Blue)**
+- **Base**: `--color-secondary` (#517982)
+- **Light**: `--color-secondary-light` (#94adb2)
+- **Dark**: `--color-secondary-dark` (#24393e)
 
-**Bleu** (#517982)
-
-**Bleu Pale** (#DAE6EA)
-
-**Brun** (#5E4530)
-
-**Beige** (#CEAF9B)
-
-**White** (#FFFFFF)
-
-**Gris** (#F5F4F2)
-
-### Tailwind CSS Implementation
-
-#### **Primary Colors (Clouded Pine)**
-- `bg-primary-50` to `bg-primary-900` - Backgrounds
-- `text-primary-500` - Main brand text
-- `border-primary-500` - Primary borders
-- Core brand color: #618462
-
-#### **Accent Colors (Rustling Leaves)**  
-- `text-accent-500` - Links and CTA
-- `bg-accent-50` to `bg-accent-900` - Accent backgrounds
-- `hover:text-accent-600` - Hover states
-- Core accent color: #AF6868
-
-#### **Neutral Colors (Pitch Mary Brown)**
-- `text-neutral-500` - Body text
-- `text-neutral-700` - Headings  
-- `bg-neutral-50` - Light backgrounds
-- Core neutral color: #5E4530
+#### **Neutral - Brun (Brown for Text)**
+- **Base**: `--color-neutral` (#5e4530)
+- **Light**: `--color-neutral-light` (#9c8b7d)
+- **Dark**: `--color-neutral-dark` (#2b1e13)
 
 #### **Supporting Colors**
-- **Secondary**: `bg-secondary-500`, `border-secondary-500` (#517982)
-- **Warm**: `bg-warm-400` (#CEAF9B) for cozy backgrounds  
-- **Soft**: `bg-soft-50` (#FFF8F6) for gentle backgrounds
-- **Cool**: `bg-cool-200` (#DAE6EA) for calm sections
-- **Success**: `text-success-500` (#7DBB7D) for positive states
+- **Warm (Beige)**: `--color-warm` (#ceaf9b)
+- **Soft (Rose Pale)**: `--color-soft` (#ffddd3)
+- **Cool (Bleu Pale)**: `--color-cool` (#dae6ea)
+- **Menthe**: `--color-menthe` (#3d4e8d)
+- **White**: `--color-white` (#ffffff)
+- **Gris**: `--color-gris` (#f5f4f2)
 
-#### **Current Implementation**
+### TailwindCSS Usage
+
+The colors are accessible through TailwindCSS classes using the simplified color names:
+
+#### **Primary Colors (Green)**
+```css
+bg-primary        /* #618462 */
+bg-primary-light  /* #9eb49e */  
+bg-primary-dark   /* #2d3f2d */
+text-primary      /* Same color options */
+border-primary    /* Same color options */
+```
+
+#### **Accent Colors (Rose)**
+```css
+bg-accent        /* #af6868 */
+bg-accent-light  /* #d1a3a2 */
+bg-accent-dark   /* #563030 */
+text-accent      /* Same color options */
+border-accent    /* Same color options */
+```
+
+#### **Neutral Colors (Brown)**
+```css
+bg-neutral        /* #5e4530 */
+bg-neutral-light  /* #9c8b7d */
+bg-neutral-dark   /* #2b1e13 */
+text-neutral      /* Same color options */
+border-neutral    /* Same color options */
+```
+
+#### **Supporting Colors**
+```css
+bg-secondary      /* #517982 - Bleu */
+bg-warm           /* #ceaf9b - Beige */
+bg-soft           /* #ffddd3 - Rose pale */
+bg-cool           /* #dae6ea - Bleu pale */
+bg-menthe         /* #3d4e8d - Menthe */
+bg-white          /* #ffffff - White */
+bg-gris           /* #f5f4f2 - Gris */
+```
+
+#### **Legacy Support**
+For existing components, legacy color names are mapped to the new system:
+```css
+bg-primary-500    /* Maps to --color-primary */
+bg-accent-400     /* Maps to --color-accent-light */
+bg-neutral-700    /* Maps to --color-neutral-dark */
+bg-soft-50        /* Maps to --color-gris */
+```
+
+#### **Current Page Implementation**
 - **Background**: `bg-soft-50` (light), `bg-neutral-900` (dark)
 - **Text Primary**: `text-neutral-700` (light), `text-neutral-200` (dark)
-- **Text Secondary**: `text-neutral-500` (light), `text-neutral-300` (dark)  
-- **Links**: `text-accent-500` (light), `text-accent-300` (dark)
-- **Borders**: `border-primary-500` (light), `border-secondary-500` (dark)
+- **Text Secondary**: `text-neutral-500` (light), `text-neutral-300` (dark)
+- **Links**: `text-accent-500` (light), `text-accent-400` (dark)
+- **Borders**: `border-primary-200` (light), `border-neutral-700` (dark)
 
 ## Typography
 
