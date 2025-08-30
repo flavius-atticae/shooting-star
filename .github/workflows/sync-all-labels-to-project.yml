@@ -6,8 +6,8 @@ on:
       dry_run:
         description: 'Run in dry-run mode (no actual changes)'
         required: false
-        default: false
         type: boolean
+        default: false
 
 jobs:
   sync-all-labels:
