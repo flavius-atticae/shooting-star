@@ -1,0 +1,195 @@
+name: Sync Labels to Project Fields
+
+on:
+  issues:
+    types: [opened, labeled, unlabeled, edited]
+  issue_comment:
+    types: [created]
+
+jobs:
+  sync-labels:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' || (github.event_name == 'issue_comment' && contains(github.event.comment.body, '/sync-project'))
+    
+    steps:
+      - name: Sync Priority and Size to Project
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const issue = context.payload.issue;
+            
+            // Project configuration
+            const PROJECT_NUMBER = 5;
+            const OWNER = context.repo.owner;
+            
+            // Get project ID
+            const projectQuery = `
+              query($owner: String!, $number: Int!) {
+                user(login: $owner) {
+                  projectV2(number: $number) {
+                    id
+                    fields(first: 20) {
+                      nodes {
+                        ... on ProjectV2SingleSelectField {
+                          id
+                          name
+                          options {
+                            id
+                            name
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+            
+            const projectResult = await github.graphql(projectQuery, {
+              owner: OWNER,
+              number: PROJECT_NUMBER
+            });
+            
+            const project = projectResult.user.projectV2;
+            if (!project) {
+              console.log('Project not found');
+              return;
+            }
+            
+            // Find Priority and Size fields
+            const priorityField = project.fields.nodes.find(field => field.name === 'Priority');
+            const sizeField = project.fields.nodes.find(field => field.name === 'Size');
+            
+            if (!priorityField || !sizeField) {
+              console.log('Priority or Size field not found in project');
+              return;
+            }
+            
+            // Get project item for this issue
+            const itemQuery = `
+              query($owner: String!, $repo: String!, $issueNumber: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  issue(number: $issueNumber) {
+                    projectItems(first: 10) {
+                      nodes {
+                        id
+                        project {
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+            
+            const itemResult = await github.graphql(itemQuery, {
+              owner: OWNER,
+              repo: context.repo.repo,
+              issueNumber: issue.number
+            });
+            
+            const projectItem = itemResult.repository.issue.projectItems.nodes.find(
+              item => item.project.id === project.id
+            );
+            
+            if (!projectItem) {
+              console.log('Issue not found in project');
+              return;
+            }
+            
+            // Extract priority from labels
+            const priorityLabel = issue.labels.find(label => label.name.startsWith('priority/'));
+            const sizeLabel = issue.labels.find(label => label.name.startsWith('size/'));
+            
+            // Mapping functions
+            function mapPriorityLabel(labelName) {
+              if (!labelName) return null;
+              const priority = labelName.replace('priority/', '');
+              switch (priority.toLowerCase()) {
+                case 'low': return 'Low';
+                case 'medium': return 'Medium';
+                case 'high': return 'High';
+                case 'critical': return 'Critical';
+                default: return null;
+              }
+            }
+            
+            function mapSizeLabel(labelName) {
+              if (!labelName) return null;
+              const size = labelName.replace('size/', '');
+              return size.toUpperCase(); // XS, S, M, L, XL
+            }
+            
+            // Update Priority field if priority label exists
+            if (priorityLabel) {
+              const priorityValue = mapPriorityLabel(priorityLabel.name);
+              if (priorityValue) {
+                const priorityOption = priorityField.options.find(opt => opt.name === priorityValue);
+                if (priorityOption) {
+                  const updateMutation = `
+                    mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                      updateProjectV2ItemFieldValue(
+                        input: {
+                          projectId: $projectId
+                          itemId: $itemId
+                          fieldId: $fieldId
+                          value: { singleSelectOptionId: $optionId }
+                        }
+                      ) {
+                        projectV2Item {
+                          id
+                        }
+                      }
+                    }
+                  `;
+                  
+                  await github.graphql(updateMutation, {
+                    projectId: project.id,
+                    itemId: projectItem.id,
+                    fieldId: priorityField.id,
+                    optionId: priorityOption.id
+                  });
+                  
+                  console.log(`Updated priority to: ${priorityValue}`);
+                }
+              }
+            }
+            
+            // Update Size field if size label exists
+            if (sizeLabel) {
+              const sizeValue = mapSizeLabel(sizeLabel.name);
+              if (sizeValue) {
+                const sizeOption = sizeField.options.find(opt => opt.name === sizeValue);
+                if (sizeOption) {
+                  const updateMutation = `
+                    mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                      updateProjectV2ItemFieldValue(
+                        input: {
+                          projectId: $projectId
+                          itemId: $itemId
+                          fieldId: $fieldId
+                          value: { singleSelectOptionId: $optionId }
+                        }
+                      ) {
+                        projectV2Item {
+                          id
+                        }
+                      }
+                    }
+                  `;
+                  
+                  await github.graphql(updateMutation, {
+                    projectId: project.id,
+                    itemId: projectItem.id,
+                    fieldId: sizeField.id,
+                    optionId: sizeOption.id
+                  });
+                  
+                  console.log(`Updated size to: ${sizeValue}`);
+                }
+              }
+            }
+            
+            console.log('Label synchronization completed');
