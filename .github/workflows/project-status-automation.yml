@@ -3,11 +3,13 @@ name: Project Status Automation
 on:
   issues:
     types: [labeled, unlabeled, assigned, unassigned]
+  pull_request:
+    types: [opened, closed, reopened]
 
 jobs:
   update-project-status:
     runs-on: ubuntu-latest
-    if: github.event.issue
+    if: github.event.issue || github.event.pull_request
     
     steps:
       - name: Update Project Status Based on Labels and Assignment
@@ -16,6 +18,7 @@ jobs:
           github-token: ${{ secrets.PROJECT_PAT }}
           script: |
             const issue = context.payload.issue;
+            const pullRequest = context.payload.pull_request;
             const action = context.payload.action;
             
             // Project configuration
@@ -23,7 +26,55 @@ jobs:
             const OWNER = context.repo.owner;
             const REPO = context.repo.repo;
             
-            console.log(`Processing ${action} action for issue #${issue.number}: ${issue.title}`);
+            // Determine if this is a PR or issue event
+            let targetIssues = [];
+            
+            if (issue) {
+              // Direct issue event
+              console.log(`Processing ${action} action for issue #${issue.number}: ${issue.title}`);
+              targetIssues = [issue];
+            } else if (pullRequest) {
+              // Pull request event - find linked issues
+              console.log(`Processing ${action} action for PR #${pullRequest.number}: ${pullRequest.title}`);
+              
+              // Extract issue numbers from PR body and title using common patterns
+              const prText = `${pullRequest.title} ${pullRequest.body || ''}`;
+              const issuePatterns = [
+                /(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s*:?\s*#(\d+)/gi,
+                /(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+(?:https?:\/\/github\.com\/[^\/]+\/[^\/]+\/issues\/)?(\d+)/gi,
+                /#(\d+)/g
+              ];
+              
+              const linkedIssueNumbers = new Set();
+              
+              for (const pattern of issuePatterns) {
+                let match;
+                while ((match = pattern.exec(prText)) !== null) {
+                  linkedIssueNumbers.add(parseInt(match[1]));
+                }
+              }
+              
+              console.log(`Found linked issues: ${Array.from(linkedIssueNumbers).join(', ')}`);
+              
+              // Fetch each linked issue
+              for (const issueNumber of linkedIssueNumbers) {
+                try {
+                  const { data: linkedIssue } = await github.rest.issues.get({
+                    owner: OWNER,
+                    repo: REPO,
+                    issue_number: issueNumber
+                  });
+                  targetIssues.push(linkedIssue);
+                } catch (error) {
+                  console.log(`Could not fetch issue #${issueNumber}: ${error.message}`);
+                }
+              }
+            }
+            
+            if (targetIssues.length === 0) {
+              console.log('No target issues found');
+              return;
+            }
             
             // Get project ID and fields
             const projectQuery = `
@@ -136,7 +187,7 @@ jobs:
             };
             
             // Helper function to update project status
-            async function updateProjectStatus(statusOptionId) {
+            async function updateProjectStatus(statusOptionId, itemId) {
               const mutation = `
                 mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
                   updateProjectV2ItemFieldValue(
@@ -154,106 +205,193 @@ jobs:
               
               await github.graphql(mutation, {
                 projectId: project.id,
-                itemId: projectItem.id,
+                itemId: itemId,
                 fieldId: statusField.id,
                 optionId: statusOptionId
               });
             }
             
             // Helper function to add/remove labels
-            async function updateIssueLabel(labelName, shouldAdd) {
+            async function updateIssueLabel(labelName, shouldAdd, issueNumber) {
+              // Get current labels for this specific issue
+              const { data: currentIssue } = await github.rest.issues.get({
+                owner: OWNER,
+                repo: REPO,
+                issue_number: issueNumber
+              });
+              const currentLabels = currentIssue.labels.map(l => l.name);
+              
               if (shouldAdd) {
                 // Add label if not already present
-                if (!labels.includes(labelName)) {
+                if (!currentLabels.includes(labelName)) {
                   await github.rest.issues.addLabels({
                     owner: OWNER,
                     repo: REPO,
-                    issue_number: issue.number,
+                    issue_number: issueNumber,
                     labels: [labelName]
                   });
-                  console.log(`✅ Added label: ${labelName}`);
+                  console.log(`✅ Added label: ${labelName} to issue #${issueNumber}`);
                 }
               } else {
                 // Remove label if present
-                if (labels.includes(labelName)) {
+                if (currentLabels.includes(labelName)) {
                   try {
                     await github.rest.issues.removeLabel({
                       owner: OWNER,
                       repo: REPO,
-                      issue_number: issue.number,
+                      issue_number: issueNumber,
                       name: labelName
                     });
-                    console.log(`🗑️ Removed label: ${labelName}`);
+                    console.log(`🗑️ Removed label: ${labelName} from issue #${issueNumber}`);
                   } catch (error) {
                     if (error.status !== 404) {
-                      console.error(`Error removing label ${labelName}:`, error);
+                      console.error(`Error removing label ${labelName} from issue #${issueNumber}:`, error);
                     }
                   }
                 }
               }
             }
             
-            try {
-              // Determine the appropriate status based on labels and assignment
-              let targetStatus = null;
-              let targetStatusName = null;
-              let shouldAddLabel = null;
-              let shouldRemoveLabels = [];
+            // Process each target issue
+            for (const targetIssue of targetIssues) {
+              console.log(`\n--- Processing issue #${targetIssue.number}: ${targetIssue.title} ---`);
               
-              // Priority logic:
-              // 1. If assigned and not already in-development -> set to in-development
-              // 2. Check for explicit status labels in priority order
-              
-              if (assignees.length > 0 && !labels.includes('status/in-development')) {
-                // Issue is assigned but not marked as in-development
-                targetStatus = statusMap['status/in-development'];
-                targetStatusName = 'En Cours';
-                shouldAddLabel = 'status/in-development';
-                // Remove conflicting status labels
-                shouldRemoveLabels = ['status/triage', 'status/ready'];
-              } else {
-                // Check for status labels in priority order
-                const statusLabels = [
-                  'status/released',
-                  'status/completed', 
-                  'status/ready-for-testing',
-                  'status/needs-review',
-                  'status/in-development',
-                  'status/ready',
-                  'status/triage'
-                ];
-                
-                for (const statusLabel of statusLabels) {
-                  if (labels.includes(statusLabel)) {
-                    targetStatus = statusMap[statusLabel];
-                    targetStatusName = statusField.options.find(opt => opt.id === targetStatus)?.name;
-                    break;
+              // Get project item for this issue
+              const itemQuery = `
+                query($owner: String!, $repo: String!, $issueNumber: Int!) {
+                  repository(owner: $owner, name: $repo) {
+                    issue(number: $issueNumber) {
+                      projectItems(first: 10) {
+                        nodes {
+                          id
+                          project {
+                            id
+                          }
+                        }
+                      }
+                      labels(first: 20) {
+                        nodes {
+                          name
+                        }
+                      }
+                      assignees(first: 10) {
+                        nodes {
+                          login
+                        }
+                      }
+                    }
                   }
                 }
+              `;
+              
+              const itemResult = await github.graphql(itemQuery, {
+                owner: OWNER,
+                repo: REPO,
+                issueNumber: targetIssue.number
+              });
+              
+              const projectItem = itemResult.repository.issue.projectItems.nodes.find(
+                item => item.project.id === project.id
+              );
+              
+              if (!projectItem) {
+                console.log(`Issue #${targetIssue.number} not found in project`);
+                continue;
               }
               
-              // Apply changes if we determined a target status
-              if (targetStatus && targetStatusName) {
-                // Update project status
-                await updateProjectStatus(targetStatus);
-                console.log(`✅ Updated project status to: ${targetStatusName}`);
+              const labels = itemResult.repository.issue.labels.nodes.map(label => label.name);
+              const assignees = itemResult.repository.issue.assignees.nodes.map(assignee => assignee.login);
+              
+              console.log('Current labels:', labels);
+              console.log('Current assignees:', assignees);
+              
+              try {
+                // Determine the appropriate status based on event type, labels and assignment
+                let targetStatus = null;
+                let targetStatusName = null;
+                let shouldAddLabel = null;
+                let shouldRemoveLabels = [];
                 
-                // Add label if needed
-                if (shouldAddLabel) {
-                  await updateIssueLabel(shouldAddLabel, true);
+                // Special logic for PR events
+                if (pullRequest && action === 'opened') {
+                  // When PR is opened, set linked issues to needs-review
+                  targetStatus = statusMap['status/needs-review'];
+                  targetStatusName = 'Review';
+                  shouldAddLabel = 'status/needs-review';
+                  // Remove conflicting status labels
+                  shouldRemoveLabels = ['status/triage', 'status/ready', 'status/in-development'];
+                  console.log('PR opened - setting linked issues to needs-review');
+                } else if (pullRequest && action === 'closed' && pullRequest.merged) {
+                  // When PR is merged, set to ready-for-testing
+                  targetStatus = statusMap['status/ready-for-testing'];
+                  targetStatusName = 'Testing';
+                  shouldAddLabel = 'status/ready-for-testing';
+                  shouldRemoveLabels = ['status/needs-review'];
+                  console.log('PR merged - setting linked issues to ready-for-testing');
+                } else if (pullRequest && action === 'closed' && !pullRequest.merged) {
+                  // When PR is closed without merging, revert to in-development
+                  targetStatus = statusMap['status/in-development'];
+                  targetStatusName = 'En Cours';
+                  shouldAddLabel = 'status/in-development';
+                  shouldRemoveLabels = ['status/needs-review'];
+                  console.log('PR closed without merge - reverting linked issues to in-development');
+                } else {
+                  // Standard issue logic
+                  // Priority logic:
+                  // 1. If assigned and not already in-development -> set to in-development
+                  // 2. Check for explicit status labels in priority order
+                  
+                  if (assignees.length > 0 && !labels.includes('status/in-development')) {
+                    // Issue is assigned but not marked as in-development
+                    targetStatus = statusMap['status/in-development'];
+                    targetStatusName = 'En Cours';
+                    shouldAddLabel = 'status/in-development';
+                    // Remove conflicting status labels
+                    shouldRemoveLabels = ['status/triage', 'status/ready'];
+                  } else {
+                    // Check for status labels in priority order
+                    const statusLabels = [
+                      'status/released',
+                      'status/completed', 
+                      'status/ready-for-testing',
+                      'status/needs-review',
+                      'status/in-development',
+                      'status/ready',
+                      'status/triage'
+                    ];
+                    
+                    for (const statusLabel of statusLabels) {
+                      if (labels.includes(statusLabel)) {
+                        targetStatus = statusMap[statusLabel];
+                        targetStatusName = statusField.options.find(opt => opt.id === targetStatus)?.name;
+                        break;
+                      }
+                    }
+                  }
                 }
                 
-                // Remove conflicting labels
-                for (const labelToRemove of shouldRemoveLabels) {
-                  await updateIssueLabel(labelToRemove, false);
+                // Apply changes if we determined a target status
+                if (targetStatus && targetStatusName) {
+                  // Update project status
+                  await updateProjectStatus(targetStatus, projectItem.id);
+                  console.log(`✅ Updated project status to: ${targetStatusName}`);
+                  
+                  // Add label if needed
+                  if (shouldAddLabel) {
+                    await updateIssueLabel(shouldAddLabel, true, targetIssue.number);
+                  }
+                  
+                  // Remove conflicting labels
+                  for (const labelToRemove of shouldRemoveLabels) {
+                    await updateIssueLabel(labelToRemove, false, targetIssue.number);
+                  }
+                } else {
+                  console.log('No status change needed');
                 }
-              } else {
-                console.log('No status change needed');
+                
+              } catch (error) {
+                console.error(`Error processing issue #${targetIssue.number}:`, error);
               }
-              
-              console.log('Project status automation completed successfully');
-              
-            } catch (error) {
-              console.error('Error updating project status:', error);
-              // Don't fail the workflow, just log the error
             }
+            
+            console.log('\nProject status automation completed successfully');
