@@ -57,11 +57,11 @@ gh label create "Test" --color "C2E0C6" --description "Adding or updating tests"
 
 # Quality Labels
 echo "Creating quality labels..."
-gh label create "quality/needs-tests" --color "F9D71C" --description "Needs test coverage" --force
-gh label create "quality/needs-docs" --color "7057FF" --description "Needs documentation" --force
-gh label create "quality/performance" --color "FF6B6B" --description "Performance related" --force
-gh label create "quality/security" --color "B60205" --description "Security related" --force
-gh label create "quality/accessibility" --color "0052CC" --description "Accessibility related" --force
+gh label create "Needs-Tests" --color "F9D71C" --description "Needs test coverage" --force
+gh label create "Needs-Docs" --color "7057FF" --description "Needs documentation" --force
+gh label create "Performance" --color "FF6B6B" --description "Performance related" --force
+gh label create "Security" --color "B60205" --description "Security related" --force
+gh label create "Accessibility" --color "0052CC" --description "Accessibility related" --force
 
 
 
@@ -93,7 +93,7 @@ echo "   • Released (Purple) - Released to production"
 echo ""
 echo "🏷️ Other labels:"
 echo "   • Type labels: Bug, Feature, Enhancement, Documentation, Refactor, Test"
-echo "   • Quality labels: needs-tests, needs-docs, performance, security, accessibility"
+echo "   • Quality labels: Needs-Tests, Needs-Docs, Performance, Security, Accessibility"
 echo ""
 echo "🔧 Next steps:"
 echo "   1. ✅ Project columns are already configured: Backlog → À Faire → En Cours → Review → Testing → Done → Released"
