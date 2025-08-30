@@ -1,0 +1,274 @@
+name: Project Lifecycle Automation
+
+on:
+  issues:
+    types: [assigned, closed, reopened]
+
+jobs:
+  update-project-fields:
+    runs-on: ubuntu-latest
+    if: github.event.issue
+    
+    steps:
+      - name: Update Project Lifecycle Fields
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.PROJECT_PAT }}
+          script: |
+            const issue = context.payload.issue;
+            const action = context.payload.action;
+            
+            // Project configuration
+            const PROJECT_NUMBER = 5;
+            const OWNER = context.repo.owner;
+            const REPO = context.repo.repo;
+            
+            console.log(`Processing ${action} action for issue #${issue.number}: ${issue.title}`);
+            
+            // Get project ID and fields
+            const projectQuery = `
+              query($owner: String!, $number: Int!) {
+                user(login: $owner) {
+                  projectV2(number: $number) {
+                    id
+                    fields(first: 20) {
+                      nodes {
+                        ... on ProjectV2Field {
+                          id
+                          name
+                          dataType
+                        }
+                        ... on ProjectV2IterationField {
+                          id
+                          name
+                          dataType
+                          configuration {
+                            iterations {
+                              id
+                              title
+                              startDate
+                              duration
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+            
+            const projectResult = await github.graphql(projectQuery, {
+              owner: OWNER,
+              number: PROJECT_NUMBER
+            });
+            
+            const project = projectResult.user.projectV2;
+            if (!project) {
+              console.log('Project not found');
+              return;
+            }
+            
+            // Find relevant fields
+            const startDateField = project.fields.nodes.find(field => field.name === 'Start date');
+            const endDateField = project.fields.nodes.find(field => field.name === 'End date');
+            const iterationField = project.fields.nodes.find(field => field.name === 'Iteration');
+            
+            if (!startDateField || !endDateField || !iterationField) {
+              console.log('Required fields not found in project');
+              return;
+            }
+            
+            console.log('Found fields:', {
+              startDate: startDateField.id,
+              endDate: endDateField.id,
+              iteration: iterationField.id
+            });
+            
+            // Get project item for this issue
+            const itemQuery = `
+              query($owner: String!, $repo: String!, $issueNumber: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  issue(number: $issueNumber) {
+                    projectItems(first: 10) {
+                      nodes {
+                        id
+                        project {
+                          id
+                        }
+                      }
+                    }
+                    milestone {
+                      title
+                      dueOn
+                    }
+                  }
+                }
+              }
+            `;
+            
+            const itemResult = await github.graphql(itemQuery, {
+              owner: OWNER,
+              repo: REPO,
+              issueNumber: issue.number
+            });
+            
+            const projectItem = itemResult.repository.issue.projectItems.nodes.find(
+              item => item.project.id === project.id
+            );
+            
+            if (!projectItem) {
+              console.log('Issue not found in project');
+              return;
+            }
+            
+            const milestone = itemResult.repository.issue.milestone;
+            console.log('Issue milestone:', milestone?.title || 'none');
+            
+            // Helper function to get current iteration based on milestone
+            function getCurrentIteration() {
+              const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
+              
+              // If milestone exists, try to match with iteration period
+              if (milestone && milestone.dueOn) {
+                const dueDate = milestone.dueOn.split('T')[0];
+                
+                // Find iteration that contains the milestone due date
+                for (const iteration of iterationField.configuration.iterations) {
+                  const startDate = new Date(iteration.startDate);
+                  const endDate = new Date(startDate);
+                  endDate.setDate(startDate.getDate() + iteration.duration);
+                  
+                  const milestoneDate = new Date(dueDate);
+                  
+                  if (milestoneDate >= startDate && milestoneDate <= endDate) {
+                    console.log(`Milestone ${milestone.title} (${dueDate}) fits in ${iteration.title}`);
+                    return iteration;
+                  }
+                }
+              }
+              
+              // Fallback: find current iteration based on today's date
+              for (const iteration of iterationField.configuration.iterations) {
+                const startDate = new Date(iteration.startDate);
+                const endDate = new Date(startDate);
+                endDate.setDate(startDate.getDate() + iteration.duration);
+                
+                const currentDate = new Date(today);
+                
+                if (currentDate >= startDate && currentDate <= endDate) {
+                  console.log(`Today (${today}) fits in ${iteration.title}`);
+                  return iteration;
+                }
+              }
+              
+              // If no current iteration found, return the first one
+              console.log('No matching iteration found, using first iteration');
+              return iterationField.configuration.iterations[0];
+            }
+            
+            // Helper function to update a project field
+            async function updateProjectField(fieldId, value, valueType = 'text') {
+              const mutations = {
+                text: `
+                  mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $value: String!) {
+                    updateProjectV2ItemFieldValue(
+                      input: {
+                        projectId: $projectId
+                        itemId: $itemId
+                        fieldId: $fieldId
+                        value: { text: $value }
+                      }
+                    ) {
+                      projectV2Item { id }
+                    }
+                  }
+                `,
+                date: `
+                  mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $value: Date!) {
+                    updateProjectV2ItemFieldValue(
+                      input: {
+                        projectId: $projectId
+                        itemId: $itemId
+                        fieldId: $fieldId
+                        value: { date: $value }
+                      }
+                    ) {
+                      projectV2Item { id }
+                    }
+                  }
+                `,
+                iteration: `
+                  mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $value: String!) {
+                    updateProjectV2ItemFieldValue(
+                      input: {
+                        projectId: $projectId
+                        itemId: $itemId
+                        fieldId: $fieldId
+                        value: { iterationId: $value }
+                      }
+                    ) {
+                      projectV2Item { id }
+                    }
+                  }
+                `
+              };
+              
+              await github.graphql(mutations[valueType], {
+                projectId: project.id,
+                itemId: projectItem.id,
+                fieldId: fieldId,
+                value: value
+              });
+            }
+            
+            // Process different actions
+            const today = new Date().toISOString().split('T')[0]; // ISO format: YYYY-MM-DD
+            
+            try {
+              switch (action) {
+                case 'assigned':
+                  console.log(`Issue assigned to: ${issue.assignees.map(a => a.login).join(', ')}`);
+                  
+                  // Set start date to today
+                  await updateProjectField(startDateField.id, today, 'date');
+                  console.log(`✅ Set start date to: ${today}`);
+                  
+                  // Set iteration based on milestone
+                  const currentIteration = getCurrentIteration();
+                  if (currentIteration) {
+                    await updateProjectField(iterationField.id, currentIteration.id, 'iteration');
+                    console.log(`✅ Set iteration to: ${currentIteration.title}`);
+                  }
+                  
+                  break;
+                  
+                case 'closed':
+                  console.log(`Issue closed by: ${context.payload.sender.login}`);
+                  
+                  // Set end date to today
+                  await updateProjectField(endDateField.id, today, 'date');
+                  console.log(`✅ Set end date to: ${today}`);
+                  
+                  break;
+                  
+                case 'reopened':
+                  console.log(`Issue reopened by: ${context.payload.sender.login}`);
+                  
+                  // Clear end date (set to null/empty)
+                  // Note: Setting to empty string to clear the field
+                  await updateProjectField(endDateField.id, '', 'text');
+                  console.log(`✅ Cleared end date (issue reopened)`);
+                  
+                  break;
+                  
+                default:
+                  console.log(`No action needed for: ${action}`);
+              }
+              
+              console.log('Project lifecycle update completed successfully');
+              
+            } catch (error) {
+              console.error('Error updating project fields:', error);
+              // Don't fail the workflow, just log the error
+            }
