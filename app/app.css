@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -45,103 +44,73 @@
   --font-accent: "Moontime", cursive, serif;
   --font-subtitle: "Barlow", ui-sans-serif, system-ui, sans-serif;
 
-  /* Pauline Roussel Brand Colors */
+  /* Custom Breakpoints for Yoga Website */
+  --breakpoint-xs: 380px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
 
-  /* Primary - Clouded Pine (main brand color) */
-  --color-primary-50: #f0f3f0;
-  --color-primary-100: #dee5de;
+  /* Pauline Roussel Brand Colors - Core Brand Palette */
+
+  /* Primary - Vert (main brand green) */
+  --color-primary: #618462;
+  --color-primary-light: #9eb49e;
+  --color-primary-dark: #2d3f2d;
+
+  /* Accent - Rose (warm rose accent) */
+  --color-accent: #af6868;
+  --color-accent-light: #d1a3a2;
+  --color-accent-dark: #563030;
+
+  /* Secondary - Bleu (calm blue) */
+  --color-secondary: #517982;
+  --color-secondary-light: #94adb2;
+  --color-secondary-dark: #24393e;
+
+  /* Neutral - Brun (brown for text) */
+  --color-neutral: #5e4530;
+  --color-neutral-light: #9c8b7d;
+  --color-neutral-dark: #2b1e13;
+
+  /* Supporting Colors */
+  --color-warm: #ceaf9b; /* Beige */
+  --color-soft: #ffddd3; /* Rose pale */
+  --color-cool: #dae6ea; /* Bleu Pale */
+  --color-menthe: #3d4e8d; /* Menthe */
+  --color-white: #ffffff; /* White */
+  --color-gris: #f5f4f2; /* Gris */
+
+  /* Legacy color mapping for existing components */
+  --color-primary-500: var(--color-primary);
+  --color-primary-400: var(--color-primary-light);
+  --color-primary-600: var(--color-primary-dark);
+  --color-accent-500: var(--color-accent);
+  --color-accent-400: var(--color-accent-light);
+  --color-accent-600: var(--color-accent-dark);
+  --color-secondary-500: var(--color-secondary);
+  --color-secondary-400: var(--color-secondary-light);
+  --color-secondary-600: var(--color-secondary-dark);
+  --color-neutral-500: var(--color-neutral);
+  --color-neutral-300: var(--color-neutral-light);
+  --color-neutral-700: var(--color-neutral-dark);
+  --color-warm-400: var(--color-warm);
+  --color-soft-200: var(--color-soft);
+  --color-soft-50: var(--color-gris);
+  --color-cool-200: var(--color-cool);
+  --color-menthe-500: var(--color-menthe);
+
+  /* Additional light/dark variations for gradual migration */
   --color-primary-200: #beccbe;
-  --color-primary-300: #9eb49e;
-  --color-primary-400: #7f9c80;
-  --color-primary-500: #618462;
-  --color-primary-600: #466047;
-  --color-primary-700: #2d3f2d;
-  --color-primary-800: #152016;
-  --color-primary-900: #030603;
-
-  /* Accent - Rustling Leaves (warm accent) */
-  --color-accent-50: #f9f2f2;
+  --color-primary-300: var(--color-primary-light);
   --color-accent-100: #f0e0df;
-  --color-accent-200: #e1c1c0;
-  --color-accent-300: #d1a3a2;
-  --color-accent-400: #c08584;
-  --color-accent-500: #af6868;
-  --color-accent-600: #814b4b;
-  --color-accent-700: #563030;
-  --color-accent-800: #2e1818;
-  --color-accent-900: #0b0404;
-
-  /* Neutral - Pitch Mary Brown (text/neutral) */
-  --color-neutral-50: #f5f3f1;
   --color-neutral-100: #ddd7d2;
   --color-neutral-200: #bcb0a7;
-  --color-neutral-300: #9c8b7d;
-  --color-neutral-400: #7c6756;
-  --color-neutral-500: #5e4530;
-  --color-neutral-600: #443121;
-  --color-neutral-700: #2b1e13;
-  --color-neutral-800: #140c06;
   --color-neutral-900: #030201;
-
-  /* Secondary - Submerged (blue-gray) */
-  --color-secondary-50: #f2f5f6;
   --color-secondary-100: #dbe3e5;
-  --color-secondary-200: #b7c8cb;
-  --color-secondary-300: #94adb2;
-  --color-secondary-400: #73929a;
-  --color-secondary-500: #517982;
-  --color-secondary-600: #3a585f;
-  --color-secondary-700: #24393e;
-  --color-secondary-800: #101d20;
-  --color-secondary-900: #020506;
-
-  /* Warm - Frappé (warm beige) */
-  --color-warm-50: #faf8f6;
-  --color-warm-100: #f5f0eb;
-  --color-warm-200: #e8ddd4;
-  --color-warm-300: #dbcabc;
-  --color-warm-400: #ceaf9b;
-  --color-warm-500: #b8956d;
-  --color-warm-600: #967a56;
-  --color-warm-700: #6b5640;
-  --color-warm-800: #3f322a;
-  --color-warm-900: #191411;
-
-  /* Soft - Glazed Sugar (soft peach) */
-  --color-soft-50: #fff8f6;
-  --color-soft-100: #ffeee8;
-  --color-soft-200: #ffddd3;
-  --color-soft-300: #ffccbe;
-  --color-soft-400: #ffbba8;
-  --color-soft-500: #ff9d7d;
-  --color-soft-600: #d17a5c;
-  --color-soft-700: #a3583e;
-  --color-soft-800: #753621;
-  --color-soft-900: #2e150a;
-
-  /* Cool - Smoke & Mirrors (light gray-blue) */
-  --color-cool-50: #fbfcfc;
   --color-cool-100: #f7f9fa;
-  --color-cool-200: #dae6ea;
-  --color-cool-300: #bed3d9;
-  --color-cool-400: #a1c0c8;
-  --color-cool-500: #85adb7;
-  --color-cool-600: #6a8a95;
-  --color-cool-700: #4f6773;
-  --color-cool-800: #344451;
-  --color-cool-900: #19212f;
-
-  /* Success - Splashdown (light sage) */
-  --color-success-50: #f8fbf8;
-  --color-success-100: #f1f7f1;
-  --color-success-200: #d4e8d4;
-  --color-success-300: #b7d9b7;
-  --color-success-400: #9aca9a;
-  --color-success-500: #7dbb7d;
-  --color-success-600: #649664;
-  --color-success-700: #4b714b;
-  --color-success-800: #324c32;
-  --color-success-900: #192719;
+  --color-soft-100: #ffeee8;
 }
 
 html,
@@ -193,71 +162,77 @@ body {
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Map shadcn/ui semantic colors to brand colors */
+  --background: var(--color-soft-50);
+  --foreground: var(--color-neutral-700);
+  --card: var(--color-soft-50);
+  --card-foreground: var(--color-neutral-700);
+  --popover: var(--color-soft-50);
+  --popover-foreground: var(--color-neutral-700);
+  --primary: var(--color-primary-500);
+  --primary-foreground: var(--color-soft-50);
+  --secondary: var(--color-secondary-500);
+  --secondary-foreground: var(--color-soft-50);
+  --muted: var(--color-cool-100);
+  --muted-foreground: var(--color-neutral-500);
+  --accent: var(--color-accent-500);
+  --accent-foreground: var(--color-soft-50);
+  --destructive: #dc2626;
+  --border: var(--color-primary-200);
+  --input: var(--color-primary-200);
+  --ring: var(--color-primary-400);
+  /* Chart colors using brand palette */
+  --chart-1: var(--color-primary-500);
+  --chart-2: var(--color-accent-500);
+  --chart-3: var(--color-secondary-500);
+  --chart-4: var(--color-warm-400);
+  --chart-5: var(--color-menthe-500);
+  /* Sidebar colors */
+  --sidebar: var(--color-soft-50);
+  --sidebar-foreground: var(--color-neutral-700);
+  --sidebar-primary: var(--color-primary-500);
+  --sidebar-primary-foreground: var(--color-soft-50);
+  --sidebar-accent: var(--color-accent-100);
+  --sidebar-accent-foreground: var(--color-neutral-700);
+  --sidebar-border: var(--color-primary-200);
+  --sidebar-ring: var(--color-primary-400);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Dark mode using darker brand colors */
+  --background: var(--color-neutral-900);
+  --foreground: var(--color-soft-100);
+  --card: var(--color-neutral-800);
+  --card-foreground: var(--color-soft-100);
+  --popover: var(--color-neutral-800);
+  --popover-foreground: var(--color-soft-100);
+  --primary: var(--color-primary-400);
+  --primary-foreground: var(--color-neutral-900);
+  --secondary: var(--color-secondary-600);
+  --secondary-foreground: var(--color-soft-100);
+  --muted: var(--color-neutral-700);
+  --muted-foreground: var(--color-neutral-300);
+  --accent: var(--color-accent-400);
+  --accent-foreground: var(--color-neutral-900);
+  --destructive: #ef4444;
+  --border: var(--color-neutral-700);
+  --input: var(--color-neutral-700);
+  --ring: var(--color-primary-300);
+  /* Dark mode chart colors */
+  --chart-1: var(--color-primary-400);
+  --chart-2: var(--color-accent-400);
+  --chart-3: var(--color-secondary-400);
+  --chart-4: var(--color-warm-300);
+  --chart-5: var(--color-menthe-400);
+  /* Dark mode sidebar colors */
+  --sidebar: var(--color-neutral-800);
+  --sidebar-foreground: var(--color-soft-100);
+  --sidebar-primary: var(--color-primary-400);
+  --sidebar-primary-foreground: var(--color-neutral-900);
+  --sidebar-accent: var(--color-neutral-700);
+  --sidebar-accent-foreground: var(--color-soft-100);
+  --sidebar-border: var(--color-neutral-700);
+  --sidebar-ring: var(--color-primary-300);
 }
 
 @layer base {
