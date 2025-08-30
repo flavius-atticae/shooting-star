@@ -1,18 +1,23 @@
-name: Project Board Automation
+name: Project Board Automation (TOKEN PERMISSIONS REQUIRED)
+
+# This workflow requires additional permissions beyond the default GITHUB_TOKEN
+# To enable: Create a PAT with 'project' scope and add as PROJECT_PAT secret
 
 on:
-  issues:
-    types: [opened, assigned, closed, labeled, unlabeled]
-  pull_request:
-    types: [opened, closed, converted_to_draft, ready_for_review]
-  pull_request_review:
-    types: [submitted]
-  check_suite:
-    types: [completed]
-  release:
-    types: [published]
-  push:
-    branches: [main]
+  # Temporarily disabled due to token permissions - uncomment when PAT is configured  
+  workflow_dispatch: # Manual trigger only for now
+  # issues:
+  #   types: [opened, assigned, closed, labeled, unlabeled]
+  # pull_request:
+  #   types: [opened, closed, converted_to_draft, ready_for_review]
+  # pull_request_review:
+  #   types: [submitted]
+  # check_suite:
+  #   types: [completed]
+  # release:
+  #   types: [published]
+  # push:
+  #   branches: [main]
 
 env:
   PROJECT_ID: "PVT_kwHOA8KkFM4BBWOl"  # Shooting Star project #5
@@ -27,6 +32,27 @@ env:
   RELEASED_ID: "111ec098"
 
 jobs:
+  status-check:
+    name: Project Automation Status
+    runs-on: ubuntu-latest
+    steps:
+      - name: Automation Status
+        run: |
+          echo "🚨 Project Board Automation requires additional setup"
+          echo ""
+          echo "Current Status:"
+          echo "✅ Project #5 'Shooting Star' configured"
+          echo "✅ All 25 issues added to project manually" 
+          echo "✅ Milestone v1.0 created with all issues"
+          echo "❌ Automatic workflow disabled (needs PROJECT_PAT)"
+          echo ""
+          echo "To enable automation:"
+          echo "1. Create PAT with 'project' scope"
+          echo "2. Add as PROJECT_PAT repository secret"
+          echo "3. Replace GITHUB_TOKEN with secrets.PROJECT_PAT"
+          echo ""
+          echo "Manual project management is working perfectly for now!"
+
   move-to-ready:
     name: Move to À Faire
     runs-on: ubuntu-latest

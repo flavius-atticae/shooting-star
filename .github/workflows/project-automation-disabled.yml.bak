@@ -1,0 +1,60 @@
+name: Project Board Automation (DISABLED - Needs PAT Setup)
+
+# This workflow is currently disabled because it requires a Personal Access Token (PAT)
+# with 'project' scope to access GitHub Projects v2.
+#
+# To enable this workflow:
+# 1. Create a PAT with 'project' scope at: https://github.com/settings/tokens
+# 2. Add it as a repository secret named 'PROJECT_PAT'
+# 3. Replace GITHUB_TOKEN with PROJECT_PAT in this workflow
+# 4. Rename this file to project-automation.yml
+#
+# Current status: All issues are manually added to Project #5 "Shooting Star"
+
+on:
+  # Temporarily disabled - uncomment when PAT is configured
+  # issues:
+  #   types: [opened, assigned, closed, labeled, unlabeled]
+  # pull_request:
+  #   types: [opened, closed, converted_to_draft, ready_for_review]
+  # pull_request_review:
+  #   types: [submitted]
+  # check_suite:
+  #   types: [completed]
+  # release:
+  #   types: [published]
+  push:
+    branches: [never] # Disabled
+
+env:
+  PROJECT_ID: "PVT_kwHOA8KkFM4BBWOl"  # Shooting Star project #5
+  STATUS_FIELD_ID: "PVTSSF_lAHOA8KkFM4BBWOlzgz4SvM"  # Status field
+  # Status option IDs
+  BACKLOG_ID: "f75ad846"
+  A_FAIRE_ID: "08afe404"
+  EN_COURS_ID: "47fc9ee4"
+  REVIEW_ID: "4cc61d42"
+  TESTING_ID: "d2573237"
+  DONE_ID: "98236657"
+  RELEASED_ID: "111ec098"
+
+jobs:
+  setup-instructions:
+    name: Setup Instructions
+    runs-on: ubuntu-latest
+    steps:
+      - name: Project Automation Setup Required
+        run: |
+          echo "🚨 Project Board Automation is currently disabled"
+          echo ""
+          echo "To enable automatic project board updates:"
+          echo "1. Create a Personal Access Token with 'project' scope"
+          echo "2. Add it as repository secret 'PROJECT_PAT'"
+          echo "3. Update workflow to use PROJECT_PAT instead of GITHUB_TOKEN"
+          echo ""
+          echo "Current project status:"
+          echo "- Project: Shooting Star (#5)"
+          echo "- All 25 issues manually added ✅"
+          echo "- Milestone: v1.0 - Première mise en production ✅"
+          echo ""
+          echo "Manual project management is working perfectly!"
