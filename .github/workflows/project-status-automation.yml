@@ -126,15 +126,15 @@ jobs:
             
             console.log('Found status field:', statusField.id);
             
-            // Status mapping: label -> project status ID
+            // Status mapping: label -> project status ID (direct mapping)
             const statusMap = {
-              'status/triage': 'f75ad846',        // Backlog
-              'status/ready': '08afe404',         // À Faire
-              'status/in-development': '47fc9ee4', // En Cours
-              'status/needs-review': '4cc61d42',   // Review
-              'status/ready-for-testing': 'd2573237', // Testing
-              'status/completed': '98236657',      // Done
-              'status/released': '111ec098'        // Released
+              'Backlog': 'f75ad846',        // Backlog
+              'À Faire': '08afe404',        // À Faire
+              'En Cours': '47fc9ee4',       // En Cours
+              'Review': '4cc61d42',         // Review
+              'Testing': 'd2573237',        // Testing
+              'Done': '98236657',           // Done
+              'Released': '111ec098'        // Released
             };
             
             // Helper function to update project status
@@ -265,50 +265,50 @@ jobs:
                 
                 // Special logic for PR events
                 if (pullRequest && action === 'opened') {
-                  // When PR is opened, set linked issues to needs-review
-                  targetStatus = statusMap['status/needs-review'];
+                  // When PR is opened, set linked issues to Review
+                  targetStatus = statusMap['Review'];
                   targetStatusName = 'Review';
-                  shouldAddLabel = 'status/needs-review';
+                  shouldAddLabel = 'Review';
                   // Remove conflicting status labels
-                  shouldRemoveLabels = ['status/triage', 'status/ready', 'status/in-development'];
-                  console.log('PR opened - setting linked issues to needs-review');
+                  shouldRemoveLabels = ['Backlog', 'À Faire', 'En Cours'];
+                  console.log('PR opened - setting linked issues to Review');
                 } else if (pullRequest && action === 'closed' && pullRequest.merged) {
-                  // When PR is merged, set to ready-for-testing
-                  targetStatus = statusMap['status/ready-for-testing'];
+                  // When PR is merged, set to Testing
+                  targetStatus = statusMap['Testing'];
                   targetStatusName = 'Testing';
-                  shouldAddLabel = 'status/ready-for-testing';
-                  shouldRemoveLabels = ['status/needs-review'];
-                  console.log('PR merged - setting linked issues to ready-for-testing');
+                  shouldAddLabel = 'Testing';
+                  shouldRemoveLabels = ['Review'];
+                  console.log('PR merged - setting linked issues to Testing');
                 } else if (pullRequest && action === 'closed' && !pullRequest.merged) {
-                  // When PR is closed without merging, revert to in-development
-                  targetStatus = statusMap['status/in-development'];
+                  // When PR is closed without merging, revert to En Cours
+                  targetStatus = statusMap['En Cours'];
                   targetStatusName = 'En Cours';
-                  shouldAddLabel = 'status/in-development';
-                  shouldRemoveLabels = ['status/needs-review'];
-                  console.log('PR closed without merge - reverting linked issues to in-development');
+                  shouldAddLabel = 'En Cours';
+                  shouldRemoveLabels = ['Review'];
+                  console.log('PR closed without merge - reverting linked issues to En Cours');
                 } else {
                   // Standard issue logic
                   // Priority logic:
                   // 1. If assigned and not already in-development -> set to in-development
                   // 2. Check for explicit status labels in priority order
                   
-                  if (assignees.length > 0 && !labels.includes('status/in-development')) {
-                    // Issue is assigned but not marked as in-development
-                    targetStatus = statusMap['status/in-development'];
+                  if (assignees.length > 0 && !labels.includes('En Cours')) {
+                    // Issue is assigned but not marked as En Cours
+                    targetStatus = statusMap['En Cours'];
                     targetStatusName = 'En Cours';
-                    shouldAddLabel = 'status/in-development';
+                    shouldAddLabel = 'En Cours';
                     // Remove conflicting status labels
-                    shouldRemoveLabels = ['status/triage', 'status/ready'];
+                    shouldRemoveLabels = ['Backlog', 'À Faire'];
                   } else {
                     // Check for status labels in priority order
                     const statusLabels = [
-                      'status/released',
-                      'status/completed', 
-                      'status/ready-for-testing',
-                      'status/needs-review',
-                      'status/in-development',
-                      'status/ready',
-                      'status/triage'
+                      'Released',
+                      'Done', 
+                      'Testing',
+                      'Review',
+                      'En Cours',
+                      'À Faire',
+                      'Backlog'
                     ];
                     
                     for (const statusLabel of statusLabels) {
