@@ -3,6 +3,23 @@ import { Button } from "~/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/components/ui/card";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+
+// Form validation schema
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Le nom doit contenir au moins 2 caractères.",
+  }),
+  email: z.string().email({
+    message: "Veuillez entrer une adresse email valide.",
+  }),
+  message: z.string().min(10, {
+    message: "Le message doit contenir au moins 10 caractères.",
+  }),
+});
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,6 +29,22 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function ComponentsTest() {
+  // Form setup with validation
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      message: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Here you would typically send the data to your server
+    console.log(values);
+    alert(`Formulaire soumis avec succès!\n\nNom: ${values.name}\nEmail: ${values.email}\nMessage: ${values.message}`);
+  }
+
   return (
     <div className="container mx-auto px-4 py-8 space-y-8">
       <div className="text-center mb-8">
@@ -76,6 +109,90 @@ export default function ComponentsTest() {
               className="min-h-[100px]" 
             />
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Form Component with Validation */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Form Component avec Validation</CardTitle>
+          <CardDescription>
+            Exemple complet de formulaire avec validation Zod et gestion d'erreurs
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nom complet</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Votre nom complet" {...field} />
+                    </FormControl>
+                    <FormDescription>
+                      Entrez votre nom complet pour la prise de contact.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input 
+                        type="email"
+                        placeholder="votre.email@example.com" 
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Votre adresse email pour vous recontacter.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Message</FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="Décrivez vos besoins en yoga prénatal..."
+                        className="min-h-[100px]"
+                        {...field} 
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      Parlez-nous de vos attentes et de vos besoins spécifiques.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="flex gap-4">
+                <Button type="submit">
+                  Envoyer le message
+                </Button>
+                <Button 
+                  type="button" 
+                  variant="outline"
+                  onClick={() => form.reset()}
+                >
+                  Réinitialiser
+                </Button>
+              </div>
+            </form>
+          </Form>
         </CardContent>
       </Card>
 
