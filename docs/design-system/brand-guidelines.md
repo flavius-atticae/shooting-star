@@ -11,45 +11,27 @@ This style guide defines the visual identity for Pauline Roussel's yoga instruct
 
 ## Color Palette
 
-### Primary Colors
+### Colors
 
-**Clouded Pine** (#618462)
-- Primary brand color
-- Muted, dark green evoking stability and balance
-- Use for: Headers, primary buttons, main branding elements
-- TailwindCSS equivalent: `text-gray-600` (closest match)
+**Rose** (#AF6868)
 
-**Rustling Leaves** (#AF6868)
-- Accent color for warmth and energy
-- Muted red/rose conveying passion and nurturing
-- Use for: Call-to-action buttons, highlights, emphasis
-- TailwindCSS equivalent: `text-rose-400` (closest match)
+**Rose pale** (#FFDDD3)
 
-### Supporting Colors
+**Vert** (#618462)
 
-**Pitch Mary Brown** (#5E4530 - brown-600)
-- Earth tone for grounding and stability
-- Use for: Text, secondary elements
+**Menthe** (#3D4E8D4)
 
-**Submerged** (#517982 - blue-gray)
-- Calming blue-gray for tranquility
-- Use for: Secondary buttons, borders
+**Bleu** (#517982)
 
-**Frappé** (#CEAF9B - warm beige)
-- Warm neutral for balance
-- Use for: Backgrounds, cards
+**Bleu Pale** (#DAE6EA)
 
-**Glazed Sugar** (#FFDDD3 - soft peach)
-- Light, warm accent
-- Use for: Subtle highlights, hover states
+**Brun** (#5E4530)
 
-**Smoke & Mirrors** (#DAE6EA - light gray-blue)
-- Neutral background color
-- Use for: Section backgrounds
+**Beige** (#CEAF9B)
 
-**Splashdown** (#D4E8D4 - light sage)
-- Light green for harmony with primary
-- Use for: Success states, gentle backgrounds
+**White** (#FFFFFF)
+
+**Gris** (#F5F4F2)
 
 ### Tailwind CSS Implementation
 
