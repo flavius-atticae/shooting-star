@@ -45,6 +45,14 @@
   --font-accent: "Moontime", cursive, serif;
   --font-subtitle: "Barlow", ui-sans-serif, system-ui, sans-serif;
 
+  /* Custom Breakpoints for Yoga Website */
+  --breakpoint-xs: 380px;
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
   /* Pauline Roussel Brand Colors */
 
   /* Primary - Clouded Pine (main brand color) */
@@ -142,6 +150,18 @@
   --color-success-700: #4b714b;
   --color-success-800: #324c32;
   --color-success-900: #192719;
+
+  /* Menthe - Fresh mint accent */
+  --color-menthe-50: #f0f4f9;
+  --color-menthe-100: #dde5f0;
+  --color-menthe-200: #bccbe2;
+  --color-menthe-300: #9bb1d4;
+  --color-menthe-400: #7a97c6;
+  --color-menthe-500: #3d4e8d;
+  --color-menthe-600: #2d3a6a;
+  --color-menthe-700: #1e2747;
+  --color-menthe-800: #0f1324;
+  --color-menthe-900: #030406;
 }
 
 html,
@@ -193,71 +213,77 @@ body {
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  /* Map shadcn/ui semantic colors to brand colors */
+  --background: var(--color-soft-50);
+  --foreground: var(--color-neutral-700);
+  --card: var(--color-soft-50);
+  --card-foreground: var(--color-neutral-700);
+  --popover: var(--color-soft-50);
+  --popover-foreground: var(--color-neutral-700);
+  --primary: var(--color-primary-500);
+  --primary-foreground: var(--color-soft-50);
+  --secondary: var(--color-secondary-500);
+  --secondary-foreground: var(--color-soft-50);
+  --muted: var(--color-cool-100);
+  --muted-foreground: var(--color-neutral-500);
+  --accent: var(--color-accent-500);
+  --accent-foreground: var(--color-soft-50);
+  --destructive: #dc2626;
+  --border: var(--color-primary-200);
+  --input: var(--color-primary-200);
+  --ring: var(--color-primary-400);
+  /* Chart colors using brand palette */
+  --chart-1: var(--color-primary-500);
+  --chart-2: var(--color-accent-500);
+  --chart-3: var(--color-secondary-500);
+  --chart-4: var(--color-warm-400);
+  --chart-5: var(--color-menthe-500);
+  /* Sidebar colors */
+  --sidebar: var(--color-soft-50);
+  --sidebar-foreground: var(--color-neutral-700);
+  --sidebar-primary: var(--color-primary-500);
+  --sidebar-primary-foreground: var(--color-soft-50);
+  --sidebar-accent: var(--color-accent-100);
+  --sidebar-accent-foreground: var(--color-neutral-700);
+  --sidebar-border: var(--color-primary-200);
+  --sidebar-ring: var(--color-primary-400);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Dark mode using darker brand colors */
+  --background: var(--color-neutral-900);
+  --foreground: var(--color-soft-100);
+  --card: var(--color-neutral-800);
+  --card-foreground: var(--color-soft-100);
+  --popover: var(--color-neutral-800);
+  --popover-foreground: var(--color-soft-100);
+  --primary: var(--color-primary-400);
+  --primary-foreground: var(--color-neutral-900);
+  --secondary: var(--color-secondary-600);
+  --secondary-foreground: var(--color-soft-100);
+  --muted: var(--color-neutral-700);
+  --muted-foreground: var(--color-neutral-300);
+  --accent: var(--color-accent-400);
+  --accent-foreground: var(--color-neutral-900);
+  --destructive: #ef4444;
+  --border: var(--color-neutral-700);
+  --input: var(--color-neutral-700);
+  --ring: var(--color-primary-300);
+  /* Dark mode chart colors */
+  --chart-1: var(--color-primary-400);
+  --chart-2: var(--color-accent-400);
+  --chart-3: var(--color-secondary-400);
+  --chart-4: var(--color-warm-300);
+  --chart-5: var(--color-menthe-400);
+  /* Dark mode sidebar colors */
+  --sidebar: var(--color-neutral-800);
+  --sidebar-foreground: var(--color-soft-100);
+  --sidebar-primary: var(--color-primary-400);
+  --sidebar-primary-foreground: var(--color-neutral-900);
+  --sidebar-accent: var(--color-neutral-700);
+  --sidebar-accent-foreground: var(--color-soft-100);
+  --sidebar-border: var(--color-neutral-700);
+  --sidebar-ring: var(--color-primary-300);
 }
 
 @layer base {

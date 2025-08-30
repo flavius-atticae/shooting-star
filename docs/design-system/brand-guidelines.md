@@ -19,7 +19,7 @@ This style guide defines the visual identity for Pauline Roussel's yoga instruct
 
 **Vert** (#618462)
 
-**Menthe** (#3D4E8D4)
+**Menthe** (#3D4E8D)
 
 **Bleu** (#517982)
 
