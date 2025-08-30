@@ -14,6 +14,18 @@ on:
   push:
     branches: [main]
 
+env:
+  PROJECT_ID: "PVT_kwHOA8KkFM4BBWOl"  # Shooting Star project #5
+  STATUS_FIELD_ID: "PVTSSF_lAHOA8KkFM4BBWOlzgz4SvM"  # Status field
+  # Status option IDs
+  BACKLOG_ID: "f75ad846"
+  A_FAIRE_ID: "08afe404"
+  EN_COURS_ID: "47fc9ee4"
+  REVIEW_ID: "4cc61d42"
+  TESTING_ID: "d2573237"
+  DONE_ID: "98236657"
+  RELEASED_ID: "111ec098"
+
 jobs:
   move-to-ready:
     name: Move to À Faire
@@ -23,12 +35,63 @@ jobs:
       (github.event.action == 'assigned' || 
        (github.event.action == 'labeled' && contains(github.event.label.name, 'ready')))
     steps:
+      - name: Get issue project item ID
+        id: get_item
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ITEM_ID=$(gh api graphql -f query='
+            query($owner: String!, $number: Int!, $projectId: ID!) {
+              repository(owner: $owner, name: "shooting-star") {
+                issue(number: $number) {
+                  projectItems(first: 10) {
+                    nodes {
+                      id
+                      project {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f owner=flavius-atticae -F number=${{ github.event.issue.number }} -f projectId=${{ env.PROJECT_ID }} \
+            --jq '.data.repository.issue.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+          
+          if [ -z "$ITEM_ID" ]; then
+            # Add issue to project first
+            ITEM_ID=$(gh api graphql -f query='
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                  item {
+                    id
+                  }
+                }
+              }' -f projectId=${{ env.PROJECT_ID }} -f contentId=${{ github.event.issue.node_id }} \
+              --jq '.data.addProjectV2ItemById.item.id')
+          fi
+          
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+
       - name: Move issue to À Faire
-        uses: alex-page/github-project-automation-plus@v0.9.0
-        with:
-          project: Shooting Star Project
-          column: À Faire
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api graphql -f query='
+            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $projectId
+                itemId: $itemId
+                fieldId: $fieldId
+                value: {singleSelectOptionId: $optionId}
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }' -f projectId=${{ env.PROJECT_ID }} \
+               -f itemId=${{ steps.get_item.outputs.item_id }} \
+               -f fieldId=${{ env.STATUS_FIELD_ID }} \
+               -f optionId=${{ env.A_FAIRE_ID }}
 
   move-to-in-progress:
     name: Move to En Cours
@@ -47,14 +110,67 @@ jobs:
           fi
           echo "number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
       
-      - name: Move linked issue to En Cours
+      - name: Get issue project item ID
+        id: get_item
         if: steps.issue.outputs.number
-        uses: alex-page/github-project-automation-plus@v0.9.0
-        with:
-          project: Shooting Star Project
-          column: En Cours
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          issue: ${{ steps.issue.outputs.number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_NODE_ID=$(gh api repos/flavius-atticae/shooting-star/issues/${{ steps.issue.outputs.number }} --jq .node_id)
+          
+          ITEM_ID=$(gh api graphql -f query='
+            query($owner: String!, $number: Int!, $projectId: ID!) {
+              repository(owner: $owner, name: "shooting-star") {
+                issue(number: $number) {
+                  projectItems(first: 10) {
+                    nodes {
+                      id
+                      project {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f owner=flavius-atticae -F number=${{ steps.issue.outputs.number }} -f projectId=${{ env.PROJECT_ID }} \
+            --jq '.data.repository.issue.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+          
+          if [ -z "$ITEM_ID" ]; then
+            # Add issue to project first
+            ITEM_ID=$(gh api graphql -f query='
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                  item {
+                    id
+                  }
+                }
+              }' -f projectId=${{ env.PROJECT_ID }} -f contentId=$ISSUE_NODE_ID \
+              --jq '.data.addProjectV2ItemById.item.id')
+          fi
+          
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+
+      - name: Move linked issue to En Cours
+        if: steps.issue.outputs.number && steps.get_item.outputs.item_id
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api graphql -f query='
+            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $projectId
+                itemId: $itemId
+                fieldId: $fieldId
+                value: {singleSelectOptionId: $optionId}
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }' -f projectId=${{ env.PROJECT_ID }} \
+               -f itemId=${{ steps.get_item.outputs.item_id }} \
+               -f fieldId=${{ env.STATUS_FIELD_ID }} \
+               -f optionId=${{ env.EN_COURS_ID }}
 
   move-to-review:
     name: Move to Review
@@ -64,12 +180,63 @@ jobs:
       github.event.action == 'ready_for_review' &&
       !github.event.pull_request.draft
     steps:
+      - name: Get PR project item ID
+        id: get_item
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ITEM_ID=$(gh api graphql -f query='
+            query($owner: String!, $number: Int!, $projectId: ID!) {
+              repository(owner: $owner, name: "shooting-star") {
+                pullRequest(number: $number) {
+                  projectItems(first: 10) {
+                    nodes {
+                      id
+                      project {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f owner=flavius-atticae -F number=${{ github.event.pull_request.number }} -f projectId=${{ env.PROJECT_ID }} \
+            --jq '.data.repository.pullRequest.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+          
+          if [ -z "$ITEM_ID" ]; then
+            # Add PR to project first
+            ITEM_ID=$(gh api graphql -f query='
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                  item {
+                    id
+                  }
+                }
+              }' -f projectId=${{ env.PROJECT_ID }} -f contentId=${{ github.event.pull_request.node_id }} \
+              --jq '.data.addProjectV2ItemById.item.id')
+          fi
+          
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+
       - name: Move PR to Review
-        uses: alex-page/github-project-automation-plus@v0.9.0
-        with:
-          project: Shooting Star Project
-          column: Review
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api graphql -f query='
+            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $projectId
+                itemId: $itemId
+                fieldId: $fieldId
+                value: {singleSelectOptionId: $optionId}
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }' -f projectId=${{ env.PROJECT_ID }} \
+               -f itemId=${{ steps.get_item.outputs.item_id }} \
+               -f fieldId=${{ env.STATUS_FIELD_ID }} \
+               -f optionId=${{ env.REVIEW_ID }}
 
   move-to-testing:
     name: Move to Testing
@@ -93,13 +260,65 @@ jobs:
             echo "approved=true" >> $GITHUB_OUTPUT
           fi
       
-      - name: Move PR to Testing
+      - name: Get PR project item ID
+        id: get_item
         if: steps.check_reviews.outputs.approved == 'true'
-        uses: alex-page/github-project-automation-plus@v0.9.0
-        with:
-          project: Shooting Star Project
-          column: Testing
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ITEM_ID=$(gh api graphql -f query='
+            query($owner: String!, $number: Int!, $projectId: ID!) {
+              repository(owner: $owner, name: "shooting-star") {
+                pullRequest(number: $number) {
+                  projectItems(first: 10) {
+                    nodes {
+                      id
+                      project {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f owner=flavius-atticae -F number=${{ github.event.pull_request.number }} -f projectId=${{ env.PROJECT_ID }} \
+            --jq '.data.repository.pullRequest.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+          
+          if [ -z "$ITEM_ID" ]; then
+            # Add PR to project first
+            ITEM_ID=$(gh api graphql -f query='
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                  item {
+                    id
+                  }
+                }
+              }' -f projectId=${{ env.PROJECT_ID }} -f contentId=${{ github.event.pull_request.node_id }} \
+              --jq '.data.addProjectV2ItemById.item.id')
+          fi
+          
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+
+      - name: Move PR to Testing
+        if: steps.check_reviews.outputs.approved == 'true' && steps.get_item.outputs.item_id
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api graphql -f query='
+            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $projectId
+                itemId: $itemId
+                fieldId: $fieldId
+                value: {singleSelectOptionId: $optionId}
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }' -f projectId=${{ env.PROJECT_ID }} \
+               -f itemId=${{ steps.get_item.outputs.item_id }} \
+               -f fieldId=${{ env.STATUS_FIELD_ID }} \
+               -f optionId=${{ env.TESTING_ID }}
 
   move-to-done:
     name: Move to Done
@@ -108,12 +327,70 @@ jobs:
       (github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true) ||
       (github.event_name == 'issues' && github.event.action == 'closed')
     steps:
+      - name: Get item project ID
+        id: get_item
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            ITEM_ID=$(gh api graphql -f query='
+              query($owner: String!, $number: Int!, $projectId: ID!) {
+                repository(owner: $owner, name: "shooting-star") {
+                  pullRequest(number: $number) {
+                    projectItems(first: 10) {
+                      nodes {
+                        id
+                        project {
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }' -f owner=flavius-atticae -F number=${{ github.event.pull_request.number }} -f projectId=${{ env.PROJECT_ID }} \
+              --jq '.data.repository.pullRequest.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+          else
+            ITEM_ID=$(gh api graphql -f query='
+              query($owner: String!, $number: Int!, $projectId: ID!) {
+                repository(owner: $owner, name: "shooting-star") {
+                  issue(number: $number) {
+                    projectItems(first: 10) {
+                      nodes {
+                        id
+                        project {
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }' -f owner=flavius-atticae -F number=${{ github.event.issue.number }} -f projectId=${{ env.PROJECT_ID }} \
+              --jq '.data.repository.issue.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+          fi
+          
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+
       - name: Move to Done
-        uses: alex-page/github-project-automation-plus@v0.9.0
-        with:
-          project: Shooting Star Project
-          column: Done
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+        if: steps.get_item.outputs.item_id
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api graphql -f query='
+            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $projectId
+                itemId: $itemId
+                fieldId: $fieldId
+                value: {singleSelectOptionId: $optionId}
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }' -f projectId=${{ env.PROJECT_ID }} \
+               -f itemId=${{ steps.get_item.outputs.item_id }} \
+               -f fieldId=${{ env.STATUS_FIELD_ID }} \
+               -f optionId=${{ env.DONE_ID }}
 
   move-to-released:
     name: Move to Released
@@ -159,11 +436,64 @@ jobs:
             echo "ready_for_testing=true" >> $GITHUB_OUTPUT
           fi
       
-      - name: Move to Testing after CI success
+      - name: Get PR project item ID
+        id: get_item
         if: steps.ci_status.outputs.ready_for_testing == 'true'
-        uses: alex-page/github-project-automation-plus@v0.9.0
-        with:
-          project: Shooting Star Project
-          column: Testing
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          issue: ${{ steps.ci_status.outputs.pr_number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ITEM_ID=$(gh api graphql -f query='
+            query($owner: String!, $number: Int!, $projectId: ID!) {
+              repository(owner: $owner, name: "shooting-star") {
+                pullRequest(number: $number) {
+                  projectItems(first: 10) {
+                    nodes {
+                      id
+                      project {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f owner=flavius-atticae -F number=${{ steps.ci_status.outputs.pr_number }} -f projectId=${{ env.PROJECT_ID }} \
+            --jq '.data.repository.pullRequest.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+          
+          if [ -z "$ITEM_ID" ]; then
+            # Get PR node_id first
+            PR_NODE_ID=$(gh api repos/flavius-atticae/shooting-star/pulls/${{ steps.ci_status.outputs.pr_number }} --jq .node_id)
+            # Add PR to project first
+            ITEM_ID=$(gh api graphql -f query='
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                  item {
+                    id
+                  }
+                }
+              }' -f projectId=${{ env.PROJECT_ID }} -f contentId=$PR_NODE_ID \
+              --jq '.data.addProjectV2ItemById.item.id')
+          fi
+          
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+
+      - name: Move to Testing after CI success
+        if: steps.ci_status.outputs.ready_for_testing == 'true' && steps.get_item.outputs.item_id
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api graphql -f query='
+            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $projectId
+                itemId: $itemId
+                fieldId: $fieldId
+                value: {singleSelectOptionId: $optionId}
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }' -f projectId=${{ env.PROJECT_ID }} \
+               -f itemId=${{ steps.get_item.outputs.item_id }} \
+               -f fieldId=${{ env.STATUS_FIELD_ID }} \
+               -f optionId=${{ env.TESTING_ID }}
