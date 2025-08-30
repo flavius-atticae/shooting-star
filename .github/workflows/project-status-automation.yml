@@ -126,55 +126,6 @@ jobs:
             
             console.log('Found status field:', statusField.id);
             
-            // Get project item for this issue
-            const itemQuery = `
-              query($owner: String!, $repo: String!, $issueNumber: Int!) {
-                repository(owner: $owner, name: $repo) {
-                  issue(number: $issueNumber) {
-                    projectItems(first: 10) {
-                      nodes {
-                        id
-                        project {
-                          id
-                        }
-                      }
-                    }
-                    labels(first: 20) {
-                      nodes {
-                        name
-                      }
-                    }
-                    assignees(first: 10) {
-                      nodes {
-                        login
-                      }
-                    }
-                  }
-                }
-              }
-            `;
-            
-            const itemResult = await github.graphql(itemQuery, {
-              owner: OWNER,
-              repo: REPO,
-              issueNumber: issue.number
-            });
-            
-            const projectItem = itemResult.repository.issue.projectItems.nodes.find(
-              item => item.project.id === project.id
-            );
-            
-            if (!projectItem) {
-              console.log('Issue not found in project');
-              return;
-            }
-            
-            const labels = itemResult.repository.issue.labels.nodes.map(label => label.name);
-            const assignees = itemResult.repository.issue.assignees.nodes.map(assignee => assignee.login);
-            
-            console.log('Current labels:', labels);
-            console.log('Current assignees:', assignees);
-            
             // Status mapping: label -> project status ID
             const statusMap = {
               'status/triage': 'f75ad846',        // Backlog
