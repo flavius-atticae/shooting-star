@@ -72,16 +72,6 @@ gh label create "needs-fixes" --color "FF6B6B" --description "Changes requested,
 gh label create "good-first-issue" --color "7057FF" --description "Good for newcomers" --force
 gh label create "help-wanted" --color "008672" --description "Extra attention is needed" --force
 
-# Special Labels
-echo "Creating special labels..."
-gh label create "hotfix" --color "B60205" --description "Critical fix that bypasses normal flow" --force
-gh label create "emergency" --color "B60205" --description "Emergency issue requiring immediate attention" --force
-gh label create "breaking-change" --color "D93F0B" --description "Introduces breaking changes" --force
-gh label create "dependencies" --color "0366D6" --description "Pull requests that update a dependency file" --force
-gh label create "stale" --color "EDEDED" --description "No activity for extended period" --force
-gh label create "pinned" --color "FF6B6B" --description "Should not be closed by automation" --force
-gh label create "manual-control" --color "000000" --description "Skip automation for this item" --force
-gh label create "automation-disabled" --color "000000" --description "Automation disabled for this item" --force
 
 
 echo "✅ All labels created successfully!"
@@ -113,8 +103,7 @@ echo ""
 echo "🏷️ Other labels:"
 echo "   • Type labels: bug, feature, enhancement, documentation, refactor, test"
 echo "   • Quality labels: needs-tests, needs-docs, performance, security, accessibility"
-echo "   • Workflow labels: needs-reproduction, needs-analysis, needs-fixes, etc."
-echo "   • Special labels: hotfix, emergency, breaking-change, dependencies, stale, pinned"
+echo "   • Workflow labels: needs-reproduction, needs-analysis, needs-fixes, good-first-issue, help-wanted"
 echo ""
 echo "🔧 Next steps:"
 echo "   1. ✅ Project columns are already configured: Backlog → À Faire → En Cours → Review → Testing → Done → Released"
