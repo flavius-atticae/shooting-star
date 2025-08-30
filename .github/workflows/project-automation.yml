@@ -1,23 +1,18 @@
-name: Project Board Automation (TOKEN PERMISSIONS REQUIRED)
-
-# This workflow requires additional permissions beyond the default GITHUB_TOKEN
-# To enable: Create a PAT with 'project' scope and add as PROJECT_PAT secret
+name: Project Board Automation
 
 on:
-  # Temporarily disabled due to token permissions - uncomment when PAT is configured  
-  workflow_dispatch: # Manual trigger only for now
-  # issues:
-  #   types: [opened, assigned, closed, labeled, unlabeled]
-  # pull_request:
-  #   types: [opened, closed, converted_to_draft, ready_for_review]
-  # pull_request_review:
-  #   types: [submitted]
-  # check_suite:
-  #   types: [completed]
-  # release:
-  #   types: [published]
-  # push:
-  #   branches: [main]
+  issues:
+    types: [opened, assigned, closed, labeled, unlabeled]
+  pull_request:
+    types: [opened, closed, converted_to_draft, ready_for_review]
+  pull_request_review:
+    types: [submitted]
+  check_suite:
+    types: [completed]
+  release:
+    types: [published]
+  push:
+    branches: [main]
 
 env:
   PROJECT_ID: "PVT_kwHOA8KkFM4BBWOl"  # Shooting Star project #5
@@ -38,20 +33,22 @@ jobs:
     steps:
       - name: Automation Status
         run: |
-          echo "🚨 Project Board Automation requires additional setup"
+          echo "✅ Project Board Automation is now ACTIVE!"
           echo ""
-          echo "Current Status:"
+          echo "Configuration Status:"
           echo "✅ Project #5 'Shooting Star' configured"
-          echo "✅ All 25 issues added to project manually" 
+          echo "✅ All 25 issues added to project"
           echo "✅ Milestone v1.0 created with all issues"
-          echo "❌ Automatic workflow disabled (needs PROJECT_PAT)"
+          echo "✅ PROJECT_PAT configured with project permissions"
+          echo "✅ Automatic workflow ENABLED"
           echo ""
-          echo "To enable automation:"
-          echo "1. Create PAT with 'project' scope"
-          echo "2. Add as PROJECT_PAT repository secret"
-          echo "3. Replace GITHUB_TOKEN with secrets.PROJECT_PAT"
-          echo ""
-          echo "Manual project management is working perfectly for now!"
+          echo "Automation Features:"
+          echo "• Issues → À Faire (when assigned)"
+          echo "• PRs → En Cours (when opened)"
+          echo "• PRs → Review (when ready)"
+          echo "• PRs → Testing (when approved)"
+          echo "• Items → Done (when closed/merged)"
+          echo "• Items → Released (on release)"
 
   move-to-ready:
     name: Move to À Faire
@@ -64,7 +61,7 @@ jobs:
       - name: Get issue project item ID
         id: get_item
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           ITEM_ID=$(gh api graphql -f query='
             query($owner: String!, $number: Int!) {
@@ -100,7 +97,7 @@ jobs:
 
       - name: Move issue to À Faire
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           gh api graphql -f query='
             mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
@@ -140,7 +137,7 @@ jobs:
         id: get_item
         if: steps.issue.outputs.number
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           ISSUE_NODE_ID=$(gh api repos/flavius-atticae/shooting-star/issues/${{ steps.issue.outputs.number }} --jq .node_id)
           
@@ -179,7 +176,7 @@ jobs:
       - name: Move linked issue to En Cours
         if: steps.issue.outputs.number && steps.get_item.outputs.item_id
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           gh api graphql -f query='
             mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
@@ -209,7 +206,7 @@ jobs:
       - name: Get PR project item ID
         id: get_item
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           ITEM_ID=$(gh api graphql -f query='
             query($owner: String!, $number: Int!) {
@@ -245,7 +242,7 @@ jobs:
 
       - name: Move PR to Review
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           gh api graphql -f query='
             mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
@@ -275,7 +272,7 @@ jobs:
         id: check_reviews
         run: |
           # Get PR reviews
-          REVIEWS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          REVIEWS=$(curl -s -H "Authorization: token ${{ secrets.PROJECT_PAT }}" \
             "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/reviews")
           
           # Check if there are any requested changes
@@ -290,7 +287,7 @@ jobs:
         id: get_item
         if: steps.check_reviews.outputs.approved == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           ITEM_ID=$(gh api graphql -f query='
             query($owner: String!, $number: Int!) {
@@ -327,7 +324,7 @@ jobs:
       - name: Move PR to Testing
         if: steps.check_reviews.outputs.approved == 'true' && steps.get_item.outputs.item_id
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           gh api graphql -f query='
             mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
@@ -356,7 +353,7 @@ jobs:
       - name: Get item project ID
         id: get_item
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           if [ "${{ github.event_name }}" = "pull_request" ]; then
             ITEM_ID=$(gh api graphql -f query='
@@ -399,7 +396,7 @@ jobs:
       - name: Move to Done
         if: steps.get_item.outputs.item_id
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           gh api graphql -f query='
             mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
@@ -438,7 +435,7 @@ jobs:
         run: |
           for issue in ${{ steps.release_issues.outputs.issues }}; do
             curl -X POST \
-              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Authorization: token ${{ secrets.PROJECT_PAT }}" \
               -H "Accept: application/vnd.github.v3+json" \
               "https://api.github.com/repos/${{ github.repository }}/issues/$issue/comments" \
               -d "{\"body\":\"This issue has been released in version ${{ github.event.release.tag_name }}\"}"
@@ -453,7 +450,7 @@ jobs:
         id: ci_status
         run: |
           # Get the PR associated with this check suite
-          PR_NUMBER=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          PR_NUMBER=$(curl -s -H "Authorization: token ${{ secrets.PROJECT_PAT }}" \
             "https://api.github.com/repos/${{ github.repository }}/pulls?head=${{ github.event.check_suite.head_branch }}" | \
             jq '.[0].number')
           
@@ -466,7 +463,7 @@ jobs:
         id: get_item
         if: steps.ci_status.outputs.ready_for_testing == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           ITEM_ID=$(gh api graphql -f query='
             query($owner: String!, $number: Int!) {
@@ -505,7 +502,7 @@ jobs:
       - name: Move to Testing after CI success
         if: steps.ci_status.outputs.ready_for_testing == 'true' && steps.get_item.outputs.item_id
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           gh api graphql -f query='
             mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
