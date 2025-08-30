@@ -125,45 +125,11 @@ jobs:
             const milestone = itemResult.repository.issue.milestone;
             console.log('Issue milestone:', milestone?.title || 'none');
             
-            // Helper function to get current iteration based on milestone
+            // Helper function to get current iteration - simplified for milestone 1
             function getCurrentIteration() {
-              const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD format
-              
-              // If milestone exists, try to match with iteration period
-              if (milestone && milestone.dueOn) {
-                const dueDate = milestone.dueOn.split('T')[0];
-                
-                // Find iteration that contains the milestone due date
-                for (const iteration of iterationField.configuration.iterations) {
-                  const startDate = new Date(iteration.startDate);
-                  const endDate = new Date(startDate);
-                  endDate.setDate(startDate.getDate() + iteration.duration);
-                  
-                  const milestoneDate = new Date(dueDate);
-                  
-                  if (milestoneDate >= startDate && milestoneDate <= endDate) {
-                    console.log(`Milestone ${milestone.title} (${dueDate}) fits in ${iteration.title}`);
-                    return iteration;
-                  }
-                }
-              }
-              
-              // Fallback: find current iteration based on today's date
-              for (const iteration of iterationField.configuration.iterations) {
-                const startDate = new Date(iteration.startDate);
-                const endDate = new Date(startDate);
-                endDate.setDate(startDate.getDate() + iteration.duration);
-                
-                const currentDate = new Date(today);
-                
-                if (currentDate >= startDate && currentDate <= endDate) {
-                  console.log(`Today (${today}) fits in ${iteration.title}`);
-                  return iteration;
-                }
-              }
-              
-              // If no current iteration found, return the first one
-              console.log('No matching iteration found, using first iteration');
+              // For milestone 1 approach: always assign to the first iteration
+              // This corresponds to the single iteration covering milestone 1
+              console.log('Using simplified single iteration approach for milestone 1');
               return iterationField.configuration.iterations[0];
             }
             
