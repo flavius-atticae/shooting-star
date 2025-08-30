@@ -14,12 +14,12 @@ jobs:
     steps:
       - name: Add default labels to new issues
         run: |
-          # Add 'triage' label to new issues
+          # Add 'Backlog' label to new issues
           curl -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels" \
-            -d '{"labels":["triage", "needs-analysis"]}'
+            -d '{"labels":["Backlog", "Needs-Analysis"]}'
 
   priority-labeling:
     name: Priority Based Movement
@@ -27,10 +27,10 @@ jobs:
     if: |
       github.event_name == 'issues' && 
       github.event.action == 'labeled' && 
-      contains(github.event.label.name, 'priority/')
+      (github.event.label.name == 'P0' || github.event.label.name == 'P1' || github.event.label.name == 'P2' || github.event.label.name == 'P3')
     steps:
       - name: Move high priority to À Faire
-        if: github.event.label.name == 'priority/high' || github.event.label.name == 'priority/critical'
+        if: github.event.label.name == 'P0' || github.event.label.name == 'P1'
         uses: alex-page/github-project-automation-plus@v0.9.0
         with:
           project: Shooting Star Project
@@ -38,7 +38,7 @@ jobs:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
       
       - name: Assign critical issues immediately
-        if: github.event.label.name == 'priority/critical'
+        if: github.event.label.name == 'P0'
         run: |
           # Auto-assign critical issues to project maintainer
           curl -X POST \
@@ -55,7 +55,7 @@ jobs:
       github.event.action == 'labeled'
     steps:
       - name: Handle bug reports
-        if: contains(github.event.label.name, 'bug')
+        if: github.event.label.name == 'Bug'
         run: |
           # Add bug template comment
           curl -X POST \
@@ -71,10 +71,10 @@ jobs:
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels" \
-            -d '{"labels":["needs-reproduction"]}'
+            -d '{"labels":["Needs-Analysis"]}'
       
       - name: Handle feature requests
-        if: contains(github.event.label.name, 'enhancement') || contains(github.event.label.name, 'feature')
+        if: github.event.label.name == 'Enhancement' || github.event.label.name == 'Feature'
         run: |
           curl -X POST \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
@@ -109,5 +109,5 @@ jobs:
           days-before-close: 7
           stale-issue-label: 'stale'
           stale-pr-label: 'stale'
-          exempt-issue-labels: 'priority/high,priority/critical,pinned'
-          exempt-pr-labels: 'priority/high,priority/critical,pinned'
+          exempt-issue-labels: 'P0,P1'
+          exempt-pr-labels: 'P0,P1'
