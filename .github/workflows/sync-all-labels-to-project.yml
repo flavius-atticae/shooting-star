@@ -44,6 +44,10 @@ jobs:
                             name
                           }
                         }
+                        ... on ProjectV2Field {
+                          id
+                          name
+                        }
                       }
                     }
                   }
@@ -87,10 +91,10 @@ jobs:
               if (!labelName) return null;
               const priority = labelName.replace('priority/', '');
               switch (priority.toLowerCase()) {
-                case 'low': return 'Low';
-                case 'medium': return 'Medium';
-                case 'high': return 'High';
-                case 'critical': return 'Critical';
+                case 'low': return 'P2';
+                case 'medium': return 'P1';
+                case 'high': return 'P0';
+                case 'critical': return 'P0';
                 default: return null;
               }
             }
