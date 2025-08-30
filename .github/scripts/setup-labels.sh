@@ -48,12 +48,12 @@ gh label create "Released" --color "6f42c1" --description "Released to productio
 
 # Type Labels
 echo "Creating type labels..."
-gh label create "type/bug" --color "D73A49" --description "Something isn't working" --force
-gh label create "type/feature" --color "A2EEEF" --description "New feature or request" --force
-gh label create "type/enhancement" --color "84B6EB" --description "Improvement to existing feature" --force
-gh label create "type/documentation" --color "0075CA" --description "Improvements or additions to documentation" --force
-gh label create "type/refactor" --color "FEF2C0" --description "Code refactoring" --force
-gh label create "type/test" --color "C2E0C6" --description "Adding or updating tests" --force
+gh label create "Bug" --color "D73A49" --description "Something isn't working" --force
+gh label create "Feature" --color "A2EEEF" --description "New feature or request" --force
+gh label create "Enhancement" --color "84B6EB" --description "Improvement to existing feature" --force
+gh label create "Documentation" --color "0075CA" --description "Improvements or additions to documentation" --force
+gh label create "Refactor" --color "FEF2C0" --description "Code refactoring" --force
+gh label create "Test" --color "C2E0C6" --description "Adding or updating tests" --force
 
 # Quality Labels
 echo "Creating quality labels..."
@@ -92,7 +92,7 @@ echo "   • Done (Pink) - Implementation completed"
 echo "   • Released (Purple) - Released to production"
 echo ""
 echo "🏷️ Other labels:"
-echo "   • Type labels: bug, feature, enhancement, documentation, refactor, test"
+echo "   • Type labels: Bug, Feature, Enhancement, Documentation, Refactor, Test"
 echo "   • Quality labels: needs-tests, needs-docs, performance, security, accessibility"
 echo ""
 echo "🔧 Next steps:"
