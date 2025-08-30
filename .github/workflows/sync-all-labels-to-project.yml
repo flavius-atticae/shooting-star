@@ -89,14 +89,8 @@ jobs:
             // Mapping functions
             function mapPriorityLabel(labelName) {
               if (!labelName) return null;
-              const priority = labelName.replace('priority/', '');
-              switch (priority.toLowerCase()) {
-                case 'low': return 'P3';
-                case 'medium': return 'P2';
-                case 'high': return 'P1';
-                case 'critical': return 'P0';
-                default: return null;
-              }
+              // Direct mapping: P0, P1, P2, P3 labels map directly to project columns
+              return ['P0', 'P1', 'P2', 'P3'].includes(labelName) ? labelName : null;
             }
             
             function mapSizeLabel(labelName) {
@@ -112,7 +106,7 @@ jobs:
               console.log(`\n--- Processing Issue #${issue.number}: ${issue.title} ---`);
               
               // Find priority and size labels
-              const priorityLabel = issue.labels.find(label => label.name && label.name.startsWith('priority/'));
+              const priorityLabel = issue.labels.find(label => label.name && ['P0', 'P1', 'P2', 'P3'].includes(label.name));
               const sizeLabel = issue.labels.find(label => label.name && label.name.startsWith('size/'));
               
               console.log('Priority label:', priorityLabel?.name || 'none');
