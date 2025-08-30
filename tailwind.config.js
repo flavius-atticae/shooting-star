@@ -3,6 +3,9 @@ module.exports = {
   content: [
     "./app/**/*.{js,jsx,ts,tsx}",
     "./components/**/*.{js,jsx,ts,tsx}",
+    "./.react-router/**/*.{js,jsx,ts,tsx}",
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./public/index.html",
   ],
   theme: {
     extend: {
@@ -15,13 +18,7 @@ module.exports = {
         'xl': '1280px',
         '2xl': '1536px',
       },
-      // Font families from brand guidelines
-      fontFamily: {
-        'body': ['Barlow', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-        'heading': ['The Seasons', 'serif'],
-        'accent': ['Moontime', 'cursive', 'serif'],
-        'subtitle': ['Barlow', 'ui-sans-serif', 'system-ui', 'sans-serif'],
-      },
+      // Font families are defined in app.css using @theme directive
       // Custom spacing for yoga website
       spacing: {
         '18': '4.5rem',
