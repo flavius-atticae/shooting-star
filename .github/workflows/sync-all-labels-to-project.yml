@@ -91,9 +91,9 @@ jobs:
               if (!labelName) return null;
               const priority = labelName.replace('priority/', '');
               switch (priority.toLowerCase()) {
-                case 'low': return 'P2';
-                case 'medium': return 'P1';
-                case 'high': return 'P0';
+                case 'low': return 'P3';
+                case 'medium': return 'P2';
+                case 'high': return 'P1';
                 case 'critical': return 'P0';
                 default: return null;
               }
