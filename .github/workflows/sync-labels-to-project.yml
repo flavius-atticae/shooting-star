@@ -15,7 +15,7 @@ jobs:
       - name: Sync Priority and Size to Project
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.PROJECT_PAT }}
           script: |
             const issue = context.payload.issue;
             
