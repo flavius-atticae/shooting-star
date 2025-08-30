@@ -95,8 +95,8 @@ jobs:
             
             function mapSizeLabel(labelName) {
               if (!labelName) return null;
-              const size = labelName.replace('size/', '');
-              return size.toUpperCase(); // XS, S, M, L, XL
+              // Direct mapping: XS, S, M, L, XL labels map directly to project columns
+              return ['XS', 'S', 'M', 'L', 'XL'].includes(labelName) ? labelName : null;
             }
             
             let processed = 0;
@@ -107,7 +107,7 @@ jobs:
               
               // Find priority and size labels
               const priorityLabel = issue.labels.find(label => label.name && ['P0', 'P1', 'P2', 'P3'].includes(label.name));
-              const sizeLabel = issue.labels.find(label => label.name && label.name.startsWith('size/'));
+              const sizeLabel = issue.labels.find(label => label.name && ['XS', 'S', 'M', 'L', 'XL'].includes(label.name));
               
               console.log('Priority label:', priorityLabel?.name || 'none');
               console.log('Size label:', sizeLabel?.name || 'none');
