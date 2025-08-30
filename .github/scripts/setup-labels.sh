@@ -63,15 +63,6 @@ gh label create "quality/performance" --color "FF6B6B" --description "Performanc
 gh label create "quality/security" --color "B60205" --description "Security related" --force
 gh label create "quality/accessibility" --color "0052CC" --description "Accessibility related" --force
 
-# Workflow Labels
-echo "Creating workflow labels..."
-gh label create "needs-reproduction" --color "D93F0B" --description "Bug needs reproduction steps" --force
-gh label create "needs-analysis" --color "F9D71C" --description "Needs further analysis" --force
-gh label create "ready-for-testing" --color "1D76DB" --description "Ready for QA testing" --force
-gh label create "needs-fixes" --color "FF6B6B" --description "Changes requested, needs fixes" --force
-gh label create "good-first-issue" --color "7057FF" --description "Good for newcomers" --force
-gh label create "help-wanted" --color "008672" --description "Extra attention is needed" --force
-
 
 
 echo "✅ All labels created successfully!"
@@ -103,7 +94,6 @@ echo ""
 echo "🏷️ Other labels:"
 echo "   • Type labels: bug, feature, enhancement, documentation, refactor, test"
 echo "   • Quality labels: needs-tests, needs-docs, performance, security, accessibility"
-echo "   • Workflow labels: needs-reproduction, needs-analysis, needs-fixes, good-first-issue, help-wanted"
 echo ""
 echo "🔧 Next steps:"
 echo "   1. ✅ Project columns are already configured: Backlog → À Faire → En Cours → Review → Testing → Done → Released"
