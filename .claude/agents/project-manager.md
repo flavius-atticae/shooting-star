@@ -1,7 +1,7 @@
 ---
 name: project-manager
 description: Use this agent when you need strategic project oversight, coordination between different development workstreams, prioritization of features or technical debt, planning of development phases, or assessment of project health and progress. Examples: <example>Context: User needs to plan the next development sprint and prioritize features. user: 'We have several features in the backlog - user authentication, payment integration, and mobile responsiveness. How should we prioritize these for the next sprint?' assistant: 'Let me use the project-manager agent to analyze these features and provide strategic prioritization guidance.' <commentary>The user is asking for strategic project planning and feature prioritization, which requires the project-manager agent's expertise in balancing business value, technical complexity, and resource allocation.</commentary></example> <example>Context: User wants to assess if the project is ready for a major release. user: 'We're planning to release v2.0 next month. Can you help me assess if we're on track?' assistant: 'I'll use the project-manager agent to conduct a comprehensive release readiness assessment.' <commentary>This requires strategic project oversight and risk assessment capabilities that the project-manager agent specializes in.</commentary></example>
-model: inherit
+model: sonnet
 color: pink
 ---
 
