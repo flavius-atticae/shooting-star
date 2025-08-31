@@ -8,9 +8,46 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
+      // Enhanced control configurations for pregnancy-safe design
+      expanded: true,
+      sort: 'requiredFirst',
     },
     docs: {
       toc: true,
+      // Enhanced documentation for maternal wellness context
+      source: {
+        state: 'open',
+        format: 'dedent',
+      },
+      canvas: {
+        sourceState: 'shown',
+      },
+    },
+    // Accessibility testing parameters
+    a11y: {
+      element: '#storybook-root',
+      config: {
+        rules: [
+          // Pregnancy-specific accessibility rules
+          {
+            id: 'color-contrast',
+            options: { level: 'AA' },
+          },
+          {
+            id: 'focus-order-semantics',
+            enabled: true,
+          },
+          {
+            id: 'keyboard',
+            enabled: true,
+          },
+        ],
+      },
+      options: {
+        checks: { 'color-contrast': { options: { noScroll: true } } },
+        restoreScroll: true,
+      },
+      manual: true,
     },
     backgrounds: {
       default: 'light',
@@ -34,32 +71,46 @@ const preview: Preview = {
       ],
     },
     viewport: {
+      // Pregnancy and motherhood context-specific viewports
       viewports: {
         xs: {
-          name: 'XS (380px)',
+          name: 'Mobile Portrait (Nursing/Feeding)',
           styles: { width: '380px', height: '100%' },
+          type: 'mobile',
         },
         sm: {
-          name: 'SM (640px)', 
+          name: 'Mobile Landscape (Bedside)', 
           styles: { width: '640px', height: '100%' },
+          type: 'mobile',
         },
         md: {
-          name: 'MD (768px)',
+          name: 'Tablet (Hospital/Clinic)',
           styles: { width: '768px', height: '100%' },
+          type: 'tablet',
         },
         lg: {
-          name: 'LG (1024px)',
+          name: 'Desktop (Home Office)',
           styles: { width: '1024px', height: '100%' },
+          type: 'desktop',
         },
         xl: {
-          name: 'XL (1280px)',
+          name: 'Desktop Large (Professional)',
           styles: { width: '1280px', height: '100%' },
+          type: 'desktop',
         },
         '2xl': {
-          name: '2XL (1536px)',
+          name: '2XL (Accessibility)',
           styles: { width: '1536px', height: '100%' },
+          type: 'desktop',
+        },
+        // Additional pregnancy-specific viewport for testing
+        nursing: {
+          name: 'One-Handed Mobile (320px)',
+          styles: { width: '320px', height: '568px' },
+          type: 'mobile',
         },
       },
+      defaultViewport: 'lg', // Start with desktop view for better component overview
     },
     // Actions configured in individual stories using fn() from @storybook/test
   },

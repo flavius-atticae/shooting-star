@@ -1,0 +1,102 @@
+name: Deploy Storybook to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Storybook
+        run: npm run build-storybook
+        env:
+          NODE_ENV: production
+          
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v5
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './storybook-static'
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  # Health check job to verify deployment
+  health-check:
+    needs: build-and-deploy
+    runs-on: ubuntu-latest
+    if: success()
+    
+    steps:
+      - name: Health Check Deployed Storybook
+        run: |
+          echo "Waiting for deployment to be ready..."
+          sleep 30
+          
+          # Check if the deployed Storybook is accessible  
+          DEPLOYMENT_URL="https://flavius-atticae.github.io/shooting-star/"
+          echo "Checking deployment at: $DEPLOYMENT_URL"
+          
+          # Retry logic for health check
+          for i in {1..5}; do
+            if curl -f -s --max-time 30 "$DEPLOYMENT_URL" > /dev/null; then
+              echo "✅ Storybook deployment is healthy and accessible"
+              break
+            else
+              echo "❌ Attempt $i failed. Retrying in 10 seconds..."
+              sleep 10
+              if [ $i -eq 5 ]; then
+                echo "🚨 Deployment health check failed after 5 attempts"
+                exit 1
+              fi
+            fi
+          done
+
+      - name: Performance Check
+        run: |
+          echo "Running basic performance check..."
+          DEPLOYMENT_URL="https://flavius-atticae.github.io/shooting-star/"
+          
+          # Use curl to check response time (basic check)
+          RESPONSE_TIME=$(curl -o /dev/null -s -w '%{time_total}' "$DEPLOYMENT_URL")
+          echo "Response time: ${RESPONSE_TIME}s"
+          
+          # Check if response time is under 3 seconds (target from issue)
+          if (( $(echo "$RESPONSE_TIME > 3.0" | bc -l) )); then
+            echo "⚠️  Warning: Response time (${RESPONSE_TIME}s) exceeds 3s target"
+            echo "Consider optimizing the deployment for better performance"
+          else
+            echo "✅ Response time is within acceptable range (< 3s)"
+          fi

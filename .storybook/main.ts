@@ -15,6 +15,16 @@ const config: StorybookConfig = {
     options: {},
   },
   
+  // GitHub Pages deployment configuration
+  ...(process.env.NODE_ENV === 'production' && {
+    viteFinal: (config, { configType }) => {
+      if (configType === 'PRODUCTION') {
+        config.base = '/shooting-star/';
+      }
+      return config;
+    },
+  }),
+  
   core: {
     builder: {
       name: '@storybook/builder-vite',
