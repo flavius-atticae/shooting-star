@@ -26,7 +26,54 @@ const IntroductionComponent = () => (
 
     <hr className="my-8 border-primary-200" />
 
-    <p className="text-center font-accent italic text-neutral">
+    {/* Typography Hierarchy Showcase */}
+    <section className="mb-10">
+      <h2 className="font-heading text-2xl mb-6 text-primary">Hiérarchie typographique</h2>
+      
+      {/* The Seasons - Headings */}
+      <div className="mb-6 p-4 bg-soft-50 rounded-lg border border-primary-200">
+        <h3 className="font-body text-sm font-semibold uppercase tracking-wider text-neutral-light mb-3">
+          The Seasons — Titres principaux
+        </h3>
+        <h1 className="font-heading text-4xl mb-2 text-neutral">Titre Principal H1</h1>
+        <h2 className="font-heading text-3xl mb-2 text-neutral">Titre Secondaire H2</h2>
+        <h3 className="font-heading text-2xl mb-2 text-neutral">Titre Tertiaire H3</h3>
+        <h4 className="font-heading text-xl text-neutral">Titre Quaternaire H4</h4>
+      </div>
+
+      {/* Barlow - Body Text */}
+      <div className="mb-6 p-4 bg-soft-50 rounded-lg border border-primary-200">
+        <h3 className="font-body text-sm font-semibold uppercase tracking-wider text-neutral-light mb-3">
+          Barlow — Texte de corps
+        </h3>
+        <p className="font-body text-lg mb-3 text-neutral-light">
+          Texte de paragraphe principal (18px) - Idéal pour les descriptions de cours et informations importantes.
+        </p>
+        <p className="font-body text-base mb-3 text-neutral-light">
+          Texte de paragraphe standard (16px) - Utilisé pour le contenu général et les détails de services.
+        </p>
+        <p className="font-body text-sm text-neutral-light">
+          Texte secondaire (14px) - Pour les légendes, notes et informations complémentaires.
+        </p>
+      </div>
+
+      {/* Moontime - Accent */}
+      <div className="mb-6 p-4 bg-soft-50 rounded-lg border border-primary-200">
+        <h3 className="font-body text-sm font-semibold uppercase tracking-wider text-neutral-light mb-3">
+          Moontime — Texte d'accent
+        </h3>
+        <p className="font-accent text-2xl mb-2 text-accent">
+          Citations inspirantes
+        </p>
+        <p className="font-accent text-lg text-accent-dark">
+          Éléments décoratifs et signatures
+        </p>
+      </div>
+    </section>
+
+    <hr className="my-8 border-primary-200" />
+
+    <p className="text-center font-accent text-lg italic text-neutral">
       « Le yoga est un voyage de soi, par soi, vers soi. » - La Bhagavad Gita
     </p>
   </div>
