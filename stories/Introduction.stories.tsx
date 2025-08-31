@@ -1,30 +1,33 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-// Introduction component with full documentation
+// Composant Introduction avec documentation complète
 const IntroductionComponent = () => (
   <div className="max-w-4xl mx-auto p-6">
-    <h1 className="text-3xl font-bold mb-6 text-[#5e4530]">Pauline Roussel Yoga Design System</h1>
+    <h1 className="font-heading text-3xl mb-6 text-neutral">
+      Système de Design Pauline Roussel
+    </h1>
     
-    <p className="text-lg mb-8 text-gray-700">
-      Welcome to the Storybook for Pauline Roussel's yoga website. This design system showcases 
-      components built for a perinatal yoga instructor specializing in motherhood wellness and birth accompaniment.
+    <p className="font-body text-lg mb-8 text-neutral-light">
+      Bienvenue dans le Storybook de Pauline Roussel, instructrice de yoga périnatal 
+      spécialisée dans le bien-être maternel et l'accompagnement à la naissance.
     </p>
 
-    <h2 className="text-2xl font-semibold mb-4 text-[#618462]">About the Project</h2>
-    <p className="mb-6 text-gray-700">
-      This React Router v7 application focuses on providing a serene, accessible, and professional online presence for yoga services. The design emphasizes:
+    <h2 className="font-heading text-2xl mb-4 text-primary">À propos du projet</h2>
+    <p className="font-body mb-6 text-neutral-light">
+      Cette application React Router v7 vise à offrir une présence en ligne sereine, 
+      accessible et professionnelle pour les services de yoga. Le design met l'accent sur :
     </p>
-    <ul className="list-disc pl-6 mb-8 text-gray-700">
-      <li><strong>Gentle aesthetics</strong> with calming colors and typography</li>
-      <li><strong>Accessibility</strong> with proper focus states and semantic HTML</li>
-      <li><strong>Responsiveness</strong> across all device sizes</li>
-      <li><strong>Performance</strong> with modern React patterns and SSR</li>
+    <ul className="list-disc pl-6 mb-8 font-body text-neutral-light">
+      <li><strong>Esthétique douce</strong> avec des couleurs et typographies apaisantes</li>
+      <li><strong>Accessibilité</strong> avec états de focus appropriés et HTML sémantique</li>
+      <li><strong>Réactivité</strong> sur toutes les tailles d'écran</li>
+      <li><strong>Performance</strong> avec patterns React modernes et SSR</li>
     </ul>
 
-    <hr className="my-8" />
+    <hr className="my-8 border-primary-200" />
 
-    <p className="text-center italic text-[#5e4530]">
-      "Yoga is a journey of the self, through the self, to the self." - The Bhagavad Gita
+    <p className="text-center font-accent italic text-neutral">
+      « Le yoga est un voyage de soi, par soi, vers soi. » - La Bhagavad Gita
     </p>
   </div>
 );
