@@ -30,9 +30,11 @@ jobs:
     steps:
       - name: Get issue project item ID
         id: get_item
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           ITEM_ID=$(gh api graphql -f query='
             query($owner: String!, $number: Int!) {
               repository(owner: $owner, name: "shooting-star") {
@@ -66,9 +68,11 @@ jobs:
           echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
 
       - name: Move issue to Backlog
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           gh api graphql -f query='
             mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
               updateProjectV2ItemFieldValue(input: {
@@ -87,7 +91,9 @@ jobs:
                -f optionId=${{ env.BACKLOG_ID }}
 
       - name: Add Backlog label
+        shell: bash
         run: |
+          set -e
           curl -X POST \
             -H "Authorization: token ${{ secrets.PROJECT_PAT }}" \
             -H "Accept: application/vnd.github.v3+json" \
@@ -101,9 +107,11 @@ jobs:
     steps:
       - name: Get issue project item ID
         id: get_item
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           ITEM_ID=$(gh api graphql -f query='
             query($owner: String!, $number: Int!) {
               repository(owner: $owner, name: "shooting-star") {
@@ -137,9 +145,11 @@ jobs:
           echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
 
       - name: Move issue to En Cours
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           gh api graphql -f query='
             mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
               updateProjectV2ItemFieldValue(input: {
@@ -158,9 +168,11 @@ jobs:
                -f optionId=${{ env.EN_COURS_ID }}
 
       - name: Update labels - Add En Cours, Remove others
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           # Get current labels
           CURRENT_LABELS=$(gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }} --jq '.labels[].name' | tr '\n' ' ')
           
@@ -197,9 +209,11 @@ jobs:
 
       - name: Move linked issues to Review
         if: steps.extract_issues.outputs.issue_numbers
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           for ISSUE_NUMBER in ${{ steps.extract_issues.outputs.issue_numbers }}; do
             echo "Processing issue #$ISSUE_NUMBER"
             
@@ -281,17 +295,23 @@ jobs:
     steps:
       - name: Extract linked issue numbers
         id: extract_issues
+        shell: bash
         run: |
+          set -e
+          echo "Extracting issue numbers from PR..."
           # Extract issue numbers from PR title and body
           PR_TEXT="${{ github.event.pull_request.title }} ${{ github.event.pull_request.body }}"
-          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ')
+          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ' || echo "")
+          echo "Found issue numbers: $ISSUE_NUMBERS"
           echo "issue_numbers=$ISSUE_NUMBERS" >> $GITHUB_OUTPUT
 
       - name: Move linked issues to Testing
         if: steps.extract_issues.outputs.issue_numbers
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           for ISSUE_NUMBER in ${{ steps.extract_issues.outputs.issue_numbers }}; do
             echo "Processing issue #$ISSUE_NUMBER"
             
@@ -373,17 +393,23 @@ jobs:
     steps:
       - name: Extract linked issue numbers
         id: extract_issues
+        shell: bash
         run: |
+          set -e
+          echo "Extracting issue numbers from PR..."
           # Extract issue numbers from PR title and body
           PR_TEXT="${{ github.event.pull_request.title }} ${{ github.event.pull_request.body }}"
-          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ')
+          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ' || echo "")
+          echo "Found issue numbers: $ISSUE_NUMBERS"
           echo "issue_numbers=$ISSUE_NUMBERS" >> $GITHUB_OUTPUT
 
       - name: Revert linked issues to En Cours
         if: steps.extract_issues.outputs.issue_numbers
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           for ISSUE_NUMBER in ${{ steps.extract_issues.outputs.issue_numbers }}; do
             echo "Processing issue #$ISSUE_NUMBER"
             
@@ -453,9 +479,11 @@ jobs:
     steps:
       - name: Get issue project item ID
         id: get_item
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           ITEM_ID=$(gh api graphql -f query='
             query($owner: String!, $number: Int!) {
               repository(owner: $owner, name: "shooting-star") {
@@ -477,9 +505,11 @@ jobs:
 
       - name: Move to Done
         if: steps.get_item.outputs.item_id
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           gh api graphql -f query='
             mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
               updateProjectV2ItemFieldValue(input: {
@@ -498,9 +528,11 @@ jobs:
                -f optionId=${{ env.DONE_ID }}
 
       - name: Update labels - Add Done, Remove others
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           # Remove all status labels
           for label in "Backlog" "À Faire" "En Cours" "Review" "Testing" "Released"; do
             gh api -X DELETE repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels/$label 2>/dev/null || true
@@ -519,20 +551,26 @@ jobs:
     steps:
       - name: Check if status label was changed
         id: check_label
+        shell: bash
         run: |
+          set -e
           LABEL_NAME="${{ github.event.label.name }}"
           STATUS_LABELS="Backlog À Faire En Cours Review Testing Done Released"
           
           if echo "$STATUS_LABELS" | grep -q "$LABEL_NAME"; then
             echo "is_status_label=true" >> $GITHUB_OUTPUT
             echo "status_label=$LABEL_NAME" >> $GITHUB_OUTPUT
+          else
+            echo "is_status_label=false" >> $GITHUB_OUTPUT
           fi
 
       - name: Update project status based on label
         if: steps.check_label.outputs.is_status_label == 'true' && github.event.action == 'labeled'
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           # Map label to status ID
           case "${{ steps.check_label.outputs.status_label }}" in
             "Backlog") STATUS_ID="${{ env.BACKLOG_ID }}" ;;
@@ -608,19 +646,25 @@ jobs:
     steps:
       - name: Get issues from release
         id: release_issues
+        shell: bash
         run: |
+          set -e
+          echo "Extracting issue numbers from release..."
           # Extract issue numbers from release body
           RELEASE_BODY="${{ github.event.release.body }}"
-          ISSUES=$(echo "$RELEASE_BODY" | grep -oE '#[0-9]+' | cut -d'#' -f2 | sort -u)
+          ISSUES=$(echo "$RELEASE_BODY" | grep -oE '#[0-9]+' | cut -d'#' -f2 | sort -u || echo "")
+          echo "Found issues: $ISSUES"
           echo "issues<<EOF" >> $GITHUB_OUTPUT
           echo "$ISSUES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
       
       - name: Move issues to Released
         if: steps.release_issues.outputs.issues
+        shell: bash
         env:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
+          set -e
           for issue in ${{ steps.release_issues.outputs.issues }}; do
             # Get project item ID
             ITEM_ID=$(gh api graphql -f query='
