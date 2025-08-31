@@ -1,69 +1,57 @@
-# Agent Workflows
+# Agent Documentation
 
-Specialized workflows and instructions for each agent role.
+## 📍 Agent Instructions Location
 
-## 🤖 Available Agents
+The detailed instructions for each AI agent are maintained in the `.claude/agents/` directory:
 
-### Development
-- **[Tech Lead](./tech-lead-workflow.md)** - Technical architecture, code review, implementation
-
-### Business & Analysis  
-- **[Market Analyst](./market-analyst.md)** - Market research, user personas, business objectives
-
-### Design
-- **[UI/UX Designer](./ui-ux-designer.md)** - Design, user experience, accessibility
-
-### Management
-- **[Project Manager](./project-manager.md)** - Planning, coordination, prioritization
-- **[Security Advisor](./security-advisor.md)** - Security analysis, vulnerability assessment
-
-### Coordination
-- **[Agent Coordination](./coordination.md)** - How agents work together
-
-## 🔄 Standard Handoff Flow
-
-```mermaid
-graph TD
-    A[Market Analyst] -->|Feature Description| B[Project Manager]
-    B -->|Priority & Size| C[Tech Lead]
-    C -->|Technical Needs| D[UI/UX Designer]
-    D -->|Design Complete| C
-    C -->|Implementation| E[Code Review]
-    E -->|Approved| F[Testing]
+```
+.claude/agents/
+├── technical-lead.md              # Tech Lead Agent instructions
+├── perinatal-market-analyst.md    # Market Analyst Agent instructions  
+├── ui-ux-designer.md              # UI/UX Designer Agent instructions
+├── project-manager.md             # Project Manager Agent instructions
+├── security-advisor.md            # Security Advisor Agent instructions
+└── qa-post-merge-tester.md        # QA Tester Agent instructions
 ```
 
-## 📋 Quick Reference
+## Why This Structure?
 
-### Tech Lead Responsibilities
-- Create branch for EVERY issue
-- Use `Related to #XXX` in PRs
-- Follow naming conventions
-- Regular progress updates
+- **Single Source of Truth**: Instructions are maintained in one place
+- **AI-Optimized**: Claude and other AI agents load these directly
+- **No Duplication**: Easier to maintain and keep updated
+- **Version Controlled**: Changes tracked with the code
 
-### Market Analyst Responsibilities  
-- Feature descriptions with market context
-- Business objectives and ROI
-- User personas with demographics
+## For Human Readers
 
-### Project Manager Responsibilities
-- Assign priority (P0-P3)
-- Assign size (XS-XL)
-- Coordinate handoffs
-- Track milestones
+If you're a human developer wanting to understand agent workflows:
 
-## 🏷️ Handoff Template
+1. **View on GitHub**: Navigate to `.claude/agents/` in the repository
+2. **Local Access**: Open files in `.claude/agents/` directory
+3. **Quick Reference**: See agent roles summary below
 
-```markdown
-## 🔄 Handoff to @[Agent]
+## Agent Roles Summary
 
-**Context**: [What has been done]
-**Need**: [What is expected]
-**Constraints**: [Any limitations]
-**Artifacts**: [Links to relevant items]
+| Agent | Primary Focus | Key Responsibilities |
+|-------|--------------|---------------------|
+| **Tech Lead** | Implementation | Code quality, architecture, PR reviews |
+| **Market Analyst** | User Research | Personas, market analysis, ROI |
+| **UI/UX Designer** | Design | Mockups, accessibility, user experience |
+| **Project Manager** | Coordination | Planning, priorities, delivery |
+| **Security Advisor** | Security | Compliance, vulnerabilities, privacy |
+| **QA Post Merge Tester** | Quality Assurance | Post-merge validation, testing, bug detection |
 
-/cc @[next-agent]
+## Collaboration Flow
+
 ```
+Market Research → Prioritization → Design → Implementation → Security Review → PR Merge → QA TESTING → Done → Release
+                                                                                           ↑
+                                                                                    Critical Gate
+```
+
+**Important**: The QA Post Merge Tester has veto power. If testing fails, issues return to En Cours for fixes.
+
+For detailed workflows and templates, refer to the actual instruction files in `.claude/agents/`.
 
 ---
 
-[← Back to Documentation](../)
+*Note: This directory serves as a pointer to the actual agent instructions. The source of truth is in `.claude/agents/`.*

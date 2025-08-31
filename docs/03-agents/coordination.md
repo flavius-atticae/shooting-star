@@ -1,224 +1,177 @@
-# Guide de Coordination des Agents pour GitHub Issues
+# Complete Agent Workflow Integration
 
-Ce document définit les protocoles de travail collaboratif entre les agents spécialisés pour traiter efficacement les GitHub issues.
+## 🔄 The Full Development Cycle with QA Testing
 
-## 🎯 Principes Fondamentaux
+### Phase 1: Planning
+1. **Market Analyst** → Creates issue with user research
+2. **Project Manager** → Assigns priority (P0-P3) and size (XS-XL)
 
-- **Un seul agent leader** par issue à tout moment
-- **Handoffs explicites** entre agents avec documentation
-- **Validation croisée** pour les changements critiques
-- **Communication transparente** via les commentaires GitHub
+### Phase 2: Design
+3. **UI/UX Designer** → Creates mockups and specs
+4. **Security Advisor** → Reviews for compliance
 
-## 🌿 Git Workflow (OBLIGATOIRE)
+### Phase 3: Development  
+5. **Tech Lead** → Creates branch `feature/issue-XXX`
+6. **Tech Lead** → Implements with commits `[#XXX]`
+7. **Tech Lead** → Creates PR with `Related to #XXX`
 
-**⚠️ RÈGLES ABSOLUES - AUCUNE EXCEPTION**
+### Phase 4: Review
+8. **Tech Lead** → Code review
+9. **Security Advisor** → Security review
+10. **PR Approved and Merged**
 
-### Branching Practices
-- **JAMAIS de travail direct sur `main`** - la branche principale est protégée
-- **Toujours créer une feature branch** pour chaque GitHub issue
-- **Une branche = une issue** - pas de mélange de fonctionnalités
+### Phase 5: Testing (CRITICAL GATE)
+11. **Issue automatically moves to Testing status**
+12. **QA Post Merge Tester** → Comprehensive testing
+13. **Two possible outcomes**:
+    - ✅ **PASS** → QA closes issue as Done
+    - ❌ **FAIL** → Issue returns to En Cours, Tech Lead must fix
 
-### Conventions de Nommage des Branches
+### Phase 6: Release
+14. **Project Manager** → Includes in release
+15. **Status changes to Released**
+
+## 🚨 Critical Points
+
+### For Tech Lead
+- **NEVER use `Closes #XXX`** in PRs - issues must go through Testing
+- After merge, your issue goes to Testing automatically
+- Be available to fix issues if QA finds problems
+- You may need to create new branches for fixes
+
+### For QA Post Merge Tester  
+- You have **veto power** - don't hesitate to reject if quality isn't met
+- **Only you** can close issues (move to Done)
+- Test comprehensively - you protect production
+- Document all issues found clearly
+
+### For Project Manager
+- Issues in Testing are **not done** - don't include in completion metrics
+- Budget time for QA testing in sprints
+- Budget time for potential fixes after QA
+- Track Testing → Done conversion rate
+
+## 📊 Status Flow with QA
+
+```yaml
+Backlog:
+  Owner: Project Manager
+  Next: À Faire
+
+À Faire:
+  Owner: Project Manager  
+  Next: En Cours
+
+En Cours:
+  Owner: Tech Lead
+  Next: Review
+
+Review:
+  Owner: Tech Lead + Reviewers
+  Next: Testing (after PR merge)
+
+Testing:  # CRITICAL GATE
+  Owner: QA Post Merge Tester
+  Next: Done (if pass) OR En Cours (if fail)
+  
+Done:
+  Owner: QA Post Merge Tester (only they close)
+  Next: Released
+
+Released:
+  Owner: Project Manager
+  Next: Complete
 ```
-feature/issue-[numéro]-[description-courte]
-bugfix/issue-[numéro]-[description-courte]  
-hotfix/issue-[numéro]-[description-courte]
-```
 
-**Exemples**:
-- `feature/issue-123-add-yoga-booking-form`
-- `bugfix/issue-456-fix-mobile-navigation`
-- `hotfix/issue-789-security-vulnerability-patch`
+## 📈 Metrics with QA Phase
 
-### Workflow Standard
-1. **Créer la branche** à partir de `main` mise à jour
-   ```bash
-   git checkout main
-   git pull origin main
-   git checkout -b feature/issue-123-description
-   ```
+### New Metrics to Track
+- **QA Pass Rate**: % of issues passing testing first time
+- **QA Cycle Time**: Average time in Testing status
+- **Defect Escape Rate**: Bugs found after Done
+- **Rework Rate**: % of issues sent back from Testing
 
-2. **Développer** sur la feature branch
-   - Commits atomiques avec messages descriptifs
-   - Référencer l'issue dans les commits: `#123`
+### Target Benchmarks
+- QA Pass Rate: > 85%
+- QA Cycle Time: < 4 hours for S, < 1 day for M
+- Defect Escape Rate: < 2%
+- Rework Rate: < 15%
 
-3. **Pull Request obligatoire**
-   - Jamais de merge direct
-   - Title: `[Issue #123] Description claire`
-   - Lier la PR à l'issue GitHub
-   - Reviews requises selon la matrice de validation
+## 🤝 Handoff Templates
 
-4. **Merge et nettoyage**
-   - Merge via GitHub après approbation
-   - **Suppression immédiate** de la feature branch
-   - Mise à jour des labels et clôture de l'issue
-
-### Responsabilités par Agent
-- **General-Purpose**: Création des branches, commits réguliers
-- **Technical Lead**: Review des PRs critiques, merge final
-- **Project Manager**: Suivi des branches orphelines, nettoyage
-- **Tous les agents**: Respect absolu des règles de branching
-
-## 👥 Rôles des Agents Spécialisés
-
-### 🔧 General-Purpose Agent
-- **Responsabilités**: Analyse initiale, coordination générale, recherche de code
-- **Handoff vers**: Agents spécialisés selon le type d'issue
-- **Validation**: Code reviews basiques, tests de fonctionnement
-
-### 🏗️ Technical Lead
-- **Responsabilités**: Décisions architecturales, revues de code complexes, stratégie technique
-- **Handoff depuis**: General-purpose pour les issues architecturales
-- **Validation**: Architecture, performance, sécurité, standards d'équipe
-
-### 🎨 UI/UX Designer  
-- **Responsabilités**: Design d'interfaces, expérience utilisateur, accessibilité
-- **Handoff depuis**: General-purpose pour les issues UI/UX
-- **Validation**: Guidelines design, responsive, accessibilité WCAG
-
-### 📋 Project Manager
-- **Responsabilités**: Planification, suivi des délais, coordination équipe
-- **Handoff depuis**: N'importe quel agent pour les blocages ou coordination
-- **Validation**: Timeline, dépendances, livraison
-
-### 🔒 Security Advisor
-- **Responsabilités**: Analyses sécuritaire, vulnérabilités, bonnes pratiques
-- **Handoff depuis**: N'importe quel agent pour les aspects sécuritaires
-- **Validation**: Audits sécurité, conformité, tests de pénétration
-
-## 🔄 Workflow Standard par Type d'Issue
-
-### 🐛 Bug Report
-1. **General-Purpose**: Reproduction du bug, analyse initiale
-2. **Technical Lead**: Si bug complexe ou architectural
-3. **Security Advisor**: Si implications sécuritaires
-4. **General-Purpose**: Implémentation du fix
-5. **Technical Lead**: Code review finale
-
-### ✨ Feature Request
-1. **General-Purpose**: Analyse des besoins
-2. **UI/UX Designer**: Si interface utilisateur requise
-3. **Technical Lead**: Design technique et architecture
-4. **General-Purpose**: Implémentation
-5. **UI/UX Designer**: Validation design finale
-6. **Technical Lead**: Code review et validation
-
-### 🔧 Technical Debt
-1. **Technical Lead**: Évaluation et priorisation
-2. **Project Manager**: Planification et impact
-3. **General-Purpose**: Implémentation des améliorations
-4. **Technical Lead**: Validation technique finale
-
-### 🔒 Security Issue  
-1. **Security Advisor**: Analyse approfondie et évaluation des risques
-2. **Technical Lead**: Design de la solution sécurisée
-3. **General-Purpose**: Implémentation
-4. **Security Advisor**: Audit de sécurité finale
-
-## 📝 Templates de Communication
-
-### Handoff entre Agents
+### Tech Lead → QA Tester
 ```markdown
-## 🔄 Handoff vers @[Agent-Type]
+## 🔄 Ready for QA Testing
 
-**Contexte**: [Résumé de ce qui a été fait]
-**Besoin**: [Ce qui est attendu du prochain agent]
-**Contraintes**: [Limitations ou requirements spéciaux]
-**Artefacts**: [Liens vers code, designs, docs pertinents]
+**PR Merged**: #XXX
+**Issue**: #XXX (now in Testing)
 
-**État actuel**: 
-- [ ] Analyse terminée
-- [ ] Décisions prises
-- [ ] Implémentation partielle
-- [ ] Tests requis
+**What was implemented**:
+- [Feature/fix description]
+- [Key changes made]
 
-/cc @[next-agent]
+**Testing focus areas**:
+- [Specific user flows]
+- [Edge cases to verify]
+- [Performance considerations]
+
+**Test data**:
+- [Any specific test accounts/data]
+
+**Known limitations**:
+- [Any accepted issues for future]
+
+/cc @qa-post-merge-tester
 ```
 
-### Validation et Approbation
+### QA Tester → Tech Lead (Failed)
 ```markdown
-## ✅ Validation [Agent-Type]
+## ❌ QA Testing Failed
 
-**Critères validés**:
-- [ ] Fonctionnalité
-- [ ] Performance  
-- [ ] Sécurité
-- [ ] Standards de code
-- [ ] Tests passés
-- [ ] Documentation à jour
+**Issue**: #XXX
+**Severity**: Critical/Major/Minor
 
-**Notes**: [Commentaires spécifiques]
+**Problems found**:
+1. [Issue 1 with steps to reproduce]
+2. [Issue 2 with evidence]
 
-**Status**: ✅ APPROUVÉ / ⚠️ AVEC RÉSERVES / ❌ REFUSÉ
+**Recommendation**: Fix immediately
+
+Issue returned to En Cours.
+Please create new branch for fixes.
+
+/cc @tech-lead @project-manager
 ```
 
-## 🚦 Protocoles de Décision
+### QA Tester → Project Manager (Passed)
+```markdown
+## ✅ QA Testing Passed
 
-### Décisions Critiques (Architecture, Sécurité)
-- Requiert validation du **Technical Lead** ET **Security Advisor**
-- Documentation obligatoire dans l'issue
-- Timeline de 24h minimum pour review
+**Issue**: #XXX
+**Testing completed**: [Date/time]
+**All quality gates**: PASSED
 
-### Décisions Design
-- **UI/UX Designer** a autorité finale sur l'interface
-- Validation croisée avec **Technical Lead** pour faisabilité
+**Test summary**:
+- Functional: ✅
+- Cross-browser: ✅  
+- Languages: ✅
+- Accessibility: ✅
+- Performance: ✅
 
-### Conflits entre Agents
-1. Discussion ouverte dans l'issue
-2. Si pas de consensus → escalade vers **Project Manager**
-3. Décision finale documentée avec rationale
+Issue closed as Done.
+Ready for release.
 
-## 📊 Métriques de Qualité
+/cc @project-manager
+```
 
-### KPIs par Agent
-- **General-Purpose**: Temps de résolution, qualité du code
-- **Technical Lead**: Respect architecture, performance
-- **UI/UX Designer**: Score accessibilité, satisfaction utilisateur  
-- **Project Manager**: Respect des délais, coordination
-- **Security Advisor**: Zéro vulnérabilité critique
+## 🎯 Success Criteria
 
-### Reviews Obligatoires
-- [ ] Code review par **Technical Lead** (si changements > 100 lignes)
-- [ ] Security review par **Security Advisor** (si données sensibles)
-- [ ] UX review par **UI/UX Designer** (si changements UI)
+The development cycle is successful when:
+1. Features meet user needs (Market Analyst validation)
+2. Implementation is solid (Tech Lead quality)
+3. Design is accessible (UI/UX standards)
+4. Security is maintained (Security Advisor approval)
+5. **Quality is verified (QA Post Merge Testing)**
+6. Delivery is on time (Project Manager tracking)
 
-## 🔧 Outils et Intégrations
-
-### Labels GitHub Standards
-- `agent:general-purpose`
-- `agent:technical-lead`  
-- `agent:ui-ux-designer`
-- `agent:project-manager`
-- `agent:security-advisor`
-- `status:handoff-pending`
-- `status:validation-required`
-
-### Automatisations
-- Auto-assignment selon les labels
-- Notifications de handoff
-- Checklist de validation automatique
-- Reports de métriques hebdomadaires
-
-## 📚 Bonnes Pratiques
-
-### Communication
-- Toujours taguer le prochain agent dans les handoffs
-- Utiliser les templates pour la consistance
-- Documenter toutes les décisions importantes
-- Mettre à jour les labels GitHub appropriés
-
-### Qualité
-- Tests obligatoires avant validation finale
-- Code review croisé pour changements critiques
-- Documentation mise à jour en parallèle du code
-- Rollback plan pour les features majeures
-
-### Efficacité  
-- Paralléliser quand possible (design + développement)
-- Anticiper les besoins des autres agents
-- Utiliser les templates pour accélérer
-- Maintenir une communication proactive
-
----
-
-*Ce document est vivant et doit être mis à jour selon l'évolution de l'équipe et des processus.*
+Every agent plays a critical role. The QA Post Merge Tester is the final guardian of quality.
