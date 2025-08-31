@@ -1,72 +1,65 @@
-# Documentation Hub
+# 📚 Documentation Hub
 
-Welcome to the Shooting Star documentation center. This comprehensive guide covers all aspects of the project, from development setup to deployment procedures.
+Welcome to the Shooting Star project documentation. This guide provides comprehensive information for developing Pauline Roussel's perinatal yoga and motherhood wellness website.
 
-## 📖 Quick Navigation
+## 🗺️ Navigation
 
-### 🚀 Getting Started
-- **[Setup Guide](./getting-started/setup.md)** - Project installation and development environment
-- **[Configuration Files](./getting-started/configuration-files.md)** - Understanding project configuration
+### 📚 [Getting Started](01-getting-started/)
+Quick start guide and initial setup
+- Project setup and configuration
+- Environment requirements
 
-### 🏗️ Architecture & Design
-- **[Tech Stack](./architecture/tech-stack.md)** - Technologies, frameworks, and tools
-- **[Storybook Setup](./architecture/storybook-setup.md)** - Component development and documentation system
-- **[Brand Guidelines](./design-system/brand-guidelines.md)** - Brand identity, colors, typography, and assets
+### ⚙️ [Development](02-development/)
+Development processes and project management
+- Team workflows and collaboration
 
-### 🔧 Development Workflows
-- **[Agent Coordination](./workflows/agent-coordination.md)** - Multi-agent collaboration protocols
-- **[Project Management](./workflows/project-management.md)** - Project management agent workflows
-- **[GitHub Automation](./workflows/github-automation.md)** - Automated workflows and project management
+### 🤖 [Agents](03-agents/)
+Specialized AI agent coordination
+- Agent responsibilities and workflows
+- Handoff templates and protocols
 
-### 👥 Team & Agents
-- **[Technical Lead](./workflows/agents/technical-lead.md)** - Technical leadership agent
-- **[Project Manager](./workflows/agents/project-manager.md)** - Project management agent
-- **[Security Advisor](./workflows/agents/security-advisor.md)** - Security guidance agent
-- **[UI/UX Designer](./workflows/agents/ui-ux-designer.md)** - Design agent
+### 🏗️ [Architecture](04-architecture/)
+Technical decisions and system design
+- Technology stack overview
+- Storybook and TailwindCSS setup
 
-### 🚀 Deployment & Operations
-- **[Fly.io Deployment Guide](./deployment/fly-io-guide.md)** - Complete deployment walkthrough
-- **[Rollback Procedures](./deployment/rollback-procedures.md)** - Deployment rollback and recovery
+### 🎨 [Design System](05-design-system/)
+Brand guidelines and UI components
+- Visual identity standards
+- Component library integration
 
-### 🔒 Security & Compliance
-- **[Security Guidelines](./security/guidelines.md)** - Security best practices and GDPR compliance
+### 🚀 [Deployment](06-deployment/)
+Production deployment and operations
+- Fly.io deployment guide
+- Rollback procedures
 
-### 🛠️ Reference
-- **[Troubleshooting](./reference/troubleshooting.md)** - Common issues and solutions
+### 🔄 [Automation](07-automation/)
+GitHub Actions and automated workflows
+- Project board automation
+- CI/CD pipeline configuration
+
+### 📖 [Reference](08-reference/)
+Troubleshooting guides and resources
+- Common issues and solutions
+- Development guidelines
 
 ## 🎯 Project Overview
 
-**Shooting Star** is a professional website for Pauline Roussel, specializing in prenatal yoga and birth accompaniment. Built with React Router v7, TailwindCSS v4, and modern web standards.
+**Shooting Star** is a React Router v7 application for a yoga instructor specializing in perinatal yoga, motherhood wellness, and birth accompaniment. The site uses modern web technologies with server-side rendering and comprehensive design system documentation.
 
-### Key Features
-- Server-side rendering for optimal performance
-- Comprehensive design system with 4 custom fonts and 8 color families
-- Dark mode support with system preference detection
-- WCAG 2.1 AA accessibility compliance
-- Mobile-first responsive design
+## 🚀 Quick Start
 
-### Target Audience
-- **Primary**: French-speaking pregnant women and new mothers
-- **Secondary**: Partners seeking supportive birth experiences
-- **Tertiary**: Wellness professionals and collaborative practitioners
+1. **Setup**: Follow the [Getting Started](01-getting-started/) guide
+2. **Development**: Review [Agent Coordination](03-agents/) protocols
+3. **Architecture**: Understand the [Tech Stack](04-architecture/)
+4. **Design**: Explore the [Design System](05-design-system/)
 
-## 📋 Documentation Standards
+## 🤝 Contributing
 
-When contributing to documentation:
-
-1. **Structure**: Use clear headings and logical organization
-2. **Language**: Write in clear, accessible English with technical precision
-3. **Links**: Use relative paths for internal documentation links
-4. **Updates**: Keep documentation current with code changes
-5. **Reviews**: All documentation changes should be reviewed for accuracy
-
-## 🔗 External Resources
-
-- **[Main Repository](../README.md)** - Project overview and setup
-- **[GitHub Issues](../../issues)** - Bug reports and feature requests
-- **[GitHub Projects](../../projects)** - Project planning and roadmap
+All development work follows specific agent coordination protocols defined in the [Agents section](03-agents/). Please review the appropriate workflow before starting any development tasks.
 
 ---
 
-**Last updated**: During docs organization implementation  
-**Maintained by**: Technical Lead and Development Team
+**Current Version**: v1.0 Milestone  
+**Last Updated**: August 2025  
+**Project**: Pauline Roussel - Perinatal Yoga & Motherhood Wellness
