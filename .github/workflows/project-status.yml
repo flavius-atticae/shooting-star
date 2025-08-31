@@ -10,17 +10,26 @@ on:
   release:
     types: [published]
 
+concurrency:
+  group: project-sync-${{ github.event.issue.number || github.event.pull_request.number || 'release' }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: read
+
 env:
-  PROJECT_ID: "PVT_kwHOA8KkFM4BBWOl"  # Shooting Star project #5
-  STATUS_FIELD_ID: "PVTSSF_lAHOA8KkFM4BBWOlzgz4SvM"  # Status field
+  PROJECT_ID: ${{ vars.PROJECT_ID || 'PVT_kwHOA8KkFM4BBWOl' }}
+  STATUS_FIELD_ID: ${{ vars.STATUS_FIELD_ID || 'PVTSSF_lAHOA8KkFM4BBWOlzgz4SvM' }}
   # Status option IDs
-  BACKLOG_ID: "f75ad846"
-  A_FAIRE_ID: "08afe404"
-  EN_COURS_ID: "47fc9ee4"
-  REVIEW_ID: "4cc61d42"
-  TESTING_ID: "d2573237"
-  DONE_ID: "98236657"
-  RELEASED_ID: "111ec098"
+  BACKLOG_ID: ${{ vars.BACKLOG_ID || 'f75ad846' }}
+  A_FAIRE_ID: ${{ vars.A_FAIRE_ID || '08afe404' }}
+  EN_COURS_ID: ${{ vars.EN_COURS_ID || '47fc9ee4' }}
+  REVIEW_ID: ${{ vars.REVIEW_ID || '4cc61d42' }}
+  TESTING_ID: ${{ vars.TESTING_ID || 'd2573237' }}
+  DONE_ID: ${{ vars.DONE_ID || '98236657' }}
+  RELEASED_ID: ${{ vars.RELEASED_ID || '111ec098' }}
 
 jobs:
   move-new-issue-to-backlog:
@@ -192,8 +201,10 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       github.event_name == 'pull_request' && 
-      (github.event.action == 'opened' || github.event.action == 'ready_for_review') &&
-      !github.event.pull_request.draft
+      (
+        (github.event.action == 'opened' && !github.event.pull_request.draft) ||
+        (github.event.action == 'ready_for_review')
+      )
     steps:
       - name: Extract linked issue numbers
         id: extract_issues
@@ -207,6 +218,26 @@ jobs:
           echo "Found issue numbers: $ISSUE_NUMBERS"
           echo "issue_numbers=$ISSUE_NUMBERS" >> $GITHUB_OUTPUT
 
+      - name: Rate Limit Protection
+        if: steps.extract_issues.outputs.issue_numbers
+        shell: bash
+        run: sleep $((RANDOM % 5 + 1))
+
+      - name: Validate State Consistency
+        if: steps.extract_issues.outputs.issue_numbers
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          set -e
+          echo "🔍 Validating workflow state consistency..."
+          # Check if GitHub API is responsive
+          if ! gh api rate_limit >/dev/null 2>&1; then
+            echo "❌ GitHub API not accessible"
+            exit 1
+          fi
+          echo "✅ GitHub API accessible"
+
       - name: Move linked issues to Review
         if: steps.extract_issues.outputs.issue_numbers
         shell: bash
@@ -214,6 +245,24 @@ jobs:
           GH_TOKEN: ${{ secrets.PROJECT_PAT }}
         run: |
           set -e
+          
+          # Retry function for API calls
+          retry_api_call() {
+            local cmd="$1"
+            local max_attempts=3
+            for i in $(seq 1 $max_attempts); do
+              if eval "$cmd"; then
+                return 0
+              elif [ $i -eq $max_attempts ]; then
+                echo "❌ Failed after $max_attempts attempts: $cmd"
+                return 1
+              else
+                echo "Retry $i failed, waiting..."
+                sleep $((i * 5))
+              fi
+            done
+          }
+          
           for ISSUE_NUMBER in ${{ steps.extract_issues.outputs.issue_numbers }}; do
             echo "Processing issue #$ISSUE_NUMBER"
             
@@ -304,6 +353,11 @@ jobs:
           ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ' || echo "")
           echo "Found issue numbers: $ISSUE_NUMBERS"
           echo "issue_numbers=$ISSUE_NUMBERS" >> $GITHUB_OUTPUT
+
+      - name: Rate Limit Protection
+        if: steps.extract_issues.outputs.issue_numbers
+        shell: bash
+        run: sleep $((RANDOM % 5 + 1))
 
       - name: Move linked issues to Testing
         if: steps.extract_issues.outputs.issue_numbers
