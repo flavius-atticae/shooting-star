@@ -4,7 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a React Router v7 application for a yoga instructor website specializing in perinatal yoga, motherhood wellness, and birth accompaniment. The site uses server-side rendering and is built with modern React patterns.
+This is a React Router v7 application for Pauline Roussel's yoga instructor website specializing in perinatal yoga, motherhood wellness, and birth accompaniment. The site uses server-side rendering and is built with modern React patterns.
+
+**Target Market**: French-speaking pregnant women and new mothers in Quebec
+**Primary Language**: French (85%), English (15%)
+**Compliance**: GDPR, PIPEDA, Quebec Law 25
 
 ## Development Commands
 
@@ -16,7 +20,7 @@ This is a React Router v7 application for a yoga instructor website specializing
 
 ### Storybook Development
 - `npm run storybook` - Start Storybook development server at http://localhost:6006
-- `npm run build-storybook` - Build static Storybook (requires temporary config changes)
+- `npm run build-storybook` - Build static Storybook
 
 The Storybook setup provides component development, testing, and documentation with full TailwindCSS v4.1.4 integration and Pauline Roussel brand theming.
 
@@ -30,14 +34,18 @@ No test framework or linting tools are currently configured in this project.
 - **Styling**: TailwindCSS v4.1.4 
 - **TypeScript**: Full TypeScript support with strict mode
 - **Build Tool**: Vite with React Router plugin
-- **Fonts**: Google Fonts (Inter)
+- **Components**: shadcn/ui
+- **Deployment**: Fly.io
+- **Package Manager**: npm (not yarn/pnpm)
 
 ### File Structure
 - `app/` - Main application code
   - `root.tsx` - Root layout component with HTML structure and error boundary
   - `routes.ts` - Route configuration using React Router's file-based routing
-  - `routes/` - Route components (currently just home.tsx)
-  - `welcome/` - Welcome component and assets
+  - `routes/` - Route components
+  - `components/` - Reusable components
+  - `lib/` - Utility functions and helpers
+  - `welcome/` - Welcome component and brand assets
   - `app.css` - Global styles
 - `react-router.config.ts` - React Router configuration (SSR enabled)
 - `vite.config.ts` - Vite configuration with TailwindCSS and tsconfigPaths plugins
@@ -51,78 +59,230 @@ No test framework or linting tools are currently configured in this project.
 ### Deployment
 The application supports Docker deployment and includes a Dockerfile. The build outputs to `build/client/` (static assets) and `build/server/` (server code).
 
-## Documentation
+## Agent System
 
-All project documentation is centralized in the `docs/` directory with a comprehensive structure. Start with the **[Documentation Hub](docs/README.md)** which provides:
+### Available Specialized Agents
 
-### Key Documentation Areas
-- **[Getting Started](docs/01-getting-started/)** - Setup, configuration, and environment guides
-- **[Development](docs/02-development/)** - Development processes and project management
-- **[Agents](docs/03-agents/)** - Specialized AI agent coordination
-- **[Architecture](docs/04-architecture/)** - Tech stack, system design, and technical decisions
-- **[Design System](docs/05-design-system/)** - Brand guidelines and UI components
-- **[Deployment](docs/06-deployment/)** - Production deployment and operations
-- **[Automation](docs/07-automation/)** - GitHub Actions and automated workflows
-- **[Reference](docs/08-reference/)** - Troubleshooting guides and resources
+All specialized agents are defined in `.claude/agents/` directory with specific instructions for the Shooting Star project:
 
-### Navigation
-The **[docs/README.md](docs/README.md)** serves as the central navigation hub with detailed descriptions and links to all documentation sections. Always refer to this index when looking for specific information.
+1. **[Technical Lead](.claude/agents/technical-lead.md)** - Architecture, code review, implementation
+2. **[UI/UX Designer](.claude/agents/ui-ux-designer.md)** - Design, accessibility, user experience
+3. **[QA Post Merge Tester](.claude/agents/qa-post-merge-tester.md)** - Quality assurance, testing, validation
+4. **[Project Manager](.claude/agents/project-manager.md)** - Planning, coordination, delivery
+5. **[Security Advisor](.claude/agents/security-advisor.md)** - Security, compliance, privacy
+6. **[Perinatal Market Analyst](.claude/agents/perinatal-market-analyst.md)** - Market research, user insights
 
-## Agent Coordination
-- **MANDATORY**: Follow protocols defined in [Agent Coordination](docs/03-agents/agent-coordination.md) for all GitHub issue collaboration
-- Use appropriate handoff templates and validation checklists when working with specialized agents
-- Apply role-specific workflows based on issue type (bug, feature, technical debt, security)
-- Maintain transparent communication via GitHub issue comments during agent handoffs
+### Agent Coordination
 
-## Agent-Specific Requirements
+Agents work together following the workflow defined in [Agent Coordination](docs/03-agents/coordination.md). Each agent has specific responsibilities and handoff protocols.
 
-### Tech Lead Agent
-**MANDATORY workflow for all development work:**
-- **Branch Creation**: MUST create a branch for EVERY issue using format `feature/issue-XXX-description`
-- **PR Linking**: MUST use `Related to #XXX` in PR descriptions (NEVER use Closes/Fixes/Resolves)
-- **Commit Format**: MUST reference issues in commits: `[#XXX] Description`
-- **Testing Flow**: Issues go to Testing after PR merge, not Done
-- **Full Instructions**: See `/docs/03-agents/tech-lead-workflow.md`
+## Critical Workflow Rules
 
-### Perinatal Market Analyst Agent
-**MANDATORY for all feature requests:**
-- **Feature Description**: MUST include market context and user needs
-- **Business Objectives**: MUST define impact and ROI
-- **Personas**: MUST identify with demographic insights
-- **Template Sections**: Responsible for first 3 sections of feature request template
+### Git Workflow (MANDATORY)
 
-### UI/UX Designer Agent
-**Required for user-facing features:**
-- Wireframes/mockups for all UI changes
-- WCAG 2.1 AA accessibility compliance
-- Responsive design specifications
-- Interaction patterns documentation
+**NEVER work directly on main branch**
 
-### Project Manager Agent
-**Issue management requirements:**
-- Assign priority labels (P0-P3) based on business impact
-- Assign size labels (XS-XL) based on effort estimation
-- Coordinate agent handoffs using templates
-- Track milestones and dependencies
+1. **Branch Creation**: Always create from issue
+   ```bash
+   git checkout -b feature/issue-XXX-description
+   ```
 
-### Security Advisor Agent
-**Security review triggers:**
-- Features handling user data
-- Authentication/authorization changes
-- External API integrations
-- Payment or sensitive information processing
+2. **Commit Format**: Always reference issue
+   ```bash
+   git commit -m "[#XXX] Description"
+   ```
 
-## Workflow Enforcement
+3. **PR Linking**: Use `Related to` (NOT Closes)
+   ```markdown
+   Related to #XXX
+   <!-- Issues go to Testing, not Done -->
+   ```
 
-**CRITICAL**: The Tech Lead workflow is NOT optional. Every issue MUST follow this process:
+### Development Flow
 
-1. Issue created → Assigned → Branch created
-2. Development → Commits with `[#XXX]` references
-3. PR created with `Related to #XXX` → Code review
-4. PR merged → Issue moves to Testing (stays OPEN)
-5. QA validation → Manual issue closure → Done
-6. Release → Status: Released
+```
+Issue Created → Assigned → Branch → Development → PR → Review → Merge → TESTING → Done
+                                                                              ↑
+                                                                        QA Gate (Critical)
+```
 
-**Detailed workflows**: `/docs/03-agents/` directory contains complete instructions for each agent role.
+**Important**: Only the QA Post Merge Tester can close issues (move to Done). They have veto power to send issues back to En Cours if quality standards aren't met.
+
+## Project-Specific Requirements
+
+### Accessibility (MANDATORY)
+- WCAG 2.1 AA compliance minimum
+- Pregnancy-specific adaptations:
+  - Larger touch targets (44x44px minimum)
+  - High contrast options
+  - Reduced motion support
+  - Session save/resume capability
+
+### Language Requirements
+- French-first development
+- All UI text must be available in French
+- Error messages in French
+- Date format: DD/MM/YYYY
+- Currency: CAD
+- Phone format: (514) XXX-XXXX
+
+### Performance Targets
+- LCP < 2.5s
+- FID < 100ms  
+- CLS < 0.1
+- Initial JS bundle < 200KB
+- Lighthouse score > 90
+
+### Security & Compliance
+- PIPEDA compliance (Canadian federal)
+- Quebec Law 25 compliance
+- GDPR ready (if EU users)
+- Health data encryption required
+- Consent tracking mandatory
+
+## Design System
+
+### Brand Colors (Pregnancy-Safe)
+
+#### Core Brand Colors
+```css
+/* Primary - Vert (Main Brand Green) */
+--color-primary: #618462
+--color-primary-light: #9eb49e
+--color-primary-dark: #2d3f2d
+
+/* Accent - Rose (Warm Rose Accent) */
+--color-accent: #af6868
+--color-accent-light: #d1a3a2
+--color-accent-dark: #563030
+
+/* Secondary - Bleu (Calm Blue) */
+--color-secondary: #517982
+--color-secondary-light: #94adb2
+--color-secondary-dark: #24393e
+
+/* Neutral - Brun (Brown for Text) */
+--color-neutral: #5e4530
+--color-neutral-light: #9c8b7d
+--color-neutral-dark: #2b1e13
+```
+
+#### Supporting Colors
+```css
+--color-warm: #ceaf9b      /* Beige - Warm tones */
+--color-soft: #ffddd3      /* Rose Pale - Soft backgrounds */
+--color-cool: #dae6ea      /* Bleu Pale - Cool accents */
+--color-menthe: #3d4e8d    /* Menthe - Fresh mint accent */
+--color-white: #ffffff     /* Pure white */
+--color-gris: #f5f4f2      /* Light gray background */
+```
+
+**Usage Guidelines**:
+- **Primary (Vert)**: Main brand identity, headers, CTAs
+- **Accent (Rose)**: Highlights, links, important elements  
+- **Secondary (Bleu)**: Supporting content, calm sections
+- **Neutral (Brun)**: Body text, readable content
+- **AVOID**: Bright reds (medical anxiety), harsh contrasts
+
+### Typography
+- Headings: The Seasons (serif)
+- Body: Barlow (sans-serif)
+- Accent: Moontime (script, use sparingly)
+
+## Documentation Structure
+
+### Main Documentation Hub
+The project documentation is organized in the `docs/` directory:
+
+- **[Documentation Hub](docs/README.md)** - Central navigation
+- **[Getting Started](docs/01-getting-started/)** - Setup and configuration
+- **[Development](docs/02-development/)** - Workflows and standards
+- **[Agents](docs/03-agents/)** - Points to `.claude/agents/` for details
+- **[Architecture](docs/04-architecture/)** - Technical decisions
+- **[Design System](docs/05-design-system/)** - Brand and components
+- **[Deployment](docs/06-deployment/)** - Production deployment
+- **[Automation](docs/07-automation/)** - GitHub Actions and CI/CD
+- **[Reference](docs/08-reference/)** - Troubleshooting and resources
+
+### Key Resources
+- **GitHub Issues**: Use feature request template in `.github/ISSUE_TEMPLATE/`
+- **Project Board**: [GitHub Project #5](https://github.com/flavius-atticae/shooting-star/projects/5)
+
+## Issue and PR Management
+
+### Issue Templates
+- **Feature Request**: For new functionality (available in `.github/ISSUE_TEMPLATE/`)
+
+### Label System
+- **Priority**: P0 (Critical), P1 (High), P2 (Medium), P3 (Low)
+- **Size**: XS (<2h), S (4h), M (1-2d), L (3-5d), XL (5+d)
+- **Status**: Backlog → À Faire → En Cours → Review → Testing → Done → Released
+- **Quality**: Code Quality, Performance, Security, Accessibility (auto-applied by PR checks)
+
+### Automation
+The project uses extensive GitHub Actions automation:
+- Status transitions based on PR events
+- Priority and size label syncing
+- Quality gates on PRs
+- Automated deployment to Fly.io
+
+## Testing Requirements
+
+### Post-Merge Testing Protocol
+After PR merge, issues move to Testing status where the QA Post Merge Tester validates:
+
+1. **Functional Testing**: All acceptance criteria met
+2. **Cross-Browser**: 8+ browsers tested
+3. **Language Testing**: French and English verified
+4. **Accessibility**: WCAG 2.1 AA compliance
+5. **Performance**: Core Web Vitals targets met
+6. **Security**: No vulnerabilities introduced
+
+### Test Data
+Test accounts are available for different user personas:
+- Marie (first pregnancy, French)
+- Sophie (multiple children, bilingual)
+- Alexandra (high-risk, English)
+
+## Communication Templates
+
+### Starting Work
+```markdown
+## 🚀 Starting Implementation
+- **Branch created**: `feature/issue-XXX-description`
+- **Approach**: [Technical approach]
+- **ETA**: [Estimate]
+```
+
+### Handoff Between Agents
+```markdown
+## 🔄 Handoff to @[agent]
+**Context**: [What's done]
+**Need**: [What's required]
+**Artifacts**: [Links]
+/cc @[next-agent]
+```
+
+## Important Reminders
+
+1. **Every issue needs a branch** - No exceptions
+2. **Use `Related to #XXX` in PRs** - Never use Closes/Fixes
+3. **French comes first** - All features must work in French
+4. **Test with real devices** - Especially mobile
+5. **Consider pregnancy context** - Users may have physical/cognitive limitations
+6. **Security is critical** - Health data requires extra protection
+7. **QA has final say** - Respect the testing phase
+8. **Document decisions** - Future agents need context
+
+## Quick Reference
+
+- **Local dev**: `npm run dev`
+- **Type check**: `npm run typecheck`
+- **Build**: `npm run build`
+- **Branch format**: `feature/issue-XXX-description`
+- **Commit format**: `[#XXX] Description`
+- **PR format**: `Related to #XXX`
 
 ---
+
+**Remember**: You're building for vulnerable users (pregnant women) in Quebec. Every decision should prioritize their safety, accessibility, and cultural needs.
