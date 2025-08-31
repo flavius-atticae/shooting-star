@@ -71,6 +71,41 @@ const IntroductionComponent = () => (
       </div>
     </section>
 
+    {/* Color Palette Showcase */}
+    <section className="mb-10">
+      <h2 className="font-heading text-2xl mb-6 text-primary">Palette de couleurs</h2>
+      
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        {/* Primary Green */}
+        <div className="p-4 rounded-lg border border-primary-200">
+          <div className="w-full h-16 bg-primary rounded mb-3"></div>
+          <h4 className="font-body text-sm font-semibold text-neutral">Vert Principal</h4>
+          <p className="font-body text-xs text-neutral-light">#618462</p>
+        </div>
+        
+        {/* Accent Rose */}
+        <div className="p-4 rounded-lg border border-primary-200">
+          <div className="w-full h-16 bg-accent rounded mb-3"></div>
+          <h4 className="font-body text-sm font-semibold text-neutral">Rose Accent</h4>
+          <p className="font-body text-xs text-neutral-light">#af6868</p>
+        </div>
+        
+        {/* Secondary Blue */}
+        <div className="p-4 rounded-lg border border-primary-200">
+          <div className="w-full h-16 bg-secondary rounded mb-3"></div>
+          <h4 className="font-body text-sm font-semibold text-neutral">Bleu Secondaire</h4>
+          <p className="font-body text-xs text-neutral-light">#517982</p>
+        </div>
+        
+        {/* Neutral Brown */}
+        <div className="p-4 rounded-lg border border-primary-200">
+          <div className="w-full h-16 bg-neutral rounded mb-3"></div>
+          <h4 className="font-body text-sm font-semibold text-neutral">Brun Neutre</h4>
+          <p className="font-body text-xs text-neutral-light">#5e4530</p>
+        </div>
+      </div>
+    </section>
+
     <hr className="my-8 border-primary-200" />
 
     <p className="text-center font-accent text-lg italic text-neutral">
