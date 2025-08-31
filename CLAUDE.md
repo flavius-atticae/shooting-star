@@ -72,3 +72,56 @@ The **[docs/README.md](docs/README.md)** serves as the central navigation hub wi
 - Use appropriate handoff templates and validation checklists when working with specialized agents
 - Apply role-specific workflows based on issue type (bug, feature, technical debt, security)
 - Maintain transparent communication via GitHub issue comments during agent handoffs
+
+## Agent-Specific Requirements
+
+### Tech Lead Agent
+**MANDATORY workflow for all development work:**
+- **Branch Creation**: MUST create a branch for EVERY issue using format `feature/issue-XXX-description`
+- **PR Linking**: MUST use `Related to #XXX` in PR descriptions (NEVER use Closes/Fixes/Resolves)
+- **Commit Format**: MUST reference issues in commits: `[#XXX] Description`
+- **Testing Flow**: Issues go to Testing after PR merge, not Done
+- **Full Instructions**: See `/docs/agents/tech-lead-workflow.md`
+
+### Perinatal Market Analyst Agent
+**MANDATORY for all feature requests:**
+- **Feature Description**: MUST include market context and user needs
+- **Business Objectives**: MUST define impact and ROI
+- **Personas**: MUST identify with demographic insights
+- **Template Sections**: Responsible for first 3 sections of feature request template
+
+### UI/UX Designer Agent
+**Required for user-facing features:**
+- Wireframes/mockups for all UI changes
+- WCAG 2.1 AA accessibility compliance
+- Responsive design specifications
+- Interaction patterns documentation
+
+### Project Manager Agent
+**Issue management requirements:**
+- Assign priority labels (P0-P3) based on business impact
+- Assign size labels (XS-XL) based on effort estimation
+- Coordinate agent handoffs using templates
+- Track milestones and dependencies
+
+### Security Advisor Agent
+**Security review triggers:**
+- Features handling user data
+- Authentication/authorization changes
+- External API integrations
+- Payment or sensitive information processing
+
+## Workflow Enforcement
+
+**CRITICAL**: The Tech Lead workflow is NOT optional. Every issue MUST follow this process:
+
+1. Issue created → Assigned → Branch created
+2. Development → Commits with `[#XXX]` references
+3. PR created with `Related to #XXX` → Code review
+4. PR merged → Issue moves to Testing (stays OPEN)
+5. QA validation → Manual issue closure → Done
+6. Release → Status: Released
+
+**Detailed workflows**: `/docs/agents/` directory contains complete instructions for each agent role.
+
+---
