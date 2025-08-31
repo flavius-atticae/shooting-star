@@ -1,4 +1,4 @@
-name: Sync All Issues to Project (Manual)
+name: Project Priority and Size Bulk Sync
 
 on:
   workflow_dispatch:
@@ -89,20 +89,14 @@ jobs:
             // Mapping functions
             function mapPriorityLabel(labelName) {
               if (!labelName) return null;
-              const priority = labelName.replace('priority/', '');
-              switch (priority.toLowerCase()) {
-                case 'low': return 'P2';
-                case 'medium': return 'P1';
-                case 'high': return 'P0';
-                case 'critical': return 'P0';
-                default: return null;
-              }
+              // Direct mapping: P0, P1, P2, P3 labels map directly to project columns
+              return ['P0', 'P1', 'P2', 'P3'].includes(labelName) ? labelName : null;
             }
             
             function mapSizeLabel(labelName) {
               if (!labelName) return null;
-              const size = labelName.replace('size/', '');
-              return size.toUpperCase(); // XS, S, M, L, XL
+              // Direct mapping: XS, S, M, L, XL labels map directly to project columns
+              return ['XS', 'S', 'M', 'L', 'XL'].includes(labelName) ? labelName : null;
             }
             
             let processed = 0;
@@ -112,8 +106,8 @@ jobs:
               console.log(`\n--- Processing Issue #${issue.number}: ${issue.title} ---`);
               
               // Find priority and size labels
-              const priorityLabel = issue.labels.find(label => label.name && label.name.startsWith('priority/'));
-              const sizeLabel = issue.labels.find(label => label.name && label.name.startsWith('size/'));
+              const priorityLabel = issue.labels.find(label => label.name && ['P0', 'P1', 'P2', 'P3'].includes(label.name));
+              const sizeLabel = issue.labels.find(label => label.name && ['XS', 'S', 'M', 'L', 'XL'].includes(label.name));
               
               console.log('Priority label:', priorityLabel?.name || 'none');
               console.log('Size label:', sizeLabel?.name || 'none');

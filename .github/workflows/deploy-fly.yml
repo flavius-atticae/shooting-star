@@ -1,4 +1,4 @@
-name: Deployment Automation
+name: Deploy to Fly.io
 
 on:
   push:
