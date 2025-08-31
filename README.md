@@ -1,5 +1,17 @@
 # Shooting Star ✨
 
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/flavius-atticae/shooting-star/deploy-storybook.yml?label=storybook&logo=github)](https://github.com/flavius-atticae/shooting-star/actions)
+[![Storybook](https://img.shields.io/badge/📖_Storybook-Live-FF4785)](https://flavius-atticae.github.io/shooting-star/)
+![React Router](https://img.shields.io/badge/React_Router-v7.7.1-CA4245?logo=react-router)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4.1.4-06B6D4?logo=tailwindcss)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-3178C6?logo=typescript)
+![GitHub issues](https://img.shields.io/github/issues/flavius-atticae/shooting-star)
+![GitHub last commit](https://img.shields.io/github/last-commit/flavius-atticae/shooting-star)
+
+[![Documentation](https://img.shields.io/badge/📚_Documentation-Available-4CAF50)](docs/README.md)
+![GitHub code size](https://img.shields.io/github/languages/code-size/flavius-atticae/shooting-star)
+![WCAG](https://img.shields.io/badge/WCAG-2.1_AA-green?style=flat-square)
+
 **Professional website for Pauline Roussel - Yoga Prénatal & Accompagnement à la Naissance**
 
 A modern, accessible web application showcasing holistic prenatal yoga, doula services, and birth accompaniment for French-speaking women throughout their motherhood journey.
