@@ -6,3 +6,6 @@
 /build/
 .env
 .mcp.json
+
+*storybook.log
+storybook-static

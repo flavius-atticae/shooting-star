@@ -185,10 +185,14 @@ jobs:
     steps:
       - name: Extract linked issue numbers
         id: extract_issues
+        shell: bash
         run: |
+          set -e
+          echo "Extracting issue numbers from PR..."
           # Extract issue numbers from PR title and body
           PR_TEXT="${{ github.event.pull_request.title }} ${{ github.event.pull_request.body }}"
-          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ')
+          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ' || echo "")
+          echo "Found issue numbers: $ISSUE_NUMBERS"
           echo "issue_numbers=$ISSUE_NUMBERS" >> $GITHUB_OUTPUT
 
       - name: Move linked issues to Review

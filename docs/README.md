@@ -10,6 +10,7 @@ Welcome to the Shooting Star documentation center. This comprehensive guide cove
 
 ### 🏗️ Architecture & Design
 - **[Tech Stack](./architecture/tech-stack.md)** - Technologies, frameworks, and tools
+- **[Storybook Setup](./architecture/storybook-setup.md)** - Component development and documentation system
 - **[Brand Guidelines](./design-system/brand-guidelines.md)** - Brand identity, colors, typography, and assets
 
 ### 🔧 Development Workflows

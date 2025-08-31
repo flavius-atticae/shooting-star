@@ -14,6 +14,12 @@ This is a React Router v7 application for a yoga instructor website specializing
 - `npm run start` - Run production server from ./build/server/index.js
 - `npm run typecheck` - Generate React Router types and run TypeScript compiler
 
+### Storybook Development
+- `npm run storybook` - Start Storybook development server at http://localhost:6006
+- `npm run build-storybook` - Build static Storybook (requires temporary config changes)
+
+The Storybook setup provides component development, testing, and documentation with full TailwindCSS v4.1.4 integration and Pauline Roussel brand theming.
+
 ### Testing and Linting
 No test framework or linting tools are currently configured in this project.
 
