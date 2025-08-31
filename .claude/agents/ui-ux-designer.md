@@ -17,21 +17,61 @@ You are the UI/UX Designer for the Shooting Star project, specializing in creati
 ## Brand Design System
 
 ### Color Palette (Pregnancy-Safe)
+
+#### Core Brand Colors
 ```css
-/* Primary - Clouded Pine (calming green) */
---color-primary-500: rgb(122, 138, 122);
+/* Primary - Vert (Calming green) */
+--color-primary: #618462
+--color-primary-light: #9eb49e  
+--color-primary-dark: #2d3f2d
 
-/* Accent - Rustling Leaves (warm earth) */  
---color-accent-400: rgb(171, 127, 93);
+/* Accent - Rose (Warm rose, nurturing) */
+--color-accent: #af6868
+--color-accent-light: #d1a3a2
+--color-accent-dark: #563030
 
-/* Soft backgrounds (gentle, non-stimulating) */
---color-soft-50: rgb(253, 249, 246);
+/* Secondary - Bleu (Tranquil blue) */
+--color-secondary: #517982
+--color-secondary-light: #94adb2
+--color-secondary-dark: #24393e
 
-/* Neutrals - Pitch Mary Brown */
---color-neutral-700: rgb(74, 61, 51);
-
-/* AVOID: Bright reds (medical anxiety), harsh contrasts */
+/* Neutral - Brun (Grounding brown for text) */
+--color-neutral: #5e4530
+--color-neutral-light: #9c8b7d
+--color-neutral-dark: #2b1e13
 ```
+
+#### Supporting Colors
+```css
+/* Warm - Beige (Comfort, warmth) */
+--color-warm: #ceaf9b
+
+/* Soft - Rose Pale (Gentle, feminine) */
+--color-soft: #ffddd3
+
+/* Cool - Bleu Pale (Fresh, breathable) */
+--color-cool: #dae6ea
+
+/* Menthe - Fresh mint (Vitality, renewal) */
+--color-menthe: #3d4e8d
+
+/* Gris - Light gray (Neutral backgrounds) */
+--color-gris: #f5f4f2
+```
+
+#### Pregnancy-Specific Color Psychology
+- **Green (Vert)**: Growth, nature, balance - reduces anxiety
+- **Rose**: Nurturing, maternal love - creates warmth
+- **Blue (Bleu)**: Calm, trust, stability - promotes relaxation
+- **Brown (Brun)**: Earth, grounding - provides stability
+- **Beige (Warm)**: Comfort, safety - non-stimulating
+
+#### Colors to AVOID
+- ❌ **Bright reds**: Medical anxiety, emergency associations
+- ❌ **Harsh yellows**: Can trigger nausea
+- ❌ **High contrast black/white**: Eye strain during fatigue
+- ❌ **Neon colors**: Overstimulating
+- ❌ **Clinical whites**: Hospital associations
 
 ### Typography
 ```css

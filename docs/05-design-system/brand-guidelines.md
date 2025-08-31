@@ -1,241 +1,290 @@
-# Style Guide - Pauline Roussel
+# CLAUDE.md
 
-This style guide defines the visual identity for Pauline Roussel's yoga instructor website specializing in perinatal yoga, motherhood wellness, and birth accompaniment.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Brand Identity
+## Project Overview
 
-**Name**: Pauline Roussel  
-**Theme**: Perinatal yoga, motherhood wellness, and birth accompaniment  
-**Tone**: Calming, nurturing, professional, holistic  
-**Visual Elements**: Organic botanical illustrations, feminine silhouettes, natural colors
+This is a React Router v7 application for Pauline Roussel's yoga instructor website specializing in perinatal yoga, motherhood wellness, and birth accompaniment. The site uses server-side rendering and is built with modern React patterns.
 
-## Color Palette
+**Target Market**: French-speaking pregnant women and new mothers in Quebec
+**Primary Language**: French (85%), English (15%)
+**Compliance**: GDPR, PIPEDA, Quebec Law 25
 
-### Core Brand Colors
+## Development Commands
 
-The color system is implemented using CSS custom properties in `app/app.css` and follows a semantic naming convention with light/dark variations.
+### Core Development
+- `npm run dev` - Start development server with HMR at http://localhost:5173
+- `npm run build` - Create production build
+- `npm run start` - Run production server from ./build/server/index.js
+- `npm run typecheck` - Generate React Router types and run TypeScript compiler
 
-#### **Primary - Vert (Main Brand Green)**
-- **Base**: `--color-primary` (#618462)
-- **Light**: `--color-primary-light` (#9eb49e)
-- **Dark**: `--color-primary-dark` (#2d3f2d)
+### Testing and Linting
+No test framework or linting tools are currently configured in this project.
 
-#### **Accent - Rose (Warm Rose Accent)**
-- **Base**: `--color-accent` (#af6868)
-- **Light**: `--color-accent-light` (#d1a3a2) 
-- **Dark**: `--color-accent-dark` (#563030)
+## Architecture
 
-#### **Secondary - Bleu (Calm Blue)**
-- **Base**: `--color-secondary` (#517982)
-- **Light**: `--color-secondary-light` (#94adb2)
-- **Dark**: `--color-secondary-dark` (#24393e)
+### Tech Stack
+- **Framework**: React Router v7 with SSR enabled
+- **Styling**: TailwindCSS v4.1.4 
+- **TypeScript**: Full TypeScript support with strict mode
+- **Build Tool**: Vite with React Router plugin
+- **Components**: shadcn/ui
+- **Deployment**: Fly.io
+- **Package Manager**: npm (not yarn/pnpm)
 
-#### **Neutral - Brun (Brown for Text)**
-- **Base**: `--color-neutral` (#5e4530)
-- **Light**: `--color-neutral-light` (#9c8b7d)
-- **Dark**: `--color-neutral-dark` (#2b1e13)
+### File Structure
+- `app/` - Main application code
+  - `root.tsx` - Root layout component with HTML structure and error boundary
+  - `routes.ts` - Route configuration using React Router's file-based routing
+  - `routes/` - Route components
+  - `components/` - Reusable components
+  - `hooks/` - Custom hooks
+  - `utils/` - Helper functions
+  - `types/` - TypeScript types
+  - `app.css` - Global styles
+- `react-router.config.ts` - React Router configuration (SSR enabled)
+- `vite.config.ts` - Vite configuration with TailwindCSS and tsconfigPaths plugins
 
-#### **Supporting Colors**
-- **Warm (Beige)**: `--color-warm` (#ceaf9b)
-- **Soft (Rose Pale)**: `--color-soft` (#ffddd3)
-- **Cool (Bleu Pale)**: `--color-cool` (#dae6ea)
-- **Menthe**: `--color-menthe` (#3d4e8d)
-- **White**: `--color-white` (#ffffff)
-- **Gris**: `--color-gris` (#f5f4f2)
+### Key Patterns
+- Server-side rendering is enabled by default
+- Routes are configured in `app/routes.ts` using React Router's config approach
+- Path aliases: `~/*` maps to `./app/*` 
+- Type generation: React Router automatically generates types in `.react-router/types/`
 
-### TailwindCSS Usage
+### Deployment
+The application supports Docker deployment and includes a Dockerfile. The build outputs to `build/client/` (static assets) and `build/server/` (server code).
 
-The colors are accessible through TailwindCSS classes using the simplified color names:
+## Agent System
 
-#### **Primary Colors (Green)**
-```css
-bg-primary        /* #618462 */
-bg-primary-light  /* #9eb49e */  
-bg-primary-dark   /* #2d3f2d */
-text-primary      /* Same color options */
-border-primary    /* Same color options */
+### Available Specialized Agents
+
+All specialized agents are defined in `.claude/agents/` directory with specific instructions for the Shooting Star project:
+
+1. **[Technical Lead](.claude/agents/technical-lead.md)** - Architecture, code review, implementation
+2. **[UI/UX Designer](.claude/agents/ui-ux-designer.md)** - Design, accessibility, user experience
+3. **[QA Post Merge Tester](.claude/agents/qa-post-merge-tester.md)** - Quality assurance, testing, validation
+4. **[Project Manager](.claude/agents/project-manager.md)** - Planning, coordination, delivery
+5. **[Security Advisor](.claude/agents/security-advisor.md)** - Security, compliance, privacy
+6. **[Perinatal Market Analyst](.claude/agents/perinatal-market-analyst.md)** - Market research, user insights
+
+### Agent Coordination
+
+Agents work together following the workflow defined in [Agent Coordination](docs/workflows/agent-coordination.md). Each agent has specific responsibilities and handoff protocols.
+
+## Critical Workflow Rules
+
+### Git Workflow (MANDATORY)
+
+**NEVER work directly on main branch**
+
+1. **Branch Creation**: Always create from issue
+   ```bash
+   git checkout -b feature/issue-XXX-description
+   ```
+
+2. **Commit Format**: Always reference issue
+   ```bash
+   git commit -m "[#XXX] Description"
+   ```
+
+3. **PR Linking**: Use `Related to` (NOT Closes)
+   ```markdown
+   Related to #XXX
+   <!-- Issues go to Testing, not Done -->
+   ```
+
+### Development Flow
+
+```
+Issue Created → Assigned → Branch → Development → PR → Review → Merge → TESTING → Done
+                                                                              ↑
+                                                                        QA Gate (Critical)
 ```
 
-#### **Accent Colors (Rose)**
+**Important**: Only the QA Post Merge Tester can close issues (move to Done). They have veto power to send issues back to En Cours if quality standards aren't met.
+
+## Project-Specific Requirements
+
+### Accessibility (MANDATORY)
+- WCAG 2.1 AA compliance minimum
+- Pregnancy-specific adaptations:
+  - Larger touch targets (44x44px minimum)
+  - High contrast options
+  - Reduced motion support
+  - Session save/resume capability
+
+### Language Requirements
+- French-first development
+- All UI text must be available in French
+- Error messages in French
+- Date format: DD/MM/YYYY
+- Currency: CAD
+- Phone format: (514) XXX-XXXX
+
+### Performance Targets
+- LCP < 2.5s
+- FID < 100ms  
+- CLS < 0.1
+- Initial JS bundle < 200KB
+- Lighthouse score > 90
+
+### Security & Compliance
+- PIPEDA compliance (Canadian federal)
+- Quebec Law 25 compliance
+- GDPR ready (if EU users)
+- Health data encryption required
+- Consent tracking mandatory
+
+## Design System
+
+### Brand Colors (Complete Palette)
+
+#### Core Brand Colors
 ```css
-bg-accent        /* #af6868 */
-bg-accent-light  /* #d1a3a2 */
-bg-accent-dark   /* #563030 */
-text-accent      /* Same color options */
-border-accent    /* Same color options */
+/* Primary - Vert (Main Brand Green) */
+--color-primary: #618462
+--color-primary-light: #9eb49e
+--color-primary-dark: #2d3f2d
+
+/* Accent - Rose (Warm Rose Accent) */
+--color-accent: #af6868
+--color-accent-light: #d1a3a2
+--color-accent-dark: #563030
+
+/* Secondary - Bleu (Calm Blue) */
+--color-secondary: #517982
+--color-secondary-light: #94adb2
+--color-secondary-dark: #24393e
+
+/* Neutral - Brun (Brown for Text) */
+--color-neutral: #5e4530
+--color-neutral-light: #9c8b7d
+--color-neutral-dark: #2b1e13
 ```
 
-#### **Neutral Colors (Brown)**
+#### Supporting Colors
 ```css
-bg-neutral        /* #5e4530 */
-bg-neutral-light  /* #9c8b7d */
-bg-neutral-dark   /* #2b1e13 */
-text-neutral      /* Same color options */
-border-neutral    /* Same color options */
+/* Additional Brand Colors */
+--color-warm: #ceaf9b      /* Beige - Warm tones */
+--color-soft: #ffddd3      /* Rose Pale - Soft backgrounds */
+--color-cool: #dae6ea      /* Bleu Pale - Cool accents */
+--color-menthe: #3d4e8d    /* Menthe - Fresh mint accent */
+--color-white: #ffffff     /* Pure white */
+--color-gris: #f5f4f2      /* Light gray background */
 ```
 
-#### **Supporting Colors**
-```css
-bg-secondary      /* #517982 - Bleu */
-bg-warm           /* #ceaf9b - Beige */
-bg-soft           /* #ffddd3 - Rose pale */
-bg-cool           /* #dae6ea - Bleu pale */
-bg-menthe         /* #3d4e8d - Menthe */
-bg-white          /* #ffffff - White */
-bg-gris           /* #f5f4f2 - Gris */
+#### Usage Guidelines
+- **Primary (Vert)**: Main brand identity, headers, CTAs
+- **Accent (Rose)**: Highlights, links, important elements  
+- **Secondary (Bleu)**: Supporting content, calm sections
+- **Neutral (Brun)**: Body text, readable content
+- **AVOID**: Bright reds (medical anxiety), harsh contrasts
+
+### Typography
+- **Headings**: The Seasons (elegant serif)
+- **Body**: Barlow (clean sans-serif)
+- **Subtitles**: Barlow SemiBold (600)
+- **Accent**: Moontime (decorative script, use sparingly)
+
+## Documentation Structure
+
+### Main Documentation Hub
+The project documentation is organized in the `docs/` directory:
+
+- **[Documentation Hub](docs/README.md)** - Central navigation
+- **[Getting Started](docs/01-getting-started/)** - Setup and configuration
+- **[Development](docs/02-development/)** - Workflows and standards
+- **[Agents](docs/03-agents/)** - Points to `.claude/agents/` for details
+- **[Architecture](docs/04-architecture/)** - Technical decisions
+- **[Design System](docs/05-design-system/)** - Brand and components
+- **[Deployment](docs/06-deployment/)** - Production deployment
+- **[Automation](docs/07-automation/)** - GitHub Actions and CI/CD
+- **[Reference](docs/08-reference/)** - Troubleshooting and resources
+
+### Key Resources
+- **GitHub Issues**: Use templates in `.github/ISSUE_TEMPLATE/`
+- **PR Template**: `.github/pull_request_template.md`
+- **Contributing**: `.github/CONTRIBUTING.md`
+- **Project Board**: [GitHub Project #5](https://github.com/flavius-atticae/shooting-star/projects/5)
+
+## Issue and PR Management
+
+### Issue Templates
+- **Feature Request**: For new functionality
+- **Bug Report**: For problems
+- **Technical Debt**: For refactoring
+- **Security Issue**: For vulnerabilities
+
+### Label System
+- **Priority**: P0 (Critical), P1 (High), P2 (Medium), P3 (Low)
+- **Size**: XS (<2h), S (4h), M (1-2d), L (3-5d), XL (5+d)
+- **Status**: Backlog → À Faire → En Cours → Review → Testing → Done → Released
+- **Quality**: Code Quality, Performance, Security, Accessibility (auto-applied by PR checks)
+
+### Automation
+The project uses extensive GitHub Actions automation:
+- Status transitions based on PR events
+- Priority and size label syncing
+- Quality gates on PRs
+- Automated deployment to Fly.io
+
+## Testing Requirements
+
+### Post-Merge Testing Protocol
+After PR merge, issues move to Testing status where the QA Post Merge Tester validates:
+
+1. **Functional Testing**: All acceptance criteria met
+2. **Cross-Browser**: 8+ browsers tested
+3. **Language Testing**: French and English verified
+4. **Accessibility**: WCAG 2.1 AA compliance
+5. **Performance**: Core Web Vitals targets met
+6. **Security**: No vulnerabilities introduced
+
+### Test Data
+Test accounts are available for different user personas:
+- Marie (first pregnancy, French)
+- Sophie (multiple children, bilingual)
+- Alexandra (high-risk, English)
+
+## Communication Templates
+
+### Starting Work
+```markdown
+## 🚀 Starting Implementation
+- **Branch created**: `feature/issue-XXX-description`
+- **Approach**: [Technical approach]
+- **ETA**: [Estimate]
 ```
 
-#### **Legacy Support**
-For existing components, legacy color names are mapped to the new system:
-```css
-bg-primary-500    /* Maps to --color-primary */
-bg-accent-400     /* Maps to --color-accent-light */
-bg-neutral-700    /* Maps to --color-neutral-dark */
-bg-soft-50        /* Maps to --color-gris */
+### Handoff Between Agents
+```markdown
+## 🔄 Handoff to @[agent]
+**Context**: [What's done]
+**Need**: [What's required]
+**Artifacts**: [Links]
+/cc @[next-agent]
 ```
 
-#### **Current Page Implementation**
-- **Background**: `bg-soft-50` (light), `bg-neutral-900` (dark)
-- **Text Primary**: `text-neutral-700` (light), `text-neutral-200` (dark)
-- **Text Secondary**: `text-neutral-500` (light), `text-neutral-300` (dark)
-- **Links**: `text-accent-500` (light), `text-accent-400` (dark)
-- **Borders**: `border-primary-200` (light), `border-neutral-700` (dark)
+## Important Reminders
 
-## Typography
+1. **Every issue needs a branch** - No exceptions
+2. **Use `Related to #XXX` in PRs** - Never use Closes/Fixes
+3. **French comes first** - All features must work in French
+4. **Test with real devices** - Especially mobile
+5. **Consider pregnancy context** - Users may have physical/cognitive limitations
+6. **Security is critical** - Health data requires extra protection
+7. **QA has final say** - Respect the testing phase
+8. **Document decisions** - Future agents need context
 
-### Font Families
+## Quick Reference
 
-#### **Barlow** (Texte Courant & Sous-titres)
-- **Body Text**: `font-body` - Barlow Regular (400)
-- **Subtitles**: `font-subtitle` + `font-semibold` - Barlow SemiBold (600)
-- Usage: Texte principal, navigation, sous-titres
-- Caractère: Moderne, lisible, accessible
+- **Local dev**: `npm run dev`
+- **Type check**: `npm run typecheck`
+- **Build**: `npm run build`
+- **Branch format**: `feature/issue-XXX-description`
+- **Commit format**: `[#XXX] Description`
+- **PR format**: `Related to #XXX`
 
-#### **The Seasons** (Titres)
-- **Headings**: `font-heading` - The Seasons Regular
-- Usage: Titres principaux (H1, H2)
-- Caractère: Élégant, féminin, script décoratif
+---
 
-#### **Moontime** (Accents)
-- **Accent Text**: `font-accent` - Moontime Regular
-- Usage: Citations, éléments décoratifs, mise en valeur
-- Caractère: Artistique, organique, distinctif
-
-### Tailwind Classes
-```css
-/* Font Families */
-font-body      → Barlow Regular
-font-subtitle  → Barlow (use with font-semibold)
-font-heading   → The Seasons
-font-accent    → Moontime
-
-/* Weights */
-font-normal    → 400 (Regular)
-font-semibold  → 600 (SemiBold)
-```
-
-### Implementation
-- All fonts loaded via `@font-face` from `/public/fonts/`
-- `font-display: swap` for optimal loading
-- Fallback fonts included for accessibility
-
-## Logo Assets
-
-### Available Formats
-- **SVG**: Best for web use (`../.claude/commands/assets/logos/Logos - SVG/`)
-- **PNG**: High-resolution for various uses (`../.claude/commands/assets/logos/Logos - PNG/`)
-
-### Logo Variations
-
-**Full Logo** (Icon + Text)
-- `Pauline_Logo-couleurs_Logo-full-[color].svg`
-- Colors: bleu, brun, rose, vert
-- Use for: Main branding, headers
-
-**Icon Only**
-- `Pauline_Logo-couleurs_Logo-icon-[color].svg`
-- Botanical illustration with feminine silhouette
-- Use for: Favicons, social media, compact spaces
-
-**Text Variations**
-- **Square text**: `Logo-texte-carre-[color].svg`
-- **Long text**: `Logo-texte-long-[color].svg`
-- Use for: Different layout requirements
-
-### Logo Color Usage
-- **Green (vert)**: Primary brand color, use most frequently
-- **Brown (brun)**: Earth tone variation for warm contexts
-- **Blue (bleu)**: Calming variation for wellness content
-- **Pink/Rose (rose)**: Feminine variation for motherhood content
-
-## Visual Elements
-
-### Botanical Illustrations
-- Organic leaf and branch motifs
-- Hand-drawn style with flowing lines
-- Represents growth, nature, and nurturing
-
-### Feminine Silhouettes
-- Pregnant woman profile in logo
-- Represents the perinatal focus
-- Subtle and elegant implementation
-
-## Layout & Spacing
-
-### Current Implementation
-```css
-.container: mx-auto (centered)
-.main-padding: pt-16 pb-4
-.section-padding: p-4, p-6
-.content-width: max-w-[300px], max-w-[100vw]
-```
-
-### Component Patterns
-- **Cards**: `rounded-3xl border p-6` with brand color borders
-- **Navigation**: Centered flex layouts with consistent spacing
-- **Buttons**: Use brand colors with proper contrast
-
-## Dark Mode Support
-
-### Current Implementation
-- Uses `prefers-color-scheme: dark` media query
-- Will need adaptation for brand colors
-
-### Recommendations
-- Use darker versions of Clouded Pine for dark mode
-- Maintain accessibility with sufficient contrast
-- Test all brand colors in dark contexts
-
-## Asset References
-
-### Color Swatches
-- Visual color references: `../.claude/commands/assets/colors/`
-- Each color family has detailed swatches with hex codes
-- Use these for accurate color matching
-
-### Logo Library
-- Complete logo collection: `../.claude/commands/assets/logos/`
-- Organized by format and color variation
-- Source file: `Pauline_Logo-couleurs.ai`
-
-## Implementation Guidelines
-
-### Priority Order
-1. Replace React Router placeholder logos with Pauline's brand logos
-2. Update color scheme to use Clouded Pine as primary
-3. Implement brand colors in TailwindCSS config
-4. Update typography to match brand feel
-5. Add botanical visual elements where appropriate
-
-### Accessibility
-- Ensure all brand colors meet WCAG contrast requirements
-- Provide alternative text for botanical illustrations
-- Maintain semantic HTML structure
-- Test with screen readers
-
-## Future Development
-
-- Custom TailwindCSS color extensions for brand palette
-- Botanical pattern backgrounds and decorative elements
-- Photography style guide for yoga/pregnancy imagery
-- Animation guidelines for gentle, calming interactions
+**Remember**: You're building for vulnerable users (pregnant women) in Quebec. Every decision should prioritize their safety, accessibility, and cultural needs.
