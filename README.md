@@ -37,6 +37,7 @@ Pauline Roussel is a certified prenatal yoga instructor and birth companion spec
 ### Core Technologies
 - **Framework**: React Router v7.7.1 with Server-Side Rendering
 - **Styling**: TailwindCSS v4.1.4 with custom design system
+- **Component Development**: Storybook 9.1 with TailwindCSS integration
 - **Language**: TypeScript 5.8.3 with strict mode enabled
 - **Build Tool**: Vite 6.3.3 with optimized bundling
 - **Runtime**: Node.js with React 19.1.0
@@ -54,42 +55,44 @@ Pauline Roussel is a certified prenatal yoga instructor and birth companion spec
 
 ### ✅ Completed Milestones
 
-#### Phase 1: Brand Identity System (COMPLETED)
-- [x] Custom typography integration with web-optimized font loading
-- [x] Comprehensive color system with semantic naming conventions
+#### Phase 1: Foundation & Infrastructure (COMPLETED)
+- [x] React Router v7 with Server-Side Rendering setup
+- [x] TailwindCSS v4.1.4 design system integration
+- [x] TypeScript configuration with strict mode
+- [x] Custom typography integration (The Seasons, Barlow, Moontime)
+- [x] Comprehensive color system with semantic naming
 - [x] Professional logo implementation with theme variants
-- [x] Core component architecture and welcome page
-- [x] SEO optimization with meta tags and structured data
+- [x] Core component architecture (shadcn/ui)
+- [x] Welcome page with brand integration
+- [x] SEO optimization with meta tags
 - [x] Dark mode support with user preference detection
+- [x] **Storybook v9.1** setup with GitHub Pages deployment at https://flavius-atticae.github.io/shooting-star/
 
 ### 🚧 Current Development Phase
 
-#### Phase 2: Core Website Features (IN PROGRESS)
-- [ ] **Performance Optimization** ([#4](../../issues/4)) - Font subsetting and compression
-- [ ] **Testing Infrastructure** ([#5](../../issues/5)) - Visual regression and accessibility testing
-- [ ] **Accessibility Compliance** ([#6](../../issues/6)) - WCAG 2.1 AA standards for pregnancy users
-- [ ] **Security Hardening** ([#7](../../issues/7)) - Vulnerability remediation and GDPR compliance
+#### Phase 2: Content Pages & Features (IN PROGRESS)
+- [x] **Storybook Infrastructure** ([#38](../../issues/38)) - Foundation setup completed
+- [ ] **Domain Components Documentation** ([#39](../../issues/39)) - Yoga-specific components
+- [ ] **Brand Theme Customization** ([#40](../../issues/40)) - Final Storybook theming
+- [ ] **Home Page Implementation** ([#25](../../issues/25)) - "Épanouir sa féminité" landing page
+- [ ] **Service Pages** ([#26](../../issues/26), [#27](../../issues/27), [#28](../../issues/28)) - Doula, Yoga, Sacred Feminine
+- [ ] **About Page** ([#29](../../issues/29)) - Pauline Roussel professional profile
+- [ ] **Contact Page** ([#30](../../issues/30)) - Contact forms and booking
 
 ### 🎯 Upcoming Priorities
 
-#### Phase 3: Content & Functionality (PLANNED)
-- [ ] Service pages with detailed offerings and pricing
-- [ ] Online booking system integration
-- [ ] Contact forms with pregnancy-specific considerations
-- [ ] Blog/resources section for prenatal education
-- [ ] Testimonials and client success stories
+#### Phase 3: Quality & Optimization (PLANNED)
+- [ ] **Testing Infrastructure** - Visual regression and accessibility testing
+- [ ] **Accessibility Compliance** - WCAG 2.1 AA standards for pregnancy users
+- [ ] **Security Hardening** - GDPR compliance and data protection
+- [ ] **Performance Optimization** - Core Web Vitals improvements
+- [ ] **SEO Enhancement** - French-first content optimization
 
-#### Phase 4: Enhanced User Experience (PLANNED)  
-- [ ] Multilingual support (French primary, English secondary)
-- [ ] Progressive Web App (PWA) capabilities
-- [ ] Advanced performance optimizations
-- [ ] Analytics and user behavior tracking (GDPR-compliant)
-
-### 📊 Current Metrics
-- **Performance**: Baseline established, optimization in progress
-- **Accessibility**: Design system foundation complete
-- **SEO**: Basic optimization implemented
-- **Security**: Audit completed, remediation in progress
+### 📊 Current Status
+- **Infrastructure**: Complete (React Router v7 + TailwindCSS v4 + Storybook v9)
+- **Design System**: Foundation complete, component documentation in progress
+- **Content**: Page implementation phase (7 pages planned)
+- **Deployment**: Storybook live on GitHub Pages, main site pending
 
 ---
 
@@ -119,15 +122,22 @@ Your application will be available at `http://localhost:5173` with hot module re
 
 #### Development
 ```bash
-npm run dev          # Start development server with HMR
-npm run typecheck    # Generate types and run TypeScript compiler
+npm run dev          # Start development server with HMR at http://localhost:5173
+npm run typecheck    # Generate React Router types and run TypeScript compiler
+npm run storybook    # Start Storybook development server at http://localhost:6006
 ```
 
 #### Production
 ```bash
 npm run build        # Create optimized production build
-npm run start        # Run production server from build output
+npm run start        # Run production server from ./build/server/index.js
+npm run build-storybook  # Build static Storybook for GitHub Pages deployment
 ```
+
+#### Quick Links
+- **Local Development**: http://localhost:5173
+- **Storybook Dev**: http://localhost:6006
+- **Storybook Production**: https://flavius-atticae.github.io/shooting-star/
 
 #### Project Structure
 ```
@@ -135,20 +145,23 @@ shooting-star/
 ├── app/                    # Application source code
 │   ├── root.tsx           # Root layout with HTML structure
 │   ├── routes.ts          # Route configuration
-│   ├── app.css           # Global styles and design system
+│   ├── app.css           # Global styles and TailwindCSS v4
 │   ├── routes/           # Page components
-│   │   └── home.tsx      # Homepage with meta optimization
-│   └── welcome/          # Welcome component and brand assets
-│       ├── welcome.tsx   # Main welcome component
-│       ├── pauline-logo-light.svg
-│       └── pauline-logo-dark.svg
-├── public/               # Static assets
-│   ├── fonts/           # Custom font files
-│   └── favicon.svg      # Brand favicon
-├── build/               # Production build output (generated)
-│   ├── client/         # Static assets for CDN
-│   └── server/         # Server-side rendering code
-└── react-router.config.ts  # SSR and build configuration
+│   │   ├── home.tsx      # Homepage route
+│   │   ├── health.tsx    # Health check endpoint
+│   │   └── components-test.tsx # Component testing route
+│   ├── components/       # Reusable UI components (shadcn/ui)
+│   │   └── ui/          # Core UI components
+│   ├── lib/             # Utility functions
+│   └── welcome/         # Welcome component and brand assets
+├── .storybook/          # Storybook configuration
+├── stories/             # Component stories (if any)
+├── public/              # Static assets
+│   ├── fonts/          # Custom font files
+│   └── favicon.svg     # Brand favicon
+├── docs/               # Project documentation
+├── .claude/            # Claude Code agent configurations
+└── build/              # Production build output (generated)
 ```
 
 ---
@@ -264,17 +277,12 @@ The application can be deployed to any Node.js hosting platform:
 
 For detailed technical documentation, visit our **[Documentation Hub](docs/README.md)**:
 
-### Essential Guides
-- **[Setup Guide](docs/01-getting-started/setup.md)** - Development environment setup
-- **[Tech Stack](docs/04-architecture/tech-stack.md)** - Complete technology overview  
-- **[Configuration Files](docs/01-getting-started/configuration-files.md)** - Project configuration
-- **[Security Guidelines](docs/08-reference/guidelines.md)** - GDPR compliance and security
-- **[Troubleshooting](docs/08-reference/troubleshooting.md)** - Common issues and solutions
-
-### Workflows & Team
-- **[Agent Coordination](docs/03-agents/agent-coordination.md)** - Multi-agent collaboration
-- **[Deployment Guide](docs/06-deployment/fly-io-guide.md)** - Production deployment
-- **[Brand Guidelines](docs/05-design-system/brand-guidelines.md)** - Design system usage
+### Quick Navigation
+- **[Documentation Hub](docs/README.md)** - Complete documentation index
+- **[CLAUDE.md](CLAUDE.md)** - Development guidelines and agent instructions
+- **[Storybook Documentation](https://flavius-atticae.github.io/shooting-star/)** - Component library and design system
+- **[GitHub Issues](../../issues)** - Current tasks and progress tracking
+- **[Project Board](../../projects)** - Sprint planning and coordination
 
 ---
 
