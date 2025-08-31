@@ -25,7 +25,7 @@ const preview: Preview = {
     },
     // Accessibility testing parameters
     a11y: {
-      element: '#storybook-root',
+      context: '#storybook-root',
       config: {
         rules: [
           // Pregnancy-specific accessibility rules
@@ -54,19 +54,15 @@ const preview: Preview = {
       values: [
         {
           name: 'light',
-          value: '#f5f4f2', // Brand gris color
+          value: '#ffffff', // Default white background
         },
         {
           name: 'dark',
-          value: '#030201', // Brand dark neutral
+          value: '#333333', // Standard dark background
         },
         {
-          name: 'soft',
-          value: '#ffddd3', // Brand soft rose
-        },
-        {
-          name: 'cool',
-          value: '#dae6ea', // Brand cool blue
+          name: 'gray',
+          value: '#f8f8f8', // Light gray background
         },
       ],
     },

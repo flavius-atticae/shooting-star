@@ -4,15 +4,14 @@ import customTheme from './theme';
 /**
  * Storybook Manager Configuration
  * 
- * Applies the comprehensive Pauline Roussel brand theming and
- * configures the Storybook interface for optimal usability.
+ * Configures the Storybook interface for optimal usability while
+ * maintaining default Storybook theming.
  * 
  * Features:
- * - Complete brand theme integration
- * - Pregnancy-safe design considerations  
  * - Accessibility optimizations
- * - French-Canadian cultural sensitivity
- * - Professional healthcare-adjacent presentation
+ * - Enhanced touch targets for mobile/tablet use
+ * - Pregnancy-friendly UX considerations (viewport names, reduced motion)
+ * - Performance optimizations
  */
 addons.setConfig({
   theme: customTheme,
@@ -25,7 +24,7 @@ addons.setConfig({
   sidebar: {
     showRoots: false,                // Hide category roots for cleaner navigation
     collapsedRoots: ['foundation'],  // Collapse foundation by default
-    renderLabel: ({ name, type }) => {
+    renderLabel: ({ name }) => {
       // Custom label rendering for better French-Canadian context
       const labels = {
         'Foundation': 'Fondation',
@@ -50,18 +49,6 @@ addons.setConfig({
     eject: { hidden: true },        // Hide eject (not needed for this use case)
     copy: { hidden: false },        // Keep copy for developer workflow
     fullscreen: { hidden: false },  // Keep fullscreen for mobile testing
-    
-    // Custom toolbar items for maternal wellness context
-    'storybook/viewport': {
-      styles: {
-        // Custom viewport labels with pregnancy context
-        xs: { name: 'Mobile Portrait (Nursing)', styles: { width: '380px', height: '100%' } },
-        sm: { name: 'Mobile Landscape', styles: { width: '640px', height: '100%' } },
-        md: { name: 'Tablet (Bedside)', styles: { width: '768px', height: '100%' } },
-        lg: { name: 'Desktop', styles: { width: '1024px', height: '100%' } },
-        xl: { name: 'Desktop Large', styles: { width: '1280px', height: '100%' } },
-      }
-    }
   },
   
   // Initial state configuration for optimal user experience
@@ -74,11 +61,11 @@ addons.setConfig({
   // Performance and accessibility settings
   enableShortcuts: true,            // Keep keyboard shortcuts for accessibility
   
-  // Custom manager head for additional assets if needed
-  managerHead: (head) => `
+  // Custom manager head for accessibility and performance features (no brand colors)
+  managerHead: (head: string) => `
     ${head}
     <style>
-      /* Custom styles for pregnancy-safe design enhancements */
+      /* Accessibility and UX improvements without brand colors */
       
       /* Larger touch targets for pregnancy accommodations */
       .sidebar-container button,
@@ -90,7 +77,7 @@ addons.setConfig({
       /* Enhanced focus indicators for accessibility */
       .sidebar-container *:focus,
       .toolbar-container *:focus {
-        outline: 3px solid #2d3f2d !important;
+        outline: 3px solid #005fcc !important; /* Standard blue focus indicator */
         outline-offset: 2px !important;
       }
       
@@ -110,24 +97,6 @@ addons.setConfig({
           border: 2px solid #000 !important;
         }
       }
-      
-      /* Custom scrollbar styling for brand consistency */
-      .sidebar-container::-webkit-scrollbar {
-        width: 8px;
-      }
-      
-      .sidebar-container::-webkit-scrollbar-track {
-        background: #f5f4f2;
-      }
-      
-      .sidebar-container::-webkit-scrollbar-thumb {
-        background: #9eb49e;
-        border-radius: 4px;
-      }
-      
-      .sidebar-container::-webkit-scrollbar-thumb:hover {
-        background: #618462;
-      }
     </style>
     
     <!-- Preload critical fonts for better performance -->
@@ -135,19 +104,16 @@ addons.setConfig({
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&display=swap" as="style">
     
-    <!-- Meta tags for better SEO and social sharing -->
-    <meta name="description" content="Pauline Roussel Design System - Component library for perinatal yoga and motherhood wellness platform">
-    <meta name="keywords" content="design system, components, react, storybook, perinatal yoga, motherhood wellness">
-    <meta name="author" content="Pauline Roussel">
+    <!-- Meta tags for better SEO -->
+    <meta name="description" content="Component library - Interactive Storybook documentation">
+    <meta name="keywords" content="design system, components, react, storybook">
     
     <!-- Open Graph tags for social sharing -->
-    <meta property="og:title" content="Pauline Roussel Design System">
-    <meta property="og:description" content="Interactive component library for perinatal yoga and motherhood wellness">
+    <meta property="og:title" content="Component Library">
+    <meta property="og:description" content="Interactive component library documentation">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://flavius-atticae.github.io/shooting-star/">
     
-    <!-- Accessibility enhancements -->
-    <meta name="theme-color" content="#618462">
+    <!-- Accessibility enhancements with default theme color -->
     <meta name="color-scheme" content="light">
   `,
 });
