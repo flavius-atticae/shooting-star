@@ -265,16 +265,16 @@ The application can be deployed to any Node.js hosting platform:
 For detailed technical documentation, visit our **[Documentation Hub](docs/README.md)**:
 
 ### Essential Guides
-- **[Setup Guide](docs/getting-started/setup.md)** - Development environment setup
-- **[Tech Stack](docs/architecture/tech-stack.md)** - Complete technology overview  
-- **[Configuration Files](docs/getting-started/configuration-files.md)** - Project configuration
-- **[Security Guidelines](docs/security/guidelines.md)** - GDPR compliance and security
-- **[Troubleshooting](docs/reference/troubleshooting.md)** - Common issues and solutions
+- **[Setup Guide](docs/01-getting-started/setup.md)** - Development environment setup
+- **[Tech Stack](docs/04-architecture/tech-stack.md)** - Complete technology overview  
+- **[Configuration Files](docs/01-getting-started/configuration-files.md)** - Project configuration
+- **[Security Guidelines](docs/08-reference/guidelines.md)** - GDPR compliance and security
+- **[Troubleshooting](docs/08-reference/troubleshooting.md)** - Common issues and solutions
 
 ### Workflows & Team
-- **[Agent Coordination](docs/workflows/agent-coordination.md)** - Multi-agent collaboration
-- **[Deployment Guide](docs/deployment/fly-io-guide.md)** - Production deployment
-- **[Brand Guidelines](docs/design-system/brand-guidelines.md)** - Design system usage
+- **[Agent Coordination](docs/03-agents/agent-coordination.md)** - Multi-agent collaboration
+- **[Deployment Guide](docs/06-deployment/fly-io-guide.md)** - Production deployment
+- **[Brand Guidelines](docs/05-design-system/brand-guidelines.md)** - Design system usage
 
 ---
 

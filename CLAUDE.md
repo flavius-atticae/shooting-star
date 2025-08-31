@@ -56,19 +56,20 @@ The application supports Docker deployment and includes a Dockerfile. The build 
 All project documentation is centralized in the `docs/` directory with a comprehensive structure. Start with the **[Documentation Hub](docs/README.md)** which provides:
 
 ### Key Documentation Areas
-- **[Getting Started](docs/getting-started/)** - Setup, configuration, and environment guides
-- **[Architecture](docs/architecture/)** - Tech stack, system design, and technical decisions
-- **[Deployment](docs/deployment/)** - Fly.io deployment guides and rollback procedures
-- **[Security](docs/security/)** - Security guidelines, GDPR compliance, and best practices
-- **[Workflows](docs/workflows/)** - Agent coordination, GitHub automation, and project management
-- **[Design System](docs/design-system/)** - Brand guidelines and design standards
-- **[Reference](docs/reference/)** - Troubleshooting guides and technical references
+- **[Getting Started](docs/01-getting-started/)** - Setup, configuration, and environment guides
+- **[Development](docs/02-development/)** - Development processes and project management
+- **[Agents](docs/03-agents/)** - Specialized AI agent coordination
+- **[Architecture](docs/04-architecture/)** - Tech stack, system design, and technical decisions
+- **[Design System](docs/05-design-system/)** - Brand guidelines and UI components
+- **[Deployment](docs/06-deployment/)** - Production deployment and operations
+- **[Automation](docs/07-automation/)** - GitHub Actions and automated workflows
+- **[Reference](docs/08-reference/)** - Troubleshooting guides and resources
 
 ### Navigation
 The **[docs/README.md](docs/README.md)** serves as the central navigation hub with detailed descriptions and links to all documentation sections. Always refer to this index when looking for specific information.
 
 ## Agent Coordination
-- **MANDATORY**: Follow protocols defined in [Agent Coordination](docs/workflows/agent-coordination.md) for all GitHub issue collaboration
+- **MANDATORY**: Follow protocols defined in [Agent Coordination](docs/03-agents/agent-coordination.md) for all GitHub issue collaboration
 - Use appropriate handoff templates and validation checklists when working with specialized agents
 - Apply role-specific workflows based on issue type (bug, feature, technical debt, security)
 - Maintain transparent communication via GitHub issue comments during agent handoffs
@@ -81,7 +82,7 @@ The **[docs/README.md](docs/README.md)** serves as the central navigation hub wi
 - **PR Linking**: MUST use `Related to #XXX` in PR descriptions (NEVER use Closes/Fixes/Resolves)
 - **Commit Format**: MUST reference issues in commits: `[#XXX] Description`
 - **Testing Flow**: Issues go to Testing after PR merge, not Done
-- **Full Instructions**: See `/docs/agents/tech-lead-workflow.md`
+- **Full Instructions**: See `/docs/03-agents/tech-lead-workflow.md`
 
 ### Perinatal Market Analyst Agent
 **MANDATORY for all feature requests:**
@@ -122,6 +123,6 @@ The **[docs/README.md](docs/README.md)** serves as the central navigation hub wi
 5. QA validation → Manual issue closure → Done
 6. Release → Status: Released
 
-**Detailed workflows**: `/docs/agents/` directory contains complete instructions for each agent role.
+**Detailed workflows**: `/docs/03-agents/` directory contains complete instructions for each agent role.
 
 ---
