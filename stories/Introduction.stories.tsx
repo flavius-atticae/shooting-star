@@ -1,129 +1,208 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-// Composant Introduction avec documentation complète
-const IntroductionComponent = () => (
-  <div className="max-w-4xl mx-auto p-6">
-    <h1 className="font-heading text-3xl mb-6 text-neutral">
-      Système de Design Pauline Roussel
-    </h1>
-    
-    <p className="font-body text-lg mb-8 text-neutral-light">
-      Bienvenue dans le Storybook de Pauline Roussel, instructrice de yoga périnatal 
-      spécialisée dans le bien-être maternel et l'accompagnement à la naissance.
-    </p>
-
-    <h2 className="font-heading text-2xl mb-4 text-primary">À propos du projet</h2>
-    <p className="font-body mb-6 text-neutral-light">
-      Cette application React Router v7 vise à offrir une présence en ligne sereine, 
-      accessible et professionnelle pour les services de yoga. Le design met l'accent sur :
-    </p>
-    <ul className="list-disc pl-6 mb-8 font-body text-neutral-light">
-      <li><strong>Esthétique douce</strong> avec des couleurs et typographies apaisantes</li>
-      <li><strong>Accessibilité</strong> avec états de focus appropriés et HTML sémantique</li>
-      <li><strong>Réactivité</strong> sur toutes les tailles d'écran</li>
-      <li><strong>Performance</strong> avec patterns React modernes et SSR</li>
-    </ul>
-
-    <hr className="my-8 border-primary-200" />
-
-    {/* Typography Hierarchy Showcase */}
-    <section className="mb-10">
-      <h2 className="font-heading text-2xl mb-6 text-primary">Hiérarchie typographique</h2>
-      
-      {/* The Seasons - Headings */}
-      <div className="mb-6 p-4 bg-soft-50 rounded-lg border border-primary-200">
-        <h3 className="font-body text-sm font-semibold uppercase tracking-wider text-neutral-light mb-3">
-          The Seasons — Titres principaux
-        </h3>
-        <h1 className="font-heading text-4xl mb-2 text-neutral">Titre Principal H1</h1>
-        <h2 className="font-heading text-3xl mb-2 text-neutral">Titre Secondaire H2</h2>
-        <h3 className="font-heading text-2xl mb-2 text-neutral">Titre Tertiaire H3</h3>
-        <h4 className="font-heading text-xl text-neutral">Titre Quaternaire H4</h4>
-      </div>
-
-      {/* Barlow - Body Text */}
-      <div className="mb-6 p-4 bg-soft-50 rounded-lg border border-primary-200">
-        <h3 className="font-body text-sm font-semibold uppercase tracking-wider text-neutral-light mb-3">
-          Barlow — Texte de corps
-        </h3>
-        <p className="font-body text-lg mb-3 text-neutral-light">
-          Texte de paragraphe principal (18px) - Idéal pour les descriptions de cours et informations importantes.
+// Introduction component as a simple React component
+const Introduction = () => {
+  return (
+    <div style={{ 
+      fontFamily: 'Barlow, sans-serif',
+      maxWidth: '800px',
+      margin: '0 auto',
+      padding: '24px',
+      color: '#5e4530'
+    }}>
+      <header style={{ textAlign: 'center', marginBottom: '48px' }}>
+        <h1 style={{ 
+          fontFamily: 'The Seasons, serif',
+          fontSize: '48px',
+          color: '#618462',
+          marginBottom: '12px'
+        }}>
+          Système de Design Pauline Roussel
+        </h1>
+        <p style={{ 
+          fontSize: '18px',
+          color: '#af6868',
+          fontStyle: 'italic',
+          margin: '0'
+        }}>
+          Guide des composants pour l'accompagnement périnatal
         </p>
-        <p className="font-body text-base mb-3 text-neutral-light">
-          Texte de paragraphe standard (16px) - Utilisé pour le contenu général et les détails de services.
-        </p>
-        <p className="font-body text-sm text-neutral-light">
-          Texte secondaire (14px) - Pour les légendes, notes et informations complémentaires.
-        </p>
-      </div>
+      </header>
 
-      {/* Moontime - Accent */}
-      <div className="mb-6 p-4 bg-soft-50 rounded-lg border border-primary-200">
-        <h3 className="font-body text-sm font-semibold uppercase tracking-wider text-neutral-light mb-3">
-          Moontime — Texte d'accent
-        </h3>
-        <p className="font-accent text-2xl mb-2 text-neutral">
-          Citations inspirantes
-        </p>
-        <p className="font-accent text-lg text-neutral-light">
-          Éléments décoratifs et signatures
-        </p>
-      </div>
-    </section>
+      <section style={{ marginBottom: '48px' }}>
+        <h2 style={{ 
+          fontFamily: 'The Seasons, serif',
+          color: '#618462',
+          fontSize: '32px'
+        }}>
+          À propos de Pauline Roussel
+        </h2>
+        <div style={{ 
+          backgroundColor: '#ffddd3',
+          padding: '24px',
+          borderRadius: '12px',
+          borderLeft: '4px solid #618462'
+        }}>
+          <p style={{ margin: '0', lineHeight: '1.6' }}>
+            <strong>Pauline Roussel</strong> est une professionnelle passionnée spécialisée dans l'accompagnement périnatal au Québec. Elle offre des services de yoga prénatal et postnatal, d'accompagnement à la naissance, et de soutien aux nouvelles familles.
+          </p>
+        </div>
+      </section>
 
-    {/* Color Palette Showcase */}
-    <section className="mb-10">
-      <h2 className="font-heading text-2xl mb-6 text-primary">Palette de couleurs</h2>
-      
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        {/* Primary Green */}
-        <div className="p-4 rounded-lg border border-primary-200">
-          <div className="w-full h-16 bg-primary rounded mb-3"></div>
-          <h4 className="font-body text-sm font-semibold text-neutral">Vert Principal</h4>
-          <p className="font-body text-xs text-neutral-light">#618462</p>
+      <section style={{ marginBottom: '48px' }}>
+        <h2 style={{ 
+          fontFamily: 'The Seasons, serif',
+          color: '#618462',
+          fontSize: '32px'
+        }}>
+          Palette de couleurs authentique
+        </h2>
+        <p style={{ marginBottom: '24px' }}>
+          Notre palette de couleurs reflète l'authenticité et la bienveillance de l'approche de Pauline Roussel :
+        </p>
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '16px'
+        }}>
+          {[
+            { name: 'Vert Principal', color: '#618462', emoji: '🌿' },
+            { name: 'Rose Accent', color: '#af6868', emoji: '🌹' },
+            { name: 'Bleu Secondaire', color: '#517982', emoji: '🌊' },
+            { name: 'Beige Chaleureux', color: '#ceaf9b', emoji: '☕' }
+          ].map(({ name, color, emoji }) => (
+            <div key={color} style={{
+              backgroundColor: color,
+              padding: '20px',
+              borderRadius: '8px',
+              textAlign: 'center',
+              color: color === '#ceaf9b' ? '#5e4530' : 'white'
+            }}>
+              <div style={{ fontSize: '24px', marginBottom: '8px' }}>{emoji}</div>
+              <div style={{ fontWeight: 'bold' }}>{name}</div>
+              <div style={{ fontSize: '12px', opacity: 0.8 }}>{color}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section style={{ marginBottom: '48px' }}>
+        <h2 style={{ 
+          fontFamily: 'The Seasons, serif',
+          color: '#618462',
+          fontSize: '32px'
+        }}>
+          Typographie expressive
+        </h2>
+        <div style={{ marginBottom: '24px' }}>
+          <h3 style={{ 
+            fontFamily: 'The Seasons, serif',
+            fontSize: '28px',
+            color: '#618462'
+          }}>
+            The Seasons - Titres
+          </h3>
+          <p>Police serif élégante pour les titres principaux et l'expression de l'élégance naturelle.</p>
         </div>
         
-        {/* Accent Rose */}
-        <div className="p-4 rounded-lg border border-primary-200">
-          <div className="w-full h-16 bg-accent rounded mb-3"></div>
-          <h4 className="font-body text-sm font-semibold text-neutral">Rose Accent</h4>
-          <p className="font-body text-xs text-neutral-light">#af6868</p>
+        <div style={{ marginBottom: '24px' }}>
+          <h4 style={{ 
+            fontFamily: 'Moontime, cursive',
+            fontSize: '24px',
+            color: '#af6868'
+          }}>
+            Moontime - Accents
+          </h4>
+          <p>Police décorative cursive pour les éléments distinctifs et les touches d'authenticité.</p>
         </div>
         
-        {/* Secondary Blue */}
-        <div className="p-4 rounded-lg border border-primary-200">
-          <div className="w-full h-16 bg-secondary rounded mb-3"></div>
-          <h4 className="font-body text-sm font-semibold text-neutral">Bleu Secondaire</h4>
-          <p className="font-body text-xs text-neutral-light">#517982</p>
+        <div>
+          <h4 style={{ 
+            fontFamily: 'Barlow, sans-serif',
+            fontSize: '20px',
+            color: '#517982'
+          }}>
+            Barlow - Corps de texte
+          </h4>
+          <p>Police sans-serif claire et moderne pour le contenu principal, optimisée pour la lisibilité et l'accessibilité.</p>
         </div>
-        
-        {/* Neutral Brown */}
-        <div className="p-4 rounded-lg border border-primary-200">
-          <div className="w-full h-16 bg-neutral rounded mb-3"></div>
-          <h4 className="font-body text-sm font-semibold text-neutral">Brun Neutre</h4>
-          <p className="font-body text-xs text-neutral-light">#5e4530</p>
+      </section>
+
+      <section style={{ marginBottom: '48px' }}>
+        <h2 style={{ 
+          fontFamily: 'The Seasons, serif',
+          color: '#618462',
+          fontSize: '32px'
+        }}>
+          Principes de design
+        </h2>
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+          gap: '24px'
+        }}>
+          {[
+            { title: '🤱 Bienveillance', bg: '#dae6ea', desc: 'Chaque interaction doit transmettre chaleur et soutien aux futures et nouvelles mamans dans leur parcours unique.' },
+            { title: '🌿 Authenticité', bg: '#ffddd3', desc: 'Refléter l\'approche naturelle et personnalisée de Pauline Roussel, en privilégiant l\'humain avant tout.' },
+            { title: '♿ Accessibilité', bg: '#f5f4f2', desc: 'Conformité WCAG 2.1 AA pour une expérience inclusive, particulièrement importante pour les femmes enceintes et nouvelles mères.' }
+          ].map(({ title, bg, desc }) => (
+            <div key={title} style={{
+              backgroundColor: bg,
+              padding: '24px',
+              borderRadius: '12px'
+            }}>
+              <h3 style={{ 
+                fontFamily: 'The Seasons, serif',
+                color: '#618462',
+                marginTop: '0'
+              }}>
+                {title}
+              </h3>
+              <p style={{ margin: '0' }}>{desc}</p>
+            </div>
+          ))}
         </div>
-      </div>
-    </section>
+      </section>
 
-    <hr className="my-8 border-primary-200" />
+      <footer style={{ 
+        textAlign: 'center',
+        backgroundColor: '#ceaf9b',
+        padding: '32px',
+        borderRadius: '12px',
+        marginTop: '48px'
+      }}>
+        <p style={{ 
+          fontSize: '18px',
+          fontStyle: 'italic',
+          margin: '0 0 12px 0'
+        }}>
+          "Accompagner avec authenticité et bienveillance chaque étape du voyage vers la maternité"
+        </p>
+        <p style={{ 
+          fontFamily: 'Moontime, cursive',
+          color: '#618462',
+          fontSize: '16px',
+          margin: '0'
+        }}>
+          — Pauline Roussel
+        </p>
+      </footer>
+    </div>
+  );
+};
 
-    <p className="text-center font-accent text-lg italic text-neutral">
-      « Le yoga est un voyage de soi, par soi, vers soi. » - La Bhagavad Gita
-    </p>
-  </div>
-);
-
-const meta: Meta<typeof IntroductionComponent> = {
+const meta: Meta<typeof Introduction> = {
   title: 'Introduction',
-  component: IntroductionComponent,
+  component: Introduction,
   parameters: {
     layout: 'fullscreen',
+    docs: {
+      page: () => <Introduction />,
+    },
   },
 };
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
-type Story = StoryObj<typeof IntroductionComponent>;
-
-export const Overview: Story = {};
+export const Default: Story = {};

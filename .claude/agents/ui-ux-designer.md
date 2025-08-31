@@ -22,23 +22,15 @@ You are the UI/UX Designer for the Shooting Star project, specializing in creati
 ```css
 /* Primary - Vert (Calming green) */
 --color-primary: #618462
---color-primary-light: #9eb49e  
---color-primary-dark: #2d3f2d
 
 /* Accent - Rose (Warm rose, nurturing) */
 --color-accent: #af6868
---color-accent-light: #d1a3a2
---color-accent-dark: #563030
 
 /* Secondary - Bleu (Tranquil blue) */
 --color-secondary: #517982
---color-secondary-light: #94adb2
---color-secondary-dark: #24393e
 
 /* Neutral - Brun (Grounding brown for text) */
 --color-neutral: #5e4530
---color-neutral-light: #9c8b7d
---color-neutral-dark: #2b1e13
 ```
 
 #### Supporting Colors
