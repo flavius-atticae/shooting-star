@@ -1,4 +1,4 @@
-name: Sync Labels to Project Fields
+name: Project Priority and Size Sync
 
 on:
   issues:

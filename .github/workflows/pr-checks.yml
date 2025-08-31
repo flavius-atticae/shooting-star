@@ -1,4 +1,4 @@
-name: Quality Gates
+name: PR Quality Checks
 
 on:
   pull_request:
@@ -163,27 +163,101 @@ jobs:
   integration-ready:
     name: Integration Ready Check
     runs-on: ubuntu-latest
-    needs: [code-quality, security-scan, performance-check]
+    needs: [code-quality, security-scan, performance-check, accessibility-check]
     if: github.event_name == 'pull_request' && always()
     steps:
       - name: Check all quality gates
         run: |
           if [[ "${{ needs.code-quality.result }}" == "success" && 
                 "${{ needs.security-scan.result }}" == "success" && 
-                "${{ needs.performance-check.result }}" == "success" ]]; then
+                "${{ needs.performance-check.result }}" == "success" && 
+                "${{ needs.accessibility-check.result }}" == "success" ]]; then
             echo "All quality gates passed"
-            # Add Testing label
+            
+            # Mark PR as ready for review
+            curl -X PATCH \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" \
+              -d '{"draft": false}'
+            
+            # Add success comment
             curl -X POST \
               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
-              "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels" \
-              -d '{"labels":["Testing"]}'
+              "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+              -d '{
+                "body": "🎉 **All Quality Gates Passed!**\n\nThis PR is now ready for review and has been marked as non-draft.\n\n✅ Code Quality\n✅ Security Scan\n✅ Performance Check\n✅ Accessibility Check"
+              }'
           else
             echo "Some quality gates failed"
-            # Add Needs-Analysis label
+            
+            # Mark PR as draft
+            curl -X PATCH \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}" \
+              -d '{"draft": true}'
+            
+            # Remove Testing label if it exists
+            curl -X DELETE \
+              -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels/Testing" 2>/dev/null || true
+            
+            # Add appropriate quality labels based on failed checks
+            QUALITY_LABELS=""
+            if [[ "${{ needs.code-quality.result }}" != "success" ]]; then
+              QUALITY_LABELS+='"Code Quality",'
+            fi
+            if [[ "${{ needs.security-scan.result }}" != "success" ]]; then
+              QUALITY_LABELS+='"Security",'
+            fi
+            if [[ "${{ needs.performance-check.result }}" != "success" ]]; then
+              QUALITY_LABELS+='"Performance",'
+            fi
+            if [[ "${{ needs.accessibility-check.result }}" != "success" ]]; then
+              QUALITY_LABELS+='"Accessibility",'
+            fi
+            
+            # Remove trailing comma and add labels if any failed
+            if [[ -n "$QUALITY_LABELS" ]]; then
+              QUALITY_LABELS=${QUALITY_LABELS%,}
+              curl -X POST \
+                -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+                -H "Accept: application/vnd.github.v3+json" \
+                "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels" \
+                -d "{\"labels\":[$QUALITY_LABELS]}"
+            fi
+            
+            # Add failure comment with details
+            FAILED_JOBS=""
+            if [[ "${{ needs.code-quality.result }}" != "success" ]]; then
+              FAILED_JOBS+="❌ Code Quality\\n"
+            else
+              FAILED_JOBS+="✅ Code Quality\\n"
+            fi
+            if [[ "${{ needs.security-scan.result }}" != "success" ]]; then
+              FAILED_JOBS+="❌ Security Scan\\n"
+            else
+              FAILED_JOBS+="✅ Security Scan\\n"
+            fi
+            if [[ "${{ needs.performance-check.result }}" != "success" ]]; then
+              FAILED_JOBS+="❌ Performance Check\\n"
+            else
+              FAILED_JOBS+="✅ Performance Check\\n"
+            fi
+            if [[ "${{ needs.accessibility-check.result }}" != "success" ]]; then
+              FAILED_JOBS+="❌ Accessibility Check\\n"
+            else
+              FAILED_JOBS+="✅ Accessibility Check\\n"
+            fi
+            
             curl -X POST \
               -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
               -H "Accept: application/vnd.github.v3+json" \
-              "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/labels" \
-              -d '{"labels":["Needs-Analysis"]}'
+              "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
+              -d "{
+                \"body\": \"⚠️ **Quality Gates Failed**\\n\\nThis PR has been marked as draft until all checks pass.\\n\\n${FAILED_JOBS}\\nPlease fix the failing checks and push new commits to re-run the validation.\"
+              }"
           fi

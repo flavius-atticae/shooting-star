@@ -1,0 +1,670 @@
+name: Project Status Sync
+
+on:
+  issues:
+    types: [opened, assigned, unassigned, closed, labeled, unlabeled, reopened]
+  pull_request:
+    types: [opened, closed, converted_to_draft, ready_for_review, reopened]
+  pull_request_review:
+    types: [submitted]
+  release:
+    types: [published]
+
+env:
+  PROJECT_ID: "PVT_kwHOA8KkFM4BBWOl"  # Shooting Star project #5
+  STATUS_FIELD_ID: "PVTSSF_lAHOA8KkFM4BBWOlzgz4SvM"  # Status field
+  # Status option IDs
+  BACKLOG_ID: "f75ad846"
+  A_FAIRE_ID: "08afe404"
+  EN_COURS_ID: "47fc9ee4"
+  REVIEW_ID: "4cc61d42"
+  TESTING_ID: "d2573237"
+  DONE_ID: "98236657"
+  RELEASED_ID: "111ec098"
+
+jobs:
+  move-new-issue-to-backlog:
+    name: Move New Issue to Backlog
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+    steps:
+      - name: Get issue project item ID
+        id: get_item
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          ITEM_ID=$(gh api graphql -f query='
+            query($owner: String!, $number: Int!) {
+              repository(owner: $owner, name: "shooting-star") {
+                issue(number: $number) {
+                  projectItems(first: 10) {
+                    nodes {
+                      id
+                      project {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f owner=flavius-atticae -F number=${{ github.event.issue.number }} \
+            --jq '.data.repository.issue.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+          
+          if [ -z "$ITEM_ID" ]; then
+            # Add issue to project first
+            ITEM_ID=$(gh api graphql -f query='
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                  item {
+                    id
+                  }
+                }
+              }' -f projectId=${{ env.PROJECT_ID }} -f contentId=${{ github.event.issue.node_id }} \
+              --jq '.data.addProjectV2ItemById.item.id')
+          fi
+          
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+
+      - name: Move issue to Backlog
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          gh api graphql -f query='
+            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $projectId
+                itemId: $itemId
+                fieldId: $fieldId
+                value: {singleSelectOptionId: $optionId}
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }' -f projectId=${{ env.PROJECT_ID }} \
+               -f itemId=${{ steps.get_item.outputs.item_id }} \
+               -f fieldId=${{ env.STATUS_FIELD_ID }} \
+               -f optionId=${{ env.BACKLOG_ID }}
+
+      - name: Add Backlog label
+        run: |
+          curl -X POST \
+            -H "Authorization: token ${{ secrets.PROJECT_PAT }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels" \
+            -d '{"labels":["Backlog"]}'
+
+  move-assigned-to-en-cours:
+    name: Move to En Cours when Assigned
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'assigned'
+    steps:
+      - name: Get issue project item ID
+        id: get_item
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          ITEM_ID=$(gh api graphql -f query='
+            query($owner: String!, $number: Int!) {
+              repository(owner: $owner, name: "shooting-star") {
+                issue(number: $number) {
+                  projectItems(first: 10) {
+                    nodes {
+                      id
+                      project {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f owner=flavius-atticae -F number=${{ github.event.issue.number }} \
+            --jq '.data.repository.issue.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+          
+          if [ -z "$ITEM_ID" ]; then
+            # Add issue to project first
+            ITEM_ID=$(gh api graphql -f query='
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                  item {
+                    id
+                  }
+                }
+              }' -f projectId=${{ env.PROJECT_ID }} -f contentId=${{ github.event.issue.node_id }} \
+              --jq '.data.addProjectV2ItemById.item.id')
+          fi
+          
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+
+      - name: Move issue to En Cours
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          gh api graphql -f query='
+            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $projectId
+                itemId: $itemId
+                fieldId: $fieldId
+                value: {singleSelectOptionId: $optionId}
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }' -f projectId=${{ env.PROJECT_ID }} \
+               -f itemId=${{ steps.get_item.outputs.item_id }} \
+               -f fieldId=${{ env.STATUS_FIELD_ID }} \
+               -f optionId=${{ env.EN_COURS_ID }}
+
+      - name: Update labels - Add En Cours, Remove others
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          # Get current labels
+          CURRENT_LABELS=$(gh api repos/${{ github.repository }}/issues/${{ github.event.issue.number }} --jq '.labels[].name' | tr '\n' ' ')
+          
+          # Remove conflicting status labels
+          for label in "Backlog" "À Faire" "Review" "Testing" "Done" "Released"; do
+            if echo "$CURRENT_LABELS" | grep -q "$label"; then
+              gh api -X DELETE repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels/$label 2>/dev/null || true
+            fi
+          done
+          
+          # Add En Cours label
+          gh api -X POST repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels \
+            -f labels[]="En Cours"
+
+  move-pr-to-review:
+    name: Move to Review when PR Opened
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' && 
+      (github.event.action == 'opened' || github.event.action == 'ready_for_review') &&
+      !github.event.pull_request.draft
+    steps:
+      - name: Extract linked issue numbers
+        id: extract_issues
+        run: |
+          # Extract issue numbers from PR title and body
+          PR_TEXT="${{ github.event.pull_request.title }} ${{ github.event.pull_request.body }}"
+          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ')
+          echo "issue_numbers=$ISSUE_NUMBERS" >> $GITHUB_OUTPUT
+
+      - name: Move linked issues to Review
+        if: steps.extract_issues.outputs.issue_numbers
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          for ISSUE_NUMBER in ${{ steps.extract_issues.outputs.issue_numbers }}; do
+            echo "Processing issue #$ISSUE_NUMBER"
+            
+            # Get issue node_id
+            ISSUE_NODE_ID=$(gh api repos/flavius-atticae/shooting-star/issues/$ISSUE_NUMBER --jq .node_id 2>/dev/null || echo "")
+            
+            if [ -z "$ISSUE_NODE_ID" ]; then
+              echo "Issue #$ISSUE_NUMBER not found"
+              continue
+            fi
+            
+            # Get project item ID
+            ITEM_ID=$(gh api graphql -f query='
+              query($owner: String!, $number: Int!) {
+                repository(owner: $owner, name: "shooting-star") {
+                  issue(number: $number) {
+                    projectItems(first: 10) {
+                      nodes {
+                        id
+                        project {
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }' -f owner=flavius-atticae -F number=$ISSUE_NUMBER \
+              --jq '.data.repository.issue.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+            
+            if [ -z "$ITEM_ID" ]; then
+              # Add issue to project first
+              ITEM_ID=$(gh api graphql -f query='
+                mutation($projectId: ID!, $contentId: ID!) {
+                  addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                    item {
+                      id
+                    }
+                  }
+                }' -f projectId=${{ env.PROJECT_ID }} -f contentId=$ISSUE_NODE_ID \
+                --jq '.data.addProjectV2ItemById.item.id')
+            fi
+            
+            # Move to Review
+            gh api graphql -f query='
+              mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                updateProjectV2ItemFieldValue(input: {
+                  projectId: $projectId
+                  itemId: $itemId
+                  fieldId: $fieldId
+                  value: {singleSelectOptionId: $optionId}
+                }) {
+                  projectV2Item {
+                    id
+                  }
+                }
+              }' -f projectId=${{ env.PROJECT_ID }} \
+                 -f itemId=$ITEM_ID \
+                 -f fieldId=${{ env.STATUS_FIELD_ID }} \
+                 -f optionId=${{ env.REVIEW_ID }}
+            
+            # Update labels
+            # Remove conflicting status labels
+            for label in "Backlog" "À Faire" "En Cours" "Testing" "Done" "Released"; do
+              gh api -X DELETE repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels/$label 2>/dev/null || true
+            done
+            
+            # Add Review label
+            gh api -X POST repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels \
+              -f labels[]="Review"
+          done
+
+  move-to-testing-on-merge:
+    name: Move to Testing when PR Merged
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' && 
+      github.event.action == 'closed' && 
+      github.event.pull_request.merged == true
+    steps:
+      - name: Extract linked issue numbers
+        id: extract_issues
+        run: |
+          # Extract issue numbers from PR title and body
+          PR_TEXT="${{ github.event.pull_request.title }} ${{ github.event.pull_request.body }}"
+          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ')
+          echo "issue_numbers=$ISSUE_NUMBERS" >> $GITHUB_OUTPUT
+
+      - name: Move linked issues to Testing
+        if: steps.extract_issues.outputs.issue_numbers
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          for ISSUE_NUMBER in ${{ steps.extract_issues.outputs.issue_numbers }}; do
+            echo "Processing issue #$ISSUE_NUMBER"
+            
+            # Get issue node_id
+            ISSUE_NODE_ID=$(gh api repos/flavius-atticae/shooting-star/issues/$ISSUE_NUMBER --jq .node_id 2>/dev/null || echo "")
+            
+            if [ -z "$ISSUE_NODE_ID" ]; then
+              echo "Issue #$ISSUE_NUMBER not found"
+              continue
+            fi
+            
+            # Get project item ID
+            ITEM_ID=$(gh api graphql -f query='
+              query($owner: String!, $number: Int!) {
+                repository(owner: $owner, name: "shooting-star") {
+                  issue(number: $number) {
+                    projectItems(first: 10) {
+                      nodes {
+                        id
+                        project {
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }' -f owner=flavius-atticae -F number=$ISSUE_NUMBER \
+              --jq '.data.repository.issue.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+            
+            if [ -z "$ITEM_ID" ]; then
+              # Add issue to project first
+              ITEM_ID=$(gh api graphql -f query='
+                mutation($projectId: ID!, $contentId: ID!) {
+                  addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                    item {
+                      id
+                    }
+                  }
+                }' -f projectId=${{ env.PROJECT_ID }} -f contentId=$ISSUE_NODE_ID \
+                --jq '.data.addProjectV2ItemById.item.id')
+            fi
+            
+            # Move to Testing
+            gh api graphql -f query='
+              mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                updateProjectV2ItemFieldValue(input: {
+                  projectId: $projectId
+                  itemId: $itemId
+                  fieldId: $fieldId
+                  value: {singleSelectOptionId: $optionId}
+                }) {
+                  projectV2Item {
+                    id
+                  }
+                }
+              }' -f projectId=${{ env.PROJECT_ID }} \
+                 -f itemId=$ITEM_ID \
+                 -f fieldId=${{ env.STATUS_FIELD_ID }} \
+                 -f optionId=${{ env.TESTING_ID }}
+            
+            # Update labels
+            # Remove conflicting status labels
+            for label in "Backlog" "À Faire" "En Cours" "Review" "Done" "Released"; do
+              gh api -X DELETE repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels/$label 2>/dev/null || true
+            done
+            
+            # Add Testing label
+            gh api -X POST repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels \
+              -f labels[]="Testing"
+          done
+
+  revert-to-en-cours-on-pr-close:
+    name: Revert to En Cours when PR Closed Without Merge
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'pull_request' && 
+      github.event.action == 'closed' && 
+      github.event.pull_request.merged == false
+    steps:
+      - name: Extract linked issue numbers
+        id: extract_issues
+        run: |
+          # Extract issue numbers from PR title and body
+          PR_TEXT="${{ github.event.pull_request.title }} ${{ github.event.pull_request.body }}"
+          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ')
+          echo "issue_numbers=$ISSUE_NUMBERS" >> $GITHUB_OUTPUT
+
+      - name: Revert linked issues to En Cours
+        if: steps.extract_issues.outputs.issue_numbers
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          for ISSUE_NUMBER in ${{ steps.extract_issues.outputs.issue_numbers }}; do
+            echo "Processing issue #$ISSUE_NUMBER"
+            
+            # Get issue node_id
+            ISSUE_NODE_ID=$(gh api repos/flavius-atticae/shooting-star/issues/$ISSUE_NUMBER --jq .node_id 2>/dev/null || echo "")
+            
+            if [ -z "$ISSUE_NODE_ID" ]; then
+              echo "Issue #$ISSUE_NUMBER not found"
+              continue
+            fi
+            
+            # Get project item ID
+            ITEM_ID=$(gh api graphql -f query='
+              query($owner: String!, $number: Int!) {
+                repository(owner: $owner, name: "shooting-star") {
+                  issue(number: $number) {
+                    projectItems(first: 10) {
+                      nodes {
+                        id
+                        project {
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }' -f owner=flavius-atticae -F number=$ISSUE_NUMBER \
+              --jq '.data.repository.issue.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+            
+            if [ -z "$ITEM_ID" ]; then
+              continue
+            fi
+            
+            # Move back to En Cours
+            gh api graphql -f query='
+              mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                updateProjectV2ItemFieldValue(input: {
+                  projectId: $projectId
+                  itemId: $itemId
+                  fieldId: $fieldId
+                  value: {singleSelectOptionId: $optionId}
+                }) {
+                  projectV2Item {
+                    id
+                  }
+                }
+              }' -f projectId=${{ env.PROJECT_ID }} \
+                 -f itemId=$ITEM_ID \
+                 -f fieldId=${{ env.STATUS_FIELD_ID }} \
+                 -f optionId=${{ env.EN_COURS_ID }}
+            
+            # Update labels
+            # Remove conflicting status labels
+            for label in "Review" "Testing"; do
+              gh api -X DELETE repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels/$label 2>/dev/null || true
+            done
+            
+            # Add En Cours label
+            gh api -X POST repos/${{ github.repository }}/issues/$ISSUE_NUMBER/labels \
+              -f labels[]="En Cours"
+          done
+
+  move-to-done:
+    name: Move to Done when Issue Closed
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'closed'
+    steps:
+      - name: Get issue project item ID
+        id: get_item
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          ITEM_ID=$(gh api graphql -f query='
+            query($owner: String!, $number: Int!) {
+              repository(owner: $owner, name: "shooting-star") {
+                issue(number: $number) {
+                  projectItems(first: 10) {
+                    nodes {
+                      id
+                      project {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f owner=flavius-atticae -F number=${{ github.event.issue.number }} \
+            --jq '.data.repository.issue.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+          
+          echo "item_id=$ITEM_ID" >> $GITHUB_OUTPUT
+
+      - name: Move to Done
+        if: steps.get_item.outputs.item_id
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          gh api graphql -f query='
+            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $projectId
+                itemId: $itemId
+                fieldId: $fieldId
+                value: {singleSelectOptionId: $optionId}
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }' -f projectId=${{ env.PROJECT_ID }} \
+               -f itemId=${{ steps.get_item.outputs.item_id }} \
+               -f fieldId=${{ env.STATUS_FIELD_ID }} \
+               -f optionId=${{ env.DONE_ID }}
+
+      - name: Update labels - Add Done, Remove others
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          # Remove all status labels
+          for label in "Backlog" "À Faire" "En Cours" "Review" "Testing" "Released"; do
+            gh api -X DELETE repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels/$label 2>/dev/null || true
+          done
+          
+          # Add Done label
+          gh api -X POST repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels \
+            -f labels[]="Done"
+
+  sync-labels-with-status:
+    name: Sync Labels with Manual Status Changes
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'issues' && 
+      (github.event.action == 'labeled' || github.event.action == 'unlabeled')
+    steps:
+      - name: Check if status label was changed
+        id: check_label
+        run: |
+          LABEL_NAME="${{ github.event.label.name }}"
+          STATUS_LABELS="Backlog À Faire En Cours Review Testing Done Released"
+          
+          if echo "$STATUS_LABELS" | grep -q "$LABEL_NAME"; then
+            echo "is_status_label=true" >> $GITHUB_OUTPUT
+            echo "status_label=$LABEL_NAME" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update project status based on label
+        if: steps.check_label.outputs.is_status_label == 'true' && github.event.action == 'labeled'
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          # Map label to status ID
+          case "${{ steps.check_label.outputs.status_label }}" in
+            "Backlog") STATUS_ID="${{ env.BACKLOG_ID }}" ;;
+            "À Faire") STATUS_ID="${{ env.A_FAIRE_ID }}" ;;
+            "En Cours") STATUS_ID="${{ env.EN_COURS_ID }}" ;;
+            "Review") STATUS_ID="${{ env.REVIEW_ID }}" ;;
+            "Testing") STATUS_ID="${{ env.TESTING_ID }}" ;;
+            "Done") STATUS_ID="${{ env.DONE_ID }}" ;;
+            "Released") STATUS_ID="${{ env.RELEASED_ID }}" ;;
+            *) exit 0 ;;
+          esac
+          
+          # Get project item ID
+          ITEM_ID=$(gh api graphql -f query='
+            query($owner: String!, $number: Int!) {
+              repository(owner: $owner, name: "shooting-star") {
+                issue(number: $number) {
+                  projectItems(first: 10) {
+                    nodes {
+                      id
+                      project {
+                        id
+                      }
+                    }
+                  }
+                }
+              }
+            }' -f owner=flavius-atticae -F number=${{ github.event.issue.number }} \
+            --jq '.data.repository.issue.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+          
+          if [ -z "$ITEM_ID" ]; then
+            # Add issue to project first
+            ITEM_ID=$(gh api graphql -f query='
+              mutation($projectId: ID!, $contentId: ID!) {
+                addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                  item {
+                    id
+                  }
+                }
+              }' -f projectId=${{ env.PROJECT_ID }} -f contentId=${{ github.event.issue.node_id }} \
+              --jq '.data.addProjectV2ItemById.item.id')
+          fi
+          
+          # Update project status
+          gh api graphql -f query='
+            mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: $projectId
+                itemId: $itemId
+                fieldId: $fieldId
+                value: {singleSelectOptionId: $optionId}
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }' -f projectId=${{ env.PROJECT_ID }} \
+               -f itemId=$ITEM_ID \
+               -f fieldId=${{ env.STATUS_FIELD_ID }} \
+               -f optionId=$STATUS_ID
+          
+          # Remove other status labels
+          for label in "Backlog" "À Faire" "En Cours" "Review" "Testing" "Done" "Released"; do
+            if [ "$label" != "${{ steps.check_label.outputs.status_label }}" ]; then
+              gh api -X DELETE repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/labels/$label 2>/dev/null || true
+            fi
+          done
+
+  move-to-released:
+    name: Move to Released on Release
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+      - name: Get issues from release
+        id: release_issues
+        run: |
+          # Extract issue numbers from release body
+          RELEASE_BODY="${{ github.event.release.body }}"
+          ISSUES=$(echo "$RELEASE_BODY" | grep -oE '#[0-9]+' | cut -d'#' -f2 | sort -u)
+          echo "issues<<EOF" >> $GITHUB_OUTPUT
+          echo "$ISSUES" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+      
+      - name: Move issues to Released
+        if: steps.release_issues.outputs.issues
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+        run: |
+          for issue in ${{ steps.release_issues.outputs.issues }}; do
+            # Get project item ID
+            ITEM_ID=$(gh api graphql -f query='
+              query($owner: String!, $number: Int!) {
+                repository(owner: $owner, name: "shooting-star") {
+                  issue(number: $number) {
+                    projectItems(first: 10) {
+                      nodes {
+                        id
+                        project {
+                          id
+                        }
+                      }
+                    }
+                  }
+                }
+              }' -f owner=flavius-atticae -F number=$issue \
+              --jq '.data.repository.issue.projectItems.nodes[] | select(.project.id == "'${{ env.PROJECT_ID }}'") | .id')
+            
+            if [ -n "$ITEM_ID" ]; then
+              # Update project status
+              gh api graphql -f query='
+                mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $optionId: String!) {
+                  updateProjectV2ItemFieldValue(input: {
+                    projectId: $projectId
+                    itemId: $itemId
+                    fieldId: $fieldId
+                    value: {singleSelectOptionId: $optionId}
+                  }) {
+                    projectV2Item {
+                      id
+                    }
+                  }
+                }' -f projectId=${{ env.PROJECT_ID }} \
+                   -f itemId=$ITEM_ID \
+                   -f fieldId=${{ env.STATUS_FIELD_ID }} \
+                   -f optionId=${{ env.RELEASED_ID }}
+              
+              # Update labels
+              for label in "Backlog" "À Faire" "En Cours" "Review" "Testing" "Done"; do
+                gh api -X DELETE repos/${{ github.repository }}/issues/$issue/labels/$label 2>/dev/null || true
+              done
+              
+              gh api -X POST repos/${{ github.repository }}/issues/$issue/labels \
+                -f labels[]="Released"
+              
+              # Add comment
+              gh api -X POST repos/${{ github.repository }}/issues/$issue/comments \
+                -f body="This issue has been released in version ${{ github.event.release.tag_name }}"
+            fi
+          done

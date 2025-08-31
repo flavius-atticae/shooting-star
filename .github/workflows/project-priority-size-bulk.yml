@@ -1,4 +1,4 @@
-name: Sync All Issues to Project (Manual)
+name: Project Priority and Size Bulk Sync
 
 on:
   workflow_dispatch:
