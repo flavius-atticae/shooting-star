@@ -3,7 +3,7 @@ import path from 'path';
 
 const config: StorybookConfig = {
   stories: [
-    '../stories/Introduction.stories.tsx',
+    '../stories/**/*.stories.@(js|jsx|ts|tsx)',
   ],
   addons: [
     '@chromatic-com/storybook',
@@ -25,7 +25,7 @@ const config: StorybookConfig = {
   },
   
   typescript: {
-    check: false,
+    check: true,
     reactDocgen: 'react-docgen-typescript',
     reactDocgenTypescriptOptions: {
       shouldExtractLiteralValuesFromEnum: true,
