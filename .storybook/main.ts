@@ -2,19 +2,20 @@ import type { StorybookConfig } from '@storybook/react-vite';
 import path from 'path';
 
 const config: StorybookConfig = {
-  stories: [
-    '../stories/**/*.stories.@(js|jsx|ts|tsx)',
+  "stories": [
+    "../stories/**/*.mdx",
+    "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"
   ],
-  addons: [
-    '@chromatic-com/storybook',
-    '@storybook/addon-a11y',
-    'storybook-addon-remix-react-router',
+  "addons": [
+    "@chromatic-com/storybook",
+    "@storybook/addon-docs",
+    "@storybook/addon-onboarding",
+    "@storybook/addon-a11y",
   ],
-  framework: {
-    name: '@storybook/react-vite',
-    options: {},
+  "framework": {
+    "name": "@storybook/react-vite",
+    "options": {}
   },
-  
   core: {
     builder: {
       name: '@storybook/builder-vite',
@@ -23,16 +24,5 @@ const config: StorybookConfig = {
       },
     },
   },
-  
-  typescript: {
-    check: true,
-    reactDocgen: 'react-docgen-typescript',
-    reactDocgenTypescriptOptions: {
-      shouldExtractLiteralValuesFromEnum: true,
-      propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
-    },
-  },
-  
 };
-
 export default config;

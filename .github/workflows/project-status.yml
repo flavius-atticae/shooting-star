@@ -212,9 +212,16 @@ jobs:
         run: |
           set -e
           echo "Extracting issue numbers from PR..."
-          # Extract issue numbers from PR title and body
-          PR_TEXT="${{ github.event.pull_request.title }} ${{ github.event.pull_request.body }}"
-          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ' || echo "")
+          # Extract issue numbers from PR title and body with proper quoting
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
+          
+          # Use printf to safely handle special characters and pipes
+          ISSUE_NUMBERS_TITLE=$(printf '%s' "$PR_TITLE" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u || echo "")
+          ISSUE_NUMBERS_BODY=$(printf '%s' "$PR_BODY" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u || echo "")
+          
+          # Combine and deduplicate issue numbers
+          ISSUE_NUMBERS=$(printf '%s\n%s' "$ISSUE_NUMBERS_TITLE" "$ISSUE_NUMBERS_BODY" | grep -v '^$' | sort -u | tr '\n' ' ' || echo "")
           echo "Found issue numbers: $ISSUE_NUMBERS"
           echo "issue_numbers=$ISSUE_NUMBERS" >> $GITHUB_OUTPUT
 
@@ -348,9 +355,16 @@ jobs:
         run: |
           set -e
           echo "Extracting issue numbers from PR..."
-          # Extract issue numbers from PR title and body
-          PR_TEXT="${{ github.event.pull_request.title }} ${{ github.event.pull_request.body }}"
-          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ' || echo "")
+          # Extract issue numbers from PR title and body with proper quoting
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
+          
+          # Use printf to safely handle special characters and pipes
+          ISSUE_NUMBERS_TITLE=$(printf '%s' "$PR_TITLE" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u || echo "")
+          ISSUE_NUMBERS_BODY=$(printf '%s' "$PR_BODY" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u || echo "")
+          
+          # Combine and deduplicate issue numbers
+          ISSUE_NUMBERS=$(printf '%s\n%s' "$ISSUE_NUMBERS_TITLE" "$ISSUE_NUMBERS_BODY" | grep -v '^$' | sort -u | tr '\n' ' ' || echo "")
           echo "Found issue numbers: $ISSUE_NUMBERS"
           echo "issue_numbers=$ISSUE_NUMBERS" >> $GITHUB_OUTPUT
 
@@ -451,9 +465,16 @@ jobs:
         run: |
           set -e
           echo "Extracting issue numbers from PR..."
-          # Extract issue numbers from PR title and body
-          PR_TEXT="${{ github.event.pull_request.title }} ${{ github.event.pull_request.body }}"
-          ISSUE_NUMBERS=$(echo "$PR_TEXT" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u | tr '\n' ' ' || echo "")
+          # Extract issue numbers from PR title and body with proper quoting
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          PR_BODY="${{ github.event.pull_request.body }}"
+          
+          # Use printf to safely handle special characters and pipes
+          ISSUE_NUMBERS_TITLE=$(printf '%s' "$PR_TITLE" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u || echo "")
+          ISSUE_NUMBERS_BODY=$(printf '%s' "$PR_BODY" | grep -oE '#[0-9]+' | grep -oE '[0-9]+' | sort -u || echo "")
+          
+          # Combine and deduplicate issue numbers
+          ISSUE_NUMBERS=$(printf '%s\n%s' "$ISSUE_NUMBERS_TITLE" "$ISSUE_NUMBERS_BODY" | grep -v '^$' | sort -u | tr '\n' ' ' || echo "")
           echo "Found issue numbers: $ISSUE_NUMBERS"
           echo "issue_numbers=$ISSUE_NUMBERS" >> $GITHUB_OUTPUT
 
