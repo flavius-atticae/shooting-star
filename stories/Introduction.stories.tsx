@@ -62,10 +62,10 @@ const IntroductionComponent = () => (
         <h3 className="font-body text-sm font-semibold uppercase tracking-wider text-neutral-light mb-3">
           Moontime — Texte d'accent
         </h3>
-        <p className="font-accent text-2xl mb-2 text-accent">
+        <p className="font-accent text-2xl mb-2 text-neutral">
           Citations inspirantes
         </p>
-        <p className="font-accent text-lg text-accent-dark">
+        <p className="font-accent text-lg text-neutral-light">
           Éléments décoratifs et signatures
         </p>
       </div>
