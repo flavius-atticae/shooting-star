@@ -18,7 +18,11 @@
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "test:storybook": "test-storybook",
+    "test:storybook:ci": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"npm run storybook -- --quiet\" \"wait-on http://127.0.0.1:6006 && npm run test:storybook\"",
+    "test:pregnancy-safe": "test-storybook --stories-json --stories='**/*.pregnancy-personas.stories.*'",
+    "test:all": "npm run test && npm run test:e2e && npm run test:storybook"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
