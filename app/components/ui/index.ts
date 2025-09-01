@@ -1,5 +1,7 @@
 // Foundation Components - Phase 1
 export { Button, buttonVariants } from "./button";
+import * as React from "react";
+import { buttonVariants } from "./button";
 export { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card";
 export { Input } from "./input";
 export { Label } from "./label";
@@ -27,9 +29,10 @@ export {
 } from "./background";
 
 // Re-export types for convenience
-export type { 
-  ButtonProps
-} from "./button";
+export type ButtonProps = React.ComponentProps<"button"> &
+  import("class-variance-authority").VariantProps<typeof buttonVariants> & {
+    asChild?: boolean;
+  };
 
 // Constants pour usage externe
 export const PHASE_1_COMPONENTS = [
