@@ -10,5 +10,12 @@
 # Test Coverage Reports
 /coverage/
 
+# Playwright
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/playwright/.auth/
+playwright-results.json
+
 *storybook.log
 storybook-static

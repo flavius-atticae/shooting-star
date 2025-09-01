@@ -1,0 +1,257 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Guidelines Pregnancy-Safe/Developer Guide" />
+
+# Guide de Développement Pregnancy-Safe
+
+Ce guide explique comment créer et tester des composants adaptés aux utilisatrices enceintes et nouvelles mères du marché québécois.
+
+## 🎯 Objectifs
+
+- **Accessibilité**: Composants conformes WCAG 2.1 AA avec adaptations grossesse
+- **Performance**: Chargement rapide pour appareils mobiles et fatigue
+- **Localisation**: Support français québécois complet
+- **Sécurité**: Protection des données de santé (PIPEDA, Loi 25)
+
+## 👥 Nos Personas
+
+### Marie Dubois - Première grossesse
+- **Profil**: 20 semaines, première grossesse, fatigue, nausées matinales
+- **Appareil**: iPhone (mobile-first)
+- **Besoins**: Mouvement réduit, temps d'interaction étendus, français
+- **Usage**: Découverte, lecture attentive, prudence
+
+```tsx
+import { withPregnancyPersona, PREGNANCY_PERSONAS } from '../decorators/pregnancy-safe';
+
+export const MarieStory = {
+  decorators: [
+    withPregnancyPersona(PREGNANCY_PERSONAS.MARIE),
+    withReducedMotion,
+    withTouchFriendly,
+  ],
+  parameters: {
+    viewport: { defaultViewport: 'mobile2' },
+  },
+};
+```
+
+### Sophie Tremblay - Mère expérimentée
+- **Profil**: Postpartum, 2 enfants, besoin d'efficacité
+- **Appareil**: iPad (tablette à la maison)
+- **Besoins**: Contraste élevé, navigation rapide, actions directes
+- **Usage**: Efficacité, multitâche, gestion de planning
+
+```tsx
+export const SophieStory = {
+  decorators: [
+    withPregnancyPersona(PREGNANCY_PERSONAS.SOPHIE),
+    withHighContrast,
+    withTouchFriendly,
+  ],
+  parameters: {
+    viewport: { defaultViewport: 'tablet' },
+  },
+};
+```
+
+### Alexandra Johnson - Grossesse à risque
+- **Profil**: 28 semaines, grossesse à risque, besoins d'accessibilité élevés
+- **Appareil**: Desktop (suivi médical)
+- **Besoins**: Tous les critères d'accessibilité, temps étendu
+- **Usage**: Prudence maximum, coordination avec équipe médicale
+
+```tsx
+export const AlexandraStory = {
+  decorators: [
+    withPregnancyPersona(PREGNANCY_PERSONAS.ALEXANDRA),
+    withHighContrast,
+    withReducedMotion,
+    withLargeText,
+    withTouchFriendly,
+  ],
+  parameters: {
+    viewport: { defaultViewport: 'desktop' },
+  },
+};
+```
+
+## 🎨 Guidelines de Design
+
+### Couleurs Pregnancy-Safe
+
+```scss
+// ✅ Couleurs approuvées (palette Pauline Roussel)
+$primary: #618462;    // Vert calme - actions principales
+$secondary: #517982;  // Bleu apaisant - support
+$accent: #af6868;     // Rose chaleureux - highlights
+$neutral: #5e4530;    // Brun - texte principal
+
+// ❌ Couleurs à éviter
+$medical-red: #FF0000;  // Rouge médical - anxiété
+$bright-orange: #FF6600; // Orange vif - peut déclencher nausées
+$high-contrast-yellow: #FFFF00; // Jaune vif - fatigue visuelle
+```
+
+### Tailles de Touch Targets
+
+```scss
+// Tailles minimales pour utilisatrices enceintes
+.touch-target {
+  min-width: 44px;   // WCAG 2.1 AA minimum
+  min-height: 44px;
+  padding: 12px 16px;
+  
+  // Grossesse à risque - targets plus larges
+  &.high-risk {
+    min-width: 56px;
+    min-height: 56px; 
+    padding: 16px 20px;
+  }
+}
+```
+
+### Animation Pregnancy-Safe
+
+```scss
+// Respecter les préférences de mouvement réduit
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+// Animations autorisées (douces et courtes)
+.pregnancy-safe-animation {
+  animation-duration: 0.3s max;
+  animation-timing-function: ease-out;
+  // Jamais d'animation infinie
+}
+```
+
+## 🧪 Testing avec Storybook
+
+### Structure de Story Pregnancy-Safe
+
+```tsx
+import type { Meta, StoryObj } from '@storybook/react';
+import { within, expect } from '@storybook/test';
+import { 
+  withPregnancyPersona,
+  PREGNANCY_PERSONAS 
+} from '../decorators/pregnancy-safe';
+import { 
+  runPregnancySafeTests,
+  pregnancySafeInteractions 
+} from '../utils/pregnancy-testing';
+
+const meta: Meta<typeof YourComponent> = {
+  title: 'Components/YourComponent/Pregnancy Personas',
+  component: YourComponent,
+  parameters: {
+    docs: {
+      description: {
+        component: `
+Composant testé pour les utilisatrices enceintes du Québec.
+Vérifie l'accessibilité, performance et adaptation culturelle.
+        `,
+      },
+    },
+  },
+};
+
+export const MarieFirstPregnancy: StoryObj = {
+  args: { /* ... */ },
+  decorators: [
+    withPregnancyPersona(PREGNANCY_PERSONAS.MARIE),
+    withReducedMotion,
+    withQuebecFrench,
+  ],
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Test contenu français
+    expect(canvas.getByText(/français/i)).toBeInTheDocument();
+    
+    // Test tailles tactiles
+    const buttons = canvas.getAllByRole('button');
+    for (const button of buttons) {
+      const rect = button.getBoundingClientRect();
+      expect(rect.height).toBeGreaterThanOrEqual(44);
+    }
+    
+    // Interaction pregnancy-safe
+    await pregnancySafeInteractions.clickSafely(buttons[0], 800);
+  },
+};
+```
+
+### Tests Automatiques
+
+```bash
+# Tests Storybook avec personas
+npm run test:pregnancy-safe
+
+# Tests accessibilité complets
+npm run test:storybook
+
+# Tests E2E + Storybook + Unit
+npm run test:all
+```
+
+## 📝 Checklist de Validation
+
+### ✅ Accessibilité Pregnancy-Safe
+- [ ] Touch targets ≥ 44px (≥ 56px pour grossesse à risque)
+- [ ] Contraste couleur ≥ 4.5:1 (≥ 7:1 pour fatigue visuelle)
+- [ ] Support clavier complet
+- [ ] Animation respecte `prefers-reduced-motion`
+- [ ] Pas de rouge médical (#FF0000)
+- [ ] Texte lisible avec fatigue
+
+### ✅ Localisation Québécoise
+- [ ] Contenu français disponible
+- [ ] Formats Quebec (postal, téléphone)
+- [ ] Dates DD/MM/YYYY
+- [ ] Devises CAD
+- [ ] Système de santé RAMQ
+
+### ✅ Performance Pregnancy
+- [ ] Chargement < 2.5s (LCP pregnancy-adjusted)
+- [ ] Bundle JS < 200KB initial
+- [ ] Images optimisées < 500KB
+- [ ] Fonctionne hors ligne (rendez-vous médicaux)
+
+### ✅ Tests avec Personas
+- [ ] Story Marie (mobile, première grossesse)
+- [ ] Story Sophie (tablette, efficacité)
+- [ ] Story Alexandra (desktop, accessibilité max)
+- [ ] Tests d'interaction pregnancy-safe
+- [ ] Validation contenu français
+
+## 🚀 Commandes Utiles
+
+```bash
+# Développement
+npm run storybook                    # Interface Storybook
+npm run test:pregnancy-safe          # Tests personas
+npm run test:e2e:ui                 # Tests E2E Playwright
+
+# Validation complète
+npm run test:all                    # Tous les tests
+npm run test:storybook:ci          # Tests CI Storybook
+```
+
+## 📚 Resources
+
+- [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
+- [Quebec Law 25](https://www.cai.gouv.qc.ca/loi-25/)
+- [PIPEDA Guidelines](https://www.priv.gc.ca/en/privacy-topics/privacy-laws-in-canada/the-personal-information-protection-and-electronic-documents-act-pipeda/)
+- [Storybook Testing](https://storybook.js.org/docs/react/writing-tests/introduction)
+
+---
+
+**Important**: Chaque composant doit être testé avec les trois personas pour garantir 
+une expérience optimale pour toutes les utilisatrices du marché périnatal québécois.
