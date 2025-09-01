@@ -13,7 +13,12 @@
     "test:watch": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
-    "test:coverage:summary": "vitest run --coverage && node -e \"console.log('Coverage Summary:', JSON.stringify(require('./coverage/coverage-final.json').total, null, 2))\""
+    "test:coverage:summary": "vitest run --coverage && node -e \"console.log('Coverage Summary:', JSON.stringify(require('./coverage/coverage-final.json').total, null, 2))\"",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:debug": "playwright test --debug",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.1",
