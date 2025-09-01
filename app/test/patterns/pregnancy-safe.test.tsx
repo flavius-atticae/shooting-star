@@ -44,7 +44,7 @@ const PREGNANCY_SAFE_COLORS = {
   warm: '#ceaf9b', // Warm beige
   soft: '#ffddd3', // Gentle rose
   cool: '#dae6ea', // Cool blue
-  menthe: '#3d4e8d', // Fresh mint
+  menthe: '#d4e8d4', // Fresh mint
 } as const;
 
 /**

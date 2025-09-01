@@ -21,7 +21,7 @@ export function ContactButton({ className }: ContactButtonProps) {
         // Pregnancy-safe touch target (optimal 48x48px for comfort)
         "min-h-[48px] min-w-[48px]",
         // Custom colors: menthe background + white text for contrast
-        "text-white hover:text-white/90 active:text-white/80",
+        "bg-menthe text-white hover:text-white/90 active:text-white/80",
         // Text styling - Barlow font
         "text-sm font-semibold uppercase font-sans",
         // Additional padding for better touch experience + pill shape
@@ -30,9 +30,6 @@ export function ContactButton({ className }: ContactButtonProps) {
         "outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
         className
       )}
-      style={{ 
-        backgroundColor: 'var(--color-menthe)'
-      } as React.CSSProperties}
     >
       <Link 
         to="/contact"

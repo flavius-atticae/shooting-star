@@ -62,14 +62,13 @@ export function Header({ className }: HeaderProps) {
                 // Show on mobile and tablet, hide on desktop
                 "lg:hidden",
                 // Colors - menthe background with primary icons
-                "text-primary hover:text-primary/90",
+                "bg-menthe text-primary hover:text-primary/90",
                 // Focus
                 "focus-visible:ring-2 focus-visible:ring-white/50"
               )}
               aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-navigation"
-              style={{ backgroundColor: 'var(--color-menthe)' } as React.CSSProperties}
             >
               <svg 
                 className="size-6" 
