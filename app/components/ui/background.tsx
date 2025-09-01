@@ -32,8 +32,8 @@ export function Background({
           soft: "bg-gradient-to-br from-white to-gris/30",
           
           // Advanced gradient variants pregnancy-safe  
-          'gradient-soft': "bg-gradient-to-br from-white via-[theme(colors.soft)]/20 to-gris/40",
-          'gradient-warm': "bg-gradient-to-br from-white via-[theme(colors.warm)]/15 to-gris/25"
+          'gradient-soft': "bg-gradient-to-br from-white via-soft/20 to-gris/40",
+          'gradient-warm': "bg-gradient-to-br from-white via-warm/15 to-gris/25"
         }[variant],
         className
       )}
@@ -53,8 +53,8 @@ export function useBackgroundClasses() {
     white: "bg-white",
     accent: "bg-gris", 
     soft: "bg-gradient-to-br from-white to-gris/30",
-    'gradient-soft': "bg-gradient-to-br from-white via-[theme(colors.soft)]/20 to-gris/40",
-    'gradient-warm': "bg-gradient-to-br from-white via-[theme(colors.warm)]/15 to-gris/25"
+    'gradient-soft': "bg-gradient-to-br from-white via-soft/20 to-gris/40",
+    'gradient-warm': "bg-gradient-to-br from-white via-warm/15 to-gris/25"
   } as const;
 }
 
