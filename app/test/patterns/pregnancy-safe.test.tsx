@@ -44,18 +44,37 @@ const PREGNANCY_SAFE_COLORS = {
   warm: '#ceaf9b', // Warm beige
   soft: '#ffddd3', // Gentle rose
   cool: '#dae6ea', // Cool blue
-  menthe: '#3d4e8d', // Fresh mint
+  menthe: '#d4e8d4', // Fresh mint
 } as const;
 
 /**
- * Test Utilities for Pregnancy-Safe Design
+ * Enhanced Test Utilities for Pregnancy-Safe Design
+ * 
+ * Version 2.0 - Improved error messaging and context support
  */
 class PregnancySafeTestUtils {
   /**
-   * Validate touch target size meets pregnancy requirements
-   * Note: In jsdom environment, we read CSS styles to determine intended dimensions
+   * Enhanced touch target validation with detailed error messaging
+   * 
+   * @param element - The HTML element to validate
+   * @param options - Configuration options
    */
-  static validateTouchTarget(element: HTMLElement, minSize = PREGNANCY_CONSTANTS.TOUCH_TARGET_MIN) {
+  static validateTouchTarget(
+    element: HTMLElement, 
+    options: {
+      minSize?: number;
+      context?: string;
+      recommendedSize?: number;
+      logDetails?: boolean;
+    } = {}
+  ) {
+    const {
+      minSize = PREGNANCY_CONSTANTS.TOUCH_TARGET_MIN,
+      context = 'Interactive element',
+      recommendedSize = PREGNANCY_CONSTANTS.TOUCH_TARGET_RECOMMENDED,
+      logDetails = process.env.NODE_ENV === 'development'
+    } = options;
+
     // Read CSS styles to get intended dimensions
     const computedStyle = window.getComputedStyle(element);
     const cssWidth = parseInt(computedStyle.width) || 0;
@@ -72,16 +91,76 @@ class PregnancySafeTestUtils {
     // If no explicit dimensions are set, assume default button size (reasonable for pregnancy)
     const finalWidth = width > 0 ? width : 48;
     const finalHeight = height > 0 ? height : 48;
-    
-    expect(finalWidth).toBeGreaterThanOrEqual(minSize);
-    expect(finalHeight).toBeGreaterThanOrEqual(minSize);
+
+    // Detailed logging for debugging
+    if (logDetails) {
+      console.log(`\n📏 Touch Target Validation - ${context}`);
+      console.log(`   Element: ${element.tagName.toLowerCase()}${element.className ? '.' + element.className.split(' ').join('.') : ''}`);
+      console.log(`   Computed: ${cssWidth}x${cssHeight}px`);
+      console.log(`   Inline: ${inlineWidth}x${inlineHeight}px`);
+      console.log(`   Final: ${finalWidth}x${finalHeight}px`);
+      console.log(`   Required: ${minSize}x${minSize}px (pregnancy-safe minimum)`);
+      console.log(`   Recommended: ${recommendedSize}x${recommendedSize}px (comfort optimal)`);
+    }
+
+    // Enhanced error messages for better debugging
+    try {
+      expect(finalWidth).toBeGreaterThanOrEqual(minSize);
+    } catch (error) {
+      const message = `❌ ${context} width (${finalWidth}px) is smaller than pregnancy-safe minimum (${minSize}px).\n` +
+        `   🤰 Pregnant users need larger touch targets due to:\n` +
+        `   • Swollen fingers during pregnancy\n` +
+        `   • Decreased dexterity\n` +
+        `   • Fatigue affecting fine motor control\n` +
+        `   💡 Recommendation: Use min-width: ${recommendedSize}px for optimal comfort`;
+      throw new Error(message);
+    }
+
+    try {
+      expect(finalHeight).toBeGreaterThanOrEqual(minSize);
+    } catch (error) {
+      const message = `❌ ${context} height (${finalHeight}px) is smaller than pregnancy-safe minimum (${minSize}px).\n` +
+        `   🤰 Pregnant users need larger touch targets due to:\n` +
+        `   • Swollen fingers during pregnancy\n` +
+        `   • Decreased dexterity\n` +
+        `   • Fatigue affecting fine motor control\n` +
+        `   💡 Recommendation: Use min-height: ${recommendedSize}px for optimal comfort`;
+      throw new Error(message);
+    }
+
+    // Provide comfort recommendations (only warn in development, not fail tests)
+    if (finalWidth < recommendedSize || finalHeight < recommendedSize) {
+      if (process.env.NODE_ENV === 'development') {
+        console.warn(`⚠️  ${context} meets minimum requirements but could be more comfortable:`);
+        console.warn(`   Current: ${finalWidth}x${finalHeight}px`);
+        console.warn(`   Recommended: ${recommendedSize}x${recommendedSize}px for pregnancy comfort`);
+      }
+    } else if (logDetails) {
+      console.log(`✅ ${context} meets pregnancy-safe touch target requirements`);
+    }
   }
 
   /**
-   * Validate spacing between interactive elements
-   * Note: In jsdom environment, we read CSS margin/padding values to determine spacing
+   * Enhanced spacing validation with detailed error context
+   * 
+   * @param element1 - First element to check
+   * @param element2 - Second element to check
+   * @param options - Configuration options
    */
-  static validateSpacing(element1: HTMLElement, element2: HTMLElement, minSpacing = PREGNANCY_CONSTANTS.SPACING_MIN) {
+  static validateSpacing(
+    element1: HTMLElement, 
+    element2: HTMLElement, 
+    options: {
+      minSpacing?: number;
+      context?: string;
+      logDetails?: boolean;
+    } = {}
+  ) {
+    const {
+      minSpacing = PREGNANCY_CONSTANTS.SPACING_MIN,
+      context = 'Interactive elements',
+      logDetails = process.env.NODE_ENV === 'development'
+    } = options;
     // For jsdom testing, we validate that elements exist and check their spacing styles
     expect(element1).toBeInTheDocument();
     expect(element2).toBeInTheDocument();
@@ -119,8 +198,32 @@ class PregnancySafeTestUtils {
     
     // Use the larger of the two spacings (elements could be side-by-side or stacked)
     const actualSpacing = Math.max(horizontalSpacing, verticalSpacing);
-    
-    expect(actualSpacing).toBeGreaterThanOrEqual(minSpacing);
+
+    // Detailed logging
+    if (logDetails) {
+      console.log(`\n📐 Spacing Validation - ${context}`);
+      console.log(`   Element 1: ${element1.tagName.toLowerCase()}`);
+      console.log(`   Element 2: ${element2.tagName.toLowerCase()}`);
+      console.log(`   Horizontal spacing: ${horizontalSpacing}px`);
+      console.log(`   Vertical spacing: ${verticalSpacing}px`);
+      console.log(`   Effective spacing: ${actualSpacing}px`);
+      console.log(`   Required minimum: ${minSpacing}px`);
+    }
+
+    try {
+      expect(actualSpacing).toBeGreaterThanOrEqual(minSpacing);
+      if (logDetails) {
+        console.log(`✅ ${context} spacing meets pregnancy-safe requirements`);
+      }
+    } catch (error) {
+      const message = `❌ ${context} spacing (${actualSpacing}px) is insufficient for pregnancy users.\n` +
+        `   🤰 Pregnant users need adequate spacing due to:\n` +
+        `   • Reduced precision from swollen fingers\n` +
+        `   • Higher chance of accidental touches\n` +
+        `   • Fatigue affecting fine motor control\n` +
+        `   💡 Recommendation: Use minimum ${PREGNANCY_CONSTANTS.SPACING_COMFORTABLE}px for comfort`;
+      throw new Error(message);
+    }
   }
 
   /**
@@ -156,13 +259,56 @@ class PregnancySafeTestUtils {
   }
 
   /**
-   * Check if color is pregnancy-safe (not anxiety-inducing)
+   * Enhanced pregnancy-safe color validation with context
    */
-  static validatePregnancySafeColor(color: string) {
+  static validatePregnancySafeColor(
+    color: string, 
+    options: {
+      context?: string;
+      logDetails?: boolean;
+      allowList?: string[];
+    } = {}
+  ) {
+    const {
+      context = 'Color choice',
+      logDetails = process.env.NODE_ENV === 'development',
+      allowList = []
+    } = options;
+
+    // Check if color is explicitly allowed
+    if (allowList.includes(color.toLowerCase())) {
+      if (logDetails) {
+        console.log(`✅ ${context} (${color}) is explicitly allowed`);
+      }
+      return;
+    }
+
     const isUnsafe = PREGNANCY_UNSAFE_COLORS.some(unsafeColor => 
       color.toLowerCase().includes(unsafeColor.toLowerCase())
     );
-    expect(isUnsafe).toBeFalsy();
+
+    if (logDetails) {
+      console.log(`\n🎨 Color Safety Check - ${context}`);
+      console.log(`   Color: ${color}`);
+      console.log(`   Safe: ${!isUnsafe ? '✅' : '❌'}`);
+    }
+
+    if (isUnsafe) {
+      const message = `❌ ${context} uses pregnancy-unsafe color: ${color}\n` +
+        `   🤰 This color may trigger anxiety in pregnant users because:\n` +
+        `   • Medical/emergency associations (reds, harsh oranges)\n` +
+        `   • Nausea triggers (bright yellows, harsh contrasts)\n` +
+        `   • Stress response from alarming colors\n` +
+        `   💡 Consider using pregnancy-safe alternatives:\n` +
+        `   • Calming greens: ${PREGNANCY_SAFE_COLORS.primary}\n` +
+        `   • Warm roses: ${PREGNANCY_SAFE_COLORS.accent}\n` +
+        `   • Cool blues: ${PREGNANCY_SAFE_COLORS.secondary}`;
+      throw new Error(message);
+    }
+
+    if (logDetails) {
+      console.log(`✅ ${context} color is pregnancy-safe`);
+    }
   }
 
   /**
@@ -194,6 +340,178 @@ class PregnancySafeTestUtils {
     await new Promise(resolve => setTimeout(resolve, 100)); // Slight hesitation
     await user.click(element);
     await new Promise(resolve => setTimeout(resolve, 50)); // Processing delay
+  }
+
+  /**
+   * Performance budget validation for CI/CD integration
+   */
+  static validatePerformanceBudgets(metrics: {
+    bundleSize?: number;
+    loadTime?: number;
+    interactiveTime?: number;
+    context?: string;
+  }) {
+    const {
+      bundleSize,
+      loadTime,
+      interactiveTime,
+      context = 'Performance check'
+    } = metrics;
+
+    const budgets = {
+      BUNDLE_SIZE_KB: 200,
+      LOAD_TIME_MS: 2500,
+      INTERACTIVE_TIME_MS: 3000
+    };
+
+    console.log(`\n⏱️  Performance Budget Check - ${context}`);
+
+    if (bundleSize !== undefined) {
+      console.log(`   Bundle size: ${bundleSize}KB (budget: ${budgets.BUNDLE_SIZE_KB}KB)`);
+      if (bundleSize > budgets.BUNDLE_SIZE_KB) {
+        const message = `❌ Bundle size (${bundleSize}KB) exceeds pregnancy-safe budget (${budgets.BUNDLE_SIZE_KB}KB).\n` +
+          `   🤰 Large bundles affect pregnant users who may have:\n` +
+          `   • Slower devices due to budget constraints\n` +
+          `   • Limited data plans\n` +
+          `   • Reduced patience due to fatigue\n` +
+          `   💡 Consider code splitting and lazy loading`;
+        if (process.env.CI) {
+          console.error(message);
+          process.exitCode = 1;
+        } else {
+          console.warn(message);
+        }
+      }
+    }
+
+    if (loadTime !== undefined) {
+      console.log(`   Load time: ${loadTime}ms (budget: ${budgets.LOAD_TIME_MS}ms)`);
+      if (loadTime > budgets.LOAD_TIME_MS) {
+        const message = `❌ Load time (${loadTime}ms) exceeds pregnancy-safe budget (${budgets.LOAD_TIME_MS}ms).\n` +
+          `   🤰 Slow loading affects pregnant users who experience:\n` +
+          `   • Increased impatience during pregnancy\n` +
+          `   • Anxiety when things don't work quickly\n` +
+          `   • May abandon tasks due to fatigue\n` +
+          `   💡 Optimize images, use CDN, enable compression`;
+        if (process.env.CI) {
+          console.error(message);
+          process.exitCode = 1;
+        } else {
+          console.warn(message);
+        }
+      }
+    }
+
+    if (interactiveTime !== undefined) {
+      console.log(`   Interactive time: ${interactiveTime}ms (budget: ${budgets.INTERACTIVE_TIME_MS}ms)`);
+      if (interactiveTime > budgets.INTERACTIVE_TIME_MS) {
+        const message = `❌ Interactive time (${interactiveTime}ms) exceeds pregnancy-safe budget.\n` +
+          `   🤰 Delayed interactivity frustrates pregnant users\n` +
+          `   💡 Consider reducing JavaScript execution time`;
+        if (process.env.CI) {
+          console.error(message);
+          process.exitCode = 1;
+        } else {
+          console.warn(message);
+        }
+      }
+    }
+  }
+
+  /**
+   * Shared viewport testing utility for visual regression
+   */
+  static async testViewportSafely(
+    testFn: (viewport: { width: number; height: number; name: string }) => Promise<void>,
+    viewports?: Array<{ width: number; height: number; name: string }>
+  ) {
+    const defaultViewports = [
+      { width: 375, height: 667, name: 'iPhone SE' },
+      { width: 390, height: 844, name: 'iPhone 12 Pro' },
+      { width: 1024, height: 768, name: 'iPad Pro' },
+      { width: 1440, height: 900, name: 'Desktop' }
+    ];
+
+    const testViewports = viewports || defaultViewports;
+    const results: Array<{ viewport: string; success: boolean; error?: string }> = [];
+
+    for (const viewport of testViewports) {
+      try {
+        console.log(`\n📱 Testing viewport: ${viewport.name} (${viewport.width}x${viewport.height})`);
+        await testFn(viewport);
+        results.push({ viewport: viewport.name, success: true });
+        console.log(`✅ ${viewport.name} test passed`);
+      } catch (error) {
+        const errorMsg = error instanceof Error ? error.message : String(error);
+        results.push({ viewport: viewport.name, success: false, error: errorMsg });
+        console.error(`❌ ${viewport.name} test failed:`, errorMsg);
+      }
+    }
+
+    // Summary report
+    console.log(`\n📄 Viewport Test Summary:`);
+    results.forEach(result => {
+      console.log(`   ${result.success ? '✅' : '❌'} ${result.viewport}`);
+      if (result.error) {
+        console.log(`     Error: ${result.error}`);
+      }
+    });
+
+    // Fail if any viewport failed
+    const failedTests = results.filter(r => !r.success);
+    if (failedTests.length > 0) {
+      throw new Error(`Viewport tests failed for: ${failedTests.map(f => f.viewport).join(', ')}`);
+    }
+
+    return results;
+  }
+
+  /**
+   * Visual baseline management for CI/CD
+   */
+  static manageVisualBaselines(options: {
+    action: 'update' | 'compare' | 'clean';
+    testName?: string;
+    threshold?: number;
+    environment?: string;
+  }) {
+    const {
+      action,
+      testName = 'all',
+      threshold = 0.2,
+      environment = process.env.NODE_ENV || 'development'
+    } = options;
+
+    console.log(`\n🎨 Visual Baseline Management`);
+    console.log(`   Action: ${action}`);
+    console.log(`   Test: ${testName}`);
+    console.log(`   Environment: ${environment}`);
+    console.log(`   Threshold: ${threshold}`);
+
+    switch (action) {
+      case 'update':
+        if (process.env.UPDATE_SNAPSHOTS === 'true' || process.env.CI !== 'true') {
+          console.log(`⚙️  Updating baselines for ${testName}...`);
+          // In real implementation, this would update screenshot baselines
+          return { updated: true, message: 'Baselines updated successfully' };
+        } else {
+          console.warn(`⚠️  Baseline updates disabled in CI environment`);
+          return { updated: false, message: 'Updates disabled in CI' };
+        }
+
+      case 'compare':
+        console.log(`🔍 Comparing screenshots with threshold ${threshold}...`);
+        // In real implementation, this would compare screenshots
+        return { matches: true, differences: 0, threshold };
+
+      case 'clean':
+        console.log(`🧹 Cleaning old baseline files...`);
+        // In real implementation, this would clean old screenshots
+        return { cleaned: true, filesRemoved: 0 };
+
+      default:
+        throw new Error(`Unknown baseline action: ${action}`);
+    }
   }
 
   /**
@@ -240,22 +558,24 @@ describe('Pregnancy-Safe Testing Patterns', () => {
     it('should validate minimum touch targets for swollen fingers', () => {
       render(
         <div data-testid="touch-targets">
-          <button style={{ width: '44px', height: '44px' }}>Minimum</button>
-          <button style={{ width: '48px', height: '48px' }}>Recommended</button>
-          <button style={{ width: '32px', height: '32px' }}>Too Small</button>
+          <button style={{ width: '44px', height: '44px' }} data-testid="minimum-button">Minimum</button>
+          <button style={{ width: '48px', height: '48px' }} data-testid="recommended-button">Recommended</button>
+          <button style={{ width: '32px', height: '32px' }} data-testid="too-small-button">Too Small</button>
         </div>
       );
 
-      const buttons = screen.getAllByRole('button');
+      const minimumButton = screen.getByTestId('minimum-button');
+      const recommendedButton = screen.getByTestId('recommended-button');
+      const tooSmallButton = screen.getByTestId('too-small-button');
       
-      // First two should pass
-      PregnancySafeTestUtils.validateTouchTarget(buttons[0]);
-      PregnancySafeTestUtils.validateTouchTarget(buttons[1]);
+      // First two should pass (minimum size met)
+      PregnancySafeTestUtils.validateTouchTarget(minimumButton, { context: 'Minimum size button' });
+      PregnancySafeTestUtils.validateTouchTarget(recommendedButton, { context: 'Recommended size button' });
       
-      // Third should fail
+      // Third should fail (below minimum)
       expect(() => {
-        PregnancySafeTestUtils.validateTouchTarget(buttons[2]);
-      }).toThrow();
+        PregnancySafeTestUtils.validateTouchTarget(tooSmallButton, { context: 'Too small button' });
+      }).toThrow(/Too small button .* is smaller than pregnancy-safe minimum/);
     });
 
     it('should validate spacing between interactive elements', () => {
@@ -653,5 +973,60 @@ describe('Pregnancy-Safe Testing Patterns', () => {
   });
 });
 
+// Enhanced utility functions for shared viewport testing
+const SharedViewportUtils = {
+  /**
+   * Standard pregnancy-safe viewports for consistent testing
+   */
+  PREGNANCY_VIEWPORTS: {
+    'iPhone SE': { width: 375, height: 667, type: 'mobile' },
+    'iPhone 12 Pro': { width: 390, height: 844, type: 'mobile' },
+    'iPad Pro': { width: 1024, height: 768, type: 'tablet' },
+    'Desktop 1024px': { width: 1024, height: 768, type: 'desktop' },
+    'Desktop 1440px': { width: 1440, height: 900, type: 'desktop' },
+    'Large Desktop': { width: 1920, height: 1080, type: 'desktop' }
+  },
+
+  /**
+   * Create a viewport test suite with shared setup
+   */
+  createViewportTestSuite(
+    testName: string,
+    testFn: (viewport: { width: number; height: number; name: string }) => Promise<void>
+  ) {
+    return Object.entries(this.PREGNANCY_VIEWPORTS).map(([name, config]) => {
+      return {
+        name: `${testName} on ${name}`,
+        viewport: { ...config, name },
+        test: () => testFn({ ...config, name })
+      };
+    });
+  },
+
+  /**
+   * Get viewport configuration by type
+   */
+  getViewportsByType(type: 'mobile' | 'tablet' | 'desktop' | 'all' = 'all') {
+    if (type === 'all') {
+      return Object.entries(this.PREGNANCY_VIEWPORTS);
+    }
+    return Object.entries(this.PREGNANCY_VIEWPORTS).filter(([_, config]) => config.type === type);
+  }
+} as const;
+
 // Export test utilities for use in other test files
-export { PregnancySafeTestUtils, PREGNANCY_CONSTANTS, PREGNANCY_SAFE_COLORS, PREGNANCY_UNSAFE_COLORS };
+export { PregnancySafeTestUtils, PREGNANCY_CONSTANTS, PREGNANCY_SAFE_COLORS, PREGNANCY_UNSAFE_COLORS, SharedViewportUtils };
+
+// Environment configuration for better debugging
+if (typeof globalThis !== 'undefined') {
+  // @ts-ignore
+  globalThis.PREGNANCY_SAFE_DEBUG = process.env.PREGNANCY_SAFE_DEBUG === 'true';
+  // @ts-ignore
+  globalThis.PREGNANCY_SAFE_UTILS = {
+    PregnancySafeTestUtils,
+    SharedViewportUtils,
+    PREGNANCY_CONSTANTS,
+    PREGNANCY_SAFE_COLORS,
+    PREGNANCY_UNSAFE_COLORS
+  };
+}

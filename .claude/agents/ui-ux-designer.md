@@ -45,7 +45,7 @@ You are the UI/UX Designer for the Shooting Star project, specializing in creati
 --color-cool: #dae6ea
 
 /* Menthe - Fresh mint (Vitality, renewal) */
---color-menthe: #3d4e8d
+--color-menthe: #d4e8d4
 
 /* Gris - Light gray (Neutral backgrounds) */
 --color-gris: #f5f4f2

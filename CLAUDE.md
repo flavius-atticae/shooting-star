@@ -164,7 +164,7 @@ Issue Created → Assigned → Branch → Development → PR → Review → Merg
 --color-warm: #ceaf9b      /* Beige - Warm tones */
 --color-soft: #ffddd3      /* Rose Pale - Soft backgrounds */
 --color-cool: #dae6ea      /* Bleu Pale - Cool accents */
---color-menthe: #3d4e8d    /* Menthe - Fresh mint accent */
+--color-menthe: #d4e8d4    /* Menthe - Fresh mint accent */
 --color-white: #ffffff     /* Pure white */
 --color-gris: #f5f4f2      /* Light gray background */
 ```

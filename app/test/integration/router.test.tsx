@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider, Outlet } from 'react-router-dom';
@@ -297,14 +297,18 @@ describe('React Router v7 Integration - Pregnancy-Safe Navigation', () => {
       const coursLink = screen.getByTestId('cours-link');
       
       // Simulate navigation (in real app this would be handled by React Router)
-      router.navigate('/cours');
+      await act(async () => {
+        router.navigate('/cours');
+      });
       
       await waitFor(() => {
         expect(screen.getByTestId('cours-page')).toBeInTheDocument();
       });
 
       // Navigate to specific trimester
-      router.navigate('/cours/deuxieme-trimestre');
+      await act(async () => {
+        router.navigate('/cours/deuxieme-trimestre');
+      });
       
       await waitFor(() => {
         expect(screen.getByTestId('trimester-2-page')).toBeInTheDocument();
@@ -324,14 +328,18 @@ describe('React Router v7 Integration - Pregnancy-Safe Navigation', () => {
       expect(screen.getByTestId('trimester-3-page')).toBeInTheDocument();
       
       // Navigate back to cours
-      router.navigate('/cours');
+      await act(async () => {
+        router.navigate('/cours');
+      });
       
       await waitFor(() => {
         expect(screen.getByTestId('cours-page')).toBeInTheDocument();
       });
       
       // Navigate back to home
-      router.navigate('/');
+      await act(async () => {
+        router.navigate('/');
+      });
       
       await waitFor(() => {
         expect(screen.getByTestId('home-page')).toBeInTheDocument();
@@ -370,7 +378,9 @@ describe('React Router v7 Integration - Pregnancy-Safe Navigation', () => {
 
       // Attempt to navigate to invalid route
       try {
-        router.navigate('/invalid/deeply/nested/route');
+        await act(async () => {
+          router.navigate('/invalid/deeply/nested/route');
+        });
         
         await waitFor(() => {
           // Should gracefully handle the error
@@ -401,7 +411,9 @@ describe('React Router v7 Integration - Pregnancy-Safe Navigation', () => {
       expect(document.activeElement).toBe(coursLink);
       
       // Navigate
-      router.navigate('/cours');
+      await act(async () => {
+        router.navigate('/cours');
+      });
       
       await waitFor(() => {
         expect(screen.getByTestId('cours-page')).toBeInTheDocument();
@@ -566,13 +578,17 @@ describe('React Router v7 Integration - Pregnancy-Safe Navigation', () => {
       expect(screen.getByTestId('trimester-1-page')).toBeInTheDocument();
       
       // Navigate to different French URLs
-      router.navigate('/cours/deuxieme-trimestre');
+      await act(async () => {
+        router.navigate('/cours/deuxieme-trimestre');
+      });
       
       await waitFor(() => {
         expect(screen.getByTestId('trimester-2-page')).toBeInTheDocument();
       });
 
-      router.navigate('/cours/troisieme-trimestre');
+      await act(async () => {
+        router.navigate('/cours/troisieme-trimestre');
+      });
       
       await waitFor(() => {
         expect(screen.getByTestId('trimester-3-page')).toBeInTheDocument();
