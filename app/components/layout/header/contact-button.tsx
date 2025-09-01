@@ -1,3 +1,4 @@
+import { Link } from "react-router";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
@@ -19,27 +20,26 @@ export function ContactButton({ className }: ContactButtonProps) {
       className={cn(
         // Pregnancy-safe touch target (optimal 48x48px for comfort)
         "min-h-[48px] min-w-[48px]",
-        // Custom colors: menthe background + primary text for contrast
-        "text-primary hover:text-primary/90",
+        // Custom colors: menthe background + white text for contrast
+        "text-white hover:text-white/90 active:text-white/80",
         // Text styling - Barlow font
         "text-sm font-semibold uppercase font-sans",
         // Additional padding for better touch experience + pill shape
         "px-8 py-2 rounded-full",
-        // Focus enhancement for accessibility - white ring on menthe background
-        "focus-visible:ring-2 focus-visible:ring-white/50",
+        // Focus enhancement for accessibility
+        "outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
         className
       )}
       style={{ 
         backgroundColor: 'var(--color-menthe)'
       } as React.CSSProperties}
     >
-      <a 
-        href="#contact"
-        aria-label="Contactez Pauline Roussel pour une consultation"
-        style={{ color: 'var(--color-primary)' }}
+      <Link 
+        to="/contact"
+        aria-label="Contactez Pauline Roussel"
       >
-        Contactez-moi
-      </a>
+        CONTACTEZ-MOI
+      </Link>
     </Button>
   );
 }

@@ -551,8 +551,8 @@ describe('Header Component - Pregnancy-Safe Design', () => {
         </TestWrapper>
       );
       
-      // State should be reset on re-render (expected behavior)
-      expect(screen.getByLabelText(/Ouvrir le menu/)).toBeInTheDocument();
+      // State should persist across re-renders (expected React behavior)
+      expect(screen.getByLabelText(/Fermer le menu/)).toBeInTheDocument();
     });
   });
 

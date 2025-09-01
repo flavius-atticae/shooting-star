@@ -30,7 +30,7 @@ describe('ContactButton Component - Pregnancy-Safe Design', () => {
         </TestWrapper>
       );
 
-      const button = screen.getByText('Contactez-moi');
+      const button = screen.getByText('CONTACTEZ-MOI');
       expect(button).toBeInTheDocument();
       
       // Check pill shape (rounded-full)
@@ -100,7 +100,7 @@ describe('ContactButton Component - Pregnancy-Safe Design', () => {
         </TestWrapper>
       );
 
-      const button = screen.getByText('Contactez-moi');
+      const button = screen.getByText('CONTACTEZ-MOI');
       
       // Validate 44x44px minimum for swollen fingers
       PregnancySafeTestUtils.validateTouchTarget(button, { 
@@ -129,7 +129,7 @@ describe('ContactButton Component - Pregnancy-Safe Design', () => {
         </TestWrapper>
       );
 
-      const button = screen.getByText('Contactez-moi');
+      const button = screen.getByText('CONTACTEZ-MOI');
       
       // Simulate multiple imprecise clicks
       for (let i = 0; i < 3; i++) {
@@ -147,7 +147,7 @@ describe('ContactButton Component - Pregnancy-Safe Design', () => {
         </TestWrapper>
       );
 
-      const button = screen.getByText('Contactez-moi');
+      const button = screen.getByText('CONTACTEZ-MOI');
       
       // Simulate delayed/interrupted interaction pattern
       await PregnancySafeTestUtils.simulatePregnancyBrainInteraction(button, user);
@@ -312,7 +312,7 @@ describe('ContactButton Component - Pregnancy-Safe Design', () => {
         </TestWrapper>
       );
 
-      const button = screen.getByText('Contactez-moi');
+      const button = screen.getByText('CONTACTEZ-MOI');
       expect(button).toBeInTheDocument();
       
       // Ensure correct French contact terminology
@@ -553,7 +553,7 @@ describe('ContactButton Component - Pregnancy-Safe Design', () => {
         </TestWrapper>
       );
 
-      const button = screen.getByText('Contactez-moi');
+      const button = screen.getByText('CONTACTEZ-MOI');
       
       // Clear, direct call-to-action in French
       expect(button.textContent).toBe('CONTACTEZ-MOI');

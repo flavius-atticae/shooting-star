@@ -548,7 +548,7 @@ test.describe('Header Accessibility - Pregnancy-Safe Patterns', () => {
       await expect(logo).toBeVisible();
       
       await logo.focus();
-      await expect(logo).toHaveFocus();
+      await expect(logo).toBeFocused();
       
       await logo.click();
       await expect(logo).toBeVisible(); // Should remain stable
@@ -635,7 +635,7 @@ test.describe('Header Accessibility - Pregnancy-Safe Patterns', () => {
       
       // Should be keyboard accessible
       await logo.focus();
-      await expect(logo).toHaveFocus();
+      await expect(logo).toBeFocused();
     });
 
     test('should not have accessibility performance regressions', async ({ page }) => {

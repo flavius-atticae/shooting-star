@@ -113,7 +113,7 @@ test.describe('Header Component E2E - Pregnancy-Safe Design', () => {
       // Menu button (on mobile)
       await page.setViewportSize({ width: 375, height: 667 });
       const menuButton = page.getByRole('button', { name: /menu/i });
-      await PregnancySafeE2EHelpers.validateTouchTarget(menuButton, 44, 44);
+      await PregnancySafeE2EHelpers.validateTouchTarget(page, menuButton, 44, 44);
     });
 
     test('should handle imprecise clicks from swollen fingers', async ({ page }) => {
@@ -258,7 +258,7 @@ test.describe('Header Component E2E - Pregnancy-Safe Design', () => {
       const count = await navLinks.count();
       
       for (let i = 0; i < count; i++) {
-        await PregnancySafeE2EHelpers.validateTouchTarget(navLinks.nth(i), 44, 44);
+        await PregnancySafeE2EHelpers.validateTouchTarget(page, navLinks.nth(i), 44, 44);
       }
     });
   });

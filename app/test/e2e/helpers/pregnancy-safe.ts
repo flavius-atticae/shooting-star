@@ -13,7 +13,23 @@ import { TIMEOUTS, ACCESSIBILITY } from './constants';
  */
 
 export class PregnancySafeHelpers {
-  constructor(private page: Page) {}
+  private sessionId: string;
+  private debugMode: boolean = false;
+
+  constructor(private page: Page) {
+    this.sessionId = Date.now().toString(36) + Math.random().toString(36).substr(2);
+  }
+
+  /**
+   * Logging utility for pregnancy-safe testing
+   */
+  private log(level: 'info' | 'warn' | 'error', message: string, data?: any) {
+    if (this.debugMode) {
+      const timestamp = new Date().toISOString();
+      const sessionInfo = `[${this.sessionId}]`;
+      console.log(`${timestamp} ${sessionInfo} [${level.toUpperCase()}] ${message}`, data || '');
+    }
+  }
 
   /**
    * Setup pregnancy-safe media queries (e.g., reduced motion)
