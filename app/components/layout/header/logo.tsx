@@ -17,16 +17,16 @@ export function Logo({ className }: LogoProps) {
       className={cn(
         // Base styles
         "inline-flex items-center justify-center",
-        // Typography - The Seasons serif font
-        "font-heading text-xl sm:text-2xl",
-        // Colors - Primary brand green
-        "text-primary hover:text-primary/90",
-        // Touch target (pregnancy-safe: minimum 44x44px)
-        "min-h-[44px] min-w-[44px] px-2",
+        // Typography - The Seasons serif font (responsive sizing for mobile)
+        "font-heading text-2xl sm:text-3xl lg:text-4xl whitespace-nowrap",
+        // Colors - White text on primary background
+        "text-white hover:text-white/90",
+        // Touch target (pregnancy-safe: optimal 48x48px for comfort)
+        "min-h-[48px] min-w-[48px] px-2",
         // Transitions
         "transition-colors duration-200",
         // Focus states for accessibility
-        "outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
+        "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2",
         // Hover state
         "hover:scale-[1.02] active:scale-[0.98]",
         className

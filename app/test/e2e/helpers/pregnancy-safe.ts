@@ -243,15 +243,134 @@ export class PregnancySafeHelpers {
   }
 
   /**
-   * Simulate pregnancy-related interaction delays
+   * Enhanced pregnancy-related interaction simulation with context
    */
-  async simulatePregnancyInteraction(delay: 'fatigue' | 'morning_sickness' | 'normal' = 'normal') {
+  async simulatePregnancyInteraction(
+    delay: 'fatigue' | 'morning_sickness' | 'normal' | 'brain_fog' = 'normal',
+    context: string = 'User interaction'
+  ) {
     const delays = {
       fatigue: 2000,
       morning_sickness: 1500,
+      brain_fog: 1800,
       normal: 500
     };
     
+    const descriptions = {
+      fatigue: 'pregnancy fatigue - slower decision making and movements',
+      morning_sickness: 'morning sickness - potential interruptions and discomfort',
+      brain_fog: 'pregnancy brain fog - difficulty concentrating and processing',
+      normal: 'normal pregnancy state - slightly slower than non-pregnant users'
+    };
+    
+    this.log('info', `Simulating ${context} with ${descriptions[delay]}`);
+    this.log('info', `Adding ${delays[delay]}ms delay...`);
+    
     await this.page.waitForTimeout(delays[delay]);
+    
+    this.log('info', `${context} simulation completed`);
   }
+  
+  /**
+   * Enhanced error recovery with pregnancy-safe patterns
+   */
+  async handleError(
+    error: Error, 
+    context: string,
+    recoveryAction?: () => Promise<void>
+  ): Promise<void> {
+    this.log('error', `Error in ${context}`, {
+      message: error.message,
+      stack: error.stack,
+      pageUrl: this.page.url(),
+      timestamp: new Date().toISOString()
+    });
+    
+    // Take screenshot for debugging
+    try {
+      const screenshotName = `error-${context.replace(/\s+/g, '-')}-${this.sessionId}.png`;
+      await this.page.screenshot({ path: screenshotName, fullPage: true });
+      this.log('info', `Error screenshot saved: ${screenshotName}`);
+    } catch (screenshotError) {
+      this.log('warn', 'Could not capture error screenshot', screenshotError);
+    }
+    
+    // Attempt recovery if provided
+    if (recoveryAction) {
+      try {
+        this.log('info', `Attempting error recovery for ${context}`);
+        await recoveryAction();
+        this.log('info', `Error recovery successful for ${context}`);
+      } catch (recoveryError) {
+        this.log('error', `Error recovery failed for ${context}`, recoveryError);
+        throw new Error(`Original error in ${context}: ${error.message}. Recovery also failed: ${recoveryError}`);
+      }
+    } else {
+      throw error;
+    }
+  }
+  
+  /**
+   * Cleanup resources and log session summary
+   */
+  async cleanup(): Promise<void> {
+    this.log('info', 'Cleaning up PregnancySafeHelpers session');
+    
+    try {
+      // Log final page state
+      const finalUrl = this.page.url();
+      const pageTitle = await this.page.title().catch(() => 'Unknown');
+      
+      this.log('info', 'Session summary:', {
+        sessionId: this.sessionId,
+        finalUrl,
+        pageTitle,
+        debugMode: this.debugMode
+      });
+      
+    } catch (error) {
+      this.log('warn', 'Error during cleanup', error);
+    }
+  }
+}
+
+// Enhanced constants with pregnancy-safe context
+export const PregnancySafeConstants = {
+  TOUCH_TARGETS: {
+    MINIMUM: 44,
+    RECOMMENDED: 48,
+    COMFORTABLE: 52
+  },
+  
+  SPACING: {
+    MINIMUM: 8,
+    COMFORTABLE: 16,
+    GENEROUS: 24
+  },
+  
+  PERFORMANCE_BUDGETS: {
+    LCP_MS: 2500,
+    FID_MS: 100,
+    CLS_SCORE: 0.1,
+    BUNDLE_KB: 200
+  },
+  
+  INTERACTION_DELAYS: {
+    FATIGUE: 2000,
+    MORNING_SICKNESS: 1500,
+    BRAIN_FOG: 1800,
+    NORMAL: 500
+  }
+} as const;
+
+// Environment detection
+const isCI = process.env.CI === 'true';
+const isDevelopment = process.env.NODE_ENV === 'development';
+const debugEnabled = process.env.PREGNANCY_SAFE_DEBUG === 'true';
+
+if (debugEnabled) {
+  console.log('\n🤰 Pregnancy-Safe Testing Utilities Loaded');
+  console.log(`   Environment: ${isDevelopment ? 'Development' : isCI ? 'CI' : 'Production'}`);
+  console.log(`   Debug mode: ${debugEnabled}`);
+  console.log(`   Session: ${new Date().toISOString()}`);
 }

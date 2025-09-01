@@ -11,34 +11,24 @@ export interface MobileMenuProps {
 // Navigation items for the mobile menu
 const navigationItems = [
   {
-    label: "Accueil",
-    href: "/",
-    description: "Retour à la page d'accueil"
+    label: "Doula",
+    href: "/doula",
+    description: "Accompagnement de doula"
   },
   {
-    label: "Services",
-    href: "/services",
-    description: "Yoga prénatal, postnatal et accompagnement"
+    label: "Yoga",
+    href: "/yoga",
+    description: "Enseignement du yoga"
+  },
+  {
+    label: "Féminin",
+    href: "/feminin",
+    description: "Le féminin sacré - ateliers variés"
   },
   {
     label: "À propos",
     href: "/about",
-    description: "Mon parcours et ma philosophie"
-  },
-  {
-    label: "Témoignages",
-    href: "/testimonials",
-    description: "Expériences de mes clientes"
-  },
-  {
-    label: "Blog",
-    href: "/blog",
-    description: "Conseils et ressources"
-  },
-  {
-    label: "Contact",
-    href: "/contact",
-    description: "Prendre rendez-vous"
+    description: "Pauline Roussel, Doula et professeure de Yoga"
   }
 ];
 
@@ -80,7 +70,7 @@ export function MobileMenu({ isOpen, onClose, className }: MobileMenuProps) {
     <>
       {/* Backdrop overlay */}
       <div 
-        className="fixed inset-0 bg-neutral/20 backdrop-blur-sm z-40 sm:hidden"
+        className="fixed inset-x-0 top-14 sm:top-16 bottom-0 bg-neutral/20 z-40 lg:hidden"
         onClick={onClose}
         aria-hidden="true"
       />
@@ -88,12 +78,12 @@ export function MobileMenu({ isOpen, onClose, className }: MobileMenuProps) {
       {/* Menu content */}
       <div 
         className={cn(
-          // Positioning
-          "fixed inset-x-0 top-14 z-50", // top-14 = 56px mobile header height
-          // Show only on mobile
-          "sm:hidden",
-          // Background
-          "bg-white/98 backdrop-blur-md",
+          // Positioning - responsive to header height
+          "fixed inset-x-0 top-14 sm:top-16 z-50", // 56px mobile, 64px tablet/desktop
+          // Show on mobile and tablet, hide on desktop
+          "lg:hidden",
+          // Background - solid white (no blur)
+          "bg-white",
           // Border and shadow
           "border-b border-gris/30 shadow-xl",
           // Animation (slide down)
@@ -157,20 +147,20 @@ export function MobileMenu({ isOpen, onClose, className }: MobileMenuProps) {
                   "flex items-center justify-center gap-2 w-full",
                   // Pregnancy-safe touch target
                   "min-h-[48px] px-6 py-3",
-                  // Background and colors - Primary brand
+                  // Background and colors - Primary background with white text
                   "bg-primary text-white",
-                  "hover:bg-primary/90 active:bg-primary/80",
-                  // Border radius
-                  "rounded-lg",
-                  // Typography
-                  "font-semibold text-base",
+                  "hover:text-white/90 active:text-white/80",
+                  // Border radius - pill shape (rounded full)
+                  "rounded-full",
+                  // Typography - uppercase
+                  "font-semibold text-base uppercase",
                   // Transitions
                   "transition-all duration-200",
                   // Focus states
-                  "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary"
+                  "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2"
                 )}
               >
-                <span>Prendre rendez-vous</span>
+                <span>Contactez-moi</span>
                 <svg 
                   className="size-4" 
                   fill="none" 

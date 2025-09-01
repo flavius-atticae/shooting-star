@@ -39,8 +39,8 @@ export function Header({ className }: HeaderProps) {
       className={cn(
         // Layout
         "sticky top-0 z-50 w-full",
-        // Background - white with subtle border
-        "bg-white/95 backdrop-blur-sm border-b border-gris/50",
+        // Background - primary brand color
+        "bg-primary backdrop-blur-sm border-b border-primary/20",
         // Height responsive
         "h-14 sm:h-16", // 56px mobile, 64px desktop
         className
@@ -48,27 +48,28 @@ export function Header({ className }: HeaderProps) {
       role="banner"
     >
       <Container size="full" className="h-full">
-        <div className="flex items-center justify-between h-full">
+        <div className="grid grid-cols-3 items-center h-full">
           
           {/* Mobile Menu Trigger - Left side on mobile */}
-          <div className="flex items-center">
+          <div className="flex items-center justify-start">
             <Button
               variant="ghost"
               size="icon"
               onClick={toggleMobileMenu}
               className={cn(
-                // Pregnancy-safe touch target
-                "min-h-[44px] min-w-[44px]",
-                // Show only on mobile/tablet
-                "sm:hidden",
-                // Colors
-                "text-neutral hover:text-primary hover:bg-primary/5",
+                // Pregnancy-safe touch target + round shape (48px for optimal comfort)
+                "min-h-[48px] min-w-[48px] rounded-full",
+                // Show on mobile and tablet, hide on desktop
+                "lg:hidden",
+                // Colors - menthe background with primary icons
+                "text-primary hover:text-primary/90",
                 // Focus
-                "focus-visible:ring-2 focus-visible:ring-primary/50"
+                "focus-visible:ring-2 focus-visible:ring-white/50"
               )}
               aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-navigation"
+              style={{ backgroundColor: 'var(--color-menthe)' } as React.CSSProperties}
             >
               <svg 
                 className="size-6" 
@@ -79,32 +80,34 @@ export function Header({ className }: HeaderProps) {
                 aria-hidden="true"
               >
                 {isMobileMenuOpen ? (
-                  // Close icon
+                  // Close icon (X)
                   <path 
                     strokeLinecap="round" 
                     strokeLinejoin="round" 
-                    d="M6 18L18 6M6 6l12 12" 
+                    d="M6 6l12 12M6 18L18 6" 
                   />
                 ) : (
-                  // Hamburger icon
+                  // Hamburger icon - 2 traits seulement
                   <path 
                     strokeLinecap="round" 
                     strokeLinejoin="round" 
-                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" 
+                    d="M4 8h16M4 16h16" 
                   />
                 )}
               </svg>
             </Button>
           </div>
 
-          {/* Logo - Center */}
-          <div className="flex-1 flex justify-center">
+          {/* Logo - Center (perfect centering with grid) */}
+          <div className="flex justify-center">
             <Logo />
           </div>
 
-          {/* Contact Button - Right side */}
-          <div className="flex items-center">
-            <ContactButton />
+          {/* Contact Button - Right side (hidden on mobile) */}
+          <div className="flex items-center justify-end">
+            <div className="hidden sm:block">
+              <ContactButton />
+            </div>
           </div>
 
         </div>
