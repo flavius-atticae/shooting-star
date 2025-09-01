@@ -37,6 +37,24 @@ jobs:
         run: npm run build
         continue-on-error: false
       
+      - name: Test coverage check
+        run: |
+          npm run test:coverage
+          # Check if coverage meets pregnancy-safe healthcare thresholds
+          COVERAGE_SUMMARY=$(cat coverage/coverage-final.json | jq -r '.total | "Lines: \(.lines.pct)% | Branches: \(.branches.pct)% | Functions: \(.functions.pct)% | Statements: \(.statements.pct)%"')
+          echo "Coverage Summary: $COVERAGE_SUMMARY"
+          
+          # Validate against Quebec healthcare standards (85% lines, 80% branches/functions)
+          LINES_PCT=$(cat coverage/coverage-final.json | jq '.total.lines.pct')
+          BRANCHES_PCT=$(cat coverage/coverage-final.json | jq '.total.branches.pct')
+          
+          if (( $(echo "$LINES_PCT < 85" | bc -l) )) || (( $(echo "$BRANCHES_PCT < 80" | bc -l) )); then
+            echo "Coverage below Quebec healthcare standards (Lines: 85%, Branches: 80%)"
+            echo "Current: Lines: $LINES_PCT%, Branches: $BRANCHES_PCT%"
+            exit 1
+          fi
+        continue-on-error: false
+      
       - name: Update PR status
         if: success()
         run: |
@@ -45,7 +63,7 @@ jobs:
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.pull_request.number }}/comments" \
             -d '{
-              "body": "✅ **Quality Gates Passed**\n\n- Type checking: ✅\n- Build: ✅\n\nThis PR is ready for code review!"
+              "body": "✅ **Quality Gates Passed**\n\n- Type checking: ✅\n- Build: ✅\n- Test coverage: ✅ (Quebec healthcare standards met)\n\nThis PR is ready for code review!"
             }'
 
   security-scan:
