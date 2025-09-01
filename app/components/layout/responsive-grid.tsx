@@ -1,5 +1,6 @@
 import * as React from "react"
 import { cn } from "~/lib/utils"
+import { useContainerQueries } from "~/hooks/use-browser-support"
 
 // Types pour les props du grid adaptatif
 export interface AdaptiveGridProps
@@ -71,7 +72,7 @@ const AdaptiveGrid = React.forwardRef<HTMLDivElement, AdaptiveGridProps>(
     // Construction des classes CSS
     const containerQueryClass = enableContainerQuery 
       ? containerName 
-        ? "container-name-content" // ou une classe spécifique selon le nom
+        ? "container-name-content" // Classe générique pour containers nommés
         : "container-query"
       : ""
     
@@ -106,23 +107,10 @@ AdaptiveGrid.displayName = "AdaptiveGrid"
 
 /**
  * Hook pour détecter si les container queries sont supportées
- * Utile pour la logique conditionnelle côté client
- * 
- * @deprecated Use useContainerQueries from ~/hooks/use-browser-support instead
- * This hook is kept for backward compatibility
+ * Utilise le hook principal du système browser-support
  */
 export function useContainerQuerySupport(): boolean {
-  const [isSupported, setIsSupported] = React.useState<boolean>(false)
-  
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      // Vérification du support des container queries
-      const supportsContainerQueries = 'container' in document.documentElement.style
-      setIsSupported(supportsContainerQueries)
-    }
-  }, [])
-  
-  return isSupported
+  return useContainerQueries()
 }
 
 /**
