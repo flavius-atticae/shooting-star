@@ -1,22 +1,22 @@
 import * as React from "react"
 import { cn } from "~/lib/utils"
 
-// Container variants pour différentes tailles maximales
+// Container variants for different maximum sizes
 export const containerVariants = {
   size: {
-    // Contrainte étroite pour contenu focused (articles, forms)
+    // Narrow constraint for focused content (articles, forms)
     sm: "max-w-2xl mx-auto px-4 sm:px-6",
     
-    // Taille standard pour la plupart du contenu
+    // Standard size for most content
     md: "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8",
     
-    // Large pour dashboards et layouts complexes
+    // Large for dashboards and complex layouts
     lg: "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8",
     
-    // Extra large pour contenu très large
+    // Extra large for very wide content
     xl: "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8",
     
-    // Full width avec padding uniquement
+    // Full width with padding only
     full: "w-full px-4 sm:px-6 lg:px-8",
   },
 } as const

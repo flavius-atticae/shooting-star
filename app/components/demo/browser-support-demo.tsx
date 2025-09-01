@@ -42,7 +42,7 @@ const FeatureStatus: React.FC<{
         ? "bg-green-100 text-green-800" 
         : "bg-red-100 text-red-800"
     )}>
-      {supported ? "✅ Supporté" : "❌ Non supporté"}
+      {supported ? "✅ Supported" : "❌ Not supported"}
     </div>
   </div>
 )
@@ -72,7 +72,7 @@ const ContainerQueryDemo: React.FC = () => {
         </div>
         
         <p className="mt-2 text-xs text-gray-500">
-          Redimensionnez le container ci-dessus pour voir l'adaptation responsive
+          Resize the container above to see responsive adaptation
         </p>
       </div>
     </div>
@@ -91,7 +91,7 @@ const MotionDemo: React.FC = () => {
       
       <div className="p-4 border rounded-lg bg-soft/50">
         <p className="mb-4 text-sm">
-          Préférence motion: {prefersReduced ? "🤢 Réduite (pregnancy-safe)" : "✨ Normale"}
+          Motion preference: {prefersReduced ? "🤢 Reduced (pregnancy-safe)" : "✨ Normal"}
         </p>
         
         <div className="space-y-3">
@@ -100,7 +100,7 @@ const MotionDemo: React.FC = () => {
             fallbackClass="bg-accent/10"
           >
             <div className="p-3 rounded text-center text-neutral">
-              Animation respectueuse des préférences
+              Preference-respectful animation
             </div>
           </MotionSafe>
           
@@ -109,7 +109,7 @@ const MotionDemo: React.FC = () => {
             "transition-none bg-secondary/10"
           )}>
             <div className="p-3 rounded text-center text-neutral">
-              Hover effect adaptatif
+              Adaptive hover effect
             </div>
           </div>
         </div>
@@ -146,25 +146,25 @@ const ProgressiveEnhancementDemo: React.FC = () => {
           <div className="space-y-2 text-sm">
             <FeatureGate 
               feature="backdropFilter"
-              fallback={<div className="text-gray-600">❌ Pas de backdrop filter</div>}
+              fallback={<div className="text-gray-600">❌ No backdrop filter</div>}
             >
-              <div className="text-green-600">✅ Backdrop filter disponible</div>
+              <div className="text-green-600">✅ Backdrop filter available</div>
             </FeatureGate>
             
             <FeatureGate 
               feature="aspectRatio"
-              fallback={<div className="text-gray-600">❌ CSS aspect-ratio non supporté</div>}
+              fallback={<div className="text-gray-600">❌ CSS aspect-ratio not supported</div>}
             >
-              <div className="text-green-600">✅ CSS aspect-ratio supporté</div>
+              <div className="text-green-600">✅ CSS aspect-ratio supported</div>
             </FeatureGate>
           </div>
         </div>
         
         <div className="p-3 border rounded-lg">
-          <div className="font-medium mb-2">Enhanced Image (avec aspect ratio)</div>
+          <div className="font-medium mb-2">Enhanced Image (with aspect ratio)</div>
           <EnhancedImage
             src="/api/placeholder/300/200"
-            alt="Image de démonstration"
+            alt="Demonstration image"
             aspectRatio="3/2"
             className="w-48 rounded border"
             lazy
@@ -189,18 +189,18 @@ const CapabilitySummary: React.FC = () => {
   
   return (
     <div className="p-4 border rounded-lg">
-      <h3 className="text-lg font-semibold text-neutral mb-3">Résumé des Capacités</h3>
+      <h3 className="text-lg font-semibold text-neutral mb-3">Capabilities Summary</h3>
       
       <div className={cn(
         "inline-block px-3 py-2 rounded-lg border mb-3",
         tierColors[capabilities.tier]
       )}>
-        <strong>Tier Navigateur: {capabilities.tier.toUpperCase()}</strong>
+        <strong>Browser Tier: {capabilities.tier.toUpperCase()}</strong>
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
         <div>
-          <h4 className="font-medium text-neutral mb-2">✅ Features Supportées</h4>
+          <h4 className="font-medium text-neutral mb-2">✅ Supported Features</h4>
           <ul className="space-y-1">
             {capabilities.supportedFeatures.map(feature => (
               <li key={feature} className="text-green-600">• {feature}</li>
@@ -210,7 +210,7 @@ const CapabilitySummary: React.FC = () => {
         
         {capabilities.missingCriticalFeatures.length > 0 && (
           <div>
-            <h4 className="font-medium text-neutral mb-2">⚠️ Features Critiques Manquantes</h4>
+            <h4 className="font-medium text-neutral mb-2">⚠️ Missing Critical Features</h4>
             <ul className="space-y-1">
               {capabilities.missingCriticalFeatures.map(feature => (
                 <li key={feature} className="text-red-600">• {feature}</li>
@@ -225,8 +225,8 @@ const CapabilitySummary: React.FC = () => {
           "text-sm",
           capabilities.hasAccessibilitySupport ? "text-green-600" : "text-amber-600"
         )}>
-          <strong>Support Accessibilité (Loi 25 Québec):</strong> {
-            capabilities.hasAccessibilitySupport ? "✅ Conforme" : "⚠️ Vérification requise"
+          <strong>Accessibility Support (Quebec Law 25):</strong> {
+            capabilities.hasAccessibilitySupport ? "✅ Compliant" : "⚠️ Verification required"
           }
         </div>
       </div>
@@ -249,14 +249,14 @@ const DevTools: React.FC = () => {
     // Copy to clipboard if available
     if (navigator.clipboard) {
       navigator.clipboard.writeText(report)
-        .then(() => alert('Rapport copié dans le presse-papier!'))
-        .catch(() => console.log('Rapport généré dans la console'))
+        .then(() => alert('Report copied to clipboard!'))
+        .catch(() => console.log('Report generated in console'))
     }
   }
   
   return (
     <div className="p-4 border rounded-lg bg-cool/30">
-      <h3 className="text-lg font-semibold text-neutral mb-3">Outils de Développement</h3>
+      <h3 className="text-lg font-semibold text-neutral mb-3">Development Tools</h3>
       
       <div className="space-y-3">
         <button 
@@ -274,7 +274,7 @@ const DevTools: React.FC = () => {
         </button>
         
         <div className="text-xs text-gray-600 mt-2">
-          ⚠️ Ces outils ne sont actifs qu'en mode développement
+          ⚠️ These tools are only active in development mode
         </div>
       </div>
     </div>
@@ -289,15 +289,15 @@ export const BrowserSupportDemo: React.FC = () => {
   
   const featureDescriptions = {
     containerQueries: "Container Queries CSS (@container)",
-    intersectionObserver: "API pour observer l'intersection d'éléments", 
-    scrollBehavior: "CSS scroll-behavior pour défilement fluide",
-    cssGrid: "CSS Grid Layout pour layouts modernes",
-    flexbox: "CSS Flexbox pour alignements",
-    focusVisible: "Pseudo-classe :focus-visible pour l'accessibilité",
-    backdropFilter: "Effet de flou d'arrière-plan",
-    aspectRatio: "Propriété CSS aspect-ratio",
-    webAnimations: "API Web Animations pour animations performantes",
-    prefersReducedMotion: "Détection de préférence motion réduite (pregnancy-safe)"
+    intersectionObserver: "API for observing element intersection", 
+    scrollBehavior: "CSS scroll-behavior for smooth scrolling",
+    cssGrid: "CSS Grid Layout for modern layouts",
+    flexbox: "CSS Flexbox for alignments",
+    focusVisible: ":focus-visible pseudo-class for accessibility",
+    backdropFilter: "Background blur effect",
+    aspectRatio: "CSS aspect-ratio property",
+    webAnimations: "Web Animations API for performant animations",
+    prefersReducedMotion: "Reduced motion preference detection (pregnancy-safe)"
   }
   
   return (
@@ -307,7 +307,7 @@ export const BrowserSupportDemo: React.FC = () => {
           🌟 Browser Support Detection Demo
         </h1>
         <p className="text-gray-600">
-          Système de détection de features cross-browser pour Shooting Star
+          Cross-browser feature detection system for Shooting Star
         </p>
       </div>
       
@@ -316,14 +316,14 @@ export const BrowserSupportDemo: React.FC = () => {
       
       {/* Feature Status Grid */}
       <div>
-        <h2 className="text-xl font-semibold text-neutral mb-4">État des Features</h2>
+        <h2 className="text-xl font-semibold text-neutral mb-4">Feature Status</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {Object.entries(features).map(([key, supported]) => (
             <FeatureStatus
               key={key}
               name={key}
               supported={supported}
-              description={featureDescriptions[key as keyof typeof featureDescriptions] || "Feature browser"}
+              description={featureDescriptions[key as keyof typeof featureDescriptions] || "Browser feature"}
             />
           ))}
         </div>
@@ -331,7 +331,7 @@ export const BrowserSupportDemo: React.FC = () => {
       
       {/* Interactive Demos */}
       <div className="space-y-6">
-        <h2 className="text-xl font-semibold text-neutral">Démonstrations Interactives</h2>
+        <h2 className="text-xl font-semibold text-neutral">Interactive Demonstrations</h2>
         
         <ContainerQueryDemo />
         <MotionDemo />

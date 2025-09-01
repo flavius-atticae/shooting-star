@@ -2,51 +2,51 @@ import * as React from "react"
 import { cn } from "~/lib/utils"
 import { useContainerQueries } from "~/hooks/use-browser-support"
 
-// Types pour les props du grid adaptatif
+// Types for adaptive grid props
 export interface AdaptiveGridProps
   extends React.HTMLAttributes<HTMLDivElement> {
   /**
-   * Nombre de colonnes cible (2 ou 3)
-   * Détermine quelle classe container query utiliser
+   * Target number of columns (2 or 3)
+   * Determines which container query class to use
    */
   columns?: 2 | 3
   
   /**
-   * Gap personnalisé (remplace le gap par défaut de 1rem)
-   * Utilise les classes Tailwind gap-*
+   * Custom gap (replaces default 1rem gap)
+   * Uses Tailwind gap-* classes
    */
   gap?: string
   
   /**
-   * Activer le container query context sur cet élément
-   * Par défaut true - l'élément devient un container query context
+   * Enable container query context on this element
+   * Default true - element becomes a container query context
    */
   enableContainerQuery?: boolean
   
   /**
-   * Nom du container pour cibler spécifiquement ce container
-   * Utilise container-name si fourni
+   * Container name to specifically target this container
+   * Uses container-name if provided
    */
   containerName?: string
   
   /**
-   * Component HTML à utiliser comme racine
+   * HTML component to use as root
    */
   as?: React.ElementType
 }
 
 /**
- * AdaptiveGrid - Grid responsive utilisant les Container Queries
+ * AdaptiveGrid - Responsive Grid using Container Queries
  * 
- * Ce component crée une grille qui s'adapte selon la taille de son container parent,
- * pas selon la taille de l'écran. Cela permet des layouts plus flexibles.
+ * This component creates a grid that adapts according to its parent container size,
+ * not according to screen size. This allows for more flexible layouts.
  * 
  * Features:
- * - Utilise container queries (@container) pour la responsivité
- * - Fallback automatique avec media queries pour les navigateurs non-compatibles
- * - Support pour grilles 2 et 3 colonnes
- * - Gap configurable avec classes Tailwind
- * - TypeScript strict
+ * - Uses container queries (@container) for responsiveness
+ * - Automatic fallback with media queries for non-compatible browsers
+ * - Support for 2 and 3 column grids
+ * - Configurable gap with Tailwind classes
+ * - Strict TypeScript
  * 
  * @example
  * ```tsx
@@ -69,17 +69,17 @@ const AdaptiveGrid = React.forwardRef<HTMLDivElement, AdaptiveGridProps>(
     ...props 
   }, ref) => {
     
-    // Construction des classes CSS
+    // CSS classes construction
     const containerQueryClass = enableContainerQuery 
       ? containerName 
-        ? "container-name-content" // Classe générique pour containers nommés
+        ? "container-name-content" // Generic class for named containers
         : "container-query"
       : ""
     
     const gridClass = columns === 3 ? "cq-grid-3" : "cq-grid-2"
     
-    // Gap personnalisé remplace le gap par défaut des classes cq-grid
-    const gapClass = gap || ""
+    // Custom gap or default 1rem gap (gap-4)
+    const gapClass = gap || "gap-4"
     
     return (
       <Component
@@ -106,8 +106,8 @@ const AdaptiveGrid = React.forwardRef<HTMLDivElement, AdaptiveGridProps>(
 AdaptiveGrid.displayName = "AdaptiveGrid"
 
 /**
- * Hook pour détecter si les container queries sont supportées
- * Utilise le hook principal du système browser-support
+ * Hook to detect if container queries are supported
+ * Uses the main hook from the browser-support system
  */
 export function useContainerQuerySupport(): boolean {
   const { hasSupport } = useContainerQueries()
@@ -115,8 +115,8 @@ export function useContainerQuerySupport(): boolean {
 }
 
 /**
- * Component de démonstration du grid adaptatif
- * Utile pour Storybook et les tests visuels
+ * Adaptive grid demonstration component
+ * Useful for Storybook and visual tests
  */
 export const AdaptiveGridDemo: React.FC = () => {
   const supportsContainerQueries = useContainerQuerySupport()
@@ -125,12 +125,12 @@ export const AdaptiveGridDemo: React.FC = () => {
     <div className="space-y-8 p-4">
       <div>
         <h3 className="text-lg font-semibold mb-4 text-neutral">
-          Support Container Queries: {supportsContainerQueries ? '✅' : '❌ (fallback actif)'}
+          Container Queries Support: {supportsContainerQueries ? '✅' : '❌ (fallback active)'}
         </h3>
       </div>
       
       <div>
-        <h4 className="text-md font-medium mb-2 text-neutral">Grid 2 colonnes</h4>
+        <h4 className="text-md font-medium mb-2 text-neutral">2 columns Grid</h4>
         <div className="border-2 border-dashed border-primary/20 p-4">
           <AdaptiveGrid columns={2} gap="gap-4">
             <div className="bg-primary/10 p-4 rounded text-center">Item 1</div>
@@ -142,7 +142,7 @@ export const AdaptiveGridDemo: React.FC = () => {
       </div>
       
       <div>
-        <h4 className="text-md font-medium mb-2 text-neutral">Grid 3 colonnes</h4>
+        <h4 className="text-md font-medium mb-2 text-neutral">3 columns Grid</h4>
         <div className="border-2 border-dashed border-secondary/20 p-4">
           <AdaptiveGrid columns={3} gap="gap-6">
             <div className="bg-secondary/10 p-4 rounded text-center">Item 1</div>
