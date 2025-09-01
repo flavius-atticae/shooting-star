@@ -143,7 +143,7 @@ jobs:
           
           # Check if report exists and has violations
           if [ -f accessibility-report.json ]; then
-            VIOLATIONS=$(jq '.violations | length' accessibility-report.json)
+            VIOLATIONS=$(jq '.[0].violations | length' accessibility-report.json)
             if [ "$VIOLATIONS" -gt 0 ]; then
               echo "Accessibility violations found: $VIOLATIONS"
               # Post summary to PR
