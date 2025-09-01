@@ -1,0 +1,282 @@
+import { Meta } from "@storybook/addon-docs/blocks";
+
+<Meta title="Guidelines Pregnancy-Safe" />
+
+# Pregnancy-Safe UX/UI Guidelines
+
+This documentation details design principles specifically adapted for pregnant women and new mothers, based on perinatal UX research and real user feedback.
+
+## 🧠 Cognitive Considerations
+
+### "Pregnancy Brain" - Adapting to Concentration Difficulties
+
+Hormonal changes during pregnancy affect:
+- **Short-term memory** : Difficulty retaining multiple pieces of information
+- **Selective attention** : Easy distraction
+- **Decision making** : Fatigue when making complex choices
+
+**UI Guidelines:**
+- ✅ **Simple and predictable navigation**
+- ✅ **Progress automatically saved**
+- ✅ **Essential information visible without scrolling**
+- ✅ **Clear confirmations for important actions**
+- ❌ Avoid complex multi-level menus
+- ❌ Avoid too many simultaneous options
+
+### Implementation Example
+```tsx
+// ❌ Bad : Too many options without hierarchy
+<div className="grid grid-cols-4 gap-2">
+  {/* 12 different buttons */}
+</div>
+
+// ✅ Good : Clear priority actions
+<div className="space-y-4">
+  <PrimaryAction>Book a Session</PrimaryAction>
+  <SecondaryActions>
+    <ActionButton>View Schedule</ActionButton>
+    <ActionButton>Contact Me</ActionButton>
+  </SecondaryActions>
+</div>
+```
+
+## 👁️ Visual Considerations
+
+### Eye Fatigue and Vision
+
+**Common symptoms:**
+- Temporary blurred vision
+- Dry eyes
+- Light sensitivity
+- Difficulty with prolonged focus
+
+**Visual Guidelines:**
+- ✅ **High contrast (minimum AA, prefer AAA)**
+- ✅ **Generous font size (16px+ on mobile)**
+- ✅ **Increased line spacing (1.6+)**
+- ✅ **Customization options (size, contrast)**
+
+### Pregnancy-Safe Color Palette
+
+#### 🚫 Colors to Avoid
+- **Bright red (#FF0000)** : Association with medical emergencies, anxiety
+- **Saturated orange** : Can trigger nausea
+- **Fluorescent yellow** : Eye fatigue, migraines
+- **Aggressive contrasts** : Excessive stimulation
+
+#### ✅ Recommended Colors
+- **Natural greens** : Soothing, associated with nature
+- **Soft blues** : Calm, serenity
+- **Powder pinks** : Gentleness without aggression
+- **Warm neutrals** : Comfort and security
+
+### Pauline Roussel Palette Implementation
+```css
+/* Pregnancy-safe primary colors */
+:root {
+  --primary: #618462;      /* Soothing green */
+  --secondary: #517982;    /* Calm blue */
+  --accent: #af6868;       /* Soft rose (not red) */
+  --neutral: #5e4530;      /* Brown for text */
+  
+  /* Supporting colors */
+  --soft: #ffddd3;         /* Pale rose backgrounds */
+  --warm: #ceaf9b;         /* Warm beige */
+  --gris: #f5f4f2;         /* Neutral gray */
+}
+```
+
+## 🤱 Physical Considerations
+
+### Touch Targets and Dexterity
+
+**Physical changes:**
+- **Water retention** : Swollen fingers, less precision
+- **Reduced mobility** : Difficulties reaching certain areas
+- **Fatigue** : Less energy for complex interactions
+
+**Touch Guidelines:**
+- ✅ **Touch targets minimum 44x44px (WCAG)**
+- ✅ **Prefer 48x48px or more**
+- ✅ **8px minimum spacing between elements**
+- ✅ **Extended click area on critical elements**
+
+### Touch-Friendly Example
+```tsx
+// Pregnancy-optimized button
+const PregnancyFriendlyButton = ({ children, ...props }) => (
+  <button 
+    className="
+      min-h-[48px] min-w-[48px]     /* Generous touch target */
+      px-6 py-3                     /* Comfortable padding */
+      text-lg font-medium           /* Readable text */
+      rounded-lg                    /* Soft rounded corners */
+      touch-manipulation           /* Touch optimization */
+      active:scale-95              /* Subtle visual feedback */
+      transition-all duration-150   /* Gentle animation */
+    "
+    {...props}
+  >
+    {children}
+  </button>
+)
+```
+
+## 🤢 Sensory Considerations
+
+### Nausea and Sensitivity
+
+**Common visual triggers:**
+- Fast or jerky animations
+- Intense repetitive patterns
+- Abrupt color changes
+- Aggressive parallax scrolling
+
+**Anti-Nausea Guidelines:**
+- ✅ **Slow and fluid animations (duration-300+)**
+- ✅ **Respect prefers-reduced-motion**
+- ✅ **Smooth transitions between states**
+- ✅ **Avoid visually aggressive patterns**
+
+### Gentle Animation Implementation
+```tsx
+// Pregnancy-safe animation
+const gentleTransition = {
+  initial: { opacity: 0, y: 20 },
+  animate: { opacity: 1, y: 0 },
+  transition: { 
+    duration: 0.5,      // Slower than standard
+    ease: "easeOut"     // Gentle curve
+  }
+}
+
+// Respect user preferences
+const SafeAnimation = ({ children }) => (
+  <motion.div 
+    {...gentleTransition}
+    className="motion-reduce:transition-none motion-reduce:animate-none"
+  >
+    {children}
+  </motion.div>
+)
+```
+
+## 💭 Emotional Considerations
+
+### Anxiety and Emotional State
+
+**Anxiety-inducing factors:**
+- Alarmist medical information
+- Colors associated with emergencies
+- Complex or confusing interfaces
+- Aggressive error messages
+
+**Emotional Guidelines:**
+- ✅ **Reassuring and positive tone**
+- ✅ **Constructive error messages**
+- ✅ **Positive validation of actions**
+- ✅ **Support clearly visible**
+
+### Pregnancy-Safe Message Examples
+```tsx
+// ❌ Anxiety-inducing message
+<ErrorMessage>
+  ERROR: Invalid form!
+</ErrorMessage>
+
+// ✅ Reassuring message
+<GentleValidation>
+  A few details to complete to finalize your registration:
+  <ValidationList />
+</GentleValidation>
+
+// ✅ Positive encouragement
+<SuccessMessage>
+  Perfect! Your request has been received. 
+  I'll contact you within 24 hours to confirm.
+</SuccessMessage>
+```
+
+## 🕐 Time Considerations
+
+### Time Management and Emergencies
+
+**Pregnant women's realities:**
+- Frequent medical appointments
+- Necessary naps
+- Contractions (late pregnancy)
+- Potential emergencies
+
+**Time Guidelines:**
+- ✅ **Frequent automatic saving**
+- ✅ **Long sessions without timeout**
+- ✅ **Easy resumption after interruption**
+- ✅ **Information accessible offline**
+
+## 📱 Device-Specific Optimizations
+
+### Mobile Priority
+
+**Why mobile-first for pregnant women:**
+- Usage from bed/couch
+- Frequent travel
+- Fatigue limiting desktop use
+- Emergencies requiring quick access
+
+### Tablet Optimization
+
+**Tablets particularly appreciated:**
+- Comfortable screen without neck strain
+- Possible lying down usage
+- More comfortable long reading
+- Sufficient tactile precision despite water retention
+
+## 🧪 Testing and Validation
+
+### Testing with Real Users
+
+**Recommended test personas:**
+
+1. **Marie (First trimester)**
+   - Frequent nausea
+   - Anxiety about found information
+   - Mainly mobile usage
+
+2. **Sophie (Second trimester)**
+   - Energy restored
+   - Active information seeking
+   - Mixed mobile/desktop usage
+
+3. **Camille (Third trimester)**
+   - Significant fatigue
+   - Physical difficulties
+   - Tablet/mobile preference
+
+### Pregnancy-Safe Validation Checklist
+
+**Each component must pass:**
+
+- [ ] Touch targets ≥ 44px
+- [ ] Contrast ≥ AA (prefer AAA)
+- [ ] Animation respects prefers-reduced-motion
+- [ ] Works with keyboard only
+- [ ] Positive and reassuring messages
+- [ ] State saving if applicable
+- [ ] Readable with 200% zoom
+- [ ] Usable with one hand
+
+---
+
+## 📚 Additional Resources
+
+### Perinatal UX Research
+- [UX for Pregnancy Apps Study](https://example.com)
+- [Accessibility During Pregnancy Research](https://example.com)
+- [Quebec Maternal Health Digital Guidelines](https://example.com)
+
+### Testing Tools
+- [Colour Contrast Analyser](https://example.com)
+- [axe DevTools](https://example.com) 
+- [Pregnancy Simulator Chrome Extension](https://example.com)
+
+**These guidelines are living and evolve with user feedback and research.** 💕

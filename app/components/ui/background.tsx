@@ -8,8 +8,8 @@ export interface BackgroundProps extends Omit<HTMLAttributes<HTMLElement>, 'chil
 }
 
 /**
- * Background component pour créer des patterns de background pregnancy-safe
- * avec la palette de couleurs Pauline Roussel
+ * Background component for creating pregnancy-safe background patterns
+ * with the Pauline Roussel color palette
  */
 export function Background({
   children,
@@ -22,13 +22,13 @@ export function Background({
     <Component
       className={cn(
         "w-full",
-        // Background variants utilisant les couleurs Pauline Roussel
+        // Background variants using Pauline Roussel colors
         {
           // Primary backgrounds
           white: "bg-white",
           accent: "bg-gris",
           
-          // Soft gradient backgrounds pour transitions douces
+          // Soft gradient backgrounds for gentle transitions
           soft: "bg-gradient-to-br from-white to-gris/30",
           
           // Advanced gradient variants pregnancy-safe  
@@ -45,8 +45,8 @@ export function Background({
 }
 
 /**
- * Hook pour obtenir les classes CSS des backgrounds
- * Utile pour appliquer les backgrounds directement via className
+ * Hook to get background CSS classes
+ * Useful for applying backgrounds directly via className
  */
 export function useBackgroundClasses() {
   return {
@@ -59,8 +59,8 @@ export function useBackgroundClasses() {
 }
 
 /**
- * Composant Pattern pour créer des motifs subtils en arrière-plan
- * Pregnancy-safe avec des couleurs douces
+ * Pattern component for creating subtle background patterns
+ * Pregnancy-safe with soft colors
  */
 export function BackgroundPattern({
   pattern = 'dots',
