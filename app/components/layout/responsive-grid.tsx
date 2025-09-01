@@ -110,7 +110,8 @@ AdaptiveGrid.displayName = "AdaptiveGrid"
  * Utilise le hook principal du système browser-support
  */
 export function useContainerQuerySupport(): boolean {
-  return useContainerQueries()
+  const { hasSupport } = useContainerQueries()
+  return hasSupport
 }
 
 /**
