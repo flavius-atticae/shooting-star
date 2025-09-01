@@ -74,3 +74,86 @@
   --color-white: #ffffff; /* White */
   --color-gris: #f5f4f2; /* Gris */
 }
+
+/* Container Query Utilities */
+.container-query {
+  container-type: inline-size;
+}
+
+.container-name-content {
+  container-name: content;
+  container-type: inline-size;
+}
+
+/* Container Query Based Grid Classes */
+@container (min-width: 400px) {
+  .cq-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+@container (min-width: 600px) {
+  .cq-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+  }
+}
+
+/* Fallback with traditional media queries for non-supporting browsers */
+@supports not (container-type: inline-size) {
+  .cq-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .cq-grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+}
+
+@supports not (container-type: inline-size) {
+  .cq-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  
+  @media (min-width: 768px) {
+    .cq-grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}
+
+/* Background System Utilities */
+.bg-pattern-dots {
+  background-image: radial-gradient(circle at 1px 1px, theme('colors.gris') 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+.bg-pattern-lines {
+  background-image: linear-gradient(90deg, theme('colors.gris') 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-pattern-grid {
+  background-image: 
+    linear-gradient(theme('colors.gris') 1px, transparent 1px),
+    linear-gradient(90deg, theme('colors.gris') 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+/* Pregnancy-safe background gradients */
+.bg-gradient-pregnancy-soft {
+  background: linear-gradient(135deg, theme('colors.white') 0%, theme('colors.soft / 20%') 50%, theme('colors.gris / 30%') 100%);
+}
+
+.bg-gradient-pregnancy-warm {
+  background: linear-gradient(135deg, theme('colors.white') 0%, theme('colors.warm / 15%') 50%, theme('colors.gris / 25%') 100%);
+}
