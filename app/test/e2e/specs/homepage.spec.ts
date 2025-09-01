@@ -17,6 +17,8 @@ test.describe('Homepage - Pregnancy-Safe User Experience', () => {
 
   test.beforeEach(async ({ page }) => {
     helpers = new PregnancySafeHelpers(page);
+    // Setup pregnancy-safe environment (reduced motion, etc.)
+    await helpers.setupPregnancySafeEnvironment();
   });
 
   test('loads homepage with pregnancy-safe design', async ({ page }) => {

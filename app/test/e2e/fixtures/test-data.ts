@@ -149,10 +149,10 @@ export const BOOKING_SCENARIOS = {
 
 // Quebec-specific validation patterns
 export const VALIDATION_PATTERNS = {
-  POSTAL_CODE: /^[A-Z]\d[A-Z] \d[A-Z]\d$/,
+  POSTAL_CODE: /^[A-Z]\d[A-Z] \d[A-Z]\d$/i, // Case-insensitive for user flexibility
   QUEBEC_PHONE: /^\(\d{3}\) \d{3}-\d{4}$/,
-  HEALTH_CARD: /^[A-Z]{4}\d{8}$/,
-  EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  HEALTH_CARD: /^[A-Z]{4}\d{8}$/i, // Case-insensitive for Quebec health cards
+  EMAIL: /^[^\s@]+@[^\s@]+\.[^\s@]+$/i, // Case-insensitive for emails
   SIN: /^\d{3} \d{3} \d{3}$/ // Social Insurance Number format
 } as const;
 

@@ -132,10 +132,8 @@ export default defineConfig({
       name: 'accessibility',
       use: {
         ...devices['Desktop Chrome'],
-        // Simulate pregnancy-related accessibility needs
-        contextOptions: {
-          reducedMotion: 'reduce', // Prevent nausea
-        },
+        // Note: reducedMotion will be set via page.emulateMedia() in test setup
+        // to properly prevent nausea during pregnancy
         colorScheme: 'light', // Better for pregnancy fatigue
         // Force prefers-contrast: more for better readability
         extraHTTPHeaders: {
@@ -152,7 +150,7 @@ export default defineConfig({
         ...devices['Desktop Chrome'],
         // Simulate slower mobile data during medical appointments
         launchOptions: {
-          args: ['--disable-web-security', '--disable-features=VizDisplayCompositor'],
+          args: ['--disable-features=VizDisplayCompositor'], // Keep only necessary performance flag
         },
       },
       dependencies: ['setup'],

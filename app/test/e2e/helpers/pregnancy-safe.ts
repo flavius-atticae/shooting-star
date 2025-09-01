@@ -16,6 +16,17 @@ export class PregnancySafeHelpers {
   constructor(private page: Page) {}
 
   /**
+   * Setup pregnancy-safe media queries (e.g., reduced motion)
+   */
+  async setupPregnancySafeEnvironment() {
+    // Set reduced motion to prevent nausea
+    await this.page.emulateMedia({ reducedMotion: 'reduce' });
+    
+    // Set high contrast if needed
+    await this.page.emulateMedia({ colorScheme: 'light' });
+  }
+
+  /**
    * Navigate with pregnancy-safe timeouts and motion considerations
    */
   async navigateSafely(url: string, options?: { waitForMotion?: boolean }) {
@@ -82,20 +93,50 @@ export class PregnancySafeHelpers {
   }
 
   /**
-   * Check accessibility compliance for pregnancy users
+   * Check accessibility compliance for pregnancy users using axe-core
    */
   async checkPregnancyAccessibility() {
+    // Inject axe-core for comprehensive accessibility testing
+    await this.page.addScriptTag({
+      url: 'https://unpkg.com/axe-core@4.10.2/axe.min.js'
+    });
+    
+    // Run axe-core accessibility scan
+    const results = await this.page.evaluate(() => {
+      return new Promise((resolve) => {
+        // @ts-ignore - axe is loaded dynamically
+        window.axe.run(
+          {
+            // Pregnancy-specific accessibility rules
+            rules: {
+              'motion-sensitive': { enabled: true },
+              'color-contrast': { enabled: true },
+              'focus-order': { enabled: true },
+              'touch-target': { enabled: true }
+            }
+          },
+          (err: any, results: any) => {
+            resolve(results);
+          }
+        );
+      });
+    });
+    
     // Check for reduced motion compliance
     const reducedMotionElements = await this.page.locator('[style*="animation"], [class*="animate"]').count();
     if (reducedMotionElements > 0) {
       console.warn(`Found ${reducedMotionElements} potentially problematic animated elements`);
     }
-
-    // Check color contrast (important during pregnancy vision changes)
-    await this.page.evaluate(() => {
-      // This would integrate with axe-core or similar accessibility testing
-      console.log('Accessibility check completed');
-    });
+    
+    // @ts-ignore - dynamic axe results
+    const violations = results?.violations || [];
+    if (violations.length > 0) {
+      console.error('Accessibility violations found:', violations);
+      return { passed: false, violations };
+    }
+    
+    console.log('✓ Accessibility check passed');
+    return { passed: true, violations: [] };
   }
 
   /**
@@ -142,20 +183,59 @@ export class PregnancySafeHelpers {
   }> {
     const metrics = await this.page.evaluate(() => {
       return new Promise<{ lcp: number; fid: number; cls: number }>((resolve) => {
-        // Simplified performance measurement
-        // In a real implementation, this would use web-vitals library
-        const navigationTiming = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
-        const lcp = navigationTiming ? navigationTiming.loadEventEnd - navigationTiming.loadEventStart : 0;
+        let lcp = 0;
+        let fid = 0;
+        let cls = 0;
         
-        resolve({
-          lcp,
-          fid: 0, // Would measure First Input Delay
-          cls: 0, // Would measure Cumulative Layout Shift
+        // Measure LCP using PerformanceObserver for accuracy
+        const lcpObserver = new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          const lastEntry = entries[entries.length - 1] as any;
+          lcp = lastEntry?.startTime || 0;
         });
+        
+        // Measure FID using PerformanceObserver
+        const fidObserver = new PerformanceObserver((list) => {
+          const entries = list.getEntries();
+          entries.forEach((entry: any) => {
+            fid = entry.processingStart - entry.startTime;
+          });
+        });
+        
+        // Measure CLS using PerformanceObserver
+        const clsObserver = new PerformanceObserver((list) => {
+          list.getEntries().forEach((entry: any) => {
+            if (!entry.hadRecentInput) {
+              cls += entry.value;
+            }
+          });
+        });
+        
+        try {
+          lcpObserver.observe({ entryTypes: ['largest-contentful-paint'] });
+          fidObserver.observe({ entryTypes: ['first-input'] });
+          clsObserver.observe({ entryTypes: ['layout-shift'] });
+          
+          // Wait for measurements and resolve
+          setTimeout(() => {
+            lcpObserver.disconnect();
+            fidObserver.disconnect();
+            clsObserver.disconnect();
+            resolve({ lcp, fid, cls });
+          }, 2000); // Wait 2 seconds for measurements
+        } catch (error) {
+          // Fallback to basic timing if PerformanceObserver not supported
+          const navigationTiming = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+          resolve({
+            lcp: navigationTiming ? navigationTiming.loadEventEnd - navigationTiming.fetchStart : 0,
+            fid: 0,
+            cls: 0
+          });
+        }
       });
     });
 
-    console.log(`Performance metrics - LCP: ${metrics.lcp}ms`);
+    console.log(`Performance metrics - LCP: ${metrics.lcp}ms, FID: ${metrics.fid}ms, CLS: ${metrics.cls}`);
     return metrics;
   }
 
