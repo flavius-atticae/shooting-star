@@ -4,6 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "~/com
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "~/components/ui/form";
+import { Section } from "~/components/ui/section";
+import { Container } from "~/components/ui/container";
+import { Background, BackgroundPattern, useBackgroundClasses } from "~/components/ui/background";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -268,6 +271,206 @@ export default function ComponentsTest() {
               <span>TypeScript:</span>
               <span className="text-green-600 font-medium">✓ Compatible</span>
             </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Layout Components Test */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Layout Components (Section & Container)</CardTitle>
+          <CardDescription>
+            Testing Section with different spacing and background variants
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="space-y-2">
+            <h4 className="text-sm font-medium">Section Variants:</h4>
+            <div className="grid gap-4">
+              {/* Compact spacing */}
+              <Section spacing="compact" background="accent" className="rounded-lg">
+                <Container size="sm">
+                  <p className="text-center text-sm">
+                    Section compact avec background accent (py-8)
+                  </p>
+                </Container>
+              </Section>
+              
+              {/* Normal spacing */}
+              <Section spacing="normal" background="soft" className="rounded-lg">
+                <Container size="md">
+                  <p className="text-center text-sm">
+                    Section normal avec background soft (py-12 lg:py-16)
+                  </p>
+                </Container>
+              </Section>
+              
+              {/* Spacious spacing */}
+              <Section spacing="spacious" background="white" className="rounded-lg border">
+                <Container size="lg">
+                  <p className="text-center text-sm">
+                    Section spacious avec background white (py-16 lg:py-24)
+                  </p>
+                </Container>
+              </Section>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Background System Tests */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Background System - Phase 1 Final Implementation</CardTitle>
+          <CardDescription>
+            Testing complete white background system with pregnancy-safe colors and patterns
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Background Component Variants */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium">Background Component Variants:</h4>
+            <div className="grid gap-4">
+              <Background variant="white" className="p-4 border rounded-lg">
+                <p className="text-sm text-center">Background white - Pure white (#ffffff)</p>
+              </Background>
+              
+              <Background variant="accent" className="p-4 rounded-lg">
+                <p className="text-sm text-center">Background accent - Gris doux (#f5f4f2)</p>
+              </Background>
+              
+              <Background variant="soft" className="p-4 rounded-lg">
+                <p className="text-sm text-center">Background soft - Dégradé blanc vers gris</p>
+              </Background>
+              
+              <Background variant="gradient-soft" className="p-4 rounded-lg">
+                <p className="text-sm text-center">Background gradient-soft - Dégradé complexe avec rose pale</p>
+              </Background>
+              
+              <Background variant="gradient-warm" className="p-4 rounded-lg">
+                <p className="text-sm text-center">Background gradient-warm - Dégradé avec tons beiges</p>
+              </Background>
+            </div>
+          </div>
+
+          {/* Background Patterns */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium">Background Patterns (Pregnancy-Safe):</h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="relative p-6 border rounded-lg bg-white overflow-hidden">
+                <BackgroundPattern pattern="dots" intensity="subtle" />
+                <div className="relative z-10">
+                  <p className="text-sm text-center font-medium">Dots Pattern</p>
+                  <p className="text-xs text-muted-foreground text-center">Subtil</p>
+                </div>
+              </div>
+              
+              <div className="relative p-6 border rounded-lg bg-white overflow-hidden">
+                <BackgroundPattern pattern="lines" intensity="subtle" />
+                <div className="relative z-10">
+                  <p className="text-sm text-center font-medium">Lines Pattern</p>
+                  <p className="text-xs text-muted-foreground text-center">Subtil</p>
+                </div>
+              </div>
+              
+              <div className="relative p-6 border rounded-lg bg-white overflow-hidden">
+                <BackgroundPattern pattern="grid" intensity="light" />
+                <div className="relative z-10">
+                  <p className="text-sm text-center font-medium">Grid Pattern</p>
+                  <p className="text-xs text-muted-foreground text-center">Light</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Integration with Section Component */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium">Integration avec Section Component:</h4>
+            <div className="space-y-4 border rounded-lg overflow-hidden">
+              <Section spacing="compact" background="white">
+                <Container size="md">
+                  <div className="text-center">
+                    <h5 className="font-medium text-primary">Section avec Background White</h5>
+                    <p className="text-sm text-muted-foreground">Parfait pour le contenu principal</p>
+                  </div>
+                </Container>
+              </Section>
+              
+              <Section spacing="normal" background="accent">
+                <Container size="md">
+                  <div className="text-center">
+                    <h5 className="font-medium text-secondary">Section avec Background Accent</h5>
+                    <p className="text-sm text-muted-foreground">Idéal pour séparer les sections</p>
+                  </div>
+                </Container>
+              </Section>
+              
+              <Section spacing="compact" background="soft">
+                <Container size="md">
+                  <div className="text-center">
+                    <h5 className="font-medium text-neutral">Section avec Background Soft</h5>
+                    <p className="text-sm text-muted-foreground">Dégradé doux pour transitions</p>
+                  </div>
+                </Container>
+              </Section>
+            </div>
+          </div>
+
+          {/* Color System Integration */}
+          <div className="space-y-4">
+            <h4 className="text-sm font-medium">Palette Couleurs Pauline Roussel:</h4>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="text-center">
+                <div className="w-full h-16 bg-white border-2 border-gris rounded-lg mb-2"></div>
+                <p className="text-xs font-medium">White</p>
+                <p className="text-xs text-muted-foreground">#ffffff</p>
+              </div>
+              <div className="text-center">
+                <div className="w-full h-16 bg-gris rounded-lg mb-2"></div>
+                <p className="text-xs font-medium">Gris</p>
+                <p className="text-xs text-muted-foreground">#f5f4f2</p>
+              </div>
+              <div className="text-center">
+                <div className="w-full h-16 bg-soft rounded-lg mb-2"></div>
+                <p className="text-xs font-medium">Rose Pale</p>
+                <p className="text-xs text-muted-foreground">#ffddd3</p>
+              </div>
+              <div className="text-center">
+                <div className="w-full h-16 bg-warm rounded-lg mb-2"></div>
+                <p className="text-xs font-medium">Beige</p>
+                <p className="text-xs text-muted-foreground">#ceaf9b</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Phase 1 Completion Status */}
+          <div className="bg-primary/5 p-4 rounded-lg border">
+            <h4 className="text-sm font-medium text-primary mb-2">✅ Phase 1 - Foundation Components COMPLETE</h4>
+            <div className="space-y-1 text-sm">
+              <div className="flex justify-between">
+                <span>Step 1 - shadcn/ui integration:</span>
+                <span className="text-green-600 font-medium">✓ Complete</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Step 2 - Container queries:</span>
+                <span className="text-green-600 font-medium">✓ Complete</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Step 3 - Layout components:</span>
+                <span className="text-green-600 font-medium">✓ Complete</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Step 4 - Cross-browser detection:</span>
+                <span className="text-green-600 font-medium">✓ Complete</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Step 5 - White background system:</span>
+                <span className="text-green-600 font-medium">✓ Complete</span>
+              </div>
+            </div>
+            <p className="text-xs text-muted-foreground mt-3">
+              🚀 Ready for Phase 2: Brand Integration & Visual Identity
+            </p>
           </div>
         </CardContent>
       </Card>

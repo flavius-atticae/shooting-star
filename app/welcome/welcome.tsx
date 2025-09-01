@@ -6,15 +6,20 @@ export function Welcome() {
     <main className="flex items-center justify-center pt-16 pb-4">
       <div className="flex-1 flex flex-col items-center gap-16 min-h-0">
         <header className="flex flex-col items-center gap-9">
+          <h1 className="sr-only">
+            Pauline Roussel - Yoga Prénatal et Accompagnement à la Naissance
+          </h1>
           <div className="w-[500px] max-w-[100vw] p-4">
             <img
               src={logoLight}
-              alt="Pauline Roussel - Yoga Prénatal et Accompagnement à la Naissance"
+              alt=""
+              aria-hidden="true"
               className="block w-full dark:hidden"
             />
             <img
               src={logoDark}
-              alt="Pauline Roussel - Yoga Prénatal et Accompagnement à la Naissance"
+              alt=""
+              aria-hidden="true"
               className="hidden w-full dark:block"
             />
           </div>
