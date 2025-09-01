@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { PregnancySafeHelpers } from '../helpers/pregnancy-safe';
-import { TEST_USERS } from '../helpers/constants';
+// Import TEST_USERS when needed for specific persona testing
+// import { TEST_USERS } from '../helpers/constants';
 
 /**
  * Homepage E2E Tests - Pregnancy-Safe Patterns
@@ -35,7 +36,7 @@ test.describe('Homepage - Pregnancy-Safe User Experience', () => {
     expect(metrics.lcp).toBeLessThan(2500); // 2.5s LCP target
   });
 
-  test('displays French content for Quebec users', async ({ page }) => {
+  test('displays French content for Quebec users', async () => {
     await helpers.navigateSafely('/');
     
     // Test with Marie persona (first pregnancy, French-speaking)

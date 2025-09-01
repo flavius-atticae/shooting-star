@@ -116,6 +116,9 @@ export class PregnancySafeHelpers {
             }
           },
           (err: any, results: any) => {
+            if (err) {
+              console.error('Axe accessibility test error:', err);
+            }
             resolve(results);
           }
         );
