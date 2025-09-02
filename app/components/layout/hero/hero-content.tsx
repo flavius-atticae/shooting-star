@@ -64,8 +64,8 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
     const getTypographyClasses = () => {
       // All variants use the same typography scale now
       return {
-        title: "text-3xl @xs:text-4xl @sm:text-5xl @md:text-6xl @lg:text-7xl @xl:text-8xl",
-        subtitle: "text-base @xs:text-lg @sm:text-xl @md:text-2xl @lg:text-3xl"
+        title: "text-2xl @xs:text-3xl @sm:text-4xl @md:text-5xl @lg:text-6xl",
+        subtitle: "text-sm @xs:text-base @sm:text-lg @md:text-xl @lg:text-2xl"
       };
     };
     
@@ -75,8 +75,8 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
       <div
         ref={ref}
         className={cn(
-          // Layout - Left-aligned with strong negative spacing to bring subtitle much closer
-          "flex flex-col items-start -space-y-6 md:-space-y-8 lg:-space-y-10",
+          // Layout - Left-aligned with controlled spacing
+          "flex flex-col items-start space-y-2 md:space-y-4",
           className
         )}
         {...props}

@@ -34,6 +34,9 @@ export const usePregnancySafeAnimation = (
 
   // Check for reduced motion preference
   React.useEffect(() => {
+    // SSR safety check
+    if (typeof window === 'undefined') return;
+    
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
 
