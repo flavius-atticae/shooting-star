@@ -7,6 +7,7 @@ export interface HeroContentProps {
   title?: string;
   subtitle?: string;
   variant?: HeroVariant;
+  multiline?: boolean;
   className?: string;
 }
 
@@ -20,9 +21,9 @@ export interface HeroContentProps {
  * - Motion preference detection
  * 
  * Phase 2B Enhancements:
- * - Variant-aware typography scaling
+ * - Variant-aware typography scaling with very large sizes
  * - Adaptive content size for different Hero variants
- * - Enhanced contrast for background image variants
+ * - Left-aligned layout for modern design impact
  * 
  * Typography:
  * - Title: The Seasons font (serif) for elegant branding
@@ -32,8 +33,8 @@ export interface HeroContentProps {
  * 
  * Layout:
  * - Enhanced responsive text sizes with container queries
- * - Variant-specific spacing and sizing
- * - Center-aligned content with better proportions
+ * - Variant-specific spacing and sizing  
+ * - Left-aligned content for impactful presentation
  * 
  * Accessibility:
  * - Proper heading hierarchy (h1 for title)
@@ -42,44 +43,40 @@ export interface HeroContentProps {
  * - Motion preference detection for animations
  */
 export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
-  ({ title, subtitle, variant = 'default', className, ...props }, ref) => {
+  ({ title, subtitle, variant = 'default', multiline = false, className, ...props }, ref) => {
     const defaultTitle = "Épanouir sa féminité";
     const defaultSubtitle = "AVEC PAULINE ROUSSEL";
     
-    // Variant-specific typography scaling
-    const getTypographyClasses = (variant: HeroVariant) => {
-      switch (variant) {
-        case 'compact':
-          return {
-            title: "text-2xl @xs:text-3xl @sm:text-4xl @md:text-5xl @lg:text-6xl",
-            subtitle: "text-sm @xs:text-base @sm:text-lg @md:text-xl @lg:text-2xl"
-          };
-        case 'full-height':
-          return {
-            title: "text-4xl @xs:text-5xl @sm:text-6xl @md:text-7xl @lg:text-8xl @xl:text-9xl",
-            subtitle: "text-lg @xs:text-xl @sm:text-2xl @md:text-3xl @lg:text-4xl"
-          };
-        case 'with-image':
-          return {
-            title: "text-3xl @xs:text-4xl @sm:text-5xl @md:text-6xl @lg:text-7xl @xl:text-8xl",
-            subtitle: "text-base @xs:text-lg @sm:text-xl @md:text-2xl @lg:text-3xl"
-          };
-        default:
-          return {
-            title: "text-3xl @xs:text-4xl @sm:text-5xl @md:text-6xl @lg:text-7xl @xl:text-8xl",
-            subtitle: "text-base @xs:text-lg @sm:text-xl @md:text-2xl @lg:text-3xl"
-          };
+    // Function to render title with line breaks support
+    const renderTitle = (titleText: string, isMultiline: boolean) => {
+      if (isMultiline && titleText.includes('\n')) {
+        return titleText.split('\n').map((line, index) => (
+          <React.Fragment key={index}>
+            {line}
+            {index < titleText.split('\n').length - 1 && <br />}
+          </React.Fragment>
+        ));
       }
+      return titleText;
     };
     
-    const typography = getTypographyClasses(variant);
+    // Variant-specific typography scaling - New very large scale for left-aligned design
+    const getTypographyClasses = () => {
+      // All variants use the same typography scale now
+      return {
+        title: "text-3xl @xs:text-4xl @sm:text-5xl @md:text-6xl @lg:text-7xl @xl:text-8xl",
+        subtitle: "text-base @xs:text-lg @sm:text-xl @md:text-2xl @lg:text-3xl"
+      };
+    };
+    
+    const typography = getTypographyClasses();
 
     return (
       <div
         ref={ref}
         className={cn(
-          // Layout
-          "flex flex-col items-center space-y-4 md:space-y-6 lg:space-y-8",
+          // Layout - Left-aligned with strong negative spacing to bring subtitle much closer
+          "flex flex-col items-start -space-y-6 md:-space-y-8 lg:-space-y-10",
           className
         )}
         {...props}
@@ -88,26 +85,26 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
         <FadeInTitle>
           <h1
             className={cn(
-              // Typography - The Seasons font
-              "font-serif",
+              // Typography - The Seasons font (custom)
+              "font-heading",
+              
+              // Color - Primary green
+              "text-primary",
               
               // Variant-specific responsive sizing
               typography.title,
               
-              // Improved line height for better readability
-              "leading-[0.9] @sm:leading-[0.95] @md:leading-tight",
+              // Improved line height for very large typography - Maximum space between lines
+              "leading-[1.3] @sm:leading-[1.3] @md:leading-[1.3]",
               
-              // Weight and letter spacing
-              "font-normal tracking-wide @md:tracking-wider",
+              // Weight and letter spacing - Bold for stronger impact
+              "font-bold tracking-wide @md:tracking-wider",
               
-              // Enhanced contrast and text shadow
-              "text-shadow-sm",
-              
-              // Better responsive margins with variant adjustment
-              variant === 'compact' ? "mb-1 @sm:mb-2 @md:mb-3" : "mb-2 @sm:mb-3 @md:mb-4"
+              // Better responsive margins
+              "mb-2 @sm:mb-3 @md:mb-4"
             )}
           >
-            {title || defaultTitle}
+            {renderTitle(title || defaultTitle, multiline)}
           </h1>
         </FadeInTitle>
 
@@ -118,6 +115,9 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               // Typography - Barlow font
               "font-sans",
               
+              // Color - Primary green
+              "text-primary",
+              
               // Variant-specific responsive sizing
               typography.subtitle,
               
@@ -125,19 +125,16 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               "leading-relaxed @md:leading-loose",
               
               // Container-aware max width for optimal reading length
-              variant === 'compact' ? "max-w-lg @sm:max-w-xl @md:max-w-2xl" : "max-w-2xl @sm:max-w-3xl @md:max-w-4xl @lg:max-w-5xl",
+              "max-w-2xl @sm:max-w-3xl @md:max-w-4xl @lg:max-w-5xl",
               
-              // Weight and spacing with container awareness
-              "font-light tracking-wide @md:tracking-wider",
+              // Weight and spacing with container awareness - Bold for stronger impact
+              "font-bold tracking-wide @md:tracking-wider",
               
-              // Center alignment and text transform
-              "text-center uppercase",
+              // Left alignment and text transform
+              "text-left uppercase",
               
-              // Better responsive margins with variant adjustment
-              variant === 'compact' ? "mt-2 @sm:mt-3 @md:mt-4" : "mt-4 @sm:mt-6 @md:mt-8",
-              
-              // Enhanced contrast and text shadow
-              "text-shadow-sm"
+              // Better responsive margins
+              "mt-4 @sm:mt-6 @md:mt-8"
             )}
           >
             {subtitle || defaultSubtitle}

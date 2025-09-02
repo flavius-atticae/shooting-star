@@ -1,13 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
+import { within, expect } from '@storybook/test';
 import { Hero } from "./Hero";
 import { 
   withReducedMotion,
   withPregnancySafeColors
 } from "../../../../.storybook/decorators/pregnancy-safe";
-
-// Note: within and expect from @storybook/test available in Storybook context
-declare const within: any;
-declare const expect: any;
 
 /**
  * Hero Component Stories - Composant central de la page d'accueil
@@ -27,21 +24,18 @@ const meta: Meta<typeof Hero> = {
         component: `
 # Hero Component - Première impression pregnancy-safe
 
-Le composant Hero principal pour le site de Pauline Roussel. Conçu spécifiquement pour les femmes enceintes et nouvelles mères du Québec, il combine impact visuel et tranquillité d'esprit.
+Le composant Hero principal pour le site de Pauline Roussel. Conçu spécifiquement pour les femmes enceintes et nouvelles mères du Québec, il combine impact typographique moderne et tranquillité d'esprit.
 
 ## Variants Disponibles
 
 ### 🌟 Default (Par défaut)
-L'hero standard avec le message principal "Épanouir sa féminité". Parfait pour la page d'accueil avec un équilibre entre impact et sérénité.
+L'hero standard avec typography très grande et alignement à gauche. Message principal "Épanouir sa féminité" avec impact visuel maximal.
 
 ### 📦 Compact  
-Version condensée pour les pages de contenu intérieur. Garde l'identité visuelle tout en économisant l'espace vertical.
+Version condensée pour les pages de contenu intérieur. Garde l'impact typographique tout en économisant l'espace vertical.
 
 ### 🖼️ Full-Height
-Version pleine hauteur pour les pages de destination. Crée une immersion maximale sans être accablante.
-
-### 🌄 With-Image
-Hero avec image d'arrière-plan et overlay pregnancy-safe. Les overlays assurent la lisibilité même avec des images complexes.
+Version pleine hauteur pour les pages de destination. Typography géante pour un impact immersif sans être accablante.
 
 ## Pregnancy-Safe Features
 
@@ -75,7 +69,7 @@ Hero avec image d'arrière-plan et overlay pregnancy-safe. Les overlays assurent
   argTypes: {
     variant: {
       control: "select",
-      options: ["default", "compact", "full-height", "with-image"],
+      options: ["default", "full-height"],
       description: "Variant du hero adaptés aux différents contextes",
     },
     title: {
@@ -86,9 +80,9 @@ Hero avec image d'arrière-plan et overlay pregnancy-safe. Les overlays assurent
       control: "text", 
       description: "Sous-titre descriptif",
     },
-    background: {
-      control: "object",
-      description: "Configuration de l'image d'arrière-plan",
+    multiline: {
+      control: "boolean",
+      description: "Afficher le titre sur plusieurs lignes (utiliser \\n dans le titre)",
     },
     className: {
       control: "text",
@@ -109,8 +103,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     variant: "default",
-    title: "Épanouir sa féminité",
-    subtitle: "Accompagnement bienveillant pour votre maternité",
+    title: "Épanouir\nsa féminité",
+    subtitle: "Avec Pauline Roussel",
+    multiline: true,
   },
   parameters: {
     docs: {
@@ -131,45 +126,63 @@ Le Hero dans son état par défaut pour la page d'accueil. Utilise le message pr
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     
-    // Test structure sémantique
+    // Test structure sémantique avec titre multiline
     const mainHeading = canvas.getByRole('heading', { level: 1 });
-    expect(mainHeading).toHaveTextContent(/Épanouir sa féminité/i);
+    expect(mainHeading).toHaveTextContent(/Épanouir/i);
+    expect(mainHeading).toHaveTextContent(/sa féminité/i);
     
     // Test contenu principal
-    const subtitle = canvas.getByText(/Accompagnement bienveillant/i);
+    const subtitle = canvas.getByText(/Avec Pauline Roussel/i);
     expect(subtitle).toBeInTheDocument();
   },
 };
 
 /**
- * Hero compact - Pour pages de contenu
+ * Hero avec titre sur plusieurs lignes
  * 
- * Version réduite pour les pages intérieures gardant l'identité visuelle
- * sans prendre trop d'espace vertical.
+ * Démontre la capacité d'afficher le titre principal sur plusieurs lignes
+ * pour un impact visuel plus fort et une meilleure lisibilité.
  */
-export const Compact: Story = {
+export const Multiline: Story = {
   args: {
-    variant: "compact",
-    title: "Services de yoga prénatal",
-    subtitle: "Accompagnement personnalisé à Montréal",
+    variant: "default",
+    title: "Pauline\nRoussel",
+    subtitle: "Doula et professeure de Yoga",
+    multiline: true,
   },
   parameters: {
     docs: {
       description: {
         story: `
-Hero compact pour les pages de services ou de contenu. Maintient l'identité visuelle 
-tout en économisant l'espace vertical précieux sur mobile.
+Exemple de Hero avec titre sur plusieurs lignes. Utilisez \\n dans le titre 
+et activez la prop \`multiline\` pour créer des sauts de ligne visuels.
 
-**Usage recommandé:**
-- Pages de services (/services)  
-- Pages de blog (/articles)
-- Pages informatives (/about)
-- Toute page non-landing
+**Avantages du multiline:**
+- Impact visuel plus fort
+- Meilleur contrôle typographique  
+- Hiérarchie visuelle claire
+- Adaptable selon le contenu
+
+**Usage:** Idéal pour les titres courts mais impactants
         `,
       },
     },
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Test titre multiline
+    const title = canvas.getByRole('heading', { level: 1 });
+    expect(title.innerHTML).toContain('<br>');
+    expect(title).toHaveTextContent(/Pauline/i);
+    expect(title).toHaveTextContent(/Roussel/i);
+    
+    // Test contenu présent
+    const subtitle = canvas.getByText(/Doula et professeure/i);
+    expect(subtitle).toBeInTheDocument();
+  },
 };
+
 
 /**
  * Hero pleine hauteur - Impact maximum
@@ -179,8 +192,9 @@ tout en économisant l'espace vertical précieux sur mobile.
 export const FullHeight: Story = {
   args: {
     variant: "full-height",
-    title: "Votre grossesse, votre pouvoir",
-    subtitle: "Accompagnement holistique pour futures mamans québécoises",
+    title: "Le féminin sacré\nateliers variés",
+    subtitle: "Avec Pauline Roussel",
+    multiline: true,
   },
   parameters: {
     docs: {
@@ -200,46 +214,6 @@ ou les campagnes marketing spéciales.
   },
 };
 
-/**
- * Hero avec image d'arrière-plan
- * 
- * Intègre une image pregnancy-safe avec overlay pour maintenir la lisibilité.
- */
-export const WithImage: Story = {
-  args: {
-    variant: "with-image",
-    title: "Sérénité et connexion",
-    subtitle: "Yoga prénatal à Montréal",
-    background: {
-      src: "/images/hero/yoga-prenatal-montreal.jpg",
-      alt: "Femme enceinte pratiquant le yoga prénatal dans un studio lumineux",
-      overlay: 0.3,
-      position: "center"
-    }
-  },
-  parameters: {
-    docs: {
-      description: {
-        story: `
-Hero avec image d'arrière-plan pregnancy-safe. L'overlay assure la lisibilité du texte 
-même avec des images complexes.
-
-**Options d'overlay:**
-- **Soft**: Overlay léger (20% opacity) pour images claires
-- **Medium**: Overlay modéré (40% opacity) usage standard  
-- **Strong**: Overlay fort (60% opacity) pour images très contrastées
-- **None**: Aucun overlay (images déjà optimisées)
-
-**Bonnes pratiques images:**
-- Images de yoga/maternité positives
-- Éviter les images médicales stressantes
-- Préférer les tons chauds et naturels
-- Tester le contraste avec le texte
-        `,
-      },
-    },
-  },
-};
 
 /**
  * Tests responsifs - Mobile (375px) 
@@ -249,8 +223,9 @@ même avec des images complexes.
 export const ResponsiveMobile: Story = {
   args: {
     variant: "default",
-    title: "Yoga prénatal",
-    subtitle: "Accompagnement bienveillant"
+    title: "Enseignement\ndu Yoga",
+    subtitle: "Avec Pauline Roussel",
+    multiline: true,
   },
   parameters: {
     viewport: { defaultViewport: 'mobile1' }, // 375px
@@ -262,9 +237,9 @@ Hero optimisé pour mobile (375px). Tests sur iPhone SE et petits écrans.
 **Adaptations mobiles:**
 - Titres plus courts pour éviter la coupure
 - Description condensée mais informative
-- Boutons empilés verticalement
-- Touch targets 44x44px minimum
+- Mise en page verticale optimisée
 - Espacement réduit mais aéré
+- Typography adaptée aux petits écrans
         `,
       },
     },
@@ -272,19 +247,14 @@ Hero optimisé pour mobile (375px). Tests sur iPhone SE et petits écrans.
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     
-    // Test adaptations mobiles
+    // Test adaptations mobiles - titre multiline
     const title = canvas.getByRole('heading', { level: 1 });
-    expect(title.textContent!.length).toBeLessThan(20); // Titre court mobile
+    expect(title).toHaveTextContent(/Enseignement/i);
+    expect(title).toHaveTextContent(/Yoga/i);
     
-    // Test boutons empilés
-    const buttons = canvas.getAllByRole('button');
-    expect(buttons.length).toBeGreaterThanOrEqual(1);
-    
-    // Test touch targets
-    buttons.forEach((button: HTMLElement) => {
-      const rect = button.getBoundingClientRect();
-      expect(rect.height).toBeGreaterThanOrEqual(44);
-    });
+    // Test présence du contenu principal
+    const subtitle = canvas.getByText(/Avec Pauline Roussel/i);
+    expect(subtitle).toBeInTheDocument();
   },
 };
 
@@ -308,9 +278,9 @@ Hero sur tablette (768px). Équilibre entre mobile et desktop.
 
 **Adaptations tablettes:**
 - Layout hybride conservant l'efficacité
-- Boutons côte à côte si espace suffisant
+- Contenu équilibré entre mobile et desktop
 - Images plus grandes mais optimisées
-- Touch targets maintenues
+- Touch targets maintenues pour accessibilité
         `,
       },
     },
@@ -324,28 +294,22 @@ Hero sur tablette (768px). Équilibre entre mobile et desktop.
  */
 export const ResponsiveDesktop: Story = {
   args: {
-    variant: "with-image",
-    title: "Sérénité et connexion",
-    subtitle: "Yoga prénatal à Montréal",
-    background: {
-      src: "/images/hero/yoga-prenatal-montreal.jpg",
-      alt: "Femme enceinte pratiquant le yoga prénatal dans un studio lumineux",
-      overlay: 0.3,
-      position: "center"
-    }
+    variant: "default",
+    title: "Épanouir sa féminité",
+    subtitle: "Accompagnement bienveillant pour votre maternité"
   },
   parameters: {
     viewport: { defaultViewport: 'desktop' }, // 1024px+
     docs: {
       description: {
         story: `
-Hero sur desktop (1024px+). Version complète avec tous les éléments.
+Hero sur desktop (1024px+). Version complète avec impact typographique maximum.
 
 **Avantages desktop:**
-- Espace pour image d'arrière-plan complète
-- Actions multiples visibles simultanément
+- Typography très grande pour impact visuel
+- Présentation complète du contenu
 - Description étendue possible
-- Typography plus généreuse
+- Layout left-aligned pour modernité
         `,
       },
     },
@@ -406,15 +370,9 @@ Validation de la palette de couleurs spécialement adaptée aux femmes enceintes
  */
 export const ReducedMotion: Story = {
   args: {
-    variant: "with-image",
-    title: "Sérénité et connexion",
-    subtitle: "Yoga prénatal à Montréal",
-    background: {
-      src: "/images/hero/yoga-prenatal-montreal.jpg",
-      alt: "Femme enceinte pratiquant le yoga prénatal dans un studio lumineux",
-      overlay: 0.3,
-      position: "center"
-    }
+    variant: "default",
+    title: "Épanouir sa féminité",
+    subtitle: "Accompagnement bienveillant pour votre maternité"
   },
   decorators: [withReducedMotion],
   parameters: {

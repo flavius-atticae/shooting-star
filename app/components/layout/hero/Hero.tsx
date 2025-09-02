@@ -1,9 +1,7 @@
 import * as React from "react";
-import { Container } from "~/components/ui/container";
 import { cn } from "~/lib/utils";
 import { HeroContent } from "./hero-content";
-import { HeroBackground } from "./hero-background";
-import type { HeroVariant, HeroBackground as HeroBackgroundType } from "./types";
+import type { HeroVariant } from "./types";
 import { HERO_VARIANTS } from "./types";
 
 export interface HeroProps {
@@ -11,7 +9,7 @@ export interface HeroProps {
   title?: string;
   subtitle?: string;
   variant?: HeroVariant;
-  background?: HeroBackgroundType;
+  multiline?: boolean;
   children?: React.ReactNode;
 }
 
@@ -31,16 +29,15 @@ export interface HeroProps {
  * - Pregnancy-safe image overlays and loading states
  * 
  * Design:
- * - Background: --color-gris (#f5f4f2) with rounded bottom edges
+ * - Background: Always --color-gris (#f5f4f2) with rounded bottom edges
  * - Typography: The Seasons (title) + Barlow (subtitle) in --color-primary
  * - Responsive height and spacing with container queries
- * - Optional background images with pregnancy-safe overlays
+ * - Left-aligned layout for impactful presentation
  * 
  * Variants:
  * - default: 60vh-70vh (400px-600px responsive)
  * - compact: For content pages (300px-400px)
  * - full-height: Landing pages (100vh - header height)
- * - with-image: Background image support (500px-700px)
  * 
  * Accessibility:
  * - Semantic HTML with proper heading hierarchy
@@ -50,12 +47,9 @@ export interface HeroProps {
  * - Loading states with reduced motion support
  */
 export const Hero = React.forwardRef<HTMLElement, HeroProps>(
-  ({ className, title, subtitle, variant = 'default', background, children, ...props }, ref) => {
+  ({ className, title, subtitle, variant = 'default', multiline, children, ...props }, ref) => {
     // Get variant configuration
     const variantConfig = HERO_VARIANTS[variant];
-    
-    // Determine if this is a background image variant
-    const hasBackground = variant === 'with-image' && background;
     
     return (
       <section
@@ -64,8 +58,8 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
           // Layout and positioning
           "relative w-full overflow-hidden",
           
-          // Background color - pregnancy-safe light background
-          !hasBackground && "bg-gris",
+          // Background color - always use pregnancy-safe bg-gris
+          "bg-gris",
           
           // Container queries for better responsive behavior
           "@container",
@@ -80,11 +74,9 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
           // Skip rounding for full-height variant
           variant !== 'full-height' && "rounded-b-3xl @md:rounded-b-[3rem] @lg:rounded-b-[4rem]",
           
-          // Flex for content centering
-          "flex items-center justify-center",
+          // Flex for content alignment - left aligned layout
+          "flex items-center justify-start",
           
-          // Subtle shadow for depth
-          !hasBackground && "shadow-sm",
           
           // Safe area padding for mobile devices
           "pb-[env(safe-area-inset-bottom)] px-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]",
@@ -95,44 +87,26 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
         aria-label="Section principale d'accueil"
         {...props}
       >
-        {/* Background Image (if provided) */}
-        {hasBackground && (
-          <HeroBackground 
-            background={background}
-            className="z-0"
-          />
-        )}
-        
-        {/* Content Container */}
-        <Container 
-          size="lg" 
+        {/* Content - Left aligned without centering container */}
+        <div 
           className={cn(
-            "h-full flex items-center justify-center relative z-10",
+            "h-full w-full flex items-center justify-start relative z-10",
+            // Left-aligned layout with responsive padding
+            "px-6 @sm:px-8 @md:px-12 @lg:px-16 @xl:px-20",
             // Container query responsive classes
             "@container"
           )}
         >
-          <div 
-            className={cn(
-              "text-center mx-auto",
-              // Container-aware max width and padding
-              "max-w-4xl px-4 @sm:px-6 @md:px-8 @lg:px-12",
-              // Container-aware width constraints
-              "w-full @sm:max-w-3xl @md:max-w-4xl @lg:max-w-5xl @xl:max-w-6xl",
-              // Enhanced text contrast for background images
-              hasBackground && "text-white drop-shadow-lg"
-            )}
-          >
-            {/* Default content or custom children */}
-            {children || (
-              <HeroContent 
-                title={title}
-                subtitle={subtitle}
-                variant={variant}
-              />
-            )}
-          </div>
-        </Container>
+          {/* Default content or custom children */}
+          {children || (
+            <HeroContent 
+              title={title}
+              subtitle={subtitle}
+              variant={variant}
+              multiline={multiline}
+            />
+          )}
+        </div>
       </section>
     );
   }

@@ -12,14 +12,11 @@ export type { HeroProps } from "./Hero";
 // Sub-components
 export { HeroContent } from "./hero-content";
 export type { HeroContentProps } from "./hero-content";
-export { HeroBackground } from "./hero-background";
-export type { HeroBackgroundProps } from "./hero-background";
 
 // Types and configuration
 export type { 
   HeroConfig,
   HeroVariant,
-  HeroBackground as HeroBackgroundType,
   HeroContentProps as HeroContentInterface,
   HeroProps as HeroInterface
 } from "./types";

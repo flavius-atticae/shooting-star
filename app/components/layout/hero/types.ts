@@ -10,24 +10,8 @@ export type { HeroContentProps } from "./hero-content";
 /**
  * Hero variant types for different use cases
  */
-export type HeroVariant = 'default' | 'compact' | 'full-height' | 'with-image';
+export type HeroVariant = 'default' | 'full-height';
 
-/**
- * Background image configuration with pregnancy-safe defaults
- */
-export interface HeroBackground {
-  /** Image source URL */
-  src: string;
-  
-  /** Accessible alt text description */
-  alt: string;
-  
-  /** Overlay opacity for readability (0-1, pregnancy-safe default: 0.4) */
-  overlay?: number;
-  
-  /** Image positioning */
-  position?: 'center' | 'top' | 'bottom';
-}
 
 /**
  * Enhanced Hero section configuration
@@ -41,9 +25,6 @@ export interface HeroConfig {
   
   /** Hero variant type */
   variant?: HeroVariant;
-  
-  /** Background image configuration */
-  background?: HeroBackground;
   
   /** Custom CSS classes */
   className?: string;
@@ -80,39 +61,27 @@ export const HERO_VARIANTS = {
     desktop: 600,
     classes: "h-[400px] md:h-[500px] lg:h-[600px]"
   },
-  compact: {
-    mobile: 300,
-    tablet: 400,
-    desktop: 400,
-    classes: "h-[300px] sm:h-[400px]"
-  },
   'full-height': {
     mobile: 'calc(100vh - 80px)', // Subtract header height
     tablet: 'calc(100vh - 80px)',
     desktop: 'calc(100vh - 80px)',
     classes: "min-h-[calc(100vh-80px)]"
   },
-  'with-image': {
-    mobile: 500,
-    tablet: 600,
-    desktop: 700,
-    classes: "h-[500px] md:h-[600px] lg:h-[700px]"
-  }
 } as const;
 
 /**
- * Typography scale for Hero content
+ * Typography scale for Hero content - New very large scale for left-aligned design
  */
 export const HERO_TYPOGRAPHY = {
   title: {
-    mobile: "text-4xl",
-    tablet: "md:text-5xl",
-    desktop: "lg:text-6xl",
-    xl: "xl:text-7xl",
+    mobile: "text-5xl",
+    tablet: "@xs:text-6xl @sm:text-7xl",
+    desktop: "@md:text-8xl @lg:text-9xl",
+    xl: "@xl:text-[10rem]",
   },
   subtitle: {
     mobile: "text-lg",
-    tablet: "md:text-xl", 
-    desktop: "lg:text-2xl",
+    tablet: "@xs:text-xl @sm:text-2xl",
+    desktop: "@md:text-3xl @lg:text-4xl",
   },
 } as const;
