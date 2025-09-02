@@ -33,10 +33,11 @@ jobs:
           cache: 'npm'
           cache-dependency-path: 'package-lock.json'
 
-      - name: Install dependencies
+      - name: Install dependencies with clean slate
         run: |
-          # Use npm install instead of npm ci to resolve platform-specific dependencies
-          # This allows npm to install the correct platform binaries for the Ubuntu runner
+          # Follow npm error recommendation: remove package-lock.json and node_modules before npm install
+          # This fixes the optional dependencies bug affecting @rollup/rollup-linux-x64-gnu
+          rm -rf package-lock.json node_modules
           npm install
           
       - name: Build Storybook
