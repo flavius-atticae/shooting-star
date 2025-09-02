@@ -27,8 +27,8 @@ export interface HeroContentProps {
  */
 export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
   ({ title, subtitle, className, ...props }, ref) => {
-    const defaultTitle = "Pauline Roussel";
-    const defaultSubtitle = "Yoga périnatal • Accompagnement à la naissance • Bien-être maternel";
+    const defaultTitle = "Épanouir sa féminité";
+    const defaultSubtitle = "AVEC PAULINE ROUSSEL";
 
     return (
       <div
@@ -80,8 +80,8 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
             // Weight and spacing
             "font-light tracking-wide",
             
-            // Center alignment
-            "text-center",
+            // Center alignment and text transform
+            "text-center uppercase",
             
             // Animation ready (for future phases)
             "transition-all duration-300"
