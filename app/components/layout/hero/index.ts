@@ -1,0 +1,29 @@
+/**
+ * Hero component barrel exports
+ * 
+ * Main exports for the Hero section component following
+ * the same pattern as Header component structure.
+ */
+
+// Main component
+export { Hero } from "./Hero";
+export type { HeroProps } from "./Hero";
+
+// Sub-components
+export { HeroContent } from "./hero-content";
+export type { HeroContentProps } from "./hero-content";
+
+// Types and configuration
+export type { 
+  HeroConfig,
+  HeroContentProps as HeroContentInterface,
+  HeroProps as HeroInterface
+} from "./types";
+
+export { 
+  HERO_BREAKPOINTS,
+  HERO_TYPOGRAPHY 
+} from "./types";
+
+// Default export
+export { Hero as default } from "./Hero";
