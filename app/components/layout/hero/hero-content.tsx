@@ -1,10 +1,12 @@
 import * as React from "react";
 import { cn } from "~/lib/utils";
 import { FadeInTitle, FadeInSubtitle } from "./hero-animations";
+import type { HeroVariant } from "./types";
 
 export interface HeroContentProps {
   title?: string;
   subtitle?: string;
+  variant?: HeroVariant;
   className?: string;
 }
 
@@ -17,15 +19,20 @@ export interface HeroContentProps {
  * - Pregnancy-safe animation integration
  * - Motion preference detection
  * 
+ * Phase 2B Enhancements:
+ * - Variant-aware typography scaling
+ * - Adaptive content size for different Hero variants
+ * - Enhanced contrast for background image variants
+ * 
  * Typography:
  * - Title: The Seasons font (serif) for elegant branding
  * - Subtitle: Barlow font (sans-serif) for readability
- * - Colors: --color-primary for all text
+ * - Colors: --color-primary for all text (adaptive for backgrounds)
  * - Container-aware responsive scaling
  * 
  * Layout:
  * - Enhanced responsive text sizes with container queries
- * - Optimal spacing for pregnancy-safe reading
+ * - Variant-specific spacing and sizing
  * - Center-aligned content with better proportions
  * 
  * Accessibility:
@@ -35,9 +42,37 @@ export interface HeroContentProps {
  * - Motion preference detection for animations
  */
 export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
-  ({ title, subtitle, className, ...props }, ref) => {
+  ({ title, subtitle, variant = 'default', className, ...props }, ref) => {
     const defaultTitle = "Épanouir sa féminité";
     const defaultSubtitle = "AVEC PAULINE ROUSSEL";
+    
+    // Variant-specific typography scaling
+    const getTypographyClasses = (variant: HeroVariant) => {
+      switch (variant) {
+        case 'compact':
+          return {
+            title: "text-2xl @xs:text-3xl @sm:text-4xl @md:text-5xl @lg:text-6xl",
+            subtitle: "text-sm @xs:text-base @sm:text-lg @md:text-xl @lg:text-2xl"
+          };
+        case 'full-height':
+          return {
+            title: "text-4xl @xs:text-5xl @sm:text-6xl @md:text-7xl @lg:text-8xl @xl:text-9xl",
+            subtitle: "text-lg @xs:text-xl @sm:text-2xl @md:text-3xl @lg:text-4xl"
+          };
+        case 'with-image':
+          return {
+            title: "text-3xl @xs:text-4xl @sm:text-5xl @md:text-6xl @lg:text-7xl @xl:text-8xl",
+            subtitle: "text-base @xs:text-lg @sm:text-xl @md:text-2xl @lg:text-3xl"
+          };
+        default:
+          return {
+            title: "text-3xl @xs:text-4xl @sm:text-5xl @md:text-6xl @lg:text-7xl @xl:text-8xl",
+            subtitle: "text-base @xs:text-lg @sm:text-xl @md:text-2xl @lg:text-3xl"
+          };
+      }
+    };
+    
+    const typography = getTypographyClasses(variant);
 
     return (
       <div
@@ -54,12 +89,10 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
           <h1
             className={cn(
               // Typography - The Seasons font
-              "font-serif text-primary",
+              "font-serif",
               
-              // Enhanced responsive sizing with container queries
-              "text-3xl @xs:text-4xl @sm:text-5xl @md:text-6xl @lg:text-7xl @xl:text-8xl",
-              "md:text-4xl md:@sm:text-5xl md:@md:text-6xl md:@lg:text-7xl md:@xl:text-8xl",
-              "lg:text-5xl lg:@sm:text-6xl lg:@md:text-7xl lg:@lg:text-8xl",
+              // Variant-specific responsive sizing
+              typography.title,
               
               // Improved line height for better readability
               "leading-[0.9] @sm:leading-[0.95] @md:leading-tight",
@@ -67,11 +100,11 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               // Weight and letter spacing
               "font-normal tracking-wide @md:tracking-wider",
               
-              // Pregnancy-safe text shadow for better contrast
+              // Enhanced contrast and text shadow
               "text-shadow-sm",
               
-              // Better responsive margins
-              "mb-2 @sm:mb-3 @md:mb-4"
+              // Better responsive margins with variant adjustment
+              variant === 'compact' ? "mb-1 @sm:mb-2 @md:mb-3" : "mb-2 @sm:mb-3 @md:mb-4"
             )}
           >
             {title || defaultTitle}
@@ -83,18 +116,16 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
           <p
             className={cn(
               // Typography - Barlow font
-              "font-sans text-primary/90",
+              "font-sans",
               
-              // Enhanced responsive sizing with container queries
-              "text-base @xs:text-lg @sm:text-xl @md:text-2xl @lg:text-3xl",
-              "md:text-lg md:@sm:text-xl md:@md:text-2xl md:@lg:text-3xl",
-              "lg:text-xl lg:@sm:text-2xl lg:@md:text-3xl",
+              // Variant-specific responsive sizing
+              typography.subtitle,
               
               // Improved line height for comfortable reading
               "leading-relaxed @md:leading-loose",
               
               // Container-aware max width for optimal reading length
-              "max-w-2xl @sm:max-w-3xl @md:max-w-4xl @lg:max-w-5xl",
+              variant === 'compact' ? "max-w-lg @sm:max-w-xl @md:max-w-2xl" : "max-w-2xl @sm:max-w-3xl @md:max-w-4xl @lg:max-w-5xl",
               
               // Weight and spacing with container awareness
               "font-light tracking-wide @md:tracking-wider",
@@ -102,10 +133,10 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               // Center alignment and text transform
               "text-center uppercase",
               
-              // Better responsive margins
-              "mt-4 @sm:mt-6 @md:mt-8",
+              // Better responsive margins with variant adjustment
+              variant === 'compact' ? "mt-2 @sm:mt-3 @md:mt-4" : "mt-4 @sm:mt-6 @md:mt-8",
               
-              // Pregnancy-safe text shadow for better contrast
+              // Enhanced contrast and text shadow
               "text-shadow-sm"
             )}
           >

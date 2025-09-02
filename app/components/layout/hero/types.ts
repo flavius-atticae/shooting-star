@@ -1,5 +1,6 @@
 /**
  * TypeScript interfaces and types for Hero component
+ * Phase 2B: Enhanced with variant system and background image support
  */
 
 // Re-export main component interfaces
@@ -7,7 +8,29 @@ export type { HeroProps } from "./Hero";
 export type { HeroContentProps } from "./hero-content";
 
 /**
- * Hero section configuration
+ * Hero variant types for different use cases
+ */
+export type HeroVariant = 'default' | 'compact' | 'full-height' | 'with-image';
+
+/**
+ * Background image configuration with pregnancy-safe defaults
+ */
+export interface HeroBackground {
+  /** Image source URL */
+  src: string;
+  
+  /** Accessible alt text description */
+  alt: string;
+  
+  /** Overlay opacity for readability (0-1, pregnancy-safe default: 0.4) */
+  overlay?: number;
+  
+  /** Image positioning */
+  position?: 'center' | 'top' | 'bottom';
+}
+
+/**
+ * Enhanced Hero section configuration
  */
 export interface HeroConfig {
   /** Main title text - defaults to "Pauline Roussel" */
@@ -16,8 +39,11 @@ export interface HeroConfig {
   /** Subtitle/tagline text - defaults to services description */
   subtitle?: string;
   
-  /** Background image URL (optional for future enhancement) */
-  backgroundImage?: string;
+  /** Hero variant type */
+  variant?: HeroVariant;
+  
+  /** Background image configuration */
+  background?: HeroBackground;
   
   /** Custom CSS classes */
   className?: string;
@@ -41,6 +67,36 @@ export const HERO_BREAKPOINTS = {
     mobile: 24, // 1.5rem
     tablet: 48,  // 3rem
     desktop: 64, // 4rem
+  }
+} as const;
+
+/**
+ * Hero variant height configurations
+ */
+export const HERO_VARIANTS = {
+  default: {
+    mobile: 400,
+    tablet: 500,
+    desktop: 600,
+    classes: "h-[400px] md:h-[500px] lg:h-[600px]"
+  },
+  compact: {
+    mobile: 300,
+    tablet: 400,
+    desktop: 400,
+    classes: "h-[300px] sm:h-[400px]"
+  },
+  'full-height': {
+    mobile: 'calc(100vh - 80px)', // Subtract header height
+    tablet: 'calc(100vh - 80px)',
+    desktop: 'calc(100vh - 80px)',
+    classes: "min-h-[calc(100vh-80px)]"
+  },
+  'with-image': {
+    mobile: 500,
+    tablet: 600,
+    desktop: 700,
+    classes: "h-[500px] md:h-[600px] lg:h-[700px]"
   }
 } as const;
 

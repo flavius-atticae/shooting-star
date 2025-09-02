@@ -2,11 +2,17 @@ import * as React from "react";
 import { Container } from "~/components/ui/container";
 import { cn } from "~/lib/utils";
 import { HeroContent } from "./hero-content";
+import { HeroBackground } from "./hero-background";
+import type { HeroVariant, HeroBackground as HeroBackgroundType } from "./types";
+import { HERO_VARIANTS } from "./types";
 
 export interface HeroProps {
   className?: string;
   title?: string;
   subtitle?: string;
+  variant?: HeroVariant;
+  background?: HeroBackgroundType;
+  children?: React.ReactNode;
 }
 
 /**
@@ -18,50 +24,67 @@ export interface HeroProps {
  * - Enhanced responsive typography scaling
  * - Safe area insets for mobile devices
  * 
+ * Phase 2B Enhancements:
+ * - Hero variants system (default, compact, full-height, with-image)
+ * - Background image support with lazy loading
+ * - Enhanced props interface with children support
+ * - Pregnancy-safe image overlays and loading states
+ * 
  * Design:
  * - Background: --color-gris (#f5f4f2) with rounded bottom edges
  * - Typography: The Seasons (title) + Barlow (subtitle) in --color-primary
  * - Responsive height and spacing with container queries
+ * - Optional background images with pregnancy-safe overlays
  * 
- * Layout:
- * - Mobile: 400px height with safe area insets
- * - Tablet: 500px height with container-aware spacing
- * - Desktop: 600px height with optimized container layout
+ * Variants:
+ * - default: 60vh-70vh (400px-600px responsive)
+ * - compact: For content pages (300px-400px)
+ * - full-height: Landing pages (100vh - header height)
+ * - with-image: Background image support (500px-700px)
  * 
  * Accessibility:
  * - Semantic HTML with proper heading hierarchy
  * - ARIA landmarks for screen readers
- * - High contrast text (--color-primary on --color-gris)
- * - Pregnancy-safe design patterns and animations
- * - Motion preference detection for reduced motion
+ * - High contrast text with pregnancy-safe overlays
+ * - Proper alt text for background images
+ * - Loading states with reduced motion support
  */
 export const Hero = React.forwardRef<HTMLElement, HeroProps>(
-  ({ className, title, subtitle, ...props }, ref) => {
+  ({ className, title, subtitle, variant = 'default', background, children, ...props }, ref) => {
+    // Get variant configuration
+    const variantConfig = HERO_VARIANTS[variant];
+    
+    // Determine if this is a background image variant
+    const hasBackground = variant === 'with-image' && background;
+    
     return (
       <section
         ref={ref}
         className={cn(
           // Layout and positioning
-          "relative w-full",
+          "relative w-full overflow-hidden",
           
           // Background color - pregnancy-safe light background
-          "bg-gris",
+          !hasBackground && "bg-gris",
           
           // Container queries for better responsive behavior
           "@container",
           
-          // Height responsive with safe area insets for mobile
-          "h-[400px] md:h-[500px] lg:h-[600px]",
-          "min-h-[calc(400px+env(safe-area-inset-bottom))] md:min-h-[500px] lg:min-h-[600px]",
+          // Variant-specific height classes
+          variantConfig.classes,
+          
+          // Safe area handling for mobile devices
+          variant !== 'full-height' && "min-h-[calc(400px+env(safe-area-inset-bottom))] md:min-h-[500px] lg:min-h-[600px]",
           
           // Rounded bottom edges for visual softness - container-aware
-          "rounded-b-3xl @md:rounded-b-[3rem] @lg:rounded-b-[4rem]",
+          // Skip rounding for full-height variant
+          variant !== 'full-height' && "rounded-b-3xl @md:rounded-b-[3rem] @lg:rounded-b-[4rem]",
           
           // Flex for content centering
           "flex items-center justify-center",
           
           // Subtle shadow for depth
-          "shadow-sm",
+          !hasBackground && "shadow-sm",
           
           // Safe area padding for mobile devices
           "pb-[env(safe-area-inset-bottom)] px-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]",
@@ -72,10 +95,19 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
         aria-label="Section principale d'accueil"
         {...props}
       >
+        {/* Background Image (if provided) */}
+        {hasBackground && (
+          <HeroBackground 
+            background={background}
+            className="z-0"
+          />
+        )}
+        
+        {/* Content Container */}
         <Container 
           size="lg" 
           className={cn(
-            "h-full flex items-center justify-center",
+            "h-full flex items-center justify-center relative z-10",
             // Container query responsive classes
             "@container"
           )}
@@ -86,13 +118,19 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
               // Container-aware max width and padding
               "max-w-4xl px-4 @sm:px-6 @md:px-8 @lg:px-12",
               // Container-aware width constraints
-              "w-full @sm:max-w-3xl @md:max-w-4xl @lg:max-w-5xl @xl:max-w-6xl"
+              "w-full @sm:max-w-3xl @md:max-w-4xl @lg:max-w-5xl @xl:max-w-6xl",
+              // Enhanced text contrast for background images
+              hasBackground && "text-white drop-shadow-lg"
             )}
           >
-            <HeroContent 
-              title={title}
-              subtitle={subtitle}
-            />
+            {/* Default content or custom children */}
+            {children || (
+              <HeroContent 
+                title={title}
+                subtitle={subtitle}
+                variant={variant}
+              />
+            )}
           </div>
         </Container>
       </section>
