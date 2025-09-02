@@ -34,12 +34,10 @@ jobs:
           cache-dependency-path: 'package-lock.json'
 
       - name: Install dependencies
-        run: npm ci
-
-      - name: Install platform-specific Rollup dependencies
         run: |
-          # Install the specific Rollup platform dependency that's missing
-          npm install @rollup/rollup-linux-x64-gnu --no-save --force
+          # Use npm install instead of npm ci to resolve platform-specific dependencies
+          # This allows npm to install the correct platform binaries for the Ubuntu runner
+          npm install
           
       - name: Build Storybook
         run: npm run build-storybook
