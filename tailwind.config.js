@@ -67,7 +67,10 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Container queries support for Phase 2A Hero enhancements
+    require('@tailwindcss/container-queries'),
+  ],
   // Ensure dark mode works with brand colors
   darkMode: 'class',
 };
