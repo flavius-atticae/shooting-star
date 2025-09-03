@@ -67,9 +67,9 @@ export function ServicesSection({
     >
       <Container size={containerSize}>
         {/* Section Title */}
-        <h1 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-primary text-left leading-tight mb-8 sm:mb-12">
+        <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-primary text-left leading-tight mb-8 sm:mb-12">
           {title}
-        </h1>
+        </h2>
         
         {/* Services Grid */}
         <div className={cn(
