@@ -82,7 +82,7 @@ export function ServiceCard({
       )}
       
       {/* Title */}
-      <h3 className="font-heading font-bold text-2xl sm:text-3xl text-white leading-tight mb-4">
+      <h3 className="font-heading font-bold text-3xl sm:text-4xl text-white leading-tight mb-4">
         {service.title}
       </h3>
       
