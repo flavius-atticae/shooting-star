@@ -21,6 +21,7 @@ const buttonVariants = cva(
           "hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50",
         link: "text-primary underline-offset-4 hover:underline",
         cta: "bg-accent text-white hover:bg-accent/90 focus-visible:ring-accent/50 active:bg-accent/95 rounded-full text-base font-medium transition-all duration-200 min-h-[48px]",
+        "service-card": "bg-white text-primary hover:bg-white/90 focus-visible:ring-white/50 active:bg-white/95 rounded-full text-base font-medium transition-all duration-200 min-h-[48px]",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
