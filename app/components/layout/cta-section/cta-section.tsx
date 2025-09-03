@@ -4,7 +4,7 @@ import { Button } from "~/components/ui/button";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 
-export interface CTASectionProps {
+export interface CTASectionProps extends Omit<React.HTMLAttributes<HTMLElement>, 'children'> {
   /** Main title text - displayed in The Seasons font */
   title: string;
   /** Subtitle text - displayed in Barlow font */
@@ -69,7 +69,7 @@ export function CTASection({
         aria-describedby={ariaDescribedBy}
         {...props}
       >
-        <Container size="md" className="max-w-4xl">
+        <Container size="md">
           <div className="bg-gris rounded-xl p-8 sm:p-10 lg:p-12 text-center">
             {/* Title */}
             <h2 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-accent text-center leading-tight mb-4 sm:mb-6">
@@ -85,6 +85,7 @@ export function CTASection({
             {buttonHref ? (
               <Button
                 variant="cta"
+                size="cta"
                 asChild
               >
                 <a 
@@ -98,6 +99,7 @@ export function CTASection({
             ) : (
               <Button
                 variant="cta"
+                size="cta"
                 onClick={onButtonClick}
               >
                 {buttonText}
