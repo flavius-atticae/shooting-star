@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Decorator } from '@storybook/react-vite';
+import type { Decorator } from '@storybook/react';
 import { StorybookRouterProvider } from './mocks/react-router';
 
 /**
@@ -23,7 +23,7 @@ import { StorybookRouterProvider } from './mocks/react-router';
  * };
  * ```
  */
-export const withReactRouter: Decorator = (Story, context) => {
+export const withReactRouter: Decorator = (Story, context: any) => {
   // Get initial path from story parameters if provided
   const initialPath = context.parameters?.router?.initialPath || '/';
   

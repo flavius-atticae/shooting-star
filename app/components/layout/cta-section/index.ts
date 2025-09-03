@@ -1,0 +1,1 @@
+export { CTASection, type CTASectionProps } from "./cta-section";
