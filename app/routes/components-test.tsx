@@ -8,6 +8,7 @@ import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 import { Background, BackgroundPattern, useBackgroundClasses } from "~/components/ui/background";
 import { Header } from "~/components/layout/header";
+import { AboutSection } from "~/components/layout/about-section";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -516,7 +517,55 @@ export default function ComponentsTest() {
           </div>
         </CardContent>
       </Card>
+
+      {/* About Section Test */}
+      <Card>
+        <CardHeader>
+          <CardTitle>About Section Component - Phase 1 Base Structure</CardTitle>
+          <CardDescription>
+            Testing AboutSection with pregnancy-safe design, responsive layout, and default content
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="bg-primary/5 p-4 rounded-lg border">
+            <h4 className="text-sm font-medium text-primary mb-2">✅ About Section Features</h4>
+            <div className="space-y-1 text-sm">
+              <div className="flex justify-between">
+                <span>Background gris (#f5f4f2) pregnancy-safe:</span>
+                <span className="text-green-600 font-medium">✓ Implemented</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Text color secondary (#517982) soothing:</span>
+                <span className="text-green-600 font-medium">✓ Implemented</span>
+              </div>
+              <div className="flex justify-between">
+                <span>2-row layout structure:</span>
+                <span className="text-green-600 font-medium">✓ Implemented</span>
+              </div>
+              <div className="flex justify-between">
+                <span>About content (2/3 + 1/3) responsive:</span>
+                <span className="text-green-600 font-medium">✓ Implemented</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Method section (3 columns + separators):</span>
+                <span className="text-green-600 font-medium">✓ Implemented</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Typography (The Seasons + Barlow):</span>
+                <span className="text-green-600 font-medium">✓ Implemented</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Mobile responsive (stacked):</span>
+                <span className="text-green-600 font-medium">✓ Implemented</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
       </div>
+
+      {/* About Section Component - Full Display */}
+      <AboutSection />
     </>
   );
 }
