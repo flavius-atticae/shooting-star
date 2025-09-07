@@ -21,6 +21,8 @@ export interface CTASectionProps extends Omit<React.HTMLAttributes<HTMLElement>,
   buttonTarget?: '_blank' | '_self' | '_parent' | '_top';
   /** Custom section spacing override */
   spacing?: 'compact' | 'normal' | 'spacious';
+  /** Custom container size */
+  containerSize?: 'sm' | 'md' | 'lg' | 'xl';
   /** Accessibility props */
   'aria-labelledby'?: string;
   'aria-describedby'?: string;
@@ -55,6 +57,7 @@ export function CTASection({
   buttonHref,
   buttonTarget = '_self',
   spacing = 'normal',
+  containerSize = 'md',
   className,
   'aria-labelledby': ariaLabelledBy,
   'aria-describedby': ariaDescribedBy,
@@ -69,7 +72,7 @@ export function CTASection({
         aria-describedby={ariaDescribedBy}
         {...props}
       >
-        <Container size="md">
+        <Container size={containerSize}>
           <div className="bg-gris rounded-xl p-8 sm:p-10 lg:p-12 text-center">
             {/* Title */}
             <h2 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-accent text-center leading-tight mb-4 sm:mb-6">

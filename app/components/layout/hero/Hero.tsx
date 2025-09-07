@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "~/lib/utils";
+import { Container } from "~/components/ui/container";
 import { HeroContent } from "./hero-content";
 import type { HeroVariant } from "./types";
 import { HERO_VARIANTS } from "./types";
@@ -11,6 +12,8 @@ export interface HeroProps {
   variant?: HeroVariant;
   multiline?: boolean;
   children?: React.ReactNode;
+  /** Custom container size (if provided, uses Container instead of responsive padding) */
+  containerSize?: 'sm' | 'md' | 'lg' | 'xl';
 }
 
 /**
@@ -47,7 +50,7 @@ export interface HeroProps {
  * - Loading states with reduced motion support
  */
 export const Hero = React.forwardRef<HTMLElement, HeroProps>(
-  ({ className, title, subtitle, variant = 'default', multiline, children, ...props }, ref) => {
+  ({ className, title, subtitle, variant = 'default', multiline, children, containerSize, ...props }, ref) => {
     // Get variant configuration
     const variantConfig = HERO_VARIANTS[variant];
     
@@ -87,26 +90,43 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
         aria-label="Section principale d'accueil"
         {...props}
       >
-        {/* Content - Left aligned without centering container */}
-        <div 
-          className={cn(
-            "h-full w-full flex items-center justify-start relative z-10",
-            // Left-aligned layout with responsive padding
-            "px-6 @sm:px-8 @md:px-12 @lg:px-16 @xl:px-20",
-            // Container query responsive classes
-            "@container"
-          )}
-        >
-          {/* Default content or custom children */}
-          {children || (
-            <HeroContent 
-              title={title}
-              subtitle={subtitle}
-              variant={variant}
-              multiline={multiline}
-            />
-          )}
-        </div>
+        {/* Content - Conditional Container or responsive padding */}
+        {containerSize ? (
+          <Container 
+            size={containerSize}
+            className="h-full flex items-center justify-start relative z-10"
+          >
+            {/* Default content or custom children */}
+            {children || (
+              <HeroContent 
+                title={title}
+                subtitle={subtitle}
+                variant={variant}
+                multiline={multiline}
+              />
+            )}
+          </Container>
+        ) : (
+          <div 
+            className={cn(
+              "h-full w-full flex items-center justify-start relative z-10",
+              // Left-aligned layout with responsive padding
+              "px-6 @sm:px-8 @md:px-12 @lg:px-16 @xl:px-20",
+              // Container query responsive classes
+              "@container"
+            )}
+          >
+            {/* Default content or custom children */}
+            {children || (
+              <HeroContent 
+                title={title}
+                subtitle={subtitle}
+                variant={variant}
+                multiline={multiline}
+              />
+            )}
+          </div>
+        )}
       </section>
     );
   }
