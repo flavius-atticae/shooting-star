@@ -108,15 +108,15 @@ export function Footer({
   return (
     <Section
       background="transparent"
-      spacing={spacing}
+      spacing="compact"
       as="footer"
-      className={className}
+      className={cn("bg-primary w-full pb-0", className)}
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
       lang="fr"
       {...props}
     >
-      <Container size={containerSize} className="bg-primary">
+      <Container size={containerSize}>
         {/* Main Footer Grid - Simple 3-column approach */}
         <div className={cn(
           // Basic grid - 1 column mobile, 3 columns tablet+

@@ -1,6 +1,5 @@
 import * as React from "react";
 import { cn } from "~/lib/utils";
-import { Container } from "~/components/ui/container";
 import { HeroContent } from "./hero-content";
 import type { HeroVariant } from "./types";
 import { HERO_VARIANTS } from "./types";
@@ -90,22 +89,33 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
         aria-label="Section principale d'accueil"
         {...props}
       >
-        {/* Content - Conditional Container or responsive padding */}
+        {/* Content - Custom max-width layout without centering */}
         {containerSize ? (
-          <Container 
-            size={containerSize}
-            className="h-full flex items-center justify-start relative z-10"
-          >
-            {/* Default content or custom children */}
-            {children || (
-              <HeroContent 
-                title={title}
-                subtitle={subtitle}
-                variant={variant}
-                multiline={multiline}
-              />
+          <div 
+            className={cn(
+              "h-full w-full flex items-center justify-start relative z-10",
+              // Max width with left alignment (no mx-auto centering)
+              containerSize === 'xl' && "max-w-7xl",
+              containerSize === 'lg' && "max-w-6xl", 
+              containerSize === 'md' && "max-w-4xl",
+              containerSize === 'sm' && "max-w-2xl",
+              // Responsive padding
+              "px-4 sm:px-6 lg:px-8"
             )}
-          </Container>
+          >
+            {/* Content wrapper - takes full width of parent */}
+            <div className="w-full">
+              {/* Default content or custom children */}
+              {children || (
+                <HeroContent 
+                  title={title}
+                  subtitle={subtitle}
+                  variant={variant}
+                  multiline={multiline}
+                />
+              )}
+            </div>
+          </div>
         ) : (
           <div 
             className={cn(
