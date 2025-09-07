@@ -4,7 +4,7 @@ import type { ReactNode, HTMLAttributes, ElementType } from "react";
 export interface SectionProps extends Omit<HTMLAttributes<HTMLElement>, 'children'> {
   children: ReactNode;
   spacing?: 'compact' | 'normal' | 'spacious';
-  background?: 'white' | 'accent' | 'soft' | 'transparent';
+  background?: 'white' | 'primary' | 'accent' | 'soft' | 'transparent';
   as?: ElementType;
 }
 
@@ -29,6 +29,7 @@ export function Section({
         // Background variants
         {
           white: "bg-white",
+          primary: "bg-primary",
           accent: "bg-gris",
           soft: "bg-gradient-to-br from-white to-gris/30",
           transparent: "bg-transparent"

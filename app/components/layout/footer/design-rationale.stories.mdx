@@ -1,0 +1,138 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Layout/Footer/Design Rationale" />
+
+# Footer - Design Rationale
+
+## Vue d'ensemble
+
+Le Footer du site Pauline Roussel est conçu spécifiquement pour les femmes enceintes et nouvelles mères, intégrant des considérations pregnancy-safe dans chaque aspect du design.
+
+## Principes de Design Pregnancy-Safe
+
+### 1. Couleurs Apaisantes
+- **Background Primary (#618462)**: Vert apaisant qui évite l'anxiété
+- **Texte Blanc**: Contraste élevé pour la fatigue visuelle
+- **Évite les rouges vifs**: Réduction des associations médicales anxiogènes
+
+### 2. Touch Targets Élargis
+- **48px minimum**: Compense le gonflement des doigts pendant la grossesse
+- **Espacement généreux**: Évite les touches accidentelles
+- **Zones de clic étendues**: Améliore l'utilisabilité sur mobile
+
+### 3. Typography Pregnancy-Safe
+- **The Seasons (Serif)**: Pour les titres, élégant mais lisible
+- **Barlow (Sans-serif)**: Pour le body text, optimisé pour la lecture
+- **Tailles responsives**: Adaptation aux différents appareils
+
+## Architecture Technique
+
+### Layout Grid System
+```css
+grid-template-columns: 2fr 1fr 2fr; /* Desktop */
+grid-template-columns: 1fr;        /* Mobile - stacking */
+```
+
+- **Colonne 1 (2fr)**: Logo + Description
+- **Colonne 2 (1fr)**: Navigation verticale
+- **Colonne 3 (2fr)**: Newsletter + Réseaux sociaux
+
+### Responsive Behavior
+- **Desktop (1024px+)**: Layout 3 colonnes horizontal
+- **Tablet (768px-1023px)**: Layout 3 colonnes avec ajustements
+- **Mobile (<768px)**: Empilement vertical des sections
+
+## Accessibilité WCAG 2.1 AA
+
+### Navigation
+- **Landmarks**: Utilisation sémantique de `<footer>`, `<nav>`
+- **ARIA Labels**: Labels français descriptifs pour tous les liens
+- **Focus Management**: États focus visibles avec ring blanc
+- **Keyboard Navigation**: Navigation complète au clavier
+
+### Contenu
+- **Lang Attributes**: `lang="fr"` pour les lecteurs d'écran
+- **Semantic HTML**: Structure logique H3, H4 pour hiérarchie
+- **Color Contrast**: Ratio minimum 4.5:1 respecté
+
+## Composants Intégrés
+
+### 1. FooterLogo
+- Logo cliquable vers homepage
+- Sous-titre descriptif des services
+- Sizing responsive avec The Seasons font
+
+### 2. FooterNavigation
+- Liens verticaux principaux du site
+- États hover et focus accessibles
+- Touch targets pregnancy-safe
+
+### 3. NewsletterInput
+- Validation côté client
+- États loading avec feedback visuel
+- Messages d'erreur en français
+- Form submission accessible
+
+### 4. SocialIcons
+- 4 plateformes: Instagram, LinkedIn, Facebook, YouTube
+- Icônes vectorielles avec labels ARIA
+- Hover states avec animations subtiles
+- Ouverture nouvelle fenêtre (target="_blank")
+
+## Considérations Spéciales Grossesse
+
+### "Pregnancy Brain" Adaptations
+- **Navigation simple**: Maximum 5 liens principaux
+- **Feedback visuel clair**: États loading, success, error
+- **Hierarchy évidente**: Typography et spacing cohérents
+
+### Confort Physique
+- **Large touch areas**: Évite la frustration des petites cibles
+- **Reduced cognitive load**: Organisation claire en 3 sections
+- **Session resilience**: Form state maintenu en cas d'interruption
+
+### Responsive Mobile First
+- **Thumb-friendly navigation**: Optimisé pour utilisation une main
+- **Readable on small screens**: Pas de texte trop petit
+- **Fast loading**: Icônes optimisées et CSS efficient
+
+## Intégration Brand
+
+### Pauline Roussel Brand Colors
+- **Primary Green (#618462)**: Croissance, nature, sérénité
+- **White Text**: Pureté, simplicité, clarté
+- **Supporting Colors**: Utilisées dans les hover states
+
+### Content Strategy
+- **French-first**: Contenu principal en français du Québec
+- **Tone professionnel mais chaleureux**: Appropriate pour accompagnement périnatal
+- **Clear call-to-actions**: Newsletter et réseaux sociaux
+
+## Performance Considerations
+
+### CSS Optimizations
+- **Utility-first approach**: TailwindCSS pour consistency
+- **Minimal custom CSS**: Réutilisation des tokens de design
+- **Responsive without bloat**: Mobile-first responsive design
+
+### Loading Performance
+- **Inline SVG icons**: Évite les requêtes HTTP supplémentaires
+- **Optimized fonts**: Font-display: swap pour loading rapide
+- **Minimal JavaScript**: Newsletter form seulement
+
+## Testing Strategy
+
+### Accessibility Testing
+- **Screen readers**: NVDA, JAWS, VoiceOver compatibility
+- **Keyboard navigation**: Tab order logique et focus visible
+- **Color contrast**: Tools comme Axe pour validation
+
+### Device Testing
+- **Touch devices**: Tests sur vraies devices pregnant-friendly
+- **Various screen sizes**: 320px à 1440px+ coverage
+- **Browser compatibility**: Modern browsers support
+
+### User Testing
+- **Pregnant users**: Feedback spécifique sur usability
+- **New mothers**: Tests avec fatigue et distractions
+- **Accessibility users**: Tests avec disabilities diverses

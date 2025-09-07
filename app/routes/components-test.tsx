@@ -9,6 +9,7 @@ import { Container } from "~/components/ui/container";
 import { Background, BackgroundPattern, useBackgroundClasses } from "~/components/ui/background";
 import { Header } from "~/components/layout/header";
 import { AboutSection } from "~/components/layout/about-section";
+import { Footer } from "~/components/layout/footer";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -566,6 +567,60 @@ export default function ComponentsTest() {
 
       {/* About Section Component - Full Display */}
       <AboutSection />
+
+      {/* Footer Component Test */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Footer Component - Post-Merge QA Testing</CardTitle>
+          <CardDescription>
+            Testing Footer component with pregnancy-safe design, accessibility, and responsive layout
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="bg-primary/5 p-4 rounded-lg border">
+            <h4 className="text-sm font-medium text-primary mb-2">✅ Footer Features to Test</h4>
+            <div className="space-y-1 text-sm">
+              <div className="flex justify-between">
+                <span>Primary green background (#618462) with white text:</span>
+                <span className="text-yellow-600 font-medium">🔄 Testing...</span>
+              </div>
+              <div className="flex justify-between">
+                <span>3-column grid layout (2fr-1fr-2fr):</span>
+                <span className="text-yellow-600 font-medium">🔄 Testing...</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Mobile responsive stacking:</span>
+                <span className="text-yellow-600 font-medium">🔄 Testing...</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Newsletter form with validation:</span>
+                <span className="text-yellow-600 font-medium">🔄 Testing...</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Social icons with hover states:</span>
+                <span className="text-yellow-600 font-medium">🔄 Testing...</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Touch targets 48px minimum:</span>
+                <span className="text-yellow-600 font-medium">🔄 Testing...</span>
+              </div>
+              <div className="flex justify-between">
+                <span>WCAG 2.1 AA accessibility:</span>
+                <span className="text-yellow-600 font-medium">🔄 Testing...</span>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Footer Component - Full Display */}
+      <Footer 
+        onNewsletterSignup={(email) => {
+          console.log('Newsletter signup:', email);
+          alert(`Newsletter signup test: ${email}`);
+          return Promise.resolve();
+        }}
+      />
     </>
   );
 }
