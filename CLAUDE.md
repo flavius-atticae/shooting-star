@@ -212,11 +212,12 @@ The project documentation is organized in the `docs/` directory:
 - **Quality**: Code Quality, Performance, Security, Accessibility (auto-applied by PR checks)
 
 ### Automation
-The project uses extensive GitHub Actions automation:
-- Status transitions based on PR events
-- Priority and size label syncing
-- Quality gates on PRs
-- Automated deployment to Fly.io
+The project uses selective GitHub Actions automation:
+- **Manual project management**: Status transitions are handled manually by the team
+- **Automated deployments**: Fly.io deployments (staging/production) and Storybook to GitHub Pages
+- **AI assistance**: Claude Code integration for PR reviews and interactive help
+
+See [docs/07-automation/project-board.md](docs/07-automation/project-board.md) for the complete manual workflow process.
 
 ## Testing Requirements
 
