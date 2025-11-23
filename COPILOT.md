@@ -37,12 +37,14 @@ Always assume and respect the existing stack:
   - shadcn/ui for UI components
 - **Content**: MDX for certain content sections
 - **Deployment**: planned for Fly.io (server-side rendering)
+- **Testing**: existing tests under `app/test`
+- **Component documentation**: existing Storybook setup
 
 You MUST:
 
 - Stick to this stack.
 - Not suggest switching to another framework or router (no Next.js, no CRA, no alternative router).
-- Prefer patterns already used in the repository for components and styling.
+- Prefer patterns already used in the repository for components, styling, tests and stories.
 
 ---
 
@@ -192,7 +194,30 @@ When you generate or modify forms, always consider these constraints and mention
 
 ---
 
-## 9. npm scripts
+## 9. Testing and Storybook
+
+There is an existing test setup and Storybook configuration:
+
+- Tests live under `app/test`.
+- Storybook is configured for UI components.
+
+When proposing tests:
+
+- Prefer adding or updating tests under `app/test`, following the existing patterns and framework already used in this directory.
+- Focus on realistic user flows and edge cases relevant to pregnant women and new mothers in Québec.
+- Keep test names and descriptions in English.
+
+When working on UI components:
+
+- Consider adding or updating Storybook stories for any new or significantly changed components.
+- Keep stories:
+  - Simple and focused on one concern at a time.
+  - Accessible (e.g. with proper labels and states).
+  - Representative of real content and use cases for the target audience.
+
+---
+
+## 10. npm scripts
 
 Use and suggest only the existing npm scripts:
 
@@ -212,12 +237,12 @@ Do not invent new scripts unless explicitly requested and aligned with the proje
 
 ---
 
-## 10. How Copilot should behave
+## 11. How Copilot should behave
 
 When working in this repository, Copilot (or any AI agent) should:
 
 1. **Respect this file (`COPILOT.md`) at all times.**
-2. Use the existing stack: TypeScript, React, React Router v7 (SSR), Vite, Tailwind v4, shadcn/ui, MDX.
+2. Use the existing stack: TypeScript, React, React Router v7 (SSR), Vite, Tailwind v4, shadcn/ui, MDX, with tests under `app/test` and Storybook for components.
 3. Explain reasoning and high-level concepts in **French**, but:
    - Write **code, comments, commit messages, and documentation in English**.
 4. Consider accessibility, performance, and legal compliance as first-class concerns, not afterthoughts.
