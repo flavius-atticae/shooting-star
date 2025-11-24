@@ -1,0 +1,66 @@
+name: Bug Report
+description: Report a bug or issue
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please provide as much detail as possible.
+        
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: Clear description of what's wrong
+      placeholder: What happened?
+    validations:
+      required: true
+      
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to Reproduce
+      description: How can we reproduce this bug?
+      placeholder: |
+        1. Go to...
+        2. Click on...
+        3. See error...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What should happen?
+    validations:
+      required: true
+      
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened?
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options:
+        - Chrome
+        - Firefox
+        - Safari
+        - Edge
+        - Mobile Safari (iOS)
+        - Mobile Chrome (Android)
+        - Other
+      multiple: true
+      
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        **Note**: Priority and Size will be added by the project supervisor during triage.

@@ -81,7 +81,35 @@ If you generate commit messages, always follow this format.
 
 ---
 
-## 4. Pull requests
+## 4. Creating issues
+
+When creating GitHub issues, always use the available templates in `.github/ISSUE_TEMPLATE/`:
+- **Feature Request** (`feature.yml`) - For new features or enhancements
+- **Bug Report** (`bug.yml`) - For bugs or issues
+
+### 4.1 Issue requirements
+
+When creating issues, agents MUST include:
+- **Clear title** with prefix: `[Feature]` or `[Bug]`
+- **Description** - What needs to be done or what's broken
+- **Objective** - Why this issue matters and what problem it solves
+- **Acceptance criteria** - Specific, measurable conditions for completion
+- **Type label**: `bug` or `enhancement`
+
+**Note**: Priority (P0-P3) and Size (XS-XL) will be added by the project supervisor during issue triage.
+
+### 4.2 Optional context
+
+Agents may also include when relevant:
+- **Affected personas** - Who benefits from this (pregnant women, new mothers, etc.)
+- **Browser/environment** - For bugs, specify where the issue occurs
+- **Quality labels** - `accessibility`, `performance`, `security` if applicable
+
+When you create issues programmatically, focus on clear description and acceptance criteria. The supervisor will prioritize and estimate during review.
+
+---
+
+## 5. Pull requests
 
 - All PRs must target the `main` branch.
 - In the PR body, always include:
@@ -101,7 +129,7 @@ When you draft PR descriptions, use this structure.
 
 ---
 
-## 5. Language, tone and localization
+## 6. Language, tone and localization
 
 UI content and marketing text should be written in **French (fr-CA)**, but:
 
@@ -123,7 +151,7 @@ When generating text for the site itself (headlines, paragraphs, CTAs), write it
 
 ---
 
-## 6. Accessibility requirements (WCAG 2.1 AA)
+## 7. Accessibility requirements (WCAG 2.1 AA)
 
 All UI work should aim for **WCAG 2.1 AA**. In practice, this means:
 
@@ -151,7 +179,7 @@ Whenever you propose components or layouts, incorporate these constraints from t
 
 ---
 
-## 7. Performance guidelines
+## 8. Performance guidelines
 
 The site should feel fast, especially on mobile.
 
@@ -172,7 +200,7 @@ When you design features or pages, mention potential performance impact and sugg
 
 ---
 
-## 8. Compliance: GDPR, PIPEDA, Québec Law 25
+## 9. Compliance: GDPR, PIPEDA, Québec Law 25
 
 The website must comply with:
 
@@ -194,7 +222,7 @@ When you generate or modify forms, always consider these constraints and mention
 
 ---
 
-## 9. Testing and Storybook
+## 11. Testing and Storybook
 
 There is an existing test setup and Storybook configuration:
 
@@ -217,7 +245,7 @@ When working on UI components:
 
 ---
 
-## 10. npm scripts
+## 12. npm scripts
 
 Use and suggest only the existing npm scripts:
 
@@ -237,7 +265,7 @@ Do not invent new scripts unless explicitly requested and aligned with the proje
 
 ---
 
-## 11. How Copilot should behave
+## 13. How Copilot should behave
 
 When working in this repository, Copilot (or any AI agent) should:
 
