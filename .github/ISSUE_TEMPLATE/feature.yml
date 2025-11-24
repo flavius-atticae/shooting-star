@@ -1,0 +1,57 @@
+name: Feature Request
+description: Propose a new feature for Shooting Star
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to suggest a new feature!
+        
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Clear description of the desired feature
+      placeholder: What feature would you like to see?
+    validations:
+      required: true
+      
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What problem does this feature solve?
+      placeholder: This feature will help users to...
+    validations:
+      required: true
+      
+  - type: checkboxes
+    id: personas
+    attributes:
+      label: Affected Personas
+      description: Who will benefit from this feature?
+      options:
+        - label: Pregnant women
+        - label: New mothers
+        - label: Healthcare professionals
+        - label: Site administrator
+        
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: Specific conditions that must be met
+      placeholder: |
+        - [ ] Feature works on mobile/tablet/desktop
+        - [ ] Tests are passing
+        - [ ] Documentation is updated
+        - [ ] WCAG 2.1 AA compliance
+    validations:
+      required: true
+      
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        **Note**: Priority and Size will be added by the project supervisor during triage.
