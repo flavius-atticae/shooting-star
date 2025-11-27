@@ -1,9 +1,8 @@
 import { useState } from "react";
+import { Link } from "react-router";
 import { Container } from "~/components/ui/container";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
-import { Logo } from "./logo";
-import { ContactButton } from "./contact-button";
 import { MobileMenu } from "./mobile-menu";
 
 export interface HeaderProps {
@@ -58,7 +57,7 @@ export function Header({ className }: HeaderProps) {
               onClick={toggleMobileMenu}
               className={cn(
                 // Pregnancy-safe touch target + round shape (48px for optimal comfort)
-                "min-h-[48px] min-w-[48px] rounded-full",
+                "min-h-12 min-w-12 rounded-full",
                 // Show on mobile and tablet, hide on desktop
                 "lg:hidden",
                 // Colors - menthe background with primary icons
@@ -99,13 +98,57 @@ export function Header({ className }: HeaderProps) {
 
           {/* Logo - Center (perfect centering with grid) */}
           <div className="flex justify-center">
-            <Logo />
+            <Link 
+              to="/"
+              className={cn(
+                // Base styles
+                "inline-flex items-center justify-center",
+                // Typography - The Seasons serif font (responsive sizing for mobile)
+                "font-heading text-2xl sm:text-3xl lg:text-4xl whitespace-nowrap",
+                // Colors - White text on primary background
+                "text-white hover:text-white/90",
+                // Touch target (pregnancy-safe: optimal 48x48px for comfort)
+                "min-h-12 min-w-12 px-2",
+                // Transitions
+                "transition-colors duration-200",
+                // Focus states for accessibility
+                "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2",
+                // Hover state
+                "hover:scale-[1.02] active:scale-[0.98]",
+              )}
+              aria-label="Pauline Roussel - Retour à l'accueil"
+            >
+              Pauline Roussel
+            </Link>
           </div>
 
           {/* Contact Button - Right side (hidden on mobile) */}
           <div className="flex items-center justify-end">
             <div className="hidden sm:block">
-              <ContactButton />
+              <Button
+                asChild
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  // Pregnancy-safe touch target (optimal 48x48px for comfort)
+                  "min-h-12 min-w-12",
+                  // Custom colors: menthe background + white text for contrast
+                  "bg-menthe text-primary hover:text-white/90 active:text-white/80",
+                  // Text styling - Barlow font
+                  "text-sm font-semibold uppercase font-sans",
+                  // Additional padding for better touch experience + pill shape
+                  "px-8 py-2 rounded-full",
+                  // Focus enhancement for accessibility
+                  "outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
+                )}
+              >
+                <Link 
+                  to="/contact"
+                  aria-label="Contactez Pauline Roussel"
+                >
+                  CONTACTEZ-MOI
+                </Link>
+              </Button>
             </div>
           </div>
 
@@ -115,7 +158,7 @@ export function Header({ className }: HeaderProps) {
       {/* Mobile Menu Overlay */}
       <MobileMenu 
         isOpen={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
+        onClose={() => { setIsMobileMenuOpen(false); }}
       />
     </header>
   );

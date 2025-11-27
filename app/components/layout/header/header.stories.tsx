@@ -20,7 +20,7 @@ Le composant Header principal pour le site de Pauline Roussel. Il intègre tous 
 - **Logo textuel "Pauline Roussel"** avec la police The Seasons (serif)
 - **Menu mobile responsive** avec overlay complet
 - **Bouton de contact** toujours accessible
-- **Touch targets ≥ 44x44px** pour les utilisatrices enceintes
+- **Touch targets ≥ 48x48px** pour les utilisatrices enceintes
 - **WCAG 2.1 AA compliant** avec focus states et ARIA labels
 - **Couleurs brand** optimisées pour la grossesse
 
@@ -31,12 +31,31 @@ Le composant Header principal pour le site de Pauline Roussel. Il intègre tous 
 - **Menu burger** visible uniquement sur mobile/tablet
 - **Logo centré** sur toutes les tailles d'écran
 
+## Pregnancy-Safe Design
+
+### Couleurs utilisées
+
+- **Background Header**: Primary (#618462) - Vert calme et rassurant
+- **Logo "Pauline Roussel"**: White (#ffffff) - Contraste optimal sur fond vert
+- **Menu Burger**: Background blanc avec traits Primary - Visibilité maximale
+- **Bouton CTA**: Background Menthe (#D4E8D4) + texte Primary - Contraste WCAG AA
+
+### Éviter
+
+- ❌ Rouges vifs (anxiété médicale)
+- ❌ Contrastes agressifs
+- ❌ Animations rapides
+
+### Touch Targets
+
+Tous les éléments interactifs respectent la taille minimum de 48×48px pour les utilisatrices enceintes (doigts possiblement enflés).
+
 ## Accessibility Features
 
 - Navigation au clavier complète
 - Fermeture du menu avec Escape
 - ARIA labels en français
-- Contraste élevé
+- Contraste élevé (4.5:1 minimum)
 - Focus visible sur tous les éléments interactifs
         `,
       },
@@ -54,49 +73,12 @@ Le composant Header principal pour le site de Pauline Roussel. Il intègre tous 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Note: Using real Header component with React Router v7 compatibility shim
-
-// Histoire par défaut
 export const Default: Story = {
   args: {},
   parameters: {
     docs: {
       description: {
         story: "Le Header dans son état par défaut avec tous les éléments fonctionnels. Responsive : menu burger visible sur mobile/tablet, bouton contact masqué sur mobile.",
-      },
-    },
-  },
-};
-
-
-// Story pour démontrer les couleurs pregnancy-safe
-export const PregnancySafeColors: Story = {
-  args: {},
-  parameters: {
-    docs: {
-      description: {
-        story: `
-# Pregnancy-Safe Design
-
-Cette story démontre l'utilisation des couleurs pregnancy-safe dans le Header :
-
-## Couleurs utilisées (Nouvelles spécifications)
-
-- **Background Header** : Primary (#618462) - Vert calme et rassurant
-- **Logo "Pauline Roussel"** : White (#ffffff) - Contraste optimal sur fond vert
-- **Menu Burger** : Background blanc avec traits Primary - Visibilité maximale
-- **Bouton CTA** : Background Menthe (#D4E8D4) + texte Primary - Contraste WCAG AA
-
-## Éviter
-
-- ❌ Rouges vifs (anxiété médicale)
-- ❌ Contrastes agressifs
-- ❌ Animations rapides
-
-## Touch Targets
-
-Tous les éléments interactifs respectent la taille minimum de 44x44px pour les utilisatrices enceintes (doigts possiblement enflés).
-        `,
       },
     },
   },

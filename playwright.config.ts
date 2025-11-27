@@ -59,44 +59,7 @@ export default defineConfig({
       testMatch: '**/*.setup.ts',
     },
     
-    // Mobile-first approach (most pregnant users on mobile)
-    {
-      name: 'mobile-chrome',
-      use: { 
-        ...devices['Pixel 5'], // Popular Android device
-        // Pregnancy-specific mobile considerations
-        locale: 'fr-CA', // Quebec French
-        timezoneId: 'America/Montreal',
-        geolocation: { longitude: -73.567256, latitude: 45.501689 }, // Montreal
-        permissions: ['geolocation'], // For finding nearby yoga studios
-      },
-      dependencies: ['setup'],
-    },
-    
-    {
-      name: 'mobile-safari',
-      use: { 
-        ...devices['iPhone 12 Pro'], // Popular iOS device for pregnancy apps
-        locale: 'fr-CA',
-        timezoneId: 'America/Montreal',
-        geolocation: { longitude: -73.567256, latitude: 45.501689 },
-        permissions: ['geolocation'],
-      },
-      dependencies: ['setup'],
-    },
-
-    // Tablet testing (common for pregnancy planning)
-    {
-      name: 'tablet',
-      use: { 
-        ...devices['iPad Pro'],
-        locale: 'fr-CA',
-        timezoneId: 'America/Montreal',
-      },
-      dependencies: ['setup'],
-    },
-
-    // Desktop browsers (medical professionals, partners)
+    // Desktop browser (primary testing)
     {
       name: 'chromium',
       use: { 
@@ -107,51 +70,27 @@ export default defineConfig({
       dependencies: ['setup'],
     },
 
+    // Mobile testing (pregnancy users mostly on mobile)
     {
-      name: 'firefox',
+      name: 'mobile-chrome',
       use: { 
-        ...devices['Desktop Firefox'],
+        ...devices['Pixel 5'],
         locale: 'fr-CA',
         timezoneId: 'America/Montreal',
+        geolocation: { longitude: -73.567256, latitude: 45.501689 }, // Montreal
+        permissions: ['geolocation'],
       },
       dependencies: ['setup'],
     },
 
-    {
-      name: 'webkit',
-      use: { 
-        ...devices['Desktop Safari'],
-        locale: 'fr-CA',
-        timezoneId: 'America/Montreal',
-      },
-      dependencies: ['setup'],
-    },
-
-    // Accessibility testing with specific considerations
+    // Accessibility testing
     {
       name: 'accessibility',
       use: {
         ...devices['Desktop Chrome'],
-        // Note: reducedMotion will be set via page.emulateMedia() in test setup
-        // to properly prevent nausea during pregnancy
-        colorScheme: 'light', // Better for pregnancy fatigue
-        // Force prefers-contrast: more for better readability
-        extraHTTPHeaders: {
-          'User-Agent': 'Pregnancy-Safe-Testing-Agent',
-        },
-      },
-      dependencies: ['setup'],
-    },
-
-    // Performance testing on slower devices (pregnancy brain fog considerations)
-    {
-      name: 'slow-network',
-      use: {
-        ...devices['Desktop Chrome'],
-        // Simulate slower mobile data during medical appointments
-        launchOptions: {
-          args: ['--disable-features=VizDisplayCompositor'], // Keep only necessary performance flag
-        },
+        colorScheme: 'light',
+        locale: 'fr-CA',
+        timezoneId: 'America/Montreal',
       },
       dependencies: ['setup'],
     },
