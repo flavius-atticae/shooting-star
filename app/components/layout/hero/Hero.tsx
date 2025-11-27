@@ -85,7 +85,7 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
           
           className
         )}
-        role="banner"
+        role="region"
         aria-label="Section principale d'accueil"
         {...props}
       >
