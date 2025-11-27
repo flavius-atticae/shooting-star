@@ -41,12 +41,13 @@ test.describe('Header - Essential Tests', () => {
     if (logoBounds && headerBounds) {
       const logoCenterX = logoBounds.x + logoBounds.width / 2;
       const headerCenterX = headerBounds.x + headerBounds.width / 2;
+      // Use 10px tolerance for centering to account for cross-browser rendering differences
+      // and reduce test flakiness. Visually, <10px difference is considered "centered".
       expect(Math.abs(logoCenterX - headerCenterX)).toBeLessThan(10);
     }
     
     // Test navigation by clicking logo (stay on home since we're already there)
     await logo.click();
-    await page.waitForTimeout(100); // Allow click to register
     await expect(page).toHaveURL('/');
   });
 
@@ -112,6 +113,13 @@ test.describe('Header - Essential Tests', () => {
     expect(logoBounds?.width).toBeGreaterThanOrEqual(48);
     expect(logoBounds?.height).toBeGreaterThanOrEqual(48);
     
+    // Test contact button on desktop
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const contactButton = page.getByText('CONTACTEZ-MOI').first();
+    const contactBounds = await contactButton.boundingBox();
+    expect(contactBounds?.width).toBeGreaterThanOrEqual(48);
+    expect(contactBounds?.height).toBeGreaterThanOrEqual(48);
+    
     // Test mobile menu button
     await page.setViewportSize({ width: 375, height: 667 });
     const menuButton = header.getByRole('button', { name: /menu/i });
@@ -175,7 +183,7 @@ test.describe('Header - Essential Tests', () => {
     
     // Check no layout shift
     const initialBounds = await page.getByRole('banner').boundingBox();
-    await page.waitForTimeout(500);
+    await page.waitForLoadState('networkidle');
     const finalBounds = await page.getByRole('banner').boundingBox();
     
     if (initialBounds && finalBounds) {

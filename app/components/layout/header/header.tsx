@@ -125,30 +125,28 @@ export function Header({ className }: HeaderProps) {
           {/* Contact Button - Right side (hidden on mobile) */}
           <div className="flex items-center justify-end">
             <div className="hidden sm:block">
-              <Button
-                asChild
-                variant="ghost"
-                size="sm"
+              <Link 
+                to="/contact"
                 className={cn(
+                  // Base button styles
+                  "inline-flex items-center justify-center",
                   // Pregnancy-safe touch target (optimal 48x48px for comfort)
                   "min-h-12 min-w-12",
                   // Custom colors: menthe background + white text for contrast
-                  "bg-menthe text-primary hover:text-white/90 active:text-white/80",
+                  "bg-menthe text-white hover:text-white/90 active:text-white/80",
                   // Text styling - Barlow font
                   "text-sm font-semibold uppercase font-sans",
                   // Additional padding for better touch experience + pill shape
                   "px-8 py-2 rounded-full",
                   // Focus enhancement for accessibility
                   "outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
+                  // Transitions
+                  "transition-colors duration-200",
                 )}
+                aria-label="Contactez Pauline Roussel"
               >
-                <Link 
-                  to="/contact"
-                  aria-label="Contactez Pauline Roussel"
-                >
-                  CONTACTEZ-MOI
-                </Link>
-              </Button>
+                CONTACTEZ-MOI
+              </Link>
             </div>
           </div>
 
