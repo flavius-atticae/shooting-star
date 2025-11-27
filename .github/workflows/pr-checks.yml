@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Note: Playwright config defines three projects (chromium, mobile-chrome, accessibility).
+      # Both mobile-chrome (Pixel 5 device) and accessibility projects use Chromium under the hood,
+      # so only the Chromium browser needs to be installed.
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 

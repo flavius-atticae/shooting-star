@@ -158,7 +158,7 @@ export function Header({ className }: HeaderProps) {
       {/* Mobile Menu Overlay */}
       <MobileMenu 
         isOpen={isMobileMenuOpen}
-        onClose={() => { setIsMobileMenuOpen(false); }}
+        onClose={() => setIsMobileMenuOpen(false)}
       />
     </header>
   );
