@@ -26,7 +26,7 @@ test.describe('Header - Essential Tests', () => {
     const bgColor = await header.evaluate(el => 
       window.getComputedStyle(el).backgroundColor
     );
-    expect(bgColor).toMatch(/rgb\(97, 132, 98\)/);
+    expect(bgColor).toBe('rgb(97, 132, 98)');
   });
 
   test('should have centered logo that navigates to homepage', async ({ page }) => {
@@ -160,7 +160,7 @@ test.describe('Header - Essential Tests', () => {
     const logoColor = await logo.evaluate(el => 
       window.getComputedStyle(el).color
     );
-    expect(logoColor).toMatch(/rgb\(255, 255, 255\)/);
+    expect(logoColor).toBe('rgb(255, 255, 255)');
     
     // Mobile menu button ARIA
     await page.setViewportSize({ width: 375, height: 667 });
