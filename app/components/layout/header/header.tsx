@@ -141,7 +141,7 @@ export function Header({ className }: HeaderProps) {
                   // Focus enhancement for accessibility
                   "outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
                   // Transitions
-                  "transition-colors duration-200",
+                  "transition-all duration-200",
                 )}
                 aria-label="Contactez Pauline Roussel"
               >

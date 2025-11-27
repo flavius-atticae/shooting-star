@@ -38,7 +38,7 @@ Le composant Header principal pour le site de Pauline Roussel. Il intègre tous 
 - **Background Header**: Primary (#618462) - Vert calme et rassurant
 - **Logo "Pauline Roussel"**: White (#ffffff) - Contraste optimal sur fond vert
 - **Menu Burger**: Background blanc avec traits Primary - Visibilité maximale
-- **Bouton CTA**: Background Menthe (#D4E8D4) + texte Primary - Contraste WCAG AA
+- **Bouton CTA**: Background Menthe (#D4E8D4) + texte White - Contraste WCAG AA
 
 ### Éviter
 

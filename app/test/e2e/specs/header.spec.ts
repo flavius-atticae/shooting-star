@@ -41,9 +41,9 @@ test.describe('Header - Essential Tests', () => {
     if (logoBounds && headerBounds) {
       const logoCenterX = logoBounds.x + logoBounds.width / 2;
       const headerCenterX = headerBounds.x + headerBounds.width / 2;
-      // Use 10px tolerance for centering to account for cross-browser rendering differences
-      // and reduce test flakiness. Visually, <10px difference is considered "centered".
-      expect(Math.abs(logoCenterX - headerCenterX)).toBeLessThan(10);
+      // Use 8px tolerance for centering to account for cross-browser rendering differences
+      // and reduce test flakiness. Visually, <8px difference is considered "centered".
+      expect(Math.abs(logoCenterX - headerCenterX)).toBeLessThan(8);
     }
     
     // Test navigation by clicking logo (stay on home since we're already there)
