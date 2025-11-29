@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { within, expect } from '@storybook/test';
+import { within, expect } from 'storybook/test';
 import { Hero } from "./Hero";
 import { 
   withReducedMotion,
@@ -227,8 +227,8 @@ export const ResponsiveMobile: Story = {
     subtitle: "Avec Pauline Roussel",
     multiline: true,
   },
+
   parameters: {
-    viewport: { defaultViewport: 'mobile1' }, // 375px
     docs: {
       description: {
         story: `
@@ -242,8 +242,9 @@ Hero optimisé pour mobile (375px). Tests sur iPhone SE et petits écrans.
 - Typography adaptée aux petits écrans
         `,
       },
-    },
+    }
   },
+
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     
@@ -256,6 +257,13 @@ Hero optimisé pour mobile (375px). Tests sur iPhone SE et petits écrans.
     const subtitle = canvas.getByText(/Avec Pauline Roussel/i);
     expect(subtitle).toBeInTheDocument();
   },
+
+  globals: {
+    viewport: {
+      value: 'mobile1',
+      isRotated: false
+    }
+  }
 };
 
 /**
@@ -269,8 +277,8 @@ export const ResponsiveTablet: Story = {
     title: "Épanouir sa féminité",
     subtitle: "Accompagnement bienveillant pour votre maternité"
   },
+
   parameters: {
-    viewport: { defaultViewport: 'tablet' }, // 768px  
     docs: {
       description: {
         story: `
@@ -283,8 +291,15 @@ Hero sur tablette (768px). Équilibre entre mobile et desktop.
 - Touch targets maintenues pour accessibilité
         `,
       },
-    },
+    }
   },
+
+  globals: {
+    viewport: {
+      value: 'tablet',
+      isRotated: false
+    }
+  }
 };
 
 /**
@@ -298,8 +313,8 @@ export const ResponsiveDesktop: Story = {
     title: "Épanouir sa féminité",
     subtitle: "Accompagnement bienveillant pour votre maternité"
   },
+
   parameters: {
-    viewport: { defaultViewport: 'desktop' }, // 1024px+
     docs: {
       description: {
         story: `
@@ -312,8 +327,15 @@ Hero sur desktop (1024px+). Version complète avec impact typographique maximum.
 - Layout left-aligned pour modernité
         `,
       },
-    },
+    }
   },
+
+  globals: {
+    viewport: {
+      value: 'desktop',
+      isRotated: false
+    }
+  }
 };
 
 /**

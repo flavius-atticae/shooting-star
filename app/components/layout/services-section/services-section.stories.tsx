@@ -252,48 +252,63 @@ export const ResponsiveMobile: Story = {
   args: {
     services: defaultServices,
   },
+
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
     docs: {
       description: {
         story: 'Test responsive mobile (375px) - layout 1 colonne.',
       },
-    },
+    }
   },
+
+  globals: {
+    viewport: {
+      value: 'mobile1',
+      isRotated: false
+    }
+  }
 };
 
 export const ResponsiveTablet: Story = {
   args: {
     services: defaultServices,
   },
+
   parameters: {
-    viewport: {
-      defaultViewport: 'tablet',
-    },
     docs: {
       description: {
         story: 'Test responsive tablet (768px) - layout 2 colonnes.',
       },
-    },
+    }
   },
+
+  globals: {
+    viewport: {
+      value: 'tablet',
+      isRotated: false
+    }
+  }
 };
 
 export const ResponsiveDesktop: Story = {
   args: {
     services: defaultServices,
   },
+
   parameters: {
-    viewport: {
-      defaultViewport: 'desktop',
-    },
     docs: {
       description: {
         story: 'Test responsive desktop (1024px+) - layout 3 colonnes.',
       },
-    },
+    }
   },
+
+  globals: {
+    viewport: {
+      value: 'desktop',
+      isRotated: false
+    }
+  }
 };
 
 // Accessibility Test

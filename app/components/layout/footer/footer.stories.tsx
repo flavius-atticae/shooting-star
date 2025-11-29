@@ -182,9 +182,10 @@ export const MobileView: Story = {
     spacing: "normal",
     containerSize: "xl",
   },
-  parameters: {
+  globals: {
     viewport: {
-      defaultViewport: "mobile1"
+      value: "mobile1",
+      isRotated: false
     }
   }
 };
@@ -195,9 +196,10 @@ export const TabletView: Story = {
     spacing: "normal", 
     containerSize: "xl",
   },
-  parameters: {
+  globals: {
     viewport: {
-      defaultViewport: "tablet"
+      value: "tablet",
+      isRotated: false
     }
   }
 };

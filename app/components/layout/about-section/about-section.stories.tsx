@@ -236,10 +236,8 @@ export const MobileView: Story = {
     spacing: 'normal',
     containerSize: 'lg',
   },
+
   parameters: {
-    viewport: {
-      defaultViewport: 'mobile1',
-    },
     docs: {
       description: {
         story: `
@@ -254,8 +252,15 @@ export const MobileView: Story = {
 - ✅ Touch targets accessible for swollen fingers
         `,
       },
-    },
+    }
   },
+
+  globals: {
+    viewport: {
+      value: 'mobile1',
+      isRotated: false
+    }
+  }
 };
 
 /**
@@ -273,10 +278,8 @@ export const TabletView: Story = {
     spacing: 'normal',
     containerSize: 'lg',
   },
+
   parameters: {
-    viewport: {
-      defaultViewport: 'tablet',
-    },
     docs: {
       description: {
         story: `
@@ -290,8 +293,15 @@ export const TabletView: Story = {
 - ✅ Content remains accessible and readable
         `,
       },
-    },
+    }
   },
+
+  globals: {
+    viewport: {
+      value: 'tablet',
+      isRotated: false
+    }
+  }
 };
 
 /**

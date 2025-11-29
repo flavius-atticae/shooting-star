@@ -5,7 +5,7 @@
  * different pregnancy personas and accessibility configurations
  */
 
-import { addons, types } from '@storybook/manager-api';
+import { addons, types } from 'storybook/manager-api';
 
 // Visual regression test configuration
 export const VISUAL_REGRESSION_CONFIG = {

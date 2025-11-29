@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { within, expect } from '@storybook/test';
+import { within, expect } from 'storybook/test';
 import { CTASection } from "./cta-section";
 
 /**
@@ -215,8 +215,8 @@ export const ResponsiveMobile: Story = {
     buttonText: "Découvrir",
     onButtonClick: () => alert("Mobile navigation"),
   },
+
   parameters: {
-    viewport: { defaultViewport: 'mobile1' }, // 375px
     docs: {
       description: {
         story: `
@@ -229,8 +229,9 @@ CTA Section optimisée pour mobile (375px). Tests sur iPhone SE et petits écran
 - Typography adaptée aux petits écrans
         `,
       },
-    },
+    }
   },
+
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     
@@ -245,6 +246,13 @@ CTA Section optimisée pour mobile (375px). Tests sur iPhone SE et petits écran
     const title = canvas.getByRole('heading');
     expect(title).toHaveClass('text-2xl');
   },
+
+  globals: {
+    viewport: {
+      value: 'mobile1',
+      isRotated: false
+    }
+  }
 };
 
 /**
@@ -259,8 +267,8 @@ export const ResponsiveTablet: Story = {
     buttonText: "En savoir plus",
     onButtonClick: () => alert("Tablet navigation"),
   },
+
   parameters: {
-    viewport: { defaultViewport: 'tablet' }, // 768px
     docs: {
       description: {
         story: `
@@ -273,8 +281,15 @@ CTA Section sur tablette (768px). Équilibre entre mobile et desktop.
 - Padding progressif
         `,
       },
-    },
+    }
   },
+
+  globals: {
+    viewport: {
+      value: 'tablet',
+      isRotated: false
+    }
+  }
 };
 
 /**
@@ -289,8 +304,8 @@ export const ResponsiveDesktop: Story = {
     buttonText: "Prendre rendez-vous",
     onButtonClick: () => alert("Desktop navigation"),
   },
+
   parameters: {
-    viewport: { defaultViewport: 'desktop' }, // 1024px+
     docs: {
       description: {
         story: `
@@ -303,8 +318,15 @@ CTA Section sur desktop (1024px+). Version complète avec impact maximum.
 - Expérience premium
         `,
       },
-    },
+    }
   },
+
+  globals: {
+    viewport: {
+      value: 'desktop',
+      isRotated: false
+    }
+  }
 };
 
 /**

@@ -30,31 +30,32 @@ const preview: Preview = {
 
     // Backgrounds addon - pregnancy-safe backgrounds from Pauline Roussel palette
     backgrounds: {
-      default: 'white',
-      values: [
-        {
+      options: {
+        white: {
           name: 'white',
           value: '#ffffff',
         },
-        {
+
+        "gris (light background)": {
           name: 'gris (light background)',
           value: '#f5f4f2',
         },
-        {
+
+        soft_gradient: {
           name: 'soft gradient',
           value: 'linear-gradient(135deg, #ffffff 0%, #ffddd3 100%)',
         },
-        {
+
+        warm_gradient: {
           name: 'warm gradient', 
           value: 'linear-gradient(135deg, #ffffff 0%, #ceaf9b 100%)',
-        },
-      ],
+        }
+      }
     },
 
     // Viewport addon - pregnancy-focused device testing
     viewport: {
-      defaultViewport: 'responsive',
-      viewports: {
+      options: {
         // Standard mobile (pregnancy fatigue - prefer larger screens)
         mobile1: {
           name: 'iPhone SE (minimum supported)',
@@ -101,7 +102,7 @@ const preview: Preview = {
             height: '1080px',
           },
         },
-      },
+      }
     },
 
     // Accessibility addon - WCAG 2.1 AA compliance for pregnancy context
@@ -167,6 +168,7 @@ const preview: Preview = {
   ],
 
   // Global arg types for consistent prop controls
+  // Global parameters applied to all stories
   argTypes: {
     className: {
       control: 'text',
@@ -178,7 +180,16 @@ const preview: Preview = {
     },
   },
 
-  // Global parameters applied to all stories
+  initialGlobals: {
+    viewport: {
+      value: 'responsive',
+      isRotated: false
+    },
+
+    backgrounds: {
+      value: 'white'
+    }
+  }
 };
 
 export default preview;
