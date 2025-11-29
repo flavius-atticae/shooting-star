@@ -1,6 +1,34 @@
 import * as React from "react";
 import { cn } from "~/lib/utils";
-import type { SocialIconsProps, SocialLink, SocialPlatform } from "./types";
+
+/**
+ * Social media platforms supported in the footer
+ */
+export type SocialPlatform = 'instagram' | 'linkedin' | 'facebook' | 'youtube';
+
+/**
+ * Social media link configuration
+ */
+export interface SocialLink {
+  /** Platform identifier */
+  platform: SocialPlatform;
+  /** Social media profile URL */
+  url: string;
+  /** Accessible label in French */
+  label: string;
+}
+
+/**
+ * Props for Social Icons component
+ */
+export interface SocialIconsProps {
+  /** Social media links */
+  links?: SocialLink[];
+  /** Custom className for additional styling */
+  className?: string;
+  /** Icon size variant */
+  size?: 'sm' | 'md' | 'lg';
+}
 
 /**
  * Social media icon components

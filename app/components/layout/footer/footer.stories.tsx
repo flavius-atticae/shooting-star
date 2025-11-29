@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { Footer } from "./footer";
-import type { FooterProps } from "./types";
+import type { FooterProps } from "./footer";
 
 /**
  * Footer Component Stories
