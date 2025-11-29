@@ -3,7 +3,7 @@ import { AdaptiveGrid, AdaptiveGridDemo, useContainerQuerySupport } from './resp
 import React, { useState } from 'react'
 
 const meta: Meta<typeof AdaptiveGrid> = {
-  title: 'Foundation/AdaptiveGrid',
+  title: 'Foundation/2. Adaptive Grid',
   component: AdaptiveGrid,
   parameters: {
     layout: 'padded',
