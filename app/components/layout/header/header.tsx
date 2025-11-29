@@ -38,8 +38,8 @@ export function Header({ className }: HeaderProps) {
       className={cn(
         // Layout
         "sticky top-0 z-50 w-full",
-        // Background - primary brand color
-        "bg-primary backdrop-blur-sm border-b border-primary/20",
+        // Background - primary brand color with backdrop blur
+        "bg-primary backdrop-blur-[15px] border-b border-primary/20",
         // Height responsive
         "h-14 sm:h-16", // 56px mobile, 64px desktop
         className
@@ -60,8 +60,8 @@ export function Header({ className }: HeaderProps) {
                 "min-h-12 min-w-12 rounded-full",
                 // Show on mobile and tablet, hide on desktop
                 "lg:hidden",
-                // Colors - menthe background with primary icons
-                "bg-menthe text-primary hover:text-primary/90",
+                // Colors - white background with primary icons (Figma mockup)
+                "bg-white text-primary hover:text-primary/90",
                 // Focus
                 "focus-visible:ring-2 focus-visible:ring-white/50"
               )}
@@ -132,8 +132,8 @@ export function Header({ className }: HeaderProps) {
                   "inline-flex items-center justify-center",
                   // Pregnancy-safe touch target (optimal 48x48px for comfort)
                   "min-h-12 min-w-12",
-                  // Custom colors: menthe background + white text for contrast
-                  "bg-menthe text-white hover:text-white/90 active:text-white/80",
+                  // Custom colors: menthe background + primary text for contrast (WCAG AA)
+                  "bg-menthe text-primary hover:text-primary/90 active:text-primary/80",
                   // Text styling - Barlow font
                   "text-sm font-semibold uppercase font-sans",
                   // Additional padding for better touch experience + pill shape
