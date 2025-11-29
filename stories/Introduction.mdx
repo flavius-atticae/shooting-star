@@ -2,162 +2,62 @@ import { Meta } from "@storybook/addon-docs/blocks";
 
 <Meta title="Introduction" />
 
-# Foundation Components - Shooting Star
+# Shooting Star Design System
 
-Welcome to the Shooting Star design system for **Pauline Roussel Yoga & Perinatal Accompaniment**.
+Design system pour **Pauline Roussel Yoga & Accompagnement Périnatal**.
 
-This foundational component collection is specifically designed to create **pregnancy-safe** digital experiences adapted for pregnant women and new mothers in Quebec.
+## 🎯 Principes
 
-## 🎯 Mission
+- **Pregnancy-safe** : Couleurs apaisantes, touch targets ≥44px, contraste élevé
+- **Accessibilité** : WCAG 2.1 AA, navigation clavier, lecteurs d'écran
+- **Performance** : Core Web Vitals, bundle optimisé
+- **Quebec-first** : Français prioritaire, formats locaux (DD/MM/YYYY, CAD)
 
-Create digital interfaces that respect and support the unique journey of motherhood, taking into account specific needs:
+## 🎨 Palette
 
-- **Physical**: Visual comfort, appropriate touch targets, fatigue management
-- **Emotional**: Reassuring colors, avoiding medical anxiety
-- **Cultural**: Adaptation to Quebec context, French-first approach
-- **Technical**: WCAG 2.1 AA accessibility, optimal performance
+- **Green (#618462)** : Brand principal
+- **Rose (#af6868)** : Accent chaleureux
+- **Blue (#517982)** : Support calme
+- **Brown (#5e4530)** : Texte élégant
 
-## 🎨 Pregnancy-Safe Color Palette
-
-Our color palette is carefully selected to avoid triggering colors:
-
-### Primary Colors
-- **Green (#618462)** : Soothing and natural brand color
-- **Rose (#af6868)** : Warm accent (avoids medical red)
-- **Blue (#517982)** : Calm and serene support color
-- **Brown (#5e4530)** : Elegant neutral for text
-
-### Supporting Colors  
-- **Beige (#ceaf9b)** : Warm tones
-- **Pale Rose (#ffddd3)** : Soft backgrounds
-- **Pale Blue (#dae6ea)** : Fresh accents
-- **Gray (#f5f4f2)** : Neutral background
-
-## 📱 Pregnancy-Friendly Considerations
-
-### Touch Targets
-- **Minimum 44x44px** to compensate for water retention
-- Generous spacing between elements
-- Extended click areas on mobile
-
-### Visual Comfort
-- Sufficient contrast for eye fatigue
-- Avoid aggressive animations (nausea)
-- Dark/light mode support based on preferences
-
-### Enhanced Accessibility
-- Priority keyboard navigation
-- Optimized screen reader support
-- Focus management for concentration difficulties
-
-## 🧱 Foundation Components
+## 🧱 Composants Foundation
 
 ### Container
-Maximum width and responsive padding system optimized for different content types.
-
-**Available Sizes:**
-- `sm` : Focused content (articles, forms)
-- `md` : General usage (default)
-- `lg` : Complex layouts
-- `xl` : Extended interfaces
-- `full` : Full width with padding
+Largeur maximale et padding responsive pour différents types de contenu.
+- Tailles : `sm`, `md` (default), `lg`, `xl`, `full`
 
 ### Background
-Pregnancy-safe backgrounds using the Pauline Roussel color palette.
-
-**Available Variants:**
-- `white` : Neutral base
-- `accent` : Soothing light gray  
-- `soft` : Gentle gradient
-- `gradient-soft` : Gradient with pale rose
-- `gradient-warm` : Warm gradient
+Arrière-plans avec palette Pauline Roussel.
+- Variants : `white`, `accent`, `soft`, `gradient-soft`, `gradient-warm`
 
 ### AdaptiveGrid
-Responsive grid system using Container Queries with intelligent fallback.
-
-**Configurations:**
-- **2 columns** : Ideal for services, testimonials
-- **3 columns** : Galleries, categories on large screens
-- **Configurable gap** : Adaptive spacing
-- **Automatic fallback** : Media queries if Container Queries not supported
+Grille responsive avec Container Queries (fallback media queries).
+- Colonnes : 2 ou 3 colonnes configurables
+- Gap adaptatif
 
 ## 🔧 Usage
 
-### Component Imports
 ```tsx
 import { Container } from '~/components/ui/container'
 import { Background } from '~/components/ui/background'
 import { AdaptiveGrid } from '~/components/layout/responsive-grid'
-```
 
-### Combined Usage Example
-```tsx
 <Background variant="soft">
   <Container size="md">
     <AdaptiveGrid columns={2} gap="gap-6">
-      <ServiceCard title="Prenatal Yoga" />
-      <ServiceCard title="Birth Accompaniment" />
+      <ServiceCard title="Yoga Prénatal" />
+      <ServiceCard title="Accompagnement Naissance" />
     </AdaptiveGrid>
   </Container>
 </Background>
 ```
 
-## 🧪 Testing and Validation
+## 📱 Support Devices
 
-Each component is tested according to our standards:
-
-### WCAG 2.1 AA Accessibility
-- ✅ Color contrast validated
-- ✅ Complete keyboard navigation
-- ✅ Screen reader compatible
-- ✅ Touch targets compliant
-
-### Pregnancy-Safe UX
-- ✅ Non-triggering colors tested
-- ✅ Reduced or disable animations
-- ✅ Eye fatigue minimized
-- ✅ Comfortable touch gestures
-
-### Performance
-- ✅ Core Web Vitals respected
-- ✅ Optimized bundle size
-- ✅ Lazy loading when appropriate
-- ✅ Responsive images
-
-## 📱 Device Support
-
-Optimization priority based on usage during pregnancy:
-
-1. **Mobile 390px+** : Daily usage, touch comfort
-2. **Tablet 768px+** : Preferred for reading/long navigation
-3. **Desktop 1024px+** : Detailed consultations
-4. **Large 1440px+** : Professional interfaces
-
-## 🌍 Quebec Context
-
-### Language
-- **French priority** (85% of users)
-- Bilingual interface available
-- Local formats (dates DD/MM/YYYY, CAD, etc.)
-
-### Compliance
-- **PIPEDA** : Federal data protection
-- **Law 25** : Quebec data protection  
-- **GDPR ready** : European preparation
+1. **Mobile 390px+** : Priorité usage quotidien
+2. **Tablet 768px+** : Lecture/navigation longue
+3. **Desktop 1024px+** : Consultations détaillées
 
 ---
 
-## 🚀 Next Steps
-
-Explore individual components in their respective sections to discover:
-- All variants and options
-- Concrete usage examples
-- Pregnancy-specific best practices
-- Accessibility guidelines
-
-**Recommended Navigation:**
-1. [Container](/docs/foundation-container--docs) - Layout system
-2. [Background](/docs/foundation-background--docs) - Soothing backgrounds  
-3. [AdaptiveGrid](/docs/foundation-adaptivegrid--docs) - Responsive grids
-
-Happy pregnancy-friendly development! 🤱✨
+Explorez les composants dans leurs sections respectives pour voir variants, exemples et bonnes pratiques.

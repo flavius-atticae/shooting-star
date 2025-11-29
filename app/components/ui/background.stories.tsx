@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react'
 import { Background, BackgroundPattern, useBackgroundClasses } from './background'
 
 const meta: Meta<typeof Background> = {
-  title: 'Foundation/Background',
+  title: 'Foundation/3. Background',
   component: Background,
   parameters: {
     layout: 'fullscreen',
