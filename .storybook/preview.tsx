@@ -131,9 +131,13 @@ const preview: Preview = {
           },
         ],
       },
+
       // Show violations as warnings during development
-      context: '#storybook-root',
       manual: false,
+      // 'todo' - show a11y violations in the test UI only
+      // 'error' - fail CI on a11y violations
+      // 'off' - skip a11y checks entirely
+      test: 'todo'
     },
 
     // Layout configuration for consistent component presentation

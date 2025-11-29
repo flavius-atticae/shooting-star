@@ -9,8 +9,8 @@
     "typecheck": "react-router typegen && tsc",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "vitest run --project=unit",
+    "test:watch": "vitest --project=unit",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "test:coverage:summary": "vitest run --coverage && node -e \"console.log('Coverage Summary:', JSON.stringify(require('./coverage/coverage-final.json').total, null, 2))\"",
@@ -19,9 +19,7 @@
     "test:e2e:headed": "playwright test --headed",
     "test:e2e:debug": "playwright test --debug",
     "test:e2e:report": "playwright show-report",
-    "test:storybook": "test-storybook",
-    "test:storybook:ci": "concurrently -k -s first -n \"SB,TEST\" -c \"magenta,blue\" \"npm run storybook -- --quiet\" \"wait-on http://127.0.0.1:6006 && npm run test:storybook\"",
-    "test:pregnancy-safe": "test-storybook --stories-json --stories='**/*.pregnancy-personas.stories.*'",
+    "test:storybook": "vitest --project=storybook",
     "test:all": "npm run test && npm run test:e2e && npm run test:storybook"
   },
   "dependencies": {
@@ -50,8 +48,8 @@
     "@storybook/addon-a11y": "^10.1.2",
     "@storybook/addon-docs": "^10.1.2",
     "@storybook/addon-onboarding": "^10.1.2",
+    "@storybook/addon-vitest": "^10.1.2",
     "@storybook/react-vite": "^10.1.2",
-    "@storybook/test-runner": "^0.24.2",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/vite": "^4.1.4",
     "@testing-library/dom": "^10.4.1",
@@ -78,6 +76,8 @@
     "vite": "^6.4.1",
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^3.2.4",
-    "wait-on": "^8.0.4"
+    "wait-on": "^8.0.4",
+    "playwright": "^1.57.0",
+    "@vitest/browser": "^3.2.4"
   }
 }
