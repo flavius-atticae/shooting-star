@@ -170,7 +170,6 @@ const preview: Preview = {
   ],
 
   // Global arg types for consistent prop controls
-  // Global parameters applied to all stories
   argTypes: {
     className: {
       control: 'text',

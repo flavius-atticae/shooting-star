@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { within, expect } from 'storybook/test';
 import { CTASection } from "./cta-section";
 
 const meta: Meta<typeof CTASection> = {
