@@ -3,7 +3,6 @@ import { cn } from "~/lib/utils";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 import { AboutContent } from "./about-content";
-import { MethodSection } from "./method-section";
 
 export interface AboutSectionProps extends Omit<React.HTMLAttributes<HTMLElement>, 'children'> {
   /** Custom section spacing override */
@@ -89,11 +88,72 @@ export function AboutSection({
           {/* Row 1: About Content */}
           <AboutContent />
           
-          {/* Row 2: Method Section */}
-          <MethodSection 
-            items={defaultMethodItems}
-            className="mt-12 sm:mt-16 lg:mt-20"
-          />
+          {/* Row 2: Method Section - Integrated directly */}
+          <section
+            className="space-y-8 sm:space-y-10 lg:space-y-12 mt-12 sm:mt-16 lg:mt-20"
+            lang="fr"
+            aria-labelledby="method-heading"
+          >
+            {/* Section Title */}
+            <h2 
+              id="method-heading"
+              className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-secondary text-left leading-tight"
+            >
+              Ma méthode
+            </h2>
+            
+            {/* Method Columns Grid */}
+            <div 
+              className={cn(
+                "grid gap-8 sm:gap-10 lg:gap-0",
+                // Responsive grid layout
+                "grid-cols-1",                    // Mobile: 1 column (stacked)
+                "lg:grid-cols-3",                 // Desktop: 3 columns
+                // Desktop layout with separators
+                "lg:divide-x lg:divide-secondary/20"
+              )}
+              role="list"
+              aria-labelledby="method-heading"
+            >
+              {defaultMethodItems.map((item, index) => (
+                <div
+                  key={item.id}
+                  className={cn(
+                    // Desktop padding for separator spacing
+                    "lg:px-8",
+                    // First column: no left padding
+                    index === 0 && "lg:pl-0",
+                    // Last column: no right padding  
+                    index === defaultMethodItems.length - 1 && "lg:pr-0"
+                  )}
+                  role="listitem"
+                >
+                  {/* Method Column - Inline */}
+                  <article
+                    className="space-y-3 sm:space-y-4"
+                    lang="fr"
+                    aria-labelledby={`method-${item.id}-title`}
+                  >
+                    {/* Method Title */}
+                    <h3 
+                      id={`method-${item.id}-title`}
+                      className="font-heading font-bold text-xl sm:text-2xl text-secondary leading-tight"
+                    >
+                      {item.title}
+                    </h3>
+                    
+                    {/* Method Description */}
+                    <p 
+                      className="font-sans text-base sm:text-lg text-secondary leading-relaxed"
+                      aria-describedby={`method-${item.id}-title`}
+                    >
+                      {item.description}
+                    </p>
+                  </article>
+                </div>
+              ))}
+            </div>
+          </section>
         </div>
       </Container>
     </Section>

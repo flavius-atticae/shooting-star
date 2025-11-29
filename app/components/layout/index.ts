@@ -2,8 +2,8 @@ export { PageLayout } from "./page-layout";
 export type { PageLayoutProps } from "./page-layout";
 
 // Layout sections
-export { AboutSection, AboutContent, MethodSection, MethodColumn } from "./about-section";
-export type { AboutSectionProps, AboutContentProps, MethodSectionProps, MethodColumnProps, MethodItem } from "./about-section";
+export { AboutSection, AboutContent } from "./about-section";
+export type { AboutSectionProps, AboutContentProps, MethodItem } from "./about-section";
 
 export { Footer, NewsletterInput, SocialIcons } from "./footer";
 export type { FooterProps, NewsletterInputProps, SocialIconsProps, FooterNavLink, SocialLink, SocialPlatform } from "./footer";
