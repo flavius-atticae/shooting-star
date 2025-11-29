@@ -5,27 +5,14 @@ import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 import { NewsletterInput } from "./newsletter-input";
 import { SocialIcons } from "./social-icons";
+import type { SocialLink, SocialPlatform } from "./social-icons";
+
+// Re-export social types for consumers
+export type { SocialLink, SocialPlatform } from "./social-icons";
 
 // ============================================================================
 // Types
 // ============================================================================
-
-/**
- * Social media platforms supported in the footer
- */
-export type SocialPlatform = 'instagram' | 'linkedin' | 'facebook' | 'youtube';
-
-/**
- * Social media link configuration
- */
-export interface SocialLink {
-  /** Platform identifier */
-  platform: SocialPlatform;
-  /** Social media profile URL */
-  url: string;
-  /** Accessible label in French */
-  label: string;
-}
 
 /**
  * Footer navigation link configuration
