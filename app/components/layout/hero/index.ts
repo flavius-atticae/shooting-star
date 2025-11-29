@@ -1,31 +1,27 @@
 /**
  * Hero component barrel exports
  * 
- * Main exports for the Hero section component following
- * the same pattern as Header component structure.
+ * Simplified structure:
+ * - hero.tsx: Main component with inline content
+ * - hero-animations.tsx: Reusable animation components
  */
 
-// Main component
-export { Hero } from "./Hero";
-export type { HeroProps } from "./Hero";
+// Main component and content
+export { Hero, HeroContent } from "./Hero";
+export type { HeroProps, HeroContentProps, HeroVariant } from "./Hero";
 
-// Sub-components
-export { HeroContent } from "./hero-content";
-export type { HeroContentProps } from "./hero-content";
+// Configuration constants
+export { HERO_BREAKPOINTS, HERO_VARIANTS } from "./Hero";
 
-// Types and configuration
-export type { 
-  HeroConfig,
-  HeroVariant,
-  HeroContentProps as HeroContentInterface,
-  HeroProps as HeroInterface
-} from "./types";
-
+// Animation components (reusable)
 export { 
-  HERO_BREAKPOINTS,
-  HERO_TYPOGRAPHY,
-  HERO_VARIANTS
-} from "./types";
+  AnimatedElement, 
+  FadeInTitle, 
+  FadeInSubtitle, 
+  FadeInContainer,
+  usePregnancySafeAnimation 
+} from "./hero-animations";
+export type { AnimatedElementProps } from "./hero-animations";
 
 // Default export
 export { Hero as default } from "./Hero";
