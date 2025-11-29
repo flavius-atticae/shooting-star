@@ -30,8 +30,8 @@ export const MarieStory = {
     withReducedMotion,
     withTouchFriendly,
   ],
-  parameters: {
-    viewport: { defaultViewport: 'mobile2' },
+  globals: {
+    viewport: { value: 'mobile2', isRotated: false },
   },
 };
 ```
@@ -49,8 +49,8 @@ export const SophieStory = {
     withHighContrast,
     withTouchFriendly,
   ],
-  parameters: {
-    viewport: { defaultViewport: 'tablet' },
+  globals: {
+    viewport: { value: 'tablet', isRotated: false },
   },
 };
 ```
@@ -70,8 +70,8 @@ export const AlexandraStory = {
     withLargeText,
     withTouchFriendly,
   ],
-  parameters: {
-    viewport: { defaultViewport: 'desktop' },
+  globals: {
+    viewport: { value: 'desktop', isRotated: false },
   },
 };
 ```
