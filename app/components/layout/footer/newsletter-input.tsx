@@ -1,6 +1,21 @@
 import * as React from "react";
 import { cn } from "~/lib/utils";
-import type { NewsletterInputProps } from "./types";
+
+/**
+ * Props for Newsletter Input component
+ */
+export interface NewsletterInputProps {
+  /** Newsletter signup handler */
+  onSubmit?: (email: string) => void | Promise<void>;
+  /** Whether signup is loading */
+  isLoading?: boolean;
+  /** Custom className for additional styling */
+  className?: string;
+  /** Input placeholder text */
+  placeholder?: string;
+  /** Accessible label */
+  ariaLabel?: string;
+}
 
 /**
  * Newsletter Input Component

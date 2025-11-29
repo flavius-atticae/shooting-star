@@ -1,10 +1,70 @@
+import * as React from "react";
+import { Link } from "react-router";
 import { cn } from "~/lib/utils";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
-import { FooterLogo } from "./footer-logo";
-import { FooterNavigation } from "./footer-navigation";
-import { FooterSocial } from "./footer-social";
-import type { FooterProps, FooterNavLink, SocialLink } from "./types";
+import { NewsletterInput } from "./newsletter-input";
+import { SocialIcons } from "./social-icons";
+
+// ============================================================================
+// Types
+// ============================================================================
+
+/**
+ * Social media platforms supported in the footer
+ */
+export type SocialPlatform = 'instagram' | 'linkedin' | 'facebook' | 'youtube';
+
+/**
+ * Social media link configuration
+ */
+export interface SocialLink {
+  /** Platform identifier */
+  platform: SocialPlatform;
+  /** Social media profile URL */
+  url: string;
+  /** Accessible label in French */
+  label: string;
+}
+
+/**
+ * Footer navigation link configuration
+ */
+export interface FooterNavLink {
+  /** Link text in French */
+  label: string;
+  /** Navigation target */
+  href: string;
+  /** Accessible description */
+  ariaLabel?: string;
+}
+
+/**
+ * Props for the main Footer component
+ */
+export interface FooterProps extends Omit<React.HTMLAttributes<HTMLElement>, 'children'> {
+  /** Custom section spacing override */
+  spacing?: 'compact' | 'normal' | 'spacious';
+  /** Custom container size */
+  containerSize?: 'sm' | 'md' | 'lg' | 'xl';
+  /** Navigation links configuration */
+  navLinks?: FooterNavLink[];
+  /** Social media links configuration */
+  socialLinks?: SocialLink[];
+  /** Newsletter signup handler */
+  onNewsletterSignup?: (email: string) => void | Promise<void>;
+  /** Whether newsletter signup is loading */
+  isNewsletterLoading?: boolean;
+  /** Custom className for additional styling */
+  className?: string;
+  /** Accessibility props */
+  'aria-labelledby'?: string;
+  'aria-describedby'?: string;
+}
+
+// ============================================================================
+// Default Data
+// ============================================================================
 
 /**
  * Default navigation links for the footer
@@ -62,6 +122,10 @@ const defaultSocialLinks: SocialLink[] = [
     label: 'Voir les vidéos de Pauline Roussel sur YouTube'
   }
 ];
+
+// ============================================================================
+// Footer Component
+// ============================================================================
 
 /**
  * Footer Component - Pied de page pregnancy-safe
@@ -121,29 +185,117 @@ export function Footer({
         <div className={cn(
           // Basic grid - 1 column mobile, 3 columns tablet+
           "grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-8",
-          // Vertical and horizontal alignment - center content
-          "items-center justify-items-center",
-          // Padding for rounded container
-          "px-6 py-8 sm:px-8 sm:py-12"
+          // Vertical and horizontal alignment - top aligned for Figma conformance
+          "items-start justify-items-start md:justify-items-center",
+          // Padding for rounded container - Progressive Enhancement (48px → 64px → 80px)
+          "px-6 py-12 sm:px-8 md:py-16 lg:py-20"
         )}>
           
-          {/* Column 1: Logo Section */}
+          {/* Column 1: Logo Section (inline) */}
           <div className="flex flex-col items-start justify-start">
-            <FooterLogo />
+            <Link 
+              to="/"
+              className={cn(
+                // Base styles
+                "inline-flex items-center justify-start",
+                // Touch target (pregnancy-safe: optimal 48x48px minimum)
+                "min-h-[48px] p-2",
+                // Transitions
+                "transition-all duration-200",
+                // Focus states for accessibility
+                "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary",
+                // Hover state (subtle animation)
+                "hover:scale-[1.05] active:scale-[0.95]"
+              )}
+              aria-label="Pauline Roussel - Retour à l'accueil"
+            >
+              {/* Logo SVG from public/white-logo.svg */}
+              <img 
+                src="/white-logo.svg"
+                alt="Logo Pauline Roussel"
+                className="w-[90%] sm:w-[80%] lg:w-[80%]"
+              />
+            </Link>
           </div>
           
-          {/* Column 2: Navigation */}
+          {/* Column 2: Navigation (inline) */}
           <div className="flex flex-col items-center">
-            <FooterNavigation links={navLinks} />
+            <nav 
+              className="flex flex-col items-start space-y-1"
+              aria-label="Navigation principale du site"
+            >
+              {navLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className={cn(
+                    // Base styles
+                    "inline-flex items-center justify-start text-left",
+                    // Typography - Barlow sans-serif
+                    "font-body text-base sm:text-lg font-normal",
+                    // Colors - White text with hover state
+                    "text-white hover:text-white/80",
+                    // Touch target (pregnancy-safe but condensed)
+                    "min-h-[40px] px-2",
+                    // Transitions
+                    "transition-all duration-200",
+                    // Focus states for accessibility
+                    "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary",
+                    // Hover and active states
+                    "hover:scale-[1.02] active:scale-[0.98]",
+                    // Border for better definition on mobile
+                    "border border-transparent hover:border-white/20 rounded-lg"
+                  )}
+                  aria-label={link.ariaLabel}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
           </div>
           
-          {/* Column 3: Social Section */}
-          <div className="flex flex-col items-start">
-            <FooterSocial
-              socialLinks={socialLinks}
-              onNewsletterSignup={onNewsletterSignup}
-              isNewsletterLoading={isNewsletterLoading}
-            />
+          {/* Column 3: Social Section (inline) */}
+          <div className="flex flex-col items-start space-y-6">
+            {/* Section Title - Adjusted for Figma (30px → 36px → 40px) */}
+            <div className="w-full">
+              <h3 className={cn(
+                "font-heading text-3xl sm:text-4xl lg:text-[40px] text-white",
+                "mb-6"
+              )}>
+                Restons connectés
+              </h3>
+            </div>
+
+            {/* Newsletter Section */}
+            <div className="w-full">
+              <NewsletterInput
+                onSubmit={onNewsletterSignup}
+                isLoading={isNewsletterLoading}
+                placeholder="Adresse courriel"
+                ariaLabel="Saisir votre adresse courriel pour recevoir la newsletter"
+                className="w-full max-w-sm"
+              />
+            </div>
+
+            {/* Privacy Notice */}
+            <div className="w-full">
+              <p className={cn(
+                "text-xs text-white/70 font-body leading-relaxed",
+                "max-w-sm"
+              )}>
+                En vous inscrivant, vous acceptez de recevoir nos communications. 
+                Vous pourrez vous désabonner à tout moment.
+              </p>
+            </div>
+
+            {/* Social Media Section */}
+            <div className="w-full">
+              <SocialIcons
+                links={socialLinks}
+                size="sm"
+                className="!justify-start"
+              />
+            </div>
           </div>
           
         </div>
