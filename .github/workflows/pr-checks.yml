@@ -31,8 +31,10 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Run Header tests
-        run: npx playwright test app/test/e2e/specs/header.spec.ts --reporter=html
+      # Run E2E tests for multi-page user journeys
+      # Component-level tests have moved to Storybook play functions (see header.stories.tsx)
+      - name: Run E2E tests
+        run: npx playwright test app/test/e2e/specs --project=chromium --reporter=html
         env:
           CI: true
 
