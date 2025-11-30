@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Install flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@master
+        uses: superfly/flyctl-actions/setup-flyctl@63da3ecc5e2793b98a3f2519b3d75d4f4c11cec2
       
       - name: Deploy to staging
         run: |
@@ -72,7 +72,7 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Install flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@master
+        uses: superfly/flyctl-actions/setup-flyctl@63da3ecc5e2793b98a3f2519b3d75d4f4c11cec2
       
       - name: Deploy to production
         run: |
@@ -106,16 +106,16 @@ jobs:
     environment: ${{ github.event.inputs.environment }}
     steps:
       - name: Install flyctl
-        uses: superfly/flyctl-actions/setup-flyctl@master
+        uses: superfly/flyctl-actions/setup-flyctl@63da3ecc5e2793b98a3f2519b3d75d4f4c11cec2
       
       - name: Get current releases
         id: releases
         run: |
           # Set app name based on environment
-          if [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
-            APP_NAME="${{ vars.FLYIO_PRODUCTION_APP_NAME }}"
+          if [[ "$INPUT_ENVIRONMENT" == "production" ]]; then
+            APP_NAME="$FLYIO_PRODUCTION_APP_NAME"
           else
-            APP_NAME="${{ vars.FLYIO_STAGING_APP_NAME }}"
+            APP_NAME="$FLYIO_STAGING_APP_NAME"
           fi
           
           echo "Getting releases for app: $APP_NAME"
@@ -126,64 +126,74 @@ jobs:
           cat releases.json | jq -r '.[] | select(.status == "succeeded") | "\(.version): \(.image // "No image")"' | head -10
           
           # Get the most recent successful release if no specific target provided
-          if [[ -z "${{ github.event.inputs.rollback_target }}" ]]; then
+          if [[ -z "$INPUT_ROLLBACK_TARGET" ]]; then
             LATEST_IMAGE=$(cat releases.json | jq -r '.[] | select(.status == "succeeded") | .image' | head -2 | tail -1)
             echo "rollback_image=$LATEST_IMAGE" >> $GITHUB_OUTPUT
             echo "Using latest successful release image: $LATEST_IMAGE"
           else
             # Check if rollback_target is an image or version
-            if [[ "${{ github.event.inputs.rollback_target }}" =~ ^registry\.fly\.io ]]; then
-              echo "rollback_image=${{ github.event.inputs.rollback_target }}" >> $GITHUB_OUTPUT
-              echo "Using specified image: ${{ github.event.inputs.rollback_target }}"
+            if [[ "$INPUT_ROLLBACK_TARGET" =~ ^registry\.fly\.io ]]; then
+              echo "rollback_image=$INPUT_ROLLBACK_TARGET" >> $GITHUB_OUTPUT
+              echo "Using specified image: $INPUT_ROLLBACK_TARGET"
             else
               # Try to find image by version
-              TARGET_IMAGE=$(cat releases.json | jq -r --arg version "${{ github.event.inputs.rollback_target }}" '.[] | select(.version == $version) | .image')
+              TARGET_IMAGE=$(cat releases.json | jq -r --arg version "$INPUT_ROLLBACK_TARGET" '.[] | select(.version == $version) | .image')
               if [[ -n "$TARGET_IMAGE" && "$TARGET_IMAGE" != "null" ]]; then
                 echo "rollback_image=$TARGET_IMAGE" >> $GITHUB_OUTPUT
-                echo "Found image for version ${{ github.event.inputs.rollback_target }}: $TARGET_IMAGE"
+                echo "Found image for version $INPUT_ROLLBACK_TARGET: $TARGET_IMAGE"
               else
-                echo "Could not find image for version: ${{ github.event.inputs.rollback_target }}"
+                echo "Could not find image for version: $INPUT_ROLLBACK_TARGET"
                 exit 1
               fi
             fi
           fi
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          INPUT_ENVIRONMENT: ${{ github.event.inputs.environment }}
+          INPUT_ROLLBACK_TARGET: ${{ github.event.inputs.rollback_target }}
+          FLYIO_PRODUCTION_APP_NAME: ${{ vars.FLYIO_PRODUCTION_APP_NAME }}
+          FLYIO_STAGING_APP_NAME: ${{ vars.FLYIO_STAGING_APP_NAME }}
       
       - name: Validate rollback target
         run: |
-          if [[ -z "${{ steps.releases.outputs.rollback_image }}" || "${{ steps.releases.outputs.rollback_image }}" == "null" ]]; then
+          if [[ -z "$ROLLBACK_IMAGE" || "$ROLLBACK_IMAGE" == "null" ]]; then
             echo "Error: No valid rollback image found"
             echo "Please check available releases and specify a valid target"
             exit 1
           fi
-          echo "Validated rollback target: ${{ steps.releases.outputs.rollback_image }}"
+          echo "Validated rollback target: $ROLLBACK_IMAGE"
+        env:
+          ROLLBACK_IMAGE: ${{ steps.releases.outputs.rollback_image }}
       
       - name: Perform rollback deployment
         run: |
           # Set app name based on environment
-          if [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
-            APP_NAME="${{ vars.FLYIO_PRODUCTION_APP_NAME }}"
+          if [[ "$INPUT_ENVIRONMENT" == "production" ]]; then
+            APP_NAME="$FLYIO_PRODUCTION_APP_NAME"
           else
-            APP_NAME="${{ vars.FLYIO_STAGING_APP_NAME }}"
+            APP_NAME="$FLYIO_STAGING_APP_NAME"
           fi
           
-          echo "Rolling back ${{ github.event.inputs.environment }} environment..."
+          echo "Rolling back $INPUT_ENVIRONMENT environment..."
           echo "App: $APP_NAME"
-          echo "Target image: ${{ steps.releases.outputs.rollback_image }}"
+          echo "Target image: $ROLLBACK_IMAGE"
           
           # Deploy the specific image (this is the correct way to rollback in Fly.io)
-          flyctl deploy --image "${{ steps.releases.outputs.rollback_image }}" --app "$APP_NAME"
+          flyctl deploy --image "$ROLLBACK_IMAGE" --app "$APP_NAME"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          INPUT_ENVIRONMENT: ${{ github.event.inputs.environment }}
+          FLYIO_PRODUCTION_APP_NAME: ${{ vars.FLYIO_PRODUCTION_APP_NAME }}
+          FLYIO_STAGING_APP_NAME: ${{ vars.FLYIO_STAGING_APP_NAME }}
+          ROLLBACK_IMAGE: ${{ steps.releases.outputs.rollback_image }}
       
       - name: Verify rollback
         run: |
           # Set app name based on environment
-          if [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
-            APP_NAME="${{ vars.FLYIO_PRODUCTION_APP_NAME }}"
+          if [[ "$INPUT_ENVIRONMENT" == "production" ]]; then
+            APP_NAME="$FLYIO_PRODUCTION_APP_NAME"
           else
-            APP_NAME="${{ vars.FLYIO_STAGING_APP_NAME }}"
+            APP_NAME="$FLYIO_STAGING_APP_NAME"
           fi
           
           echo "Verifying rollback deployment..."
@@ -193,11 +203,14 @@ jobs:
           flyctl releases --app "$APP_NAME" -j | jq -r '.[0] | "Current release: \(.version) - Status: \(.status)"'
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+          INPUT_ENVIRONMENT: ${{ github.event.inputs.environment }}
+          FLYIO_PRODUCTION_APP_NAME: ${{ vars.FLYIO_PRODUCTION_APP_NAME }}
+          FLYIO_STAGING_APP_NAME: ${{ vars.FLYIO_STAGING_APP_NAME }}
       
       - name: Notify rollback
         run: |
           # Set environment-specific variables
-          if [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
+          if [[ "$INPUT_ENVIRONMENT" == "production" ]]; then
             ENV_EMOJI="🚨"
             ENV_NAME="Production"
           else
@@ -205,13 +218,27 @@ jobs:
             ENV_NAME="Staging"
           fi
           
+          # Set rollback target display text
+          if [[ -z "$INPUT_ROLLBACK_TARGET" ]]; then
+            ROLLBACK_TARGET_DISPLAY="Previous successful release"
+          else
+            ROLLBACK_TARGET_DISPLAY="$INPUT_ROLLBACK_TARGET"
+          fi
+          
           curl -X POST \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
-            "https://api.github.com/repos/${{ github.repository }}/issues/comments" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/comments" \
             -d "{
-              \"body\": \"$ENV_EMOJI **Rollback Completed**\\n\\n$ENV_NAME deployment has been rolled back successfully.\\n\\n**Environment**: ${{ github.event.inputs.environment }}\\n**Target**: ${{ github.event.inputs.rollback_target || 'Previous successful release' }}\\n**Triggered by**: ${{ github.actor }}\\n**Image**: \\\`${{ steps.releases.outputs.rollback_image }}\\\`\"
+              \"body\": \"$ENV_EMOJI **Rollback Completed**\\n\\n$ENV_NAME deployment has been rolled back successfully.\\n\\n**Environment**: $INPUT_ENVIRONMENT\\n**Target**: $ROLLBACK_TARGET_DISPLAY\\n**Triggered by**: $GITHUB_ACTOR\\n**Image**: \\\`$ROLLBACK_IMAGE\\\`\"
             }"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_ACTOR: ${{ github.actor }}
+          INPUT_ENVIRONMENT: ${{ github.event.inputs.environment }}
+          INPUT_ROLLBACK_TARGET: ${{ github.event.inputs.rollback_target }}
+          ROLLBACK_IMAGE: ${{ steps.releases.outputs.rollback_image }}
 
   health-check:
     name: Post-Deployment Health Check
@@ -225,21 +252,21 @@ jobs:
       - name: Check application health
         run: |
           # Determine environment and health URL based on which job succeeded
-          if [[ "${{ needs.deploy-production.result }}" == "success" ]]; then
+          if [[ "$DEPLOY_PROD_RESULT" == "success" ]]; then
             ENVIRONMENT="production"
-            HEALTH_URL="${{ vars.PRODUCTION_HEALTH_URL }}"
-          elif [[ "${{ needs.rollback.result }}" == "success" ]]; then
+            HEALTH_URL="$PRODUCTION_HEALTH_URL"
+          elif [[ "$ROLLBACK_RESULT" == "success" ]]; then
             # For rollback, check the environment that was rolled back
-            if [[ "${{ github.event.inputs.environment }}" == "production" ]]; then
+            if [[ "$INPUT_ENVIRONMENT" == "production" ]]; then
               ENVIRONMENT="production"
-              HEALTH_URL="${{ vars.PRODUCTION_HEALTH_URL }}"
+              HEALTH_URL="$PRODUCTION_HEALTH_URL"
             else
               ENVIRONMENT="staging"
-              HEALTH_URL="${{ vars.STAGING_HEALTH_URL }}"
+              HEALTH_URL="$STAGING_HEALTH_URL"
             fi
           else
             ENVIRONMENT="staging"
-            HEALTH_URL="${{ vars.STAGING_HEALTH_URL }}"
+            HEALTH_URL="$STAGING_HEALTH_URL"
           fi
           
           echo "Checking health of $ENVIRONMENT environment"
@@ -263,6 +290,12 @@ jobs:
           
           echo "Health check failed after $RETRY_COUNT attempts"
           exit 1
+        env:
+          DEPLOY_PROD_RESULT: ${{ needs.deploy-production.result }}
+          ROLLBACK_RESULT: ${{ needs.rollback.result }}
+          INPUT_ENVIRONMENT: ${{ github.event.inputs.environment }}
+          PRODUCTION_HEALTH_URL: ${{ vars.PRODUCTION_HEALTH_URL }}
+          STAGING_HEALTH_URL: ${{ vars.STAGING_HEALTH_URL }}
       
       - name: Report health status
         if: success()
