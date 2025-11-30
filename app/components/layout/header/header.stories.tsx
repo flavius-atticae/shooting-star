@@ -188,28 +188,23 @@ export const NavigationItems: Story = {
       expect(menuButton).toHaveAttribute("aria-expanded", "true");
     });
 
-    // The mobile navigation is fixed positioned and may render outside canvasElement bounds
-    // Query from the document body to find the navigation
-    const body = canvasElement.ownerDocument.body;
-    
+    // Wait for navigation to be visible then verify links
+    // Use screen queries with aria-label to find navigation content
     await waitFor(
       () => {
-        const nav = body.querySelector('[role="navigation"]');
-        expect(nav).not.toBeNull();
+        // The mobile menu has aria-label="Menu de navigation principal"
+        const navLabel = screen.getByLabelText(/menu de navigation principal/i);
+        expect(navLabel).toBeInTheDocument();
       },
       { timeout: 2000 }
     );
 
-    // Get the navigation element and verify links
-    const nav = body.querySelector('[role="navigation"]') as HTMLElement;
-    const navCanvas = within(nav);
-
     // Verify all navigation links are present (French labels)
-    // Use getAllByText since labels appear both in link and description
-    const doulaLinks = navCanvas.getAllByText(/doula/i);
-    const yogaLinks = navCanvas.getAllByText(/yoga/i);
-    const femininLinks = navCanvas.getAllByText(/féminin/i);
-    const aboutLinks = navCanvas.getAllByText(/à propos/i);
+    // Query directly using screen for text content within the document
+    const doulaLinks = screen.getAllByText(/doula/i);
+    const yogaLinks = screen.getAllByText(/yoga/i);
+    const femininLinks = screen.getAllByText(/féminin/i);
+    const aboutLinks = screen.getAllByText(/à propos/i);
 
     // Each nav item has the label visible
     expect(doulaLinks.length).toBeGreaterThan(0);
