@@ -172,19 +172,18 @@ export const AccessibilityCheck: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     
-    // Focus management - prefer ARIA attributes over toHaveFocus()
-    // toHaveFocus() is available via @testing-library/jest-dom but can be
-    // unreliable in browser environments. Use ARIA attributes instead.
+    // Focus management - toHaveFocus() from @storybook/test works reliably
+    // Alternatively, use document.activeElement for explicit verification
     const menuButton = canvas.getByRole('button', { name: /menu/i });
     
-    // ✅ Recommended: Check ARIA attributes (reliable cross-environment)
+    // ✅ Recommended: Use toHaveFocus() from @storybook/test
+    await userEvent.tab(); // Focus first interactive element
+    await expect(menuButton).toHaveFocus();
+    
+    // ✅ Alternative: Check ARIA attributes for state verification
     await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
     await userEvent.click(menuButton);
     await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
-    
-    // ✅ Recommended: Check document.activeElement if focus verification needed
-    menuButton.focus();
-    await expect(document.activeElement).toBe(menuButton);
   },
 };
 ```

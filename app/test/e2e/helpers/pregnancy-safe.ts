@@ -17,8 +17,11 @@ export class PregnancySafeHelpers {
   private debugMode: boolean = false;
 
   constructor(private page: Page) {
-    // Use crypto.randomUUID() for secure session ID generation
-    this.sessionId = crypto.randomUUID();
+    // Use crypto.randomUUID() for secure session ID generation, with fallback for compatibility
+    this.sessionId =
+      typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
+        ? crypto.randomUUID()
+        : `${Date.now().toString(36)}-${Math.random().toString(36).substring(2)}`;
   }
 
   /**
@@ -172,7 +175,9 @@ export class PregnancySafeHelpers {
 
   /**
    * Verify French language content for Quebec users
-   * Uses .first() to handle cases where the phrase appears multiple times on the page
+   *
+   * Uses .first() to handle cases where phrases appear multiple times
+   * (e.g., navigation appears in both header and mobile menu)
    */
   async verifyFrenchContent(expectedPhrases: string[]) {
     for (const phrase of expectedPhrases) {
