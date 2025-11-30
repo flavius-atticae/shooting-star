@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { within, userEvent, expect, waitFor } from "@storybook/test";
+import { within, userEvent, expect, waitFor, screen } from "@storybook/test";
 import { Header } from "./header";
 import { withReactRouter } from "../../../../.storybook/react-router-decorator";
 
@@ -106,29 +106,39 @@ export const CloseMenuWithEscape: Story = {
 };
 
 /**
- * Keyboard navigation test - verifies all interactive elements are focusable
+ * Keyboard navigation test - verifies elements are keyboard accessible
  */
 export const KeyboardNavigation: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
     // Get interactive elements
-    const logo = canvas.getByLabelText(/Pauline Roussel - Retour à l'accueil/i);
     const menuButton = canvas.getByLabelText(/Ouvrir le menu/i);
+    const logo = canvas.getByLabelText(/Pauline Roussel - Retour à l'accueil/i);
 
-    // Both elements should be in the document and visible
+    // Both elements should be in the document
     await expect(logo).toBeInTheDocument();
     await expect(menuButton).toBeInTheDocument();
 
-    // Verify elements are focusable by checking they have no tabindex=-1
-    // (elements without negative tabindex are focusable)
+    // Verify elements are focusable (no negative tabindex)
     expect(logo.getAttribute("tabindex")).not.toBe("-1");
     expect(menuButton.getAttribute("tabindex")).not.toBe("-1");
 
-    // Tab through interactive elements to verify keyboard access works
-    await userEvent.tab();
-    await userEvent.tab();
-    await userEvent.tab();
+    // Verify elements have proper focus styles (focus-visible classes)
+    expect(logo.className).toContain("focus-visible:");
+    expect(menuButton.className).toContain("focus-visible:");
+
+    // Verify button is a proper button element (keyboard accessible by default)
+    expect(menuButton.tagName.toLowerCase()).toBe("button");
+
+    // Verify logo is a proper link element (keyboard accessible by default)
+    expect(logo.tagName.toLowerCase()).toBe("a");
+
+    // Test click interaction works (as proxy for keyboard Enter)
+    await userEvent.click(menuButton);
+    await waitFor(() => {
+      expect(menuButton).toHaveAttribute("aria-expanded", "true");
+    });
   },
 };
 
@@ -156,6 +166,60 @@ export const DesktopView: Story = {
     // Header banner role should be present
     const header = canvas.getByRole("banner");
     await expect(header).toBeInTheDocument();
+  },
+};
+
+/**
+ * Verify all navigation items are present and accessible when menu is open
+ */
+export const NavigationItems: Story = {
+  parameters: {
+    viewport: { defaultViewport: "mobile1" },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Open mobile menu to reveal navigation
+    const menuButton = canvas.getByLabelText(/Ouvrir le menu/i);
+    await userEvent.click(menuButton);
+
+    // Wait for menu to open (ARIA state)
+    await waitFor(() => {
+      expect(menuButton).toHaveAttribute("aria-expanded", "true");
+    });
+
+    // The navigation is inside header but fixed positioned
+    // It should be queryable via the canvas since it's a child of header
+    // Use getAllByRole to find all navigation elements and filter
+    await waitFor(
+      () => {
+        // Get all nav elements from the header component tree
+        const header = canvas.getByRole("banner");
+        const navElements = header.querySelectorAll('[role="navigation"]');
+        expect(navElements.length).toBeGreaterThan(0);
+      },
+      { timeout: 2000 }
+    );
+
+    // Get the navigation and verify links via querySelector
+    const header = canvas.getByRole("banner");
+    const nav = header.querySelector('[role="navigation"]');
+    expect(nav).not.toBeNull();
+
+    const navCanvas = within(nav as HTMLElement);
+
+    // Verify all navigation links are present (French labels)
+    // Use getAllByText since labels appear both in link and description
+    const doulaLinks = navCanvas.getAllByText(/doula/i);
+    const yogaLinks = navCanvas.getAllByText(/yoga/i);
+    const femininLinks = navCanvas.getAllByText(/féminin/i);
+    const aboutLinks = navCanvas.getAllByText(/à propos/i);
+
+    // Each nav item has the label visible
+    expect(doulaLinks.length).toBeGreaterThan(0);
+    expect(yogaLinks.length).toBeGreaterThan(0);
+    expect(femininLinks.length).toBeGreaterThan(0);
+    expect(aboutLinks.length).toBeGreaterThan(0);
   },
 };
 

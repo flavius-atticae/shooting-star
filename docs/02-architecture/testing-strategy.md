@@ -101,7 +101,7 @@ app/components/
 │   └── container.stories.tsx   # Play functions (replaces Playwright E2E specs)
 ```
 
-> **Migration Note:** Component-level Playwright E2E specs (`header.spec.ts`, `header-accessibility.spec.ts`, etc.) have been removed. Their coverage is now provided by Storybook play functions in the corresponding `*.stories.tsx` files.
+> **Migration Note:** Component-level Playwright E2E specs (`header.spec.ts`, `header-accessibility.spec.ts`, etc.) have been migrated to Storybook play functions. Core interaction tests (menu open/close, keyboard navigation, ARIA states) are now in `*.stories.tsx` files. Visual regression testing will be handled by Chromatic (see #125).
 
 ### E2E Tests (Playwright)
 
@@ -172,16 +172,19 @@ export const AccessibilityCheck: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     
-    // Check focus management (toHaveFocus is available via @testing-library/jest-dom)
+    // Focus management - prefer ARIA attributes over toHaveFocus()
+    // toHaveFocus() is available via @testing-library/jest-dom but can be
+    // unreliable in browser environments. Use ARIA attributes instead.
     const menuButton = canvas.getByRole('button', { name: /menu/i });
-    await userEvent.tab();
-    // Note: toHaveFocus() may not work reliably in all environments
-    // Prefer checking ARIA attributes for more reliable tests
     
-    // Check ARIA attributes (more reliable cross-environment)
+    // ✅ Recommended: Check ARIA attributes (reliable cross-environment)
     await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
     await userEvent.click(menuButton);
     await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+    
+    // ✅ Recommended: Check document.activeElement if focus verification needed
+    menuButton.focus();
+    await expect(document.activeElement).toBe(menuButton);
   },
 };
 ```
@@ -255,18 +258,24 @@ Use the `@storybook/addon-a11y` panel to verify WCAG AA compliance (4.5:1 minimu
 ## ✅ Acceptance Criteria
 
 ### Phase 1 (Current PR)
-- [x] Header component has play functions testing its interactions
-- [x] Redundant Playwright E2E specs for Header removed
+- [x] Header component has play functions testing core interactions:
+  - Mobile menu open/close
+  - Escape key to close menu
+  - Navigation items verification
+  - ARIA states (`aria-expanded`)
+  - French accessibility labels
+- [x] Component-level Playwright specs migrated to Storybook
+- [x] CI runs Vitest including Storybook play functions
 - [x] This documentation is created
 
 ### Future Phases
+- [ ] Visual regression testing via Chromatic (see #125)
 - [ ] All components have play functions testing their interactions
+- [ ] Page-level stories (Homepage, ContactPage)
 - [ ] Playwright only tests multi-page journeys
 - [ ] No duplication between Storybook and Playwright
-- [ ] `npm run test` executes Vitest + Storybook tests
-- [ ] `npm run test:e2e` executes only Playwright journeys
 
-> **Note:** This is a phased rollout. Phase 1 covers the Header component only. Future phases will add play functions for other components (Hero, Footer, ContactForm, etc.).
+> **Note:** This is a phased rollout. Phase 1 covers the Header component. Visual regression testing is tracked separately in issue #125 (Chromatic integration).
 
 ---
 
