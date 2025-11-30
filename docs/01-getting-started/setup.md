@@ -6,9 +6,35 @@ This guide will help you set up the Shooting Star development environment and ge
 
 Before you begin, ensure you have the following installed:
 
-- **Node.js 18+** (LTS recommended)
-- **npm 9+** (included with Node.js)
+- **Node.js 22+** (LTS recommended)
+- **npm 10+** (included with Node.js)
 - **Git** for version control
+
+## Option 1: Dev Container (Recommended)
+
+The easiest way to get started is using a **Dev Container** with VS Code or GitHub Codespaces.
+
+### VS Code + Docker
+
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop)
+2. Install the [Dev Containers extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
+3. Clone the repository and open it in VS Code
+4. Click "Reopen in Container" when prompted (or use Command Palette: `Dev Containers: Reopen in Container`)
+
+### GitHub Codespaces
+
+1. Go to the repository on GitHub
+2. Click **Code** → **Codespaces** → **Create codespace on main**
+
+The Dev Container automatically:
+- Installs Node.js 22 and all dependencies
+- Configures VS Code extensions (Tailwind, ESLint, Prettier, Copilot, etc.)
+- Sets up Playwright for E2E testing
+- Forwards ports 5173 (Vite) and 6006 (Storybook)
+
+## Option 2: Local Setup
+
+If you prefer a local setup without Docker:
 
 ## Quick Start
 
@@ -49,20 +75,24 @@ shooting-star/
 ├── app/                    # Application source code
 │   ├── root.tsx           # Root layout with HTML structure
 │   ├── routes.ts          # Route configuration
-│   ├── app.css           # Global styles and design system
-│   ├── routes/           # Page components
-│   │   └── home.tsx      # Homepage with meta optimization
-│   └── welcome/          # Welcome component and brand assets
-│       ├── welcome.tsx   # Main welcome component
-│       ├── pauline-logo-light.svg
-│       └── pauline-logo-dark.svg
-├── public/               # Static assets
-│   ├── fonts/           # Custom font files
-│   └── favicon.svg      # Brand favicon
-├── build/               # Production build output (generated)
-│   ├── client/         # Static assets for CDN
-│   └── server/         # Server-side rendering code
-└── react-router.config.ts  # SSR and build configuration
+│   ├── app.css            # Global styles and TailwindCSS v4
+│   ├── routes/            # Page components
+│   ├── components/        # Reusable UI components (shadcn/ui)
+│   │   ├── ui/           # Base UI components
+│   │   └── layout/       # Layout components (header, footer, etc.)
+│   ├── lib/              # Utility functions
+│   ├── hooks/            # Custom React hooks
+│   └── test/             # Application tests
+├── .devcontainer/         # Dev Container configuration
+├── .github/
+│   ├── instructions/     # Copilot AI instructions
+│   ├── workflows/        # GitHub Actions
+│   └── ISSUE_TEMPLATE/   # Issue templates
+├── .storybook/           # Storybook configuration
+├── stories/              # Additional Storybook stories
+├── public/               # Static assets (fonts, favicon)
+├── docs/                 # Project documentation
+└── build/                # Production build output (generated)
 ```
 
 ## Development Workflow
@@ -120,14 +150,14 @@ Include:
 
 Once you have the project running:
 
-1. **Review the [Tech Stack](../architecture/tech-stack.md)** to understand the technologies used
-2. **Explore the [Brand Guidelines](../design-system/brand-guidelines.md)** for design system usage
+1. **Review the [Tech Stack](../02-architecture/tech-stack.md)** to understand the technologies used
+2. **Explore the [TailwindCSS Configuration](../02-architecture/tailwindcss-configuration.md)** for design tokens and styling
 3. **Check the [Configuration Files](./configuration-files.md)** to understand project configuration
-4. **Review [Agent Coordination](../workflows/agent-coordination.md)** if working with specialized agents
+4. **Review [Copilot Instructions](../../.github/instructions/)** for AI collaboration guidelines
 
 ## Troubleshooting
 
-For common issues and solutions, see the [Troubleshooting Guide](../reference/troubleshooting.md).
+For common issues and solutions, see the [Troubleshooting Guide](../04-reference/troubleshooting.md).
 
 ---
 

@@ -11,7 +11,7 @@ This guide provides comprehensive instructions for performing rollbacks in the s
 For critical production issues requiring immediate rollback:
 
 1. **GitHub Actions UI**:
-   - Go to GitHub → Actions → "Deployment Automation"
+   - Go to GitHub → Actions → "Deploy to Fly.io"
    - Click "Run workflow"
    - Set Operation: "rollback"
    - Set Environment: "production" 
@@ -20,7 +20,7 @@ For critical production issues requiring immediate rollback:
 
 2. **Command Line** (requires GitHub CLI):
    ```bash
-   gh workflow run deployment-automation.yml \
+   gh workflow run deploy-fly.yml \
      -f operation=rollback \
      -f environment=production \
      -f rollback_target=""
@@ -66,7 +66,7 @@ For critical production issues requiring immediate rollback:
 ### Phase 2: Execution
 1. **Access Workflow**:
    ```
-   GitHub Repository → Actions → Deployment Automation → Run workflow
+   GitHub Repository → Actions → Deploy to Fly.io → Run workflow
    ```
 
 2. **Configure Parameters**:
@@ -187,6 +187,6 @@ If rollback fails:
 
 ## Related Documentation
 
-- [DEPLOYMENT.md](./DEPLOYMENT.md) - General deployment configuration
-- [GitHub Actions Workflow](./.github/workflows/deployment-automation.yml) - Technical implementation
-- [Fly.io Configuration](./fly.toml) - Application configuration
+- [Fly.io Deployment Guide](./fly-io-guide.md) - General deployment configuration
+- [GitHub Actions Workflow](../../.github/workflows/deploy-fly.yml) - Technical implementation
+- [Fly.io Configuration](../../fly.toml) - Application configuration

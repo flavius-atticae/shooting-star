@@ -4,7 +4,7 @@ This document outlines the TailwindCSS configuration for the Pauline Roussel yog
 
 ## Overview
 
-The project uses TailwindCSS v4 with a comprehensive brand color system that integrates seamlessly with shadcn/ui components. All colors, fonts, and design tokens from the [Brand Guidelines](../design-system/brand-guidelines.md) have been implemented as CSS custom properties.
+The project uses TailwindCSS v4 with a comprehensive brand color system that integrates seamlessly with shadcn/ui components. All colors, fonts, and design tokens have been implemented as CSS custom properties in [`app/app.css`](../../app/app.css).
 
 ## Configuration Files
 
@@ -245,7 +245,5 @@ npm run build
 
 ## Related Documentation
 
-- [Brand Guidelines](../design-system/brand-guidelines.md) - Complete visual identity guide
-- [Getting Started](../getting-started/local-development.md) - Development setup
-- [Architecture Overview](../architecture/technical-stack.md) - Tech stack details
-- [Agent Coordination](../workflows/agent-coordination.md) - Collaboration protocols
+- [Setup Guide](../01-getting-started/setup.md) - Development setup
+- [Tech Stack](./tech-stack.md) - Tech stack details

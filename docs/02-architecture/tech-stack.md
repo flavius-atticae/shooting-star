@@ -19,36 +19,9 @@ This document outlines the core technologies, frameworks, and tools used in the 
 ### Build & Development Tools
 - **Vite 6.3.3** - Fast build tool with optimized bundling
 - **TypeScript 5.8.3** - Type-safe JavaScript with strict mode enabled
+- **Storybook 10** - Component development and documentation
 - **Hot Module Replacement (HMR)** - Real-time development updates
 - **React Router Build Plugin** - Integrated build optimization
-
-## Design System Features
-
-### Typography Hierarchy
-The project uses 4 carefully selected font families:
-
-- **The Seasons** (Headings) - Elegant serif for headings and titles
-- **Barlow** (Body Text) - Clean sans-serif for readable body content
-- **Moontime** (Accent Text) - Decorative script for special elements
-- **System Fonts** - Fallback fonts for optimal performance
-
-### Color Palette
-8 semantic color families with 50-900 shade variants:
-
-- **Clouded Pine** - Primary brand colors (greens)
-- **Rustling Leaves** - Accent colors (earth tones)
-- **Pitch Mary Brown** - Neutral text colors
-- **Frappé** - Warm accent tones
-- **Glazed Sugar** - Light neutrals
-- **Splashdown** - Blue accent colors
-- **Submerged** - Deep blue tones
-- **Smoke & Mirrors** - Gray neutrals
-
-### Component Architecture
-- **Functional Components** - React hooks-based architecture
-- **TypeScript Integration** - Strict typing for all components
-- **CSS Custom Properties** - Theme system with semantic naming
-- **Accessibility First** - WCAG 2.1 AA compliance built-in
 
 ## File Structure & Configuration
 
@@ -69,9 +42,9 @@ The project uses 4 carefully selected font families:
 - Strict mode configuration
 - Path mapping for imports
 
-#### `tailwind.config.js` (Generated)
+#### `tailwind.config.js`
 - Custom design system tokens
-- Color palette definitions
+- Custom breakpoints and spacing
 - Typography scale configuration
 
 ### Build Output Structure
@@ -139,4 +112,4 @@ The application can be deployed to:
 
 ---
 
-**Next Steps**: Review the [Setup Guide](../getting-started/setup.md) to get started with development, or explore the [Brand Guidelines](../design-system/brand-guidelines.md) to understand the design system implementation.
+**Next Steps**: Review the [Setup Guide](../01-getting-started/setup.md) to get started with development, or explore the [TailwindCSS Configuration](./tailwindcss-configuration.md) to understand the design system implementation.

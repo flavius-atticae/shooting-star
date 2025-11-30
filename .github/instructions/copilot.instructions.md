@@ -1,3 +1,8 @@
+---
+description: General Copilot behavior and project guidelines for shooting-star
+applyTo: "**"
+---
+
 # GitHub Copilot Guide for `shooting-star`
 
 This document describes how GitHub Copilot (in VS Code, on GitHub.com, and in any agent/Space) should work in this repository.
@@ -84,12 +89,14 @@ If you generate commit messages, always follow this format.
 ## 4. Creating issues
 
 When creating GitHub issues, always use the available templates in `.github/ISSUE_TEMPLATE/`:
+
 - **Feature Request** (`feature.yml`) - For new features or enhancements
 - **Bug Report** (`bug.yml`) - For bugs or issues
 
 ### 4.1 Issue requirements
 
 When creating issues, agents MUST include:
+
 - **Clear title** with prefix: `[Feature]` or `[Bug]`
 - **Description** - What needs to be done or what's broken
 - **Objective** - Why this issue matters and what problem it solves
@@ -101,6 +108,7 @@ When creating issues, agents MUST include:
 ### 4.2 Optional context
 
 Agents may also include when relevant:
+
 - **Affected personas** - Who benefits from this (pregnant women, new mothers, etc.)
 - **Browser/environment** - For bugs, specify where the issue occurs
 - **Quality labels** - `accessibility`, `performance`, `security` if applicable
@@ -274,7 +282,7 @@ When working in this repository, Copilot (or any AI agent) should:
 3. Explain reasoning and high-level concepts in **French**, but:
    - Write **code, comments, commit messages, and documentation in English**.
 4. Consider accessibility, performance, and legal compliance as first-class concerns, not afterthoughts.
-5. When the user asks to act as a specific role (e.g. *Technical Lead*, *UX Designer*, *QA tester*), adapt the answers accordingly:
+5. When the user asks to act as a specific role (e.g. _Technical Lead_, _UX Designer_, _QA tester_), adapt the answers accordingly:
    - **Technical Lead**: architecture, patterns, trade-offs, code quality.
    - **UX Designer**: flows, content hierarchy, clarity, accessibility, tone.
    - **QA tester**: test cases, edge cases, manual test plans, regression risks.

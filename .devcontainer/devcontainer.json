@@ -1,0 +1,87 @@
+{
+  "name": "Shooting Star",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:22",
+
+  // Features to add
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  // Port forwarding
+  "forwardPorts": [5173, 6006],
+  "portsAttributes": {
+    "5173": {
+      "label": "Vite Dev Server",
+      "onAutoForward": "notify"
+    },
+    "6006": {
+      "label": "Storybook",
+      "onAutoForward": "notify"
+    }
+  },
+
+  // Run commands after container is created
+  "postCreateCommand": "npm install && npx playwright install --with-deps chromium",
+
+  // VS Code customizations
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bradlc.vscode-tailwindcss",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "unifiedjs.vscode-mdx",
+        "github.copilot",
+        "github.copilot-chat",
+        "github.vscode-github-actions",
+        "github.vscode-pull-request-github",
+        "christian-kohler.npm-intellisense",
+        "yoavbls.pretty-ts-errors",
+        "sdras.night-owl",
+        "codacy-app.codacy"
+      ],
+      "settings": {
+        // Theme
+        "workbench.colorTheme": "Night Owl",
+
+        // Editor
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true,
+        "editor.codeActionsOnSave": {
+          "source.fixAll.eslint": "explicit"
+        },
+
+        // TypeScript
+        "typescript.preferences.importModuleSpecifier": "relative",
+        "typescript.updateImportsOnFileMove.enabled": "always",
+
+        // Tailwind
+        "tailwindCSS.experimental.classRegex": [
+          ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
+          ["cx\\(([^)]*)\\)", "(?:'|\"|`)([^']*)(?:'|\"|`)"]
+        ],
+        "tailwindCSS.includeLanguages": {
+          "typescript": "javascript",
+          "typescriptreact": "javascript"
+        },
+
+        // Files
+        "files.exclude": {
+          "**/node_modules": true,
+          "**/.git": true
+        },
+        "files.associations": {
+          "*.css": "tailwindcss"
+        },
+
+        // Terminal
+        "terminal.integrated.defaultProfile.linux": "zsh"
+      }
+    }
+  },
+
+  // Container user
+  "remoteUser": "node"
+}
