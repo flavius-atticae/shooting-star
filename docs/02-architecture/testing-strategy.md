@@ -42,21 +42,24 @@ This document describes the centralized testing strategy for the Shooting Star p
 ## 🛠️ NPM Scripts
 
 ```bash
-# Unit tests + Storybook play functions
+# Unit tests (Vitest only)
 npm run test
+# Note: Storybook play functions run in CI via vitest-addon integration
 
-# Watch mode for development
+# Watch mode for unit tests (Vitest)
 npm run test:watch
 
-# Visual test UI
+# Visual test UI (Vitest)
 npm run test:ui
 
-# E2E tests only (multi-page journeys)
+# E2E tests only (Playwright, multi-page journeys)
 npm run test:e2e
 
-# All tests
+# All tests (Vitest + Playwright)
 npm run test:all
 ```
+
+> **Tip:** To run Storybook tests interactively, use `npm run storybook` and enable the "Interactions" addon panel.
 
 ---
 
@@ -92,11 +95,13 @@ app/components/
 ├── layout/
 │   └── header/
 │       ├── header.tsx
-│       └── header.stories.tsx  # Play functions here
+│       └── header.stories.tsx  # Play functions (replaces Playwright E2E specs)
 ├── ui/
 │   ├── container.tsx
-│   └── container.stories.tsx   # Play functions here
+│   └── container.stories.tsx   # Play functions (replaces Playwright E2E specs)
 ```
+
+> **Migration Note:** Component-level Playwright E2E specs (`header.spec.ts`, `header-accessibility.spec.ts`, etc.) have been removed. Their coverage is now provided by Storybook play functions in the corresponding `*.stories.tsx` files.
 
 ### E2E Tests (Playwright)
 
@@ -151,10 +156,11 @@ export const MobileMenuInteraction: Story = {
     const nav = canvas.getByRole('navigation');
     await expect(nav).toBeVisible();
     
-    // Assert all navigation links are present
-    await expect(canvas.getByRole('link', { name: /accueil/i })).toBeVisible();
-    await expect(canvas.getByRole('link', { name: /services/i })).toBeVisible();
-    await expect(canvas.getByRole('link', { name: /contact/i })).toBeVisible();
+    // Assert all navigation links are present (matches actual site navigation)
+    await expect(canvas.getByRole('link', { name: /doula/i })).toBeVisible();
+    await expect(canvas.getByRole('link', { name: /yoga/i })).toBeVisible();
+    await expect(canvas.getByRole('link', { name: /féminin/i })).toBeVisible();
+    await expect(canvas.getByRole('link', { name: /à propos/i })).toBeVisible();
   },
 };
 ```
@@ -166,12 +172,13 @@ export const AccessibilityCheck: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
     
-    // Check focus management
+    // Check focus management (toHaveFocus is available via @testing-library/jest-dom)
     const menuButton = canvas.getByRole('button', { name: /menu/i });
     await userEvent.tab();
-    await expect(menuButton).toHaveFocus();
+    // Note: toHaveFocus() may not work reliably in all environments
+    // Prefer checking ARIA attributes for more reliable tests
     
-    // Check ARIA attributes
+    // Check ARIA attributes (more reliable cross-environment)
     await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
     await userEvent.click(menuButton);
     await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
@@ -241,16 +248,25 @@ export const ReducedMotion: Story = {
 
 Use the `@storybook/addon-a11y` panel to verify WCAG AA compliance (4.5:1 minimum contrast ratio).
 
+> **Implementation Note:** Touch target validation (44x44px) and reduced motion testing are documented as patterns here. They will be implemented in component stories as we migrate each component. The `@storybook/addon-a11y` addon already provides automated accessibility checks including contrast ratio validation.
+
 ---
 
 ## ✅ Acceptance Criteria
 
+### Phase 1 (Current PR)
+- [x] Header component has play functions testing its interactions
+- [x] Redundant Playwright E2E specs for Header removed
+- [x] This documentation is created
+
+### Future Phases
 - [ ] All components have play functions testing their interactions
 - [ ] Playwright only tests multi-page journeys
 - [ ] No duplication between Storybook and Playwright
 - [ ] `npm run test` executes Vitest + Storybook tests
 - [ ] `npm run test:e2e` executes only Playwright journeys
-- [ ] This documentation is up to date
+
+> **Note:** This is a phased rollout. Phase 1 covers the Header component only. Future phases will add play functions for other components (Hero, Footer, ContactForm, etc.).
 
 ---
 

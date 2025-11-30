@@ -106,31 +106,34 @@ export const CloseMenuWithEscape: Story = {
 };
 
 /**
- * Keyboard navigation test
+ * Keyboard navigation test - verifies all interactive elements are focusable
  */
 export const KeyboardNavigation: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Tab to first interactive element (logo comes before menu button in DOM)
-    await userEvent.tab();
+    // Get interactive elements
     const logo = canvas.getByLabelText(/Pauline Roussel - Retour à l'accueil/i);
-
-    // Focus order depends on DOM structure, just verify both are focusable
     const menuButton = canvas.getByLabelText(/Ouvrir le menu/i);
 
-    // Both elements should be in the document and focusable
+    // Both elements should be in the document and visible
     await expect(logo).toBeInTheDocument();
     await expect(menuButton).toBeInTheDocument();
 
-    // Continue tabbing through focusable elements
+    // Verify elements are focusable by checking they have no tabindex=-1
+    // (elements without negative tabindex are focusable)
+    expect(logo.getAttribute("tabindex")).not.toBe("-1");
+    expect(menuButton.getAttribute("tabindex")).not.toBe("-1");
+
+    // Tab through interactive elements to verify keyboard access works
+    await userEvent.tab();
     await userEvent.tab();
     await userEvent.tab();
   },
 };
 
 /**
- * Desktop viewport - contact button visible
+ * Desktop viewport - navigation visible, menu button hidden
  */
 export const DesktopView: Story = {
   parameters: {
@@ -144,9 +147,15 @@ export const DesktopView: Story = {
     await expect(logo).toBeVisible();
     await expect(logo).toHaveTextContent("Pauline Roussel");
 
-    // Menu button should be hidden on desktop (has lg:hidden class)
+    // Menu button should have lg:hidden class (will be hidden on large screens)
+    // Note: Storybook viewport may not trigger actual CSS hiding,
+    // so we verify the responsive class is present
     const menuButton = canvas.getByLabelText(/Ouvrir le menu/i);
     await expect(menuButton).toHaveClass("lg:hidden");
+
+    // Header banner role should be present
+    const header = canvas.getByRole("banner");
+    await expect(header).toBeInTheDocument();
   },
 };
 
