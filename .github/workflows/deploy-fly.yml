@@ -53,13 +53,14 @@ jobs:
       
       - name: Notify deployment
         run: |
+          jq -n \
+            --arg body "🚀 **Staging Deployment Successful**\n\nThe latest changes have been deployed to staging environment.\n\n**Environment**: Staging\n**Commit**: $GITHUB_SHA\n**Deployment Time**: $COMMIT_TIMESTAMP" \
+            '{body: $body}' | \
           curl -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/comments" \
-            -d "{
-              \"body\": \"🚀 **Staging Deployment Successful**\\n\\nThe latest changes have been deployed to staging environment.\\n\\n**Environment**: Staging\\n**Commit**: $GITHUB_SHA\\n**Deployment Time**: $COMMIT_TIMESTAMP\"
-            }"
+            -d @-
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -90,14 +91,14 @@ jobs:
       
       - name: Create deployment record
         run: |
-          # Record deployment details
-          DEPLOYMENT_INFO="{
-            \"environment\": \"production\",
-            \"version\": \"$RELEASE_VERSION\",
-            \"deployed_by\": \"$GITHUB_ACTOR\",
-            \"deployed_at\": \"$(date -u +"%Y-%m-%dT%H:%M:%SZ")\",
-            \"commit_sha\": \"$GITHUB_SHA\"
-          }"
+          # Record deployment details using jq for safe JSON construction
+          DEPLOYMENT_INFO=$(jq -n \
+            --arg environment "production" \
+            --arg version "$RELEASE_VERSION" \
+            --arg deployed_by "$GITHUB_ACTOR" \
+            --arg deployed_at "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+            --arg commit_sha "$GITHUB_SHA" \
+            '{environment: $environment, version: $version, deployed_by: $deployed_by, deployed_at: $deployed_at, commit_sha: $commit_sha}')
           echo "Deployment info: $DEPLOYMENT_INFO"
         env:
           RELEASE_VERSION: ${{ github.event.release.tag_name || github.sha }}
@@ -239,13 +240,16 @@ jobs:
             ROLLBACK_TARGET_DISPLAY="$INPUT_ROLLBACK_TARGET"
           fi
           
+          # Build message body
+          MSG_BODY="$ENV_EMOJI **Rollback Completed**\n\n$ENV_NAME deployment has been rolled back successfully.\n\n**Environment**: $INPUT_ENVIRONMENT\n**Target**: $ROLLBACK_TARGET_DISPLAY\n**Triggered by**: $GITHUB_ACTOR\n**Image**: \`$ROLLBACK_IMAGE\`"
+          
+          # Use jq for safe JSON construction
+          jq -n --arg body "$MSG_BODY" '{body: $body}' | \
           curl -X POST \
             -H "Authorization: token $GITHUB_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/$GITHUB_REPOSITORY/issues/comments" \
-            -d "{
-              \"body\": \"$ENV_EMOJI **Rollback Completed**\\n\\n$ENV_NAME deployment has been rolled back successfully.\\n\\n**Environment**: $INPUT_ENVIRONMENT\\n**Target**: $ROLLBACK_TARGET_DISPLAY\\n**Triggered by**: $GITHUB_ACTOR\\n**Image**: \\\`$ROLLBACK_IMAGE\\\`\"
-            }"
+            -d @-
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
