@@ -39,7 +39,7 @@ export function Header({ className }: HeaderProps) {
         // Layout
         "sticky top-0 z-50 w-full",
         // Background - primary brand color with backdrop blur
-        "bg-primary backdrop-blur-[15px] border-b-2 border-red-500",
+        "bg-primary backdrop-blur-[15px] border-b border-primary/20",
         // Height responsive
         "h-14 sm:h-16", // 56px mobile, 64px desktop
         className
