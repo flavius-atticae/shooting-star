@@ -1,15 +1,27 @@
 # Shooting Star ✨
 
+<!-- CI/CD & Quality Badges -->
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/flavius-atticae/shooting-star/deploy-storybook.yml?label=storybook&logo=github)](https://github.com/flavius-atticae/shooting-star/actions/workflows/deploy-storybook.yml)
+[![PR Checks](https://img.shields.io/github/actions/workflow/status/flavius-atticae/shooting-star/pr-checks.yml?label=tests&logo=playwright)](https://github.com/flavius-atticae/shooting-star/actions/workflows/pr-checks.yml)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/de4d964491334b96b86f423b7b198fc7)](https://app.codacy.com/gh/flavius-atticae/shooting-star/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 [![Storybook](https://img.shields.io/badge/📖_Storybook-Live-FF4785)](https://flavius-atticae.github.io/shooting-star/)
+
+<!-- Tech Stack Badges -->
 ![React Router](https://img.shields.io/badge/React_Router-v7.7.1-CA4245?logo=react-router)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4.1.4-06B6D4?logo=tailwindcss)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-3178C6?logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-6.3.3-646CFF?logo=vite)
+![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-latest-000000?logo=shadcnui)
+![Node.js](https://img.shields.io/badge/Node.js-20+-339933?logo=node.js)
+
+<!-- Project Info Badges -->
 ![GitHub issues](https://img.shields.io/github/issues/flavius-atticae/shooting-star)
 ![GitHub last commit](https://img.shields.io/github/last-commit/flavius-atticae/shooting-star)
-
-[![Documentation](https://img.shields.io/badge/📚_Documentation-Available-4CAF50)](docs/README.md)
 ![GitHub code size](https://img.shields.io/github/languages/code-size/flavius-atticae/shooting-star)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
+<!-- Standards & Docs -->
+[![Documentation](https://img.shields.io/badge/📚_Documentation-Available-4CAF50)](docs/README.md)
 ![WCAG](https://img.shields.io/badge/WCAG-2.1_AA-green?style=flat-square)
 
 **Professional website for Pauline Roussel – Prenatal Yoga & Birth Accompaniment**
