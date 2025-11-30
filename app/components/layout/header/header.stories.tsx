@@ -188,21 +188,20 @@ export const NavigationItems: Story = {
       expect(menuButton).toHaveAttribute("aria-expanded", "true");
     });
 
-    // The navigation is inside header but fixed positioned
-    // It should be queryable via the canvas since it's a child of header
-    // Use getAllByRole to find all navigation elements and filter
+    // The mobile navigation is fixed positioned and may render outside canvasElement bounds
+    // Query from the document body to find the navigation
+    const body = canvasElement.ownerDocument.body;
+    
     await waitFor(
       () => {
-        // Get all nav elements from the header component tree
-        const header = canvas.getByRole("banner");
-        const navElements = header.querySelectorAll('[role="navigation"]');
-        expect(navElements.length).toBeGreaterThan(0);
+        const nav = body.querySelector('[role="navigation"]');
+        expect(nav).not.toBeNull();
       },
       { timeout: 2000 }
     );
 
     // Get the navigation element and verify links
-    const nav = canvas.getByRole("navigation");
+    const nav = body.querySelector('[role="navigation"]') as HTMLElement;
     const navCanvas = within(nav);
 
     // Verify all navigation links are present (French labels)
