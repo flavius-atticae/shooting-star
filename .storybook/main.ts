@@ -1,10 +1,9 @@
-// This file has been automatically migrated to valid ESM format by Storybook.
-import { fileURLToPath } from "node:url";
+// Storybook configuration for shooting-star
 import type { StorybookConfig } from '@storybook/react-vite';
-import path, { dirname } from 'path';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const config: StorybookConfig = {
   stories: [
@@ -15,21 +14,14 @@ const config: StorybookConfig = {
   addons: [
     "@chromatic-com/storybook",
     "@storybook/addon-docs",
-    "@storybook/addon-a11y"
+    "@storybook/addon-a11y",
+    "@storybook/addon-vitest"
   ],
   framework: {
     name: "@storybook/react-vite",
     options: {
       strictMode: true,
     }
-  },
-  core: {
-    builder: {
-      name: '@storybook/builder-vite',
-      options: {
-        viteConfigPath: path.resolve(__dirname, './vite.config.ts'),
-      },
-    },
   },
   typescript: {
     check: true,
@@ -41,6 +33,19 @@ const config: StorybookConfig = {
   },
   docs: {
     defaultName: 'Documentation',
+  },
+  // Use custom Vite config to set up path aliases
+  async viteFinal(config) {
+    const { mergeConfig } = await import('vite');
+    return mergeConfig(config, {
+      resolve: {
+        alias: {
+          '~': path.resolve(__dirname, '../app'),
+          // Use mock for React Router to avoid loading the full router in Storybook
+          'react-router': path.resolve(__dirname, './mocks/react-router.ts'),
+        },
+      },
+    });
   },
 };
 export default config;
