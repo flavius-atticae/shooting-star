@@ -96,11 +96,8 @@ export const MobileNavigation: Story = {
     });
 
     // Verify navigation links are accessible
-    const header = canvas.getByRole("banner");
-    const nav = header.querySelector('[role="navigation"]') as HTMLElement | null;
-    expect(nav).not.toBeNull();
-    // eslint-disable-next-line xss/no-mixed-html -- Safe: querying existing test DOM, not inserting HTML
-    const navCanvas = within(nav!);
+    const nav = canvas.getByRole("navigation");
+    const navCanvas = within(nav);
 
     // All main navigation items should be present
     expect(navCanvas.getAllByText(/doula/i).length).toBeGreaterThan(0);
