@@ -5,7 +5,7 @@ Welcome to the Shooting Star project documentation. This hub provides supporting
 For day‑to‑day development and AI collaboration, start with:
 
 - [`README.md`](../README.md) – Project overview, design context, and contribution guidelines  
-- [`COPILOT.md`](../COPILOT.md) – GitHub Copilot and AI collaboration guide
+- [Copilot Instructions](../.github/instructions/) – GitHub Copilot and AI collaboration guide
 
 ---
 
@@ -17,31 +17,28 @@ Quick start guide and initial setup:
 - Project setup and configuration  
 - Environment requirements  
 
-### 🏗️ [Architecture](04-architecture/)
+### 🏗️ [Architecture](02-architecture/)
 Technical decisions and system design:
 
 - Technology stack overview  
 - Routing and SSR architecture  
 - Storybook and TailwindCSS integration  
 
-### 🎨 [Design System](05-design-system/)
-Brand guidelines and UI foundations:
-
-- Visual identity standards  
-- Color, typography, and spacing guidelines  
-- Links to Storybook documentation  
-
-### 🚀 [Deployment](06-deployment/)
+### 🚀 [Deployment](03-deployment/)
 Production deployment and operations:
 
-- Fly.io deployment guide (when available)  
-- Environment configuration notes  
+- Fly.io deployment guide  
+- Rollback procedures  
 
-### 📖 [Reference](08-reference/)
+### 📖 [Reference](04-reference/)
 Troubleshooting and additional resources:
 
 - Common issues and solutions  
 - Additional development guidelines  
+
+### 🎨 Design Assets
+
+Design assets (logos, mockups) are located in the [`design/`](../design/) folder at the project root.
 
 ---
 
@@ -63,8 +60,8 @@ For a complete, up‑to‑date overview of the project, always refer to the root
 
 1. **Setup**: Follow the [Getting Started](01-getting-started/) guide.  
 2. **Development**: Use the conventions described in [`README.md`](../README.md).  
-3. **AI Collaboration**: Follow the rules in [`COPILOT.md`](../COPILOT.md).  
-4. **Architecture & Design**: Consult [Architecture](04-architecture/) and [Design System](05-design-system/) when needed.
+3. **AI Collaboration**: Follow the rules in [Copilot Instructions](../.github/instructions/).  
+4. **Architecture**: Consult [Architecture](02-architecture/) for technical decisions.
 
 ---
 
@@ -73,6 +70,6 @@ For a complete, up‑to‑date overview of the project, always refer to the root
 All development work should follow the conventions defined in:
 
 - [`README.md`](../README.md) – Git workflow, branching, commits, project structure  
-- [`COPILOT.md`](../COPILOT.md) – How GitHub Copilot and other AI tools should behave in this repository  
+- [Copilot Instructions](../.github/instructions/) – How GitHub Copilot and other AI tools should behave in this repository  
 
 Use the documentation in this `docs/` folder as supporting material when making architectural decisions, evolving the design system, or configuring deployment.

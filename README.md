@@ -173,7 +173,7 @@ shooting-star/
 
 ## 🤝 Contribution Guidelines
 
-> For AI-assisted workflows and coding conventions, see **[`COPILOT.md`](COPILOT.md)**.
+> For AI-assisted workflows and coding conventions, see **[Copilot Instructions](.github/instructions/copilot.instructions.md)**.
 
 ### Development Workflow
 
@@ -237,7 +237,7 @@ For detailed technical and product documentation, visit the **[Documentation Hub
 ### Quick Navigation
 
 - **[Documentation Hub](docs/README.md)** – Complete documentation index  
-- **[`COPILOT.md`](COPILOT.md)** – GitHub Copilot and AI collaboration guide  
+- **[Copilot Instructions](.github/instructions/)** – GitHub Copilot and AI collaboration guide  
 - **[Storybook Documentation](https://flavius-atticae.github.io/shooting-star/)** – Component library and design system  
 - **[GitHub Issues](../../issues)** – Current tasks and progress tracking  
 - **[Project Board](../../projects)** – Planning and coordination  
@@ -255,7 +255,7 @@ For detailed technical and product documentation, visit the **[Documentation Hub
 
 - **Development**: GitHub Issues and Pull Requests  
 - **Project Planning**: GitHub Project boards  
-- **Documentation**: Markdown files under `docs/` and `COPILOT.md`  
+- **Documentation**: Markdown files under `docs/` and `.github/instructions/`  
 
 ### Support & Maintenance
 

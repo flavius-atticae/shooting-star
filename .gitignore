@@ -19,10 +19,3 @@ playwright-results.json
 
 *storybook.log
 storybook-static
-
-
-# CodeQL Analysis
-codeql*
-
-#Ignore vscode AI rules
-.github/instructions/codacy.instructions.md
