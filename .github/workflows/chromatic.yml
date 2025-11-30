@@ -34,7 +34,7 @@ jobs:
         run: npm run build-storybook
 
       - name: Run Chromatic
-        uses: chromaui/action@latest
+        uses: chromaui/action@23deebdf3d8a1ccf13423fb235c7bbe2f09348b7 # latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           storybookBuildDir: storybook-static
