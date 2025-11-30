@@ -31,8 +31,10 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Run Header tests
-        run: npx playwright test app/test/e2e/specs/header.spec.ts --reporter=html
+      # Run E2E tests for multi-page user journeys
+      # Component-level tests have moved to Storybook play functions (see header.stories.tsx)
+      - name: Run E2E tests
+        run: npx playwright test app/test/e2e/specs --project=chromium --reporter=html
         env:
           CI: true
 
@@ -44,7 +46,7 @@ jobs:
           path: playwright-report/
           retention-days: 7
 
-  storybook-tests:
+  vitest-tests:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     
@@ -64,7 +66,8 @@ jobs:
       - name: Install Playwright browsers for Vitest
         run: npx playwright install --with-deps chromium
 
-      - name: Run storybook tests
+      # Runs all Vitest tests including Storybook play functions
+      - name: Run Vitest (unit tests + Storybook play functions)
         run: npx vitest run
         env:
           CI: true
