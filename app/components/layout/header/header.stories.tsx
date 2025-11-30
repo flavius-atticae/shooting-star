@@ -115,14 +115,14 @@ export const KeyboardNavigation: Story = {
     // Tab to first interactive element (logo comes before menu button in DOM)
     await userEvent.tab();
     const logo = canvas.getByLabelText(/Pauline Roussel - Retour à l'accueil/i);
-    
+
     // Focus order depends on DOM structure, just verify both are focusable
     const menuButton = canvas.getByLabelText(/Ouvrir le menu/i);
-    
+
     // Both elements should be in the document and focusable
     await expect(logo).toBeInTheDocument();
     await expect(menuButton).toBeInTheDocument();
-    
+
     // Continue tabbing through focusable elements
     await userEvent.tab();
     await userEvent.tab();
