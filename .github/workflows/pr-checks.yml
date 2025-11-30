@@ -65,6 +65,6 @@ jobs:
         run: npx playwright install --with-deps chromium
 
       - name: Run storybook tests
-        run: npm run test:storybook
+        run: npx vitest run
         env:
           CI: true
