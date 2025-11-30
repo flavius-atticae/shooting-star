@@ -1,7 +1,14 @@
-import * as a11yAddonAnnotations from "@storybook/addon-a11y/preview";
+import { beforeAll } from 'vitest';
 import { setProjectAnnotations } from '@storybook/react-vite';
-import * as projectAnnotations from './preview';
+import * as previewAnnotations from './preview';
 
-// This is an important step to apply the right configuration when testing your stories.
-// More info at: https://storybook.js.org/docs/api/portable-stories/portable-stories-vitest#setprojectannotations
-setProjectAnnotations([a11yAddonAnnotations, projectAnnotations]);
+// Apply Storybook project annotations for testing
+// More info at: https://storybook.js.org/docs/writing-tests/integrations/vitest-addon
+const annotations = setProjectAnnotations([previewAnnotations]);
+
+// Expose annotations globally for Storybook's internal setup-file.js
+// This is required for running tests from the Storybook UI
+globalThis.globalProjectAnnotations = annotations;
+
+// Run beforeAll hook for CLI test execution
+beforeAll(annotations.beforeAll);

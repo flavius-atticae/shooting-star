@@ -1,5 +1,6 @@
 import type { Preview } from '@storybook/react-vite'
 import React from 'react'
+import { StorybookRouterProvider } from './mocks/react-router'
 import '../app/app.css'
 
 const preview: Preview = {
@@ -137,6 +138,8 @@ const preview: Preview = {
       // 'todo' - show a11y violations in the test UI only
       // 'error' - fail CI on a11y violations
       // 'off' - skip a11y checks entirely
+      // Using 'todo' as a progressive approach: violations are visible during development
+      // but don't block CI. Will switch to 'error' once all existing violations are fixed.
       test: 'todo'
     },
 
@@ -166,6 +169,12 @@ const preview: Preview = {
 
   // Global decorators for consistent theming
   decorators: [
+    // Wrap stories in mock router for React Router context (Link, useNavigate, etc.)
+    (Story) => (
+      <StorybookRouterProvider>
+        <Story />
+      </StorybookRouterProvider>
+    ),
     (Story) => (
       <div className="antialiased text-neutral bg-white">
         <Story />
