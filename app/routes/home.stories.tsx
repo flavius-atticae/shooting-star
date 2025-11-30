@@ -97,7 +97,7 @@ export const MobileNavigation: Story = {
 
     // Verify navigation links are accessible
     const header = canvas.getByRole("banner");
-    const nav = header.querySelector('[role="navigation"]');
+    const nav = header.querySelector('[role="navigation"]') as HTMLElement | null;
     expect(nav).not.toBeNull();
     // eslint-disable-next-line xss/no-mixed-html -- Safe: querying existing test DOM, not inserting HTML
     const navCanvas = within(nav!);
