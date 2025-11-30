@@ -23,6 +23,7 @@ Technical decisions and system design:
 - Technology stack overview  
 - Routing and SSR architecture  
 - Storybook and TailwindCSS integration  
+- [**Testing strategy**](02-architecture/testing-strategy.md) – Centralized testing around Storybook  
 
 ### 🚀 [Deployment](03-deployment/)
 Production deployment and operations:

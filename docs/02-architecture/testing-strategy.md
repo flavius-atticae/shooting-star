@@ -1,0 +1,262 @@
+# 🧪 Testing Strategy
+
+This document describes the centralized testing strategy for the Shooting Star project, built around **Storybook as the primary testing hub**.
+
+---
+
+## 📐 Architecture Overview
+
+```
+                    ┌─────────────────────────────┐
+                    │   Playwright E2E (thin)     │  ← Multi-page journeys, perf, security
+                    └─────────────────────────────┘
+                                 │
+        ┌────────────────────────┴────────────────────────┐
+        │              STORYBOOK (CENTER)                 │
+        │  • Play functions (interactions)                │
+        │  • Addon a11y (accessibility)                   │
+        │  • Vitest integration (assertions)              │
+        │  • Visual regression (optional Chromatic)       │
+        └─────────────────────────────────────────────────┘
+                                 │
+                    ┌────────────┴────────────┐
+                    │   Unit tests (Vitest)   │  ← Utils, hooks, pure logic
+                    └─────────────────────────┘
+```
+
+---
+
+## 🎯 Separation Rules
+
+| Scope | Tool | Examples |
+|-------|------|----------|
+| Pure logic (no UI) | Vitest | `utils.ts`, `browser-support.ts`, hooks |
+| Single component | Storybook (play functions) | Header, Footer, Hero, ContactForm |
+| Single page (isolated) | Storybook (play functions) | Homepage, ContactPage |
+| Multi-page journey | Playwright E2E | Homepage → Contact → Confirmation |
+| Performance metrics | Playwright E2E | Core Web Vitals, LCP |
+| Security checks | Playwright E2E | Headers, CSP, HTTPS |
+
+---
+
+## 🛠️ NPM Scripts
+
+```bash
+# Unit tests + Storybook play functions
+npm run test
+
+# Watch mode for development
+npm run test:watch
+
+# Visual test UI
+npm run test:ui
+
+# E2E tests only (multi-page journeys)
+npm run test:e2e
+
+# All tests
+npm run test:all
+```
+
+---
+
+## 📁 File Organization
+
+### Unit Tests (Vitest)
+
+Location: `app/test/` or co-located with source files
+
+```
+app/
+├── lib/
+│   ├── utils.ts
+│   └── utils.test.ts          # Co-located unit test
+├── hooks/
+│   ├── use-browser-support.ts
+│   └── use-browser-support.test.ts
+└── test/
+    ├── setup.ts               # Vitest setup
+    ├── setup.test.ts          # Setup validation
+    ├── patterns/              # Reusable test patterns
+    │   └── pregnancy-safe.test.tsx
+    └── integration/           # Integration tests
+        └── router.test.tsx
+```
+
+### Component Tests (Storybook)
+
+Location: Co-located with components in `*.stories.tsx`
+
+```
+app/components/
+├── layout/
+│   └── header/
+│       ├── header.tsx
+│       └── header.stories.tsx  # Play functions here
+├── ui/
+│   ├── container.tsx
+│   └── container.stories.tsx   # Play functions here
+```
+
+### E2E Tests (Playwright)
+
+Location: `app/test/e2e/specs/`
+
+```
+app/test/e2e/
+├── specs/
+│   ├── persona-journeys.spec.ts    # Multi-page user flows
+│   ├── comprehensive-scenarios.spec.ts
+│   ├── performance.spec.ts         # Core Web Vitals
+│   └── security.spec.ts            # Security headers
+└── fixtures/                       # Shared test data
+```
+
+---
+
+## ✍️ Writing Play Functions
+
+Play functions turn stories into interactive tests. They run in the browser and can assert on component behavior.
+
+### Basic Example
+
+```tsx
+// header.stories.tsx
+import type { Meta, StoryObj } from '@storybook/react';
+import { within, userEvent, expect } from '@storybook/test';
+import { Header } from './header';
+
+const meta: Meta<typeof Header> = {
+  component: Header,
+  title: 'Layout/Header',
+};
+export default meta;
+
+type Story = StoryObj<typeof Header>;
+
+export const Default: Story = {};
+
+export const MobileMenuInteraction: Story = {
+  parameters: {
+    viewport: { defaultViewport: 'mobile1' },
+  },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Find and click the mobile menu button
+    const menuButton = canvas.getByRole('button', { name: /menu/i });
+    await userEvent.click(menuButton);
+    
+    // Assert menu is visible
+    const nav = canvas.getByRole('navigation');
+    await expect(nav).toBeVisible();
+    
+    // Assert all navigation links are present
+    await expect(canvas.getByRole('link', { name: /accueil/i })).toBeVisible();
+    await expect(canvas.getByRole('link', { name: /services/i })).toBeVisible();
+    await expect(canvas.getByRole('link', { name: /contact/i })).toBeVisible();
+  },
+};
+```
+
+### Accessibility Testing
+
+```tsx
+export const AccessibilityCheck: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Check focus management
+    const menuButton = canvas.getByRole('button', { name: /menu/i });
+    await userEvent.tab();
+    await expect(menuButton).toHaveFocus();
+    
+    // Check ARIA attributes
+    await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
+    await userEvent.click(menuButton);
+    await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+  },
+};
+```
+
+### Form Validation
+
+```tsx
+export const FormValidation: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    
+    // Submit empty form
+    const submitButton = canvas.getByRole('button', { name: /envoyer/i });
+    await userEvent.click(submitButton);
+    
+    // Check error messages
+    await expect(canvas.getByText(/ce champ est requis/i)).toBeVisible();
+    
+    // Fill form correctly
+    const emailInput = canvas.getByLabelText(/courriel/i);
+    await userEvent.type(emailInput, 'test@example.com');
+    
+    // Error should disappear
+    await expect(canvas.queryByText(/ce champ est requis/i)).not.toBeInTheDocument();
+  },
+};
+```
+
+---
+
+## 🎯 Pregnancy-Safe Testing Patterns
+
+Given our target audience (pregnant women and new mothers), tests should verify:
+
+### Touch Targets
+
+```tsx
+play: async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const button = canvas.getByRole('button');
+  
+  // Minimum 44x44px for swollen fingers
+  const { width, height } = button.getBoundingClientRect();
+  await expect(width).toBeGreaterThanOrEqual(44);
+  await expect(height).toBeGreaterThanOrEqual(44);
+}
+```
+
+### Reduced Motion
+
+```tsx
+// Test with prefers-reduced-motion
+export const ReducedMotion: Story = {
+  parameters: {
+    chromatic: { prefersReducedMotion: 'reduce' },
+  },
+  play: async ({ canvasElement }) => {
+    // Verify no jarring animations
+  },
+};
+```
+
+### Color Contrast
+
+Use the `@storybook/addon-a11y` panel to verify WCAG AA compliance (4.5:1 minimum contrast ratio).
+
+---
+
+## ✅ Acceptance Criteria
+
+- [ ] All components have play functions testing their interactions
+- [ ] Playwright only tests multi-page journeys
+- [ ] No duplication between Storybook and Playwright
+- [ ] `npm run test` executes Vitest + Storybook tests
+- [ ] `npm run test:e2e` executes only Playwright journeys
+- [ ] This documentation is up to date
+
+---
+
+## 📚 References
+
+- [Storybook: Play Functions](https://storybook.js.org/docs/writing-stories/play-function)
+- [Storybook: Vitest Addon](https://storybook.js.org/docs/writing-tests/integrations/vitest-addon)
+- [Storybook: Stories in E2E Tests](https://storybook.js.org/docs/writing-tests/integrations/stories-in-end-to-end-tests)
+- [Storybook: Accessibility Testing](https://storybook.js.org/docs/writing-tests/accessibility-testing)
