@@ -267,15 +267,22 @@ Use the `@storybook/addon-a11y` panel to verify WCAG AA compliance (4.5:1 minimu
 - [x] Component-level Playwright specs migrated to Storybook
 - [x] CI runs Vitest including Storybook play functions
 - [x] This documentation is created
+- [x] Page-level stories (Homepage) with play functions:
+  - Mobile/Desktop view verification
+  - Mobile navigation interaction
+  - CTA button verification (touch targets)
+  - Services section verification
+  - Page accessibility landmarks
+  - French content verification
 
 ### Future Phases
 - [ ] Visual regression testing via Chromatic (see #125)
 - [ ] All components have play functions testing their interactions
-- [ ] Page-level stories (Homepage, ContactPage)
+- [ ] Additional page-level stories (ContactPage, etc.)
 - [ ] Playwright only tests multi-page journeys
 - [ ] No duplication between Storybook and Playwright
 
-> **Note:** This is a phased rollout. Phase 1 covers the Header component. Visual regression testing is tracked separately in issue #125 (Chromatic integration).
+> **Note:** This is a phased rollout. Phase 1 covers the Header component and Homepage. Visual regression testing is tracked separately in issue #125 (Chromatic integration).
 
 ---
 
