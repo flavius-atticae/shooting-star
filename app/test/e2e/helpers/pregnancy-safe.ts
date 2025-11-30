@@ -17,8 +17,8 @@ export class PregnancySafeHelpers {
   private debugMode: boolean = false;
 
   constructor(private page: Page) {
-    this.sessionId =
-      Date.now().toString(36) + Math.random().toString(36).substr(2);
+    // Use crypto.randomUUID() for secure session ID generation
+    this.sessionId = crypto.randomUUID();
   }
 
   /**
