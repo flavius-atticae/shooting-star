@@ -16,7 +16,7 @@ This document describes the centralized testing strategy for the Shooting Star p
         │  • Play functions (interactions)                │
         │  • Addon a11y (accessibility)                   │
         │  • Vitest integration (assertions)              │
-        │  • Visual regression (optional Chromatic)       │
+        │  • Chromatic (visual regression)                │
         └─────────────────────────────────────────────────┘
                                  │
                     ┌────────────┴────────────┐
@@ -275,13 +275,75 @@ Use the `@storybook/addon-a11y` panel to verify WCAG AA compliance (4.5:1 minimu
   - French content verification
 
 ### Future Phases
-- [ ] Visual regression testing via Chromatic (see #125)
+- [x] Visual regression testing via Chromatic (see #125)
 - [ ] All components have play functions testing their interactions
 - [ ] Additional page-level stories (ContactPage, etc.)
 - [ ] Playwright only tests multi-page journeys
 - [ ] No duplication between Storybook and Playwright
 
-> **Note:** This is a phased rollout. Phase 1 covers the Header component and Homepage. Visual regression testing is tracked separately in issue #125 (Chromatic integration).
+> **Note:** This is a phased rollout. Phase 1 covers the Header component and Homepage.
+
+---
+
+## 🎨 Visual Regression Testing (Chromatic)
+
+[Chromatic](https://www.chromatic.com/) provides automated visual regression testing for Storybook stories. It captures screenshots of every story and compares them against baselines to detect unintended visual changes.
+
+### Why Chromatic?
+
+- **CSS Changes Detection**: Catches layout shifts, color changes, spacing issues
+- **Cross-browser Testing**: Tests across multiple browsers automatically
+- **Review Workflow**: Visual diffs with approve/reject workflow in PRs
+- **Storybook Integration**: Native integration via `@chromatic-com/storybook`
+
+### Running Chromatic
+
+```bash
+# Local (requires CHROMATIC_PROJECT_TOKEN environment variable)
+npm run chromatic
+
+# CI runs automatically on PRs via .github/workflows/chromatic.yml
+```
+
+### Configuration
+
+Chromatic is configured in `.github/workflows/chromatic.yml`:
+
+- **`exitZeroOnChanges: true`**: Don't fail CI when visual changes are detected (review workflow)
+- **`exitOnceUploaded: true`**: Exit after upload, don't wait for build completion
+- **`onlyChanged: true`**: Only test stories that changed (faster builds)
+- **`autoAcceptChanges: main`**: Auto-accept baselines on main branch merges
+
+### Story Parameters for Chromatic
+
+```tsx
+// Skip visual testing for a story
+export const InteractiveDemo: Story = {
+  parameters: {
+    chromatic: { disableSnapshot: true },
+  },
+};
+
+// Test with reduced motion preference
+export const ReducedMotion: Story = {
+  parameters: {
+    chromatic: { prefersReducedMotion: 'reduce' },
+  },
+};
+
+// Test at specific viewports
+export const Mobile: Story = {
+  parameters: {
+    chromatic: { viewports: [375] },
+  },
+};
+```
+
+### Setup Requirements
+
+1. Create a Chromatic account at [chromatic.com](https://www.chromatic.com/)
+2. Add the project and get the project token
+3. Add `CHROMATIC_PROJECT_TOKEN` secret to GitHub repository settings
 
 ---
 
