@@ -160,10 +160,11 @@ export class PregnancySafeHelpers {
 
   /**
    * Verify French language content for Quebec users
+   * Uses .first() to handle cases where the phrase appears multiple times on the page
    */
   async verifyFrenchContent(expectedPhrases: string[]) {
     for (const phrase of expectedPhrases) {
-      const element = this.page.locator(`text="${phrase}"`);
+      const element = this.page.locator(`text="${phrase}"`).first();
       await expect(element).toBeVisible({ timeout: TIMEOUTS.ASSERTION });
       console.log(`✓ Found French content: "${phrase}"`);
     }
