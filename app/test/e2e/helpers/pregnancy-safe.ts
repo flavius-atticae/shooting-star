@@ -1,7 +1,7 @@
 import { expect } from "@playwright/test";
 import type { Page, Locator } from "@playwright/test";
 import { TIMEOUTS, ACCESSIBILITY } from "./constants";
-
+import * as nodeCrypto from "crypto";
 /**
  * Pregnancy-Safe Testing Utilities
  *
@@ -17,11 +17,21 @@ export class PregnancySafeHelpers {
   private debugMode: boolean = false;
 
   constructor(private page: Page) {
-    // Use crypto.randomUUID() for secure session ID generation, with fallback for compatibility
-    this.sessionId =
-      typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
-        ? crypto.randomUUID()
-        : `${Date.now().toString(36)}-${Math.random().toString(36).substring(2)}`;
+    // Use crypto.randomUUID() for secure session ID generation, with secure fallback for compatibility
+    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+      this.sessionId = crypto.randomUUID();
+    } else if (typeof window !== "undefined" && window.crypto && typeof window.crypto.getRandomValues === "function") {
+      // Browser fallback: use getRandomValues
+      const array = new Uint32Array(4);
+      window.crypto.getRandomValues(array);
+      this.sessionId = Array.from(array).map(num => num.toString(16)).join("-");
+    } else if (typeof nodeCrypto !== "undefined" && typeof nodeCrypto.randomBytes === "function") {
+      // Node.js fallback: use crypto.randomBytes
+      this.sessionId = nodeCrypto.randomBytes(16).toString("hex");
+    } else {
+      // Final fallback: use timestamp only (for environments with no crypto at all)
+      this.sessionId = Date.now().toString(36);
+    }
   }
 
   /**
