@@ -163,6 +163,22 @@ export const DesktopView: Story = {
     const menuButton = canvas.getByLabelText(/Ouvrir le menu/i);
     await expect(menuButton).toHaveClass("lg:hidden");
 
+    // Desktop navigation should be present with lg:flex class
+    const desktopNav = canvas.getByLabelText(/Navigation principale du site/i);
+    await expect(desktopNav).toBeInTheDocument();
+    await expect(desktopNav).toHaveClass("lg:flex");
+
+    // Verify all desktop navigation links are present
+    const doulaLink = canvas.getByRole("link", { name: "Doula" });
+    const yogaLink = canvas.getByRole("link", { name: "Yoga" });
+    const femininLink = canvas.getByRole("link", { name: "Féminin" });
+    const aboutLink = canvas.getByRole("link", { name: "À propos" });
+
+    await expect(doulaLink).toBeInTheDocument();
+    await expect(yogaLink).toBeInTheDocument();
+    await expect(femininLink).toBeInTheDocument();
+    await expect(aboutLink).toBeInTheDocument();
+
     // Header banner role should be present
     const header = canvas.getByRole("banner");
     await expect(header).toBeInTheDocument();

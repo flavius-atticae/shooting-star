@@ -5,6 +5,16 @@ import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { MobileMenu } from "./mobile-menu";
 
+/**
+ * Desktop navigation links configuration
+ */
+const desktopNavLinks = [
+  { label: "Doula", href: "/doula" },
+  { label: "Yoga", href: "/yoga" },
+  { label: "Féminin", href: "/feminin-sacre" },
+  { label: "À propos", href: "/a-propos" },
+] as const;
+
 export interface HeaderProps {
   className?: string;
 }
@@ -95,6 +105,33 @@ export function Header({ className }: HeaderProps) {
                 )}
               </svg>
             </Button>
+
+            {/* Desktop Navigation Links - Hidden on mobile/tablet */}
+            <nav
+              className="hidden lg:flex items-center gap-4 ml-4"
+              aria-label="Navigation principale du site"
+            >
+              {desktopNavLinks.map((link) => (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  className={cn(
+                    // Typography - Barlow font
+                    "font-sans text-sm font-medium",
+                    // Colors - White text on primary background
+                    "text-white hover:text-white/80",
+                    // Touch target (pregnancy-safe: 44x44px minimum)
+                    "min-h-11 min-w-11 px-3 inline-flex items-center justify-center",
+                    // Transitions
+                    "transition-colors duration-200",
+                    // Focus states for accessibility
+                    "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary rounded-sm"
+                  )}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </nav>
           </div>
 
           {/* Logo - Center (perfect centering with grid) */}

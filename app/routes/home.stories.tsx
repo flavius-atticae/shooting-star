@@ -96,10 +96,15 @@ export const MobileNavigation: Story = {
     });
 
     // Verify navigation links are accessible
-    const nav = canvas.getByRole("navigation");
-    const navCanvas = within(nav);
+    // Use getAllByRole since there are multiple nav elements (desktop + mobile)
+    const navElements = canvas.getAllByRole("navigation");
+    expect(navElements.length).toBeGreaterThan(0);
 
-    // All main navigation items should be present
+    // Find the mobile navigation (the one with "Menu de navigation principal" label)
+    const mobileNav = canvas.getByLabelText(/Menu de navigation principal/i);
+    const navCanvas = within(mobileNav);
+
+    // All main navigation items should be present in mobile menu
     expect(navCanvas.getAllByText(/doula/i).length).toBeGreaterThan(0);
     expect(navCanvas.getAllByText(/yoga/i).length).toBeGreaterThan(0);
     expect(navCanvas.getAllByText(/féminin/i).length).toBeGreaterThan(0);
