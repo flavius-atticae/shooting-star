@@ -245,6 +245,39 @@ Dev Container configuration for VS Code and GitHub Codespaces.
 - Updating Node.js version
 - Adding post-create setup commands
 
+## Visual Testing Configuration
+
+### `chromatic.config.json`
+
+Chromatic visual testing configuration for Storybook integration.
+
+```json
+{
+  "onlyChanged": true,
+  "projectId": "Project:692cc4b20d41658c2157a3ed",
+  "zip": true
+}
+```
+
+**Purpose**:
+- Configures Chromatic for visual regression testing of Storybook components
+- Enables automated screenshot comparisons on pull requests
+
+**Key options**:
+- **onlyChanged**: Only captures snapshots for changed stories (faster builds, lower cost)
+- **projectId**: Unique identifier linking to the Chromatic project dashboard
+- **zip**: Compresses Storybook build before upload (faster uploads)
+
+**When to modify**:
+- Changing snapshot capture behavior (e.g., `onlyChanged: false` for full baseline)
+- Updating project ID when migrating to a new Chromatic project
+- Adding options like `exitZeroOnChanges` for CI pipelines
+
+**Related**:
+- Storybook configuration: `.storybook/main.ts`
+- Visual tests run automatically via `@chromatic-com/storybook` addon
+- Dashboard: [chromatic.com](https://www.chromatic.com/)
+
 ## AI & Code Quality Configuration
 
 ### `.github/instructions/`
