@@ -16,7 +16,7 @@ Pied de page avec logo, navigation, newsletter et réseaux sociaux.
 - Fond primary (#618462) avec texte blanc
 - Container avec coins arrondis
 - Grid 3 colonnes: 2fr 1fr 2fr (desktop)
-- Typography: The Seasons (headings) + Barlow (content)
+- Typography: Ivyora Display (headings) + Barlow (content)
 - Touch targets ≥ 48px
 - WCAG 2.1 AA compliant
 

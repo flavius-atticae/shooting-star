@@ -68,9 +68,9 @@ font-body      /* Barlow Regular (400) */
 font-subtitle  /* Barlow SemiBold (600) */
 ```
 
-#### The Seasons (Headings)
+#### Ivyora Display (Headings)
 ```css  
-font-heading   /* The Seasons Regular */
+font-heading   /* Ivyora Display Regular */
 ```
 
 #### Moontime (Accents)

@@ -15,7 +15,7 @@ const meta: Meta<typeof Header> = {
 Header principal avec logo, navigation responsive et bouton contact.
 
 **Features**:
-- Logo "Pauline Roussel" (The Seasons font)
+- Logo "Pauline Roussel" (Ivyora Display font)
 - Menu mobile avec overlay
 - Touch targets ≥ 48px
 - WCAG 2.1 AA compliant

@@ -4,22 +4,25 @@ import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 import { AboutContent } from "./about-content";
 
-export interface AboutSectionProps extends Omit<React.HTMLAttributes<HTMLElement>, 'children'> {
+export interface AboutSectionProps extends Omit<
+  React.HTMLAttributes<HTMLElement>,
+  "children"
+> {
   /** Custom section spacing override */
-  spacing?: 'compact' | 'normal' | 'spacious';
+  spacing?: "compact" | "normal" | "spacious";
   /** Custom container size */
-  containerSize?: 'sm' | 'md' | 'lg' | 'xl';
+  containerSize?: "sm" | "md" | "lg" | "xl";
   /** Custom className for additional styling */
   className?: string;
   /** Accessibility props */
-  'aria-labelledby'?: string;
-  'aria-describedby'?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
 }
 
 export interface MethodItem {
   /** Unique identifier for the method item */
   id: string;
-  /** Method title - displayed in The Seasons font */
+  /** Method title - displayed in Ivyora Display font */
   title: string;
   /** Method description - displayed in Barlow font */
   description: string;
@@ -27,30 +30,30 @@ export interface MethodItem {
 
 /**
  * About Section Component - Section À propos pregnancy-safe
- * 
+ *
  * Conçu spécifiquement pour le site de Pauline Roussel avec :
  * - Fond gris clair (#f5f4f2) pour douceur visuelle
  * - Couleur de texte secondaire (#517982) pour confort de lecture
  * - Layout 2 rangées : About content + Method section
- * - Typography pregnancy-safe (The Seasons + Barlow)
+ * - Typography pregnancy-safe (Ivyora Display + Barlow)
  * - Grid responsive adaptable mobile/desktop
  * - Accessibilité WCAG 2.1 AA
- * 
+ *
  * Structure :
  * - Rangée 1 : Texte À propos (2/3) + Photo placeholder (1/3)
  * - Rangée 2 : Ma méthode en 3 colonnes avec séparateurs
- * 
+ *
  * Usage:
  * ```tsx
  * <AboutSection />
  * ```
  */
 export function AboutSection({
-  spacing = 'normal',
-  containerSize = 'lg',
+  spacing = "normal",
+  containerSize = "lg",
   className,
-  'aria-labelledby': ariaLabelledBy,
-  'aria-describedby': ariaDescribedBy,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-describedby": ariaDescribedBy,
   ...props
 }: AboutSectionProps) {
   // Contenu par défaut pour la méthode
@@ -58,18 +61,21 @@ export function AboutSection({
     {
       id: "ecoute",
       title: "Écoute",
-      description: "Une attention particulière portée à vos besoins, à votre rythme et à votre vécu unique."
+      description:
+        "Une attention particulière portée à vos besoins, à votre rythme et à votre vécu unique.",
     },
     {
       id: "bienveillance",
       title: "Bienveillance",
-      description: "Un accompagnement respectueux et sans jugement, dans la douceur et la confiance."
+      description:
+        "Un accompagnement respectueux et sans jugement, dans la douceur et la confiance.",
     },
     {
       id: "adaptation",
       title: "Adaptation",
-      description: "Des pratiques personnalisées selon votre état, vos capacités et vos envies du moment."
-    }
+      description:
+        "Des pratiques personnalisées selon votre état, vos capacités et vos envies du moment.",
+    },
   ];
 
   return (
@@ -87,7 +93,7 @@ export function AboutSection({
         <div className="bg-gris rounded-2xl p-8 sm:p-10 lg:p-12">
           {/* Row 1: About Content */}
           <AboutContent />
-          
+
           {/* Row 2: Method Section - Integrated directly */}
           <section
             className="space-y-8 sm:space-y-10 lg:space-y-12 mt-12 sm:mt-16 lg:mt-20"
@@ -95,20 +101,20 @@ export function AboutSection({
             aria-labelledby="method-heading"
           >
             {/* Section Title */}
-            <h2 
+            <h2
               id="method-heading"
               className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-secondary text-left leading-tight"
             >
               Ma méthode
             </h2>
-            
+
             {/* Method Columns Grid */}
-            <div 
+            <div
               className={cn(
                 "grid gap-8 sm:gap-10 lg:gap-0",
                 // Responsive grid layout
-                "grid-cols-1",                    // Mobile: 1 column (stacked)
-                "lg:grid-cols-3",                 // Desktop: 3 columns
+                "grid-cols-1", // Mobile: 1 column (stacked)
+                "lg:grid-cols-3", // Desktop: 3 columns
                 // Desktop layout with separators
                 "lg:divide-x lg:divide-secondary/20"
               )}
@@ -123,7 +129,7 @@ export function AboutSection({
                     "lg:px-8",
                     // First column: no left padding
                     index === 0 && "lg:pl-0",
-                    // Last column: no right padding  
+                    // Last column: no right padding
                     index === defaultMethodItems.length - 1 && "lg:pr-0"
                   )}
                   role="listitem"
@@ -135,15 +141,15 @@ export function AboutSection({
                     aria-labelledby={`method-${item.id}-title`}
                   >
                     {/* Method Title */}
-                    <h3 
+                    <h3
                       id={`method-${item.id}-title`}
                       className="font-heading font-bold text-xl sm:text-2xl text-secondary leading-tight"
                     >
                       {item.title}
                     </h3>
-                    
+
                     {/* Method Description */}
-                    <p 
+                    <p
                       className="font-sans text-base sm:text-lg text-secondary leading-relaxed"
                       aria-describedby={`method-${item.id}-title`}
                     >

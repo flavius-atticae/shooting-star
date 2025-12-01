@@ -4,43 +4,66 @@
 
 /* Custom Fonts */
 @font-face {
-  font-family: 'Barlow';
-  src: url('/fonts/barlow-regular.ttf') format('truetype');
+  font-family: "Barlow";
+  src: url("/fonts/barlow-regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Barlow';
-  src: url('/fonts/barlow-semibold.ttf') format('truetype');
+  font-family: "Barlow";
+  src: url("/fonts/barlow-semibold.ttf") format("truetype");
   font-weight: 600;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Moontime';
-  src: url('/fonts/moontime-regular.ttf') format('truetype');
+  font-family: "Moontime";
+  src: url("/fonts/moontime-regular.ttf") format("truetype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'The Seasons';
-  src: url('/fonts/the-seasons-regular.ttf') format('truetype');
+  font-family: "Ivyora Display";
+  src:
+    url("/fonts/ivyora-display-light.woff2") format("woff2"),
+    url("/fonts/ivyora-display-light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ivyora Display";
+  src:
+    url("/fonts/ivyora-display-regular.woff2") format("woff2"),
+    url("/fonts/ivyora-display-regular.woff") format("woff");
   font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ivyora Display";
+  src:
+    url("/fonts/ivyora-display-bold.woff2") format("woff2"),
+    url("/fonts/ivyora-display-bold.woff") format("woff");
+  font-weight: 700;
   font-style: normal;
   font-display: swap;
 }
 
 @theme {
   /* Typography Families */
-  --font-sans: "Barlow", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans:
+    "Barlow", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-body: "Barlow", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "The Seasons", serif;
+  --font-heading: "Ivyora Display", serif;
   --font-accent: "Moontime", cursive, serif;
   --font-subtitle: "Barlow", ui-sans-serif, system-ui, sans-serif;
 
@@ -87,7 +110,8 @@
 
 /* Container Query Based Grid Classes */
 /* Base: toujours grid, 1 colonne par défaut */
-.cq-grid-2, .cq-grid-3 {
+.cq-grid-2,
+.cq-grid-3 {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
 }
@@ -110,7 +134,7 @@
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
-  
+
   @media (min-width: 640px) {
     .cq-grid-2 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -123,7 +147,7 @@
     display: grid;
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
-  
+
   @media (min-width: 768px) {
     .cq-grid-3 {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -133,27 +157,45 @@
 
 /* Background System Utilities */
 .bg-pattern-dots {
-  background-image: radial-gradient(circle at 1px 1px, theme('colors.gris') 1px, transparent 0);
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    theme("colors.gris") 1px,
+    transparent 0
+  );
   background-size: 20px 20px;
 }
 
 .bg-pattern-lines {
-  background-image: linear-gradient(90deg, theme('colors.gris') 1px, transparent 1px);
+  background-image: linear-gradient(
+    90deg,
+    theme("colors.gris") 1px,
+    transparent 1px
+  );
   background-size: 20px 20px;
 }
 
 .bg-pattern-grid {
-  background-image: 
-    linear-gradient(theme('colors.gris') 1px, transparent 1px),
-    linear-gradient(90deg, theme('colors.gris') 1px, transparent 1px);
+  background-image:
+    linear-gradient(theme("colors.gris") 1px, transparent 1px),
+    linear-gradient(90deg, theme("colors.gris") 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
 /* Pregnancy-safe background gradients */
 .bg-gradient-pregnancy-soft {
-  background: linear-gradient(135deg, theme('colors.white') 0%, theme('colors.soft / 20%') 50%, theme('colors.gris / 30%') 100%);
+  background: linear-gradient(
+    135deg,
+    theme("colors.white") 0%,
+    theme("colors.soft / 20%") 50%,
+    theme("colors.gris / 30%") 100%
+  );
 }
 
 .bg-gradient-pregnancy-warm {
-  background: linear-gradient(135deg, theme('colors.white') 0%, theme('colors.warm / 15%') 50%, theme('colors.gris / 25%') 100%);
+  background: linear-gradient(
+    135deg,
+    theme("colors.white") 0%,
+    theme("colors.warm / 15%") 50%,
+    theme("colors.gris / 25%") 100%
+  );
 }

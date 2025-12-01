@@ -5,7 +5,7 @@ import { Button } from "~/components/ui/button";
 export interface ServiceItem {
   /** Service identifier for tracking */
   id: string;
-  /** Service title in The Seasons font */
+  /** Service title in Ivyora Display font */
   title: string;
   /** Service description in Barlow font */
   description: string;
@@ -16,33 +16,36 @@ export interface ServiceItem {
   /** Button href for link navigation */
   buttonHref?: string;
   /** Button target for external links */
-  buttonTarget?: '_blank' | '_self' | '_parent' | '_top';
+  buttonTarget?: "_blank" | "_self" | "_parent" | "_top";
   /** Optional icon or image for service card */
   icon?: React.ReactNode;
   /** Accessibility label for the service */
-  'aria-label'?: string;
+  "aria-label"?: string;
 }
 
-export interface ServiceCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'children'> {
+export interface ServiceCardProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "children"
+> {
   /** Service data */
   service: ServiceItem;
   /** Custom styling className */
   className?: string;
   /** Card variant for future extensibility */
-  variant?: 'default' | 'featured';
+  variant?: "default" | "featured";
 }
 
 /**
  * Service Card Component - Carte de service pregnancy-safe
- * 
+ *
  * Conçu spécifiquement pour le site de Pauline Roussel avec :
  * - Fond vert (#618462) avec texte blanc
- * - Typography pregnancy-safe (The Seasons + Barlow)
+ * - Typography pregnancy-safe (Ivyora Display + Barlow)
  * - Bouton CTA blanc avec texte vert
  * - Coins arrondis pour douceur visuelle
  * - Touch targets 44px minimum
  * - Accessibilité WCAG 2.1 AA
- * 
+ *
  * Usage:
  * ```tsx
  * <ServiceCard
@@ -59,8 +62,8 @@ export interface ServiceCardProps extends Omit<React.HTMLAttributes<HTMLDivEleme
 export function ServiceCard({
   service,
   className,
-  variant = 'default',
-  'aria-label': ariaLabel,
+  variant = "default",
+  "aria-label": ariaLabel,
   ...props
 }: ServiceCardProps) {
   return (
@@ -75,22 +78,18 @@ export function ServiceCard({
       {...props}
     >
       {/* Optional Icon */}
-      {service.icon && (
-        <div className="mb-4 text-white">
-          {service.icon}
-        </div>
-      )}
-      
+      {service.icon && <div className="mb-4 text-white">{service.icon}</div>}
+
       {/* Title */}
       <h3 className="font-heading font-bold text-3xl sm:text-4xl text-white leading-tight mb-4">
         {service.title}
       </h3>
-      
+
       {/* Description */}
       <p className="font-sans text-base text-white leading-relaxed mb-6 flex-grow">
         {service.description}
       </p>
-      
+
       {/* CTA Button */}
       <div className="mt-auto flex justify-start">
         {service.buttonHref ? (
@@ -100,11 +99,18 @@ export function ServiceCard({
             className="px-6"
             asChild
           >
-            <a 
+            <a
               href={service.buttonHref}
-              target={service.buttonTarget || '_self'}
-              rel={service.buttonTarget === '_blank' ? 'noopener noreferrer' : undefined}
-              aria-label={service['aria-label'] || `${service.buttonText} pour ${service.title}`}
+              target={service.buttonTarget || "_self"}
+              rel={
+                service.buttonTarget === "_blank"
+                  ? "noopener noreferrer"
+                  : undefined
+              }
+              aria-label={
+                service["aria-label"] ||
+                `${service.buttonText} pour ${service.title}`
+              }
             >
               {service.buttonText}
             </a>
@@ -115,7 +121,10 @@ export function ServiceCard({
             size="default"
             className="px-6"
             onClick={service.buttonAction}
-            aria-label={service['aria-label'] || `${service.buttonText} pour ${service.title}`}
+            aria-label={
+              service["aria-label"] ||
+              `${service.buttonText} pour ${service.title}`
+            }
           >
             {service.buttonText}
           </Button>

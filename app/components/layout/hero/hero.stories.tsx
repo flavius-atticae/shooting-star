@@ -12,7 +12,7 @@ const meta: Meta<typeof Hero> = {
 Hero principal avec titre multiline, sous-titre et variantes de hauteur.
 
 **Features**:
-- Typography impact (The Seasons + Barlow)
+- Typography impact (Ivyora Display + Barlow)
 - Variants: default, full-height
 - Multiline support avec \\n
 - Touch targets ≥ 44px
@@ -52,4 +52,3 @@ export const Default: Story = {
     multiline: true,
   },
 };
-

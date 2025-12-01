@@ -29,11 +29,14 @@ export interface FooterNavLink {
 /**
  * Props for the main Footer component
  */
-export interface FooterProps extends Omit<React.HTMLAttributes<HTMLElement>, 'children'> {
+export interface FooterProps extends Omit<
+  React.HTMLAttributes<HTMLElement>,
+  "children"
+> {
   /** Custom section spacing override */
-  spacing?: 'compact' | 'normal' | 'spacious';
+  spacing?: "compact" | "normal" | "spacious";
   /** Custom container size */
-  containerSize?: 'sm' | 'md' | 'lg' | 'xl';
+  containerSize?: "sm" | "md" | "lg" | "xl";
   /** Navigation links configuration */
   navLinks?: FooterNavLink[];
   /** Social media links configuration */
@@ -45,8 +48,8 @@ export interface FooterProps extends Omit<React.HTMLAttributes<HTMLElement>, 'ch
   /** Custom className for additional styling */
   className?: string;
   /** Accessibility props */
-  'aria-labelledby'?: string;
-  'aria-describedby'?: string;
+  "aria-labelledby"?: string;
+  "aria-describedby"?: string;
 }
 
 // ============================================================================
@@ -60,28 +63,28 @@ const defaultNavLinks: FooterNavLink[] = [
   {
     label: "Doula",
     href: "/doula",
-    ariaLabel: "Découvrir mes services d'accompagnement doula"
+    ariaLabel: "Découvrir mes services d'accompagnement doula",
   },
   {
     label: "Yoga",
     href: "/yoga",
-    ariaLabel: "Découvrir mes cours de yoga périnatal"
+    ariaLabel: "Découvrir mes cours de yoga périnatal",
   },
   {
     label: "Féminin sacré",
     href: "/feminin-sacre",
-    ariaLabel: "Découvrir mes accompagnements féminin sacré"
+    ariaLabel: "Découvrir mes accompagnements féminin sacré",
   },
   {
     label: "À propos",
     href: "/a-propos",
-    ariaLabel: "En savoir plus sur Pauline Roussel"
+    ariaLabel: "En savoir plus sur Pauline Roussel",
   },
   {
     label: "Contact",
     href: "/contact",
-    ariaLabel: "Prendre contact avec Pauline Roussel"
-  }
+    ariaLabel: "Prendre contact avec Pauline Roussel",
+  },
 ];
 
 /**
@@ -89,25 +92,25 @@ const defaultNavLinks: FooterNavLink[] = [
  */
 const defaultSocialLinks: SocialLink[] = [
   {
-    platform: 'instagram',
-    url: 'https://instagram.com/paulinerousseldoula',
-    label: 'Suivre Pauline Roussel sur Instagram'
+    platform: "instagram",
+    url: "https://instagram.com/paulinerousseldoula",
+    label: "Suivre Pauline Roussel sur Instagram",
   },
   {
-    platform: 'linkedin',
-    url: 'https://linkedin.com/in/pauline-roussel-doula',
-    label: 'Contacter Pauline Roussel sur LinkedIn'
+    platform: "linkedin",
+    url: "https://linkedin.com/in/pauline-roussel-doula",
+    label: "Contacter Pauline Roussel sur LinkedIn",
   },
   {
-    platform: 'facebook',
-    url: 'https://facebook.com/paulinerousseldoula',
-    label: 'Suivre Pauline Roussel sur Facebook'
+    platform: "facebook",
+    url: "https://facebook.com/paulinerousseldoula",
+    label: "Suivre Pauline Roussel sur Facebook",
   },
   {
-    platform: 'youtube',
-    url: 'https://youtube.com/@paulinerousseldoula',
-    label: 'Voir les vidéos de Pauline Roussel sur YouTube'
-  }
+    platform: "youtube",
+    url: "https://youtube.com/@paulinerousseldoula",
+    label: "Voir les vidéos de Pauline Roussel sur YouTube",
+  },
 ];
 
 // ============================================================================
@@ -116,7 +119,7 @@ const defaultSocialLinks: SocialLink[] = [
 
 /**
  * Footer Component - Pied de page pregnancy-safe
- * 
+ *
  * Footer complet pour le site de Pauline Roussel avec :
  * - Fond primary (vert #618462) avec texte blanc, contenu dans le Container
  * - Layout 3 colonnes : Logo (2fr) + Navigation (1fr) + Social (2fr)
@@ -127,17 +130,17 @@ const defaultSocialLinks: SocialLink[] = [
  * - Touch targets 48px minimum (confort grossesse)
  * - Accessibilité WCAG 2.1 AA complète
  * - Container avec coins arrondis pour design moderne
- * 
+ *
  * Architecture:
  * - Section transparente avec Container bg-primary arrondi
  * - Grid CSS avec ratio 2fr 1fr 2fr desktop
  * - Gap approprié entre colonnes
- * - Typography pregnancy-safe (The Seasons + Barlow)
- * 
+ * - Typography pregnancy-safe (Ivyora Display + Barlow)
+ *
  * Usage:
  * ```tsx
  * <Footer />
- * <Footer 
+ * <Footer
  *   onNewsletterSignup={handleSignup}
  *   navLinks={customLinks}
  *   socialLinks={customSocial}
@@ -145,15 +148,15 @@ const defaultSocialLinks: SocialLink[] = [
  * ```
  */
 export function Footer({
-  spacing = 'normal',
-  containerSize = 'xl',
+  spacing = "normal",
+  containerSize = "xl",
   navLinks = defaultNavLinks,
   socialLinks = defaultSocialLinks,
   onNewsletterSignup,
   isNewsletterLoading = false,
   className,
-  'aria-labelledby': ariaLabelledBy,
-  'aria-describedby': ariaDescribedBy,
+  "aria-labelledby": ariaLabelledBy,
+  "aria-describedby": ariaDescribedBy,
   ...props
 }: FooterProps) {
   return (
@@ -169,18 +172,19 @@ export function Footer({
     >
       <Container size={containerSize}>
         {/* Main Footer Grid - Simple 3-column approach */}
-        <div className={cn(
-          // Basic grid - 1 column mobile, 3 columns tablet+
-          "grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-8",
-          // Vertical and horizontal alignment - top aligned for Figma conformance
-          "items-start justify-items-start md:justify-items-center",
-          // Padding for rounded container - Progressive Enhancement (48px → 64px → 80px)
-          "px-6 py-12 sm:px-8 md:py-16 lg:py-20"
-        )}>
-          
+        <div
+          className={cn(
+            // Basic grid - 1 column mobile, 3 columns tablet+
+            "grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-8",
+            // Vertical and horizontal alignment - top aligned for Figma conformance
+            "items-start justify-items-start md:justify-items-center",
+            // Padding for rounded container - Progressive Enhancement (48px → 64px → 80px)
+            "px-6 py-12 sm:px-8 md:py-16 lg:py-20"
+          )}
+        >
           {/* Column 1: Logo Section (inline) */}
           <div className="flex flex-col items-start justify-start">
-            <Link 
+            <Link
               to="/"
               className={cn(
                 // Base styles
@@ -197,17 +201,17 @@ export function Footer({
               aria-label="Pauline Roussel - Retour à l'accueil"
             >
               {/* Logo SVG from public/white-logo.svg */}
-              <img 
+              <img
                 src="/white-logo.svg"
                 alt="Logo Pauline Roussel"
                 className="w-[90%] sm:w-[80%] lg:w-[80%]"
               />
             </Link>
           </div>
-          
+
           {/* Column 2: Navigation (inline) */}
           <div className="flex flex-col items-center">
-            <nav 
+            <nav
               className="flex flex-col items-start space-y-1"
               aria-label="Navigation principale du site"
             >
@@ -240,15 +244,17 @@ export function Footer({
               ))}
             </nav>
           </div>
-          
+
           {/* Column 3: Social Section (inline) */}
           <div className="flex flex-col items-start space-y-6">
             {/* Section Title - Adjusted for Figma (30px → 36px → 40px) */}
             <div className="w-full">
-              <h3 className={cn(
-                "font-heading text-3xl sm:text-4xl lg:text-[40px] text-white",
-                "mb-6"
-              )}>
+              <h3
+                className={cn(
+                  "font-heading text-3xl sm:text-4xl lg:text-[40px] text-white",
+                  "mb-6"
+                )}
+              >
                 Restons connectés
               </h3>
             </div>
@@ -266,12 +272,14 @@ export function Footer({
 
             {/* Privacy Notice */}
             <div className="w-full">
-              <p className={cn(
-                "text-xs text-white/70 font-body leading-relaxed",
-                "max-w-sm"
-              )}>
-                En vous inscrivant, vous acceptez de recevoir nos communications. 
-                Vous pourrez vous désabonner à tout moment.
+              <p
+                className={cn(
+                  "text-xs text-white/70 font-body leading-relaxed",
+                  "max-w-sm"
+                )}
+              >
+                En vous inscrivant, vous acceptez de recevoir nos
+                communications. Vous pourrez vous désabonner à tout moment.
               </p>
             </div>
 
@@ -284,16 +292,16 @@ export function Footer({
               />
             </div>
           </div>
-          
         </div>
 
         {/* Footer Bottom - Legal/Copyright */}
-        <div className={cn(
-          "mx-6 sm:mx-8 pt-6 pb-2",
-          "flex flex-col sm:flex-row items-center justify-between",
-          "gap-4 text-center sm:text-left"
-        )}>
-          
+        <div
+          className={cn(
+            "mx-6 sm:mx-8 pt-6 pb-2",
+            "flex flex-col sm:flex-row items-center justify-between",
+            "gap-4 text-center sm:text-left"
+          )}
+        >
           {/* Copyright */}
           <p className="text-sm text-white/80 font-body">
             © {new Date().getFullYear()} Pauline Roussel. Tous droits réservés.
@@ -301,7 +309,7 @@ export function Footer({
 
           {/* Legal Links */}
           <div className="flex items-center space-x-6">
-            <a 
+            <a
               href="/mentions-legales"
               className={cn(
                 "text-sm text-white/80 hover:text-white font-body",
@@ -312,7 +320,7 @@ export function Footer({
             >
               Mentions légales
             </a>
-            <a 
+            <a
               href="/confidentialite"
               className={cn(
                 "text-sm text-white/80 hover:text-white font-body",
@@ -324,7 +332,6 @@ export function Footer({
               Confidentialité
             </a>
           </div>
-          
         </div>
       </Container>
     </Section>
