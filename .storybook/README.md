@@ -2,152 +2,185 @@
 
 ## Phase 1 Implementation Complete ✅
 
-Cette configuration Storybook est optimisée pour le développement de composants **pregnancy-safe** dans le projet Shooting Star de Pauline Roussel.
+This Storybook configuration is optimized for developing **pregnancy-safe** components in the Shooting Star project by Pauline Roussel.
 
-### 🚀 Démarrage Rapide
+### 🚀 Quick Start
 
 ```bash
-# Démarrer Storybook en développement
+# Start Storybook in development
 npm run storybook
 
-# Builder Storybook pour production  
+# Build Storybook for production  
 npm run build-storybook
 ```
 
-Storybook sera disponible à : **http://localhost:6006**
+Storybook will be available at: **http://localhost:6006**
 
 ## 📁 Structure
 
 ```
 .storybook/
-├── main.ts              # Configuration principale
-├── preview.tsx          # Configuration globale et decorators
-├── vite.config.ts       # Configuration Vite pour Storybook
-└── README.md           # Cette documentation
+├── main.ts              # Main Storybook configuration
+├── preview.tsx          # Global configuration and decorators
+├── vite.config.ts       # Vite configuration for Storybook
+├── vitest.setup.ts      # Setup for running tests from Storybook UI
+└── README.md            # This documentation
 
 stories/
 ├── foundation/
-│   ├── Introduction.mdx              # Documentation d'accueil
-│   └── Pregnancy-Safe-Guidelines.mdx # Guidelines UX spécialisées
+│   ├── Introduction.mdx              # Welcome documentation
+│   └── Pregnancy-Safe-Guidelines.mdx # Specialized UX guidelines
 
 app/components/
 ├── ui/
-│   ├── container.stories.tsx         # Stories Container
-│   └── background.stories.tsx        # Stories Background
+│   ├── container.stories.tsx         # Container Stories
+│   └── background.stories.tsx        # Background Stories
 └── layout/
-    └── responsive-grid.stories.tsx   # Stories AdaptiveGrid
+    └── responsive-grid.stories.tsx   # AdaptiveGrid Stories
 ```
 
 ## 🔧 Configuration
 
-### Addons Installés
+### Installed Addons
 
-- **@storybook/addon-essentials** : Contrôles, actions, docs, viewport, backgrounds
-- **@storybook/addon-a11y** : Tests d'accessibilité WCAG 2.1 AA
-- **@storybook/addon-docs** : Documentation automatique avec MDX
-- **@chromatic-com/storybook** : Tests visuels
+- **@storybook/addon-essentials**: Controls, actions, docs, viewport, backgrounds
+- **@storybook/addon-a11y**: WCAG 2.1 AA accessibility testing
+- **@storybook/addon-docs**: Automatic documentation with MDX
+- **@chromatic-com/storybook**: Visual testing
 
-### Paramètres Pregnancy-Safe
+### Pregnancy-Safe Settings
 
-#### Viewports Optimisés
-- **iPhone SE (375px)** : Minimum supporté  
-- **iPhone 12/13 (390px)** : Mobile optimal
-- **iPad (768px)** : Tablet pregnancy-friendly  
-- **Desktop (1024px+)** : Interfaces étendues
+#### Optimized Viewports
+- **iPhone SE (375px)**: Minimum supported  
+- **iPhone 12/13 (390px)**: Optimal mobile
+- **iPad (768px)**: Pregnancy-friendly tablet  
+- **Desktop (1024px+)**: Extended interfaces
 
-#### Backgrounds Palette Pauline Roussel
-- **White** : Base neutre
-- **Gris** : Arrière-plan doux (#f5f4f2)
-- **Soft Gradient** : Transition blanc → rose pâle
-- **Warm Gradient** : Transition blanc → beige
+#### Pauline Roussel Color Palette
+- **White**: Neutral base
+- **Grey**: Soft background (#f5f4f2)
+- **Soft Gradient**: White → pale pink transition
+- **Warm Gradient**: White → beige transition
 
-#### Accessibilité Renforcée
-- Tests automatiques sur chaque story
-- Validation contraste couleurs
-- Vérification touch targets (≥44px)
-- Support navigation clavier
+#### Enhanced Accessibility
+- Automatic tests on each story
+- Color contrast validation
+- Touch target verification (≥44px)
+- Keyboard navigation support
 
-## 📋 Stories Implémentées
+## 📋 Implemented Stories
 
 ### Foundation/Container
-- **5 tailles** : sm, md, lg, xl, full
-- **Responsive padding** adaptatif
-- **Touch-friendly** pour usage grossesse
+- **5 sizes**: sm, md, lg, xl, full
+- **Responsive padding** adaptive
+- **Touch-friendly** for pregnancy use
 - **Semantic HTML** configurable
 
-**Stories disponibles :**
+**Available stories:**
 - Default, Small, Medium, Large, ExtraLarge
 - FullWidth, Comparison, CustomElement, WithCustomStyles
 
 ### Foundation/Background  
-- **5 variantes** pregnancy-safe
-- **Palette Pauline Roussel** intégrée
-- **Gradients doux** sans agressivité visuelle
-- **Patterns subtils** optionnels
+- **5 pregnancy-safe variants**
+- **Pauline Roussel palette** integrated
+- **Soft gradients** without visual aggression
+- **Subtle patterns** optional
 
-**Stories disponibles :**
+**Available stories:**
 - White, Accent, SoftGradient, ComplexGradient, WarmGradient
 - AllVariants, WithPatterns, UseBackgroundClasses
 
 ### Foundation/AdaptiveGrid
-- **Container Queries** avec fallback média queries  
-- **2 et 3 colonnes** adaptatifs
-- **Touch targets généreux** (≥44px)
-- **Performance optimisée** pour tous devices
+- **Container Queries** with media query fallback  
+- **2 and 3 columns** adaptive
+- **Generous touch targets** (≥44px)
+- **Optimized performance** for all devices
 
-**Stories disponibles :**
+**Available stories:**
 - TwoColumns, ThreeColumns, CustomGap, InteractiveResize
 - Comparison, CompleteDemo, ServicesGallery
 
 ## 🎨 Design System Integration
 
-### Couleurs Pregnancy-Safe
+### Pregnancy-Safe Colors
 ```css
-/* Principales */
---primary: #618462    /* Vert apaisant */
---secondary: #517982  /* Bleu calme */
---accent: #af6868     /* Rose doux */
---neutral: #5e4530    /* Brun lisible */
+/* Primary */
+--primary: #618462    /* Soothing green */
+--secondary: #517982  /* Calm blue */
+--accent: #af6868     /* Soft pink */
+--neutral: #5e4530    /* Readable brown */
 
 /* Support */
---soft: #ffddd3       /* Rose pâle */
---warm: #ceaf9b       /* Beige chaleureux */  
---gris: #f5f4f2       /* Gris neutre */
+--soft: #ffddd3       /* Pale pink */
+--warm: #ceaf9b       /* Warm beige */  
+--gris: #f5f4f2       /* Neutral grey */
 ```
 
 ### Typography
-- **Base** : 16px minimum sur mobile
-- **Line Height** : 1.6+ pour faciliter lecture
-- **Font Weight** : Medium recommandé pour visibilité
+- **Base**: 16px minimum on mobile
+- **Line Height**: 1.6+ for easier reading
+- **Font Weight**: Medium recommended for visibility
 
-## 🧪 Tests et Validation
+## 🧪 Testing and Validation
 
-### Checklist Accessibility (WCAG 2.1 AA)
-Chaque story valide automatiquement :
+### Running Tests
 
-- [ ] **Contraste** : ≥4.5:1 (texte normal), ≥3:1 (large)
-- [ ] **Touch Targets** : ≥44x44px avec 8px espacement
-- [ ] **Navigation Clavier** : Tab, Enter, Espace fonctionnels
-- [ ] **Screen Readers** : Labels et descriptions appropriés
-- [ ] **Motion** : Respecte prefers-reduced-motion
+#### From Terminal (CLI)
+```bash
+# Run all Storybook tests
+npm run test
 
-### Tests Pregnancy-Specific
-- [ ] **Couleurs non-déclencheuses** : Pas de rouge médical
-- [ ] **Animations douces** : ≤300ms, courbes easeOut
-- [ ] **Lisibilité fatigue** : Contrastes généreux
-- [ ] **Touch comfort** : Zones élargies, feedback visuel
+# Watch mode during development
+npm run test:watch
 
-## 🔄 Workflow Développement
+# With Vitest UI
+npm run test:ui
+```
 
-### Ajouter une Nouvelle Story
+#### From Storybook UI
+Thanks to the `@storybook/addon-vitest` integration, you can run tests directly from Storybook:
 
-1. **Créer le fichier** `component.stories.tsx` à côté du composant
-2. **Suivre le template** des stories existantes
-3. **Inclure documentation** MDX si nécessaire
-4. **Valider accessibility** avec addon a11y
-5. **Tester pregnancy-safe** selon guidelines
+1. **Start Storybook**: `npm run storybook`
+2. **Open the "Test" panel** in the Storybook toolbar (▶️ icon)
+3. **Run tests**: 
+   - Click "Run tests" to execute all tests
+   - Or click the play button next to an individual story
 
-### Template Story Type-Safe
+**Required configuration** (`.storybook/vitest.setup.ts`):
+```typescript
+// Expose annotations globally for Storybook's internal setup-file.js
+// This is required for running tests from the Storybook UI
+globalThis.globalProjectAnnotations = annotations;
+```
+
+This line exposes project annotations globally, allowing Storybook to execute play functions as tests directly in the interface.
+
+### Accessibility Checklist (WCAG 2.1 AA)
+Each story automatically validates:
+
+- [ ] **Contrast**: ≥4.5:1 (normal text), ≥3:1 (large)
+- [ ] **Touch Targets**: ≥44x44px with 8px spacing
+- [ ] **Keyboard Navigation**: Tab, Enter, Space functional
+- [ ] **Screen Readers**: Appropriate labels and descriptions
+- [ ] **Motion**: Respects prefers-reduced-motion
+
+### Pregnancy-Specific Tests
+- [ ] **Non-triggering colors**: No medical red
+- [ ] **Gentle animations**: ≤300ms, easeOut curves
+- [ ] **Fatigue readability**: Generous contrasts
+- [ ] **Touch comfort**: Enlarged zones, visual feedback
+
+## 🔄 Development Workflow
+
+### Adding a New Story
+
+1. **Create the file** `component.stories.tsx` alongside the component
+2. **Follow the template** from existing stories
+3. **Include MDX documentation** if needed
+4. **Validate accessibility** with a11y addon
+5. **Test pregnancy-safe** according to guidelines
+
+### Type-Safe Story Template
 ```tsx
 import type { Meta, StoryObj } from '@storybook/react'
 import { ComponentName } from './component'
@@ -158,7 +191,7 @@ const meta: Meta<typeof ComponentName> = {
   parameters: {
     docs: {
       description: {
-        component: 'Description pregnancy-friendly'
+        component: 'Pregnancy-friendly description'
       }
     }
   },
@@ -178,35 +211,35 @@ export const Default: Story = {
 }
 ```
 
-## 🚀 Déploiement
+## 🚀 Deployment
 
-### Build Production
+### Production Build
 ```bash
 npm run build-storybook
 ```
 
-### GitHub Pages (automatique)
-- Build automatique sur push `main`
-- Déploiement sur `https://flavius-atticae.github.io/shooting-star/`
-- Cache CDN pour performance optimale
+### GitHub Pages (automatic)
+- Automatic build on `main` push
+- Deployment to `https://flavius-atticae.github.io/shooting-star/`
+- CDN cache for optimal performance
 
-### Intégration Continue
-- **TypeScript check** : Validation types stricte
-- **Accessibility tests** : Échec si WCAG non-respecté  
-- **Visual regression** : Détection changements visuels
-- **Performance** : Bundle size monitoring
+### Continuous Integration
+- **TypeScript check**: Strict type validation
+- **Accessibility tests**: Fails if WCAG not met  
+- **Visual regression**: Visual change detection
+- **Performance**: Bundle size monitoring
 
 ## 📚 Resources
 
-### Documentation Interne
+### Internal Documentation
 - [Foundation Introduction](http://localhost:6006/?path=/docs/foundation-introduction--docs)
 - [Pregnancy-Safe Guidelines](http://localhost:6006/?path=/docs/foundation-guidelines-pregnancy-safe--docs)
 
-### Guidelines Externes
+### External Guidelines
 - [WCAG 2.1 Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
 - [Inclusive Design Principles](https://inclusivedesignprinciples.org/)
 - [Quebec Law 25 Compliance](https://www.cai.gouv.qc.ca/loi-25/)
 
 ---
 
-**Cette configuration Phase 1 fournit une base solide pour développer l'ensemble du design system Shooting Star avec un focus pregnancy-safe prioritaire.** 🤱✨
+**This Phase 1 configuration provides a solid foundation for developing the entire Shooting Star design system with a pregnancy-safe focus as the priority.** 🤱✨
