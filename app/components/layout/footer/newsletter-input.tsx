@@ -19,7 +19,7 @@ export interface NewsletterInputProps {
 
 /**
  * Newsletter Input Component
- * 
+ *
  * Champ email pour inscription newsletter avec :
  * - Fond blanc sur footer primary (vert #618462)
  * - Typography Barlow (sans-serif) pregnancy-safe
@@ -28,7 +28,7 @@ export interface NewsletterInputProps {
  * - États focus accessibles WCAG 2.1 AA
  * - Loading state avec feedback visuel
  * - Placeholder et labels en français
- * 
+ *
  * Usage:
  * ```tsx
  * <NewsletterInput onSubmit={handleSubmit} />
@@ -40,7 +40,7 @@ export function NewsletterInput({
   isLoading = false,
   className,
   placeholder = "Votre adresse email",
-  ariaLabel = "Saisir votre adresse email pour la newsletter"
+  ariaLabel = "Saisir votre adresse email pour la newsletter",
 }: NewsletterInputProps) {
   const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState("");
@@ -55,7 +55,7 @@ export function NewsletterInput({
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email.trim()) {
       setError("L'adresse email est requise");
       return;
@@ -85,7 +85,7 @@ export function NewsletterInput({
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newEmail = e.target.value;
     setEmail(newEmail);
-    
+
     // Clear error when user starts typing
     if (error && newEmail.trim()) {
       setError("");
@@ -95,7 +95,7 @@ export function NewsletterInput({
   const isFormDisabled = isLoading || isValidating;
 
   return (
-    <form 
+    <form
       onSubmit={handleSubmit}
       className={cn("w-full", className)}
       noValidate
@@ -114,8 +114,8 @@ export function NewsletterInput({
           className={cn(
             // Base styles
             "w-full font-body",
-            // Sizing - pregnancy-safe touch target
-            "h-12 px-4 text-base",
+            // Sizing - pregnancy-safe touch target (56px to accommodate button)
+            "h-14 px-4 pr-28 text-base",
             // Colors - transparent background on green footer
             "bg-transparent text-white placeholder:text-white/60",
             // Border and focus states
@@ -136,11 +136,13 @@ export function NewsletterInput({
           disabled={isFormDisabled || !email.trim()}
           aria-label="S'inscrire à la newsletter"
           className={cn(
-            // Positioning
-            "absolute right-1 top-1 bottom-1",
+            // Positioning - centered vertically with proper spacing
+            "absolute right-1 top-1/2 -translate-y-1/2",
             // Base styles
             "inline-flex items-center justify-center",
             "px-4 font-body text-sm font-semibold",
+            // Touch target - WCAG 2.1 AA requires 44px minimum, pregnancy-safe is 48px
+            "min-h-12 min-w-[72px]",
             // Colors - primary button style
             "bg-primary text-white",
             "hover:bg-primary/90 active:bg-primary/80",
@@ -151,9 +153,7 @@ export function NewsletterInput({
             // Disabled state
             "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary",
             // Transitions
-            "transition-all duration-200",
-            // Touch target consideration
-            "min-w-[72px]"
+            "transition-all duration-200"
           )}
         >
           {isFormDisabled ? (
@@ -190,7 +190,7 @@ export function NewsletterInput({
 
       {/* Error Message */}
       {error && (
-        <p 
+        <p
           id="newsletter-error"
           role="alert"
           className="mt-2 text-sm text-white/90 font-body"
