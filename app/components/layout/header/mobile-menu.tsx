@@ -22,12 +22,12 @@ const navigationItems = [
   },
   {
     label: "Féminin",
-    href: "/feminin",
+    href: "/feminin-sacre",
     description: "Le féminin sacré - ateliers variés"
   },
   {
     label: "À propos",
-    href: "/about",
+    href: "/a-propos",
     description: "Pauline Roussel, Doula et professeure de Yoga"
   }
 ];
