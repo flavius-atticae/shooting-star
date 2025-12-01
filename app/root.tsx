@@ -19,10 +19,10 @@ export const links: Route.LinksFunction = () => [
     crossOrigin: "anonymous",
   },
   {
-    rel: "preload", 
-    href: "/fonts/the-seasons-regular.ttf",
+    rel: "preload",
+    href: "/fonts/ivyora-display-regular.woff2",
     as: "font",
-    type: "font/ttf",
+    type: "font/woff2",
     crossOrigin: "anonymous",
   },
   {

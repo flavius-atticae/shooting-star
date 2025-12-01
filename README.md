@@ -69,7 +69,7 @@ Pauline Roussel is a certified prenatal yoga instructor and birth companion spec
 
 ### Design System Features
 
-- **Typography**: 3 primary font families (The Seasons, Barlow, Moontime) plus system fonts  
+- **Typography**: 3 primary font families (Ivyora Display, Barlow, Moontime) plus system fonts  
 - **Color Palette**: Multiple semantic color families with 50–900 shade variants  
 - **Responsive Design**: Mobile-first approach with pregnancy-safe accessibility guidelines  
 - **Dark Mode**: Full dark/light theme support with system preference detection  
@@ -151,7 +151,7 @@ shooting-star/
 ### Typography Hierarchy
 
 ```css
-/* Headings – The Seasons (elegant serif) */
+/* Headings – Ivyora Display (elegant serif) */
 .heading { font-family: var(--font-heading); }
 
 /* Body Text – Barlow (clean sans-serif) */

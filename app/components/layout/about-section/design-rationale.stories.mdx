@@ -1,5 +1,5 @@
-import { Meta } from '@storybook/blocks';
-import { AboutSection } from './about-section';
+import { Meta } from "@storybook/blocks";
+import { AboutSection } from "./about-section";
 
 <Meta title="Layout/AboutSection/Design Rationale" />
 
@@ -13,31 +13,34 @@ The About section has been specifically designed for **pregnant women and new mo
 
 ### ✅ **IMPLEMENTATION MATCHES MOCKUP SPECIFICATIONS**
 
-| **Aspect** | **Specification** | **Implementation** | **Status** |
-|------------|-------------------|-------------------|-----------|
-| **Layout Structure** | 2-row layout: 2/3+1/3 grid + 3-column method | `lg:grid-cols-3` with `lg:col-span-2` + `lg:grid-cols-3` | ✅ **PERFECT** |
-| **Background Color** | Light gray background | `bg-gris` (#f5f4f2) | ✅ **EXACT MATCH** |
-| **Text Color** | Calm blue for readability | `text-secondary` (#3d5a62) | ✅ **EXACT MATCH** |
-| **Typography** | The Seasons + Barlow fonts | `font-heading` + `font-sans` | ✅ **CORRECT** |
-| **Image Placeholder** | Rounded corners, portrait | `rounded-lg aspect-[3/4]` | ✅ **PRECISE** |
-| **Method Separators** | Vertical lines between columns | `lg:divide-x lg:divide-secondary/20` | ✅ **IMPLEMENTED** |
-| **Responsive Behavior** | Stack on mobile, grid on desktop | Responsive breakpoints with `lg:` prefixes | ✅ **SMOOTH** |
+| **Aspect**              | **Specification**                            | **Implementation**                                       | **Status**         |
+| ----------------------- | -------------------------------------------- | -------------------------------------------------------- | ------------------ |
+| **Layout Structure**    | 2-row layout: 2/3+1/3 grid + 3-column method | `lg:grid-cols-3` with `lg:col-span-2` + `lg:grid-cols-3` | ✅ **PERFECT**     |
+| **Background Color**    | Light gray background                        | `bg-gris` (#f5f4f2)                                      | ✅ **EXACT MATCH** |
+| **Text Color**          | Calm blue for readability                    | `text-secondary` (#3d5a62)                               | ✅ **EXACT MATCH** |
+| **Typography**          | Ivyora Display + Barlow fonts                | `font-heading` + `font-sans`                             | ✅ **CORRECT**     |
+| **Image Placeholder**   | Rounded corners, portrait                    | `rounded-lg aspect-[3/4]`                                | ✅ **PRECISE**     |
+| **Method Separators**   | Vertical lines between columns               | `lg:divide-x lg:divide-secondary/20`                     | ✅ **IMPLEMENTED** |
+| **Responsive Behavior** | Stack on mobile, grid on desktop             | Responsive breakpoints with `lg:` prefixes               | ✅ **SMOOTH**      |
 
 ## 🤱 Pregnancy-Safe Design Principles
 
 ### **Visual Comfort**
+
 - **Contrast Ratio**: 4.8:1 (#3d5a62 on #f5f4f2) exceeds WCAG AA requirement
 - **Color Psychology**: Calming blue reduces anxiety, soft gray prevents eye strain
 - **Typography**: 16px+ base size with relaxed line height (1.625) for easy reading
 - **Spacing**: Generous whitespace prevents visual claustrophobia
 
 ### **Physical Adaptations**
+
 - **Touch Targets**: All interactive elements sized for potentially swollen fingers
 - **Reading Comfort**: Optimal line length and spacing for concentration issues
 - **No Motion**: Static layout prevents motion-triggered nausea
 - **Rounded Elements**: Softer visual appearance reduces stress
 
 ### **Cognitive Support**
+
 - **Clear Hierarchy**: Logical information flow reduces mental load
 - **Predictable Layout**: Familiar patterns support users with brain fog
 - **Simple Language**: Accessible French content for emotional comfort
@@ -46,6 +49,7 @@ The About section has been specifically designed for **pregnant women and new mo
 ## 📱 Responsive Strategy
 
 ### **Mobile-First Approach** (< 1024px)
+
 ```css
 /* Single column stack */
 grid-cols-1
@@ -59,6 +63,7 @@ gap-6 sm:gap-8 lg:gap-12
 ```
 
 ### **Desktop Enhancement** (≥ 1024px)
+
 ```css
 /* Two-row grid system */
 lg:grid-cols-3    /* About content: 2/3 + 1/3 */
@@ -75,26 +80,27 @@ lg:divide-x       /* Visual separators */
 ## 🎨 Brand Color Implementation
 
 ### **Primary Color Usage**
+
 ```css
 /* Brand Colors Applied */
---color-secondary: #3d5a62  /* Main text color */
---color-gris: #f5f4f2       /* Background color */
-
-/* Psychology: */
-- Blue: Trust, calm, stability
-- Gray: Neutral, comforting, non-aggressive
-- Together: Professional yet nurturing
+--color-secondary:
+  #3d5a62 /* Main text color */ --color-gris: #f5f4f2 /* Background color */
+    /* Psychology: */ - Blue: Trust,
+  calm, stability - Gray: Neutral, comforting,
+  non-aggressive - Together: Professional yet nurturing;
 ```
 
 ### **Colors Deliberately Avoided**
+
 - ❌ **Bright Red**: Medical/emergency associations
-- ❌ **High Yellow**: Can trigger nausea  
+- ❌ **High Yellow**: Can trigger nausea
 - ❌ **Pure Black/White**: Harsh contrast causes fatigue
 - ❌ **Neon Colors**: Overstimulating for sensitive users
 
 ## 🏗️ Component Architecture
 
 ### **Modular Design**
+
 ```
 AboutSection (Container)
 ├── AboutContent (Row 1: Biography + Photo)
@@ -103,6 +109,7 @@ AboutSection (Container)
 ```
 
 ### **Benefits of Architecture**
+
 - **Reusable**: Components work independently
 - **Maintainable**: Clear separation of concerns
 - **Testable**: Each component can be validated separately
@@ -111,6 +118,7 @@ AboutSection (Container)
 ## ♿ Accessibility Implementation
 
 ### **WCAG 2.1 AA Compliance**
+
 - [x] **Color Contrast**: 4.8:1 ratio exceeds 4.5:1 requirement
 - [x] **Semantic HTML**: Proper heading hierarchy (h2 → h3)
 - [x] **Screen Reader**: Descriptive alt text and ARIA labels
@@ -119,6 +127,7 @@ AboutSection (Container)
 - [x] **Language**: French content with appropriate lang attributes
 
 ### **Pregnancy-Specific Accessibility**
+
 - [x] **Vision Changes**: High contrast options available
 - [x] **Physical Changes**: Large touch targets (44px+)
 - [x] **Cognitive Changes**: Simple, predictable layout
@@ -128,6 +137,7 @@ AboutSection (Container)
 ## 🧪 Testing Strategy
 
 ### **Design Testing Checklist**
+
 - [ ] **Visual Regression**: Matches approved mockup exactly
 - [ ] **Responsive**: Works on 320px to 2560px screens
 - [ ] **Accessibility**: Passes automated and manual tests
@@ -137,6 +147,7 @@ AboutSection (Container)
 - [ ] **User Testing**: Validated with actual pregnant women
 
 ### **Pregnancy-Specific Testing**
+
 - [ ] **Fatigue Simulation**: Usable when extremely tired
 - [ ] **Vision Changes**: Readable with pregnancy vision issues
 - [ ] **Motor Changes**: Usable with swollen/clumsy fingers
@@ -146,12 +157,14 @@ AboutSection (Container)
 ## 📊 Success Metrics
 
 ### **Technical Metrics**
+
 - **Lighthouse Score**: >90 (Performance, Accessibility, Best Practices)
 - **Core Web Vitals**: LCP <2.5s, FID <100ms, CLS <0.1
 - **Contrast Ratio**: >4.5:1 for all text
 - **Touch Target Size**: ≥44px for interactive elements
 
 ### **User Experience Metrics**
+
 - **Task Completion**: >95% can complete key tasks
 - **Error Rate**: <2% user errors in navigation
 - **Satisfaction**: >4.5/5 rating from pregnant users
@@ -160,6 +173,7 @@ AboutSection (Container)
 ## 🔮 Future Considerations
 
 ### **Potential Enhancements**
+
 - **Dark Mode**: For evening usage and light sensitivity
 - **Font Size Toggle**: For vision changes during pregnancy
 - **Language Switching**: Smooth French/English transitions
@@ -167,6 +181,7 @@ AboutSection (Container)
 - **Voice Navigation**: For hands-free usage with newborns
 
 ### **Maintenance Guidelines**
+
 - **Monthly**: Review accessibility with automated tools
 - **Quarterly**: User test with pregnant women
 - **Annually**: Comprehensive design system review
@@ -179,8 +194,9 @@ AboutSection (Container)
 This About section serves as more than just information presentation—it's the first impression pregnant women have of Pauline's supportive, professional approach. Every design decision prioritizes their unique physical, emotional, and cultural needs during this transformative life period.
 
 **The design succeeds when users feel:**
+
 - Safe and supported
-- Understood and respected  
+- Understood and respected
 - Confident in the information
 - Comfortable navigating the interface
 - Welcome in their cultural context
