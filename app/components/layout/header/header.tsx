@@ -117,7 +117,7 @@ export function Header({ className }: HeaderProps) {
                   to={link.href}
                   className={cn(
                     // Typography - Barlow font
-                    "font-sans text-sm font-medium",
+                    "font-sans text-sm font-medium whitespace-nowrap",
                     // Colors - White text on primary background
                     "text-white hover:text-white/80",
                     // Touch target (pregnancy-safe: 44x44px minimum)
