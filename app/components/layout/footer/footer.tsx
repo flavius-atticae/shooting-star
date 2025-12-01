@@ -226,8 +226,8 @@ export function Footer({
                     "font-body text-base sm:text-lg font-normal",
                     // Colors - White text with hover state
                     "text-white hover:text-white/80",
-                    // Touch target (pregnancy-safe but condensed)
-                    "min-h-[40px] px-2",
+                    // Touch target (pregnancy-safe: WCAG 2.1 AA requires 44px minimum)
+                    "min-h-[44px] px-2",
                     // Transitions
                     "transition-all duration-200",
                     // Focus states for accessibility

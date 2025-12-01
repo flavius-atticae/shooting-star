@@ -4,7 +4,7 @@ import { cn } from "~/lib/utils";
 /**
  * Social media platforms supported in the footer
  */
-export type SocialPlatform = 'instagram' | 'linkedin' | 'facebook' | 'youtube';
+export type SocialPlatform = "instagram" | "linkedin" | "facebook" | "youtube";
 
 /**
  * Social media link configuration
@@ -27,7 +27,7 @@ export interface SocialIconsProps {
   /** Custom className for additional styling */
   className?: string;
   /** Icon size variant */
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
 /**
@@ -80,7 +80,10 @@ const YouTubeIcon = ({ className }: { className?: string }) => (
 /**
  * Icon mapping for social platforms
  */
-const socialIconMap: Record<SocialPlatform, React.ComponentType<{ className?: string }>> = {
+const socialIconMap: Record<
+  SocialPlatform,
+  React.ComponentType<{ className?: string }>
+> = {
   instagram: InstagramIcon,
   linkedin: LinkedInIcon,
   facebook: FacebookIcon,
@@ -92,30 +95,30 @@ const socialIconMap: Record<SocialPlatform, React.ComponentType<{ className?: st
  */
 const defaultSocialLinks: SocialLink[] = [
   {
-    platform: 'instagram',
-    url: 'https://instagram.com/paulinerousseldoula',
-    label: 'Suivre Pauline Roussel sur Instagram'
+    platform: "instagram",
+    url: "https://instagram.com/paulinerousseldoula",
+    label: "Suivre Pauline Roussel sur Instagram",
   },
   {
-    platform: 'linkedin',
-    url: 'https://linkedin.com/in/pauline-roussel-doula',
-    label: 'Contacter Pauline Roussel sur LinkedIn'
+    platform: "linkedin",
+    url: "https://linkedin.com/in/pauline-roussel-doula",
+    label: "Contacter Pauline Roussel sur LinkedIn",
   },
   {
-    platform: 'facebook',
-    url: 'https://facebook.com/paulinerousseldoula',
-    label: 'Suivre Pauline Roussel sur Facebook'
+    platform: "facebook",
+    url: "https://facebook.com/paulinerousseldoula",
+    label: "Suivre Pauline Roussel sur Facebook",
   },
   {
-    platform: 'youtube',
-    url: 'https://youtube.com/@paulinerousseldoula',
-    label: 'Voir les vidéos de Pauline Roussel sur YouTube'
-  }
+    platform: "youtube",
+    url: "https://youtube.com/@paulinerousseldoula",
+    label: "Voir les vidéos de Pauline Roussel sur YouTube",
+  },
 ];
 
 /**
  * Social Icons Component
- * 
+ *
  * Icônes de réseaux sociaux dans le footer avec :
  * - Icônes blanches circulaires sur fond primary (vert #618462)
  * - Touch targets 48x48px minimum (confort grossesse)
@@ -123,7 +126,7 @@ const defaultSocialLinks: SocialLink[] = [
  * - Accessibilité WCAG 2.1 AA avec labels français
  * - Support Instagram, LinkedIn, Facebook, YouTube
  * - Layout horizontal avec espacement approprié
- * 
+ *
  * Usage:
  * ```tsx
  * <SocialIcons />
@@ -133,33 +136,30 @@ const defaultSocialLinks: SocialLink[] = [
 export function SocialIcons({
   links = defaultSocialLinks,
   className,
-  size = 'md'
+  size = "md",
 }: SocialIconsProps) {
-  // Size variants
+  // Size variants - All sizes respect WCAG 2.1 AA minimum 44px touch target
   const sizeClasses = {
-    sm: "h-8 w-8 min-h-[40px] min-w-[40px]",
-    md: "h-10 w-10 min-h-[48px] min-w-[48px]",
-    lg: "h-12 w-12 min-h-[56px] min-w-[56px]"
+    sm: "h-11 w-11 min-h-11 min-w-11", // 44px - WCAG minimum
+    md: "h-12 w-12 min-h-12 min-w-12", // 48px - comfortable
+    lg: "h-14 w-14 min-h-14 min-w-14", // 56px - extra large
   };
 
   const iconSizes = {
     sm: "h-4 w-4",
-    md: "h-5 w-5", 
-    lg: "h-6 w-6"
+    md: "h-5 w-5",
+    lg: "h-6 w-6",
   };
 
   return (
-    <div 
-      className={cn(
-        "flex items-center gap-3 sm:gap-4",
-        className
-      )}
+    <div
+      className={cn("flex items-center gap-3 sm:gap-4", className)}
       role="list"
       aria-label="Réseaux sociaux de Pauline Roussel"
     >
       {links.map((link) => {
         const IconComponent = socialIconMap[link.platform];
-        
+
         if (!IconComponent) {
           console.warn(`Social icon for platform "${link.platform}" not found`);
           return null;
@@ -188,9 +188,7 @@ export function SocialIcons({
               "transition-all duration-200"
             )}
           >
-            <IconComponent 
-              className={cn("text-current", iconSizes[size])}
-            />
+            <IconComponent className={cn("text-current", iconSizes[size])} />
           </a>
         );
       })}
