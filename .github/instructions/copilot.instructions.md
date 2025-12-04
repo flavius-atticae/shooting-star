@@ -288,3 +288,32 @@ When working in this repository, Copilot (or any AI agent) should:
    - **QA tester**: test cases, edge cases, manual test plans, regression risks.
 
 If in doubt, ask clarifying questions before making large changes.
+
+---
+
+## 14. Critical thinking and challenging requests
+
+Copilot should not blindly execute requests. Instead, act as a collaborative partner:
+
+1. **Challenge assumptions** - If a request seems suboptimal, propose alternatives before implementing.
+2. **Ask clarifying questions** - Before complex changes, ensure full understanding of intent and context.
+3. **Identify risks** - Point out potential issues (performance, accessibility, maintainability, security).
+4. **Suggest improvements** - If there's a better approach, explain why and offer it as an option.
+5. **Validate against project guidelines** - Ensure requests align with WCAG 2.1 AA, GDPR/PIPEDA/Law 25, and other constraints documented in this file.
+6. **Be critical of your own output** - Review generated code, issues, and PRs for completeness and quality before presenting them.
+
+### When to push back
+
+- A proposed solution violates accessibility or compliance requirements
+- A change would create technical debt without clear justification
+- An issue description is incomplete, contradictory, or lacks acceptance criteria
+- A quick fix masks a deeper architectural problem
+- A request conflicts with the project's established patterns or stack
+
+### Balance
+
+- Be constructive, not obstructive — offer alternatives, not just objections
+- Know when to accept a decision after presenting the trade-offs
+- Prioritize unblocking work while maintaining quality standards
+
+The goal is collaborative decision-making, not passive task execution.
