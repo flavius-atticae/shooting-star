@@ -46,6 +46,8 @@ export interface HeroProps {
   subtitle?: string;
   variant?: HeroVariant;
   children?: React.ReactNode;
+  /** Container size - uses the shared Container component for consistent layout */
+  containerSize?: "sm" | "md" | "lg" | "xl" | "full";
 }
 
 /**
@@ -61,7 +63,6 @@ export interface HeroContentProps {
  * Hero section component for Pauline Roussel website
  *
  * Simplified structure with inline content (title/subtitle).
- * Uses shared Container component (xl size) for consistent layout.
  *
  * Design:
  * - Background: Always --color-gris (#f5f4f2) with rounded bottom edges
@@ -77,9 +78,6 @@ export interface HeroContentProps {
  * - default: Responsive height (400px → 600px)
  * - full-height: Landing pages (100vh - header height)
  *
- * Features:
- * - Automatic line break detection: titles containing \n are split with <br />
- *
  * Accessibility:
  * - Semantic HTML with proper heading hierarchy
  * - ARIA landmarks for screen readers
@@ -87,7 +85,18 @@ export interface HeroContentProps {
  * - Pregnancy-safe animations with reduced motion support
  */
 export const Hero = React.forwardRef<HTMLElement, HeroProps>(
-  ({ className, title, subtitle, variant = "default", children, ...props }, ref) => {
+  (
+    {
+      className,
+      title,
+      subtitle,
+      variant = "default",
+      children,
+      containerSize,
+      ...props
+    },
+    ref
+  ) => {
     const variantConfig = HERO_VARIANTS[variant];
 
     return (
@@ -108,8 +117,7 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
             "min-h-[calc(400px+env(safe-area-inset-bottom))] md:min-h-[500px] lg:min-h-[600px]",
 
           // Rounded bottom edges - skip for full-height variant
-          variant !== "full-height" &&
-            "rounded-b-3xl md:rounded-b-[3rem] lg:rounded-b-[4rem]",
+          variant !== "full-height" && "rounded-b-xl",
 
           className
         )}
@@ -118,7 +126,7 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
         {...props}
       >
         <Container
-          size="xl"
+          size={containerSize || "xl"}
           className={cn(
             "h-full flex items-center",
             // Safe area padding for mobile devices
