@@ -63,7 +63,7 @@ export default function Home() {
         {/* Hero Section - "Épanouir sa féminité" */}
         <Hero
           variant="default"
-          title="Épanouir\nsa féminité"
+          title={"Épanouir\nsa féminité"}
           subtitle="Avec Pauline Roussel"
           multiline={true}
           containerSize="xl"
