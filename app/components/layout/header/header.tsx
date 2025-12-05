@@ -17,6 +17,8 @@ const desktopNavLinks = [
 
 export interface HeaderProps {
   className?: string;
+  /** For Storybook visual testing only - renders menu in open state */
+  defaultOpen?: boolean;
 }
 
 /**
@@ -36,8 +38,8 @@ export interface HeaderProps {
  * - Proper focus states
  * - ARIA labels in French
  */
-export function Header({ className }: HeaderProps) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+export function Header({ className, defaultOpen = false }: HeaderProps) {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(defaultOpen);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);

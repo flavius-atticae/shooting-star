@@ -123,6 +123,29 @@ app/components/
 
 ## 🧪 Testing and Validation
 
+### Testing Strategy: Visual vs Interaction Stories
+
+#### Visual Stories (Chromatic)
+- **Purpose**: Capture static UI states for visual regression testing
+- **Characteristics**: No `play()` functions, use component props to set state
+- **Chromatic**: `chromatic.viewports` defines capture sizes
+- **Example**: `MobileMenuOpen` uses `defaultOpen: true` prop
+
+#### Interaction Stories (Test Runner)
+- **Purpose**: Test user interactions and accessibility
+- **Characteristics**: Have `play()` functions with assertions
+- **Chromatic**: `chromatic: { disableSnapshot: true }` to skip
+- **Example**: `MenuInteraction` tests menu open/close flow
+
+#### Why separate?
+Chromatic captures screenshots **BEFORE** `play()` functions execute.
+A story that opens a menu in `play()` will be captured with menu closed.
+Separating visual and interaction stories ensures:
+1. **Accurate snapshots** - Visual states captured exactly as intended
+2. **Clear intent** - Visual stories show states, interaction stories test behaviors
+3. **Maintainability** - Changes to visual layout don't break interaction tests
+4. **Snapshot efficiency** - Targeted snapshots instead of redundant captures
+
 ### Running Tests
 
 #### From Terminal (CLI)
