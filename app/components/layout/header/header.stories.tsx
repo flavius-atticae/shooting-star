@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { within, userEvent, expect, waitFor, screen } from "storybook/test";
+import { within, userEvent, expect, waitFor } from "storybook/test";
 import { Header } from "./header";
 import { withReactRouter } from "../../../../.storybook/react-router-decorator";
 
@@ -109,17 +109,17 @@ export const MenuInteraction: Story = {
       expect(canvas.getByLabelText(/Fermer le menu/i)).toBeInTheDocument();
     });
 
-    // Verify navigation items are visible
+    // Verify navigation menu is visible
     await waitFor(() => {
-      const navLabel = screen.getByLabelText(/menu de navigation principal/i);
+      const navLabel = canvas.getByLabelText(/menu de navigation principal/i);
       expect(navLabel).toBeInTheDocument();
     }, { timeout: 2000 });
 
-    // Verify all navigation links present
-    expect(screen.getAllByText(/doula/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/yoga/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/féminin/i).length).toBeGreaterThan(0);
-    expect(screen.getAllByText(/à propos/i).length).toBeGreaterThan(0);
+    // Verify navigation links are present within mobile menu
+    await expect(canvas.getByRole("link", { name: /Doula/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: /Yoga/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: /Féminin/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: /À propos/i })).toBeInTheDocument();
 
     // Test close with Escape
     await userEvent.keyboard("{Escape}");
