@@ -47,7 +47,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     variant: "default",
-    title: "Épanouir\nsa féminité",
+    title: `Épanouir
+sa féminité`,
     subtitle: "Avec Pauline Roussel",
     multiline: true,
   },
