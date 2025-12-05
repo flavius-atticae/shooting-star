@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "~/lib/utils";
+import { Container } from "~/components/ui/container";
 import { FadeInTitle, FadeInSubtitle } from "./hero-animations";
 
 /**
@@ -44,10 +45,7 @@ export interface HeroProps {
   title?: string;
   subtitle?: string;
   variant?: HeroVariant;
-  multiline?: boolean;
   children?: React.ReactNode;
-  /** Custom container size (if provided, uses Container instead of responsive padding) */
-  containerSize?: "sm" | "md" | "lg" | "xl";
 }
 
 /**
@@ -56,7 +54,6 @@ export interface HeroProps {
 export interface HeroContentProps {
   title?: string;
   subtitle?: string;
-  multiline?: boolean;
   className?: string;
 }
 
@@ -64,6 +61,7 @@ export interface HeroContentProps {
  * Hero section component for Pauline Roussel website
  *
  * Simplified structure with inline content (title/subtitle).
+ * Uses shared Container component (xl size) for consistent layout.
  *
  * Design:
  * - Background: Always --color-gris (#f5f4f2) with rounded bottom edges
@@ -79,6 +77,9 @@ export interface HeroContentProps {
  * - default: Responsive height (400px → 600px)
  * - full-height: Landing pages (100vh - header height)
  *
+ * Features:
+ * - Automatic line break detection: titles containing \n are split with <br />
+ *
  * Accessibility:
  * - Semantic HTML with proper heading hierarchy
  * - ARIA landmarks for screen readers
@@ -86,19 +87,7 @@ export interface HeroContentProps {
  * - Pregnancy-safe animations with reduced motion support
  */
 export const Hero = React.forwardRef<HTMLElement, HeroProps>(
-  (
-    {
-      className,
-      title,
-      subtitle,
-      variant = "default",
-      multiline,
-      children,
-      containerSize,
-      ...props
-    },
-    ref
-  ) => {
+  ({ className, title, subtitle, variant = "default", children, ...props }, ref) => {
     const variantConfig = HERO_VARIANTS[variant];
 
     return (
@@ -111,9 +100,6 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
           // Background color - pregnancy-safe bg-gris
           "bg-gris",
 
-          // Container queries for responsive behavior
-          "@container",
-
           // Variant-specific height classes
           variantConfig.classes,
 
@@ -123,13 +109,7 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
 
           // Rounded bottom edges - skip for full-height variant
           variant !== "full-height" &&
-            "rounded-b-3xl @md:rounded-b-[3rem] @lg:rounded-b-[4rem]",
-
-          // Flex for content alignment - left aligned layout
-          "flex items-center justify-start",
-
-          // Safe area padding for mobile devices
-          "pb-[env(safe-area-inset-bottom)] px-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]",
+            "rounded-b-3xl md:rounded-b-[3rem] lg:rounded-b-[4rem]",
 
           className
         )}
@@ -137,44 +117,16 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
         aria-label="Section principale d'accueil"
         {...props}
       >
-        {containerSize ? (
-          <div
-            className={cn(
-              "h-full w-full flex items-center justify-start relative z-10",
-              containerSize === "xl" && "max-w-7xl",
-              containerSize === "lg" && "max-w-6xl",
-              containerSize === "md" && "max-w-4xl",
-              containerSize === "sm" && "max-w-2xl",
-              "px-4 sm:px-6 lg:px-8"
-            )}
-          >
-            <div className="w-full">
-              {children || (
-                <HeroContent
-                  title={title}
-                  subtitle={subtitle}
-                  multiline={multiline}
-                />
-              )}
-            </div>
-          </div>
-        ) : (
-          <div
-            className={cn(
-              "h-full w-full flex items-center justify-start relative z-10",
-              "px-6 @sm:px-8 @md:px-12 @lg:px-16 @xl:px-20",
-              "@container"
-            )}
-          >
-            {children || (
-              <HeroContent
-                title={title}
-                subtitle={subtitle}
-                multiline={multiline}
-              />
-            )}
-          </div>
-        )}
+        <Container
+          size="xl"
+          className={cn(
+            "h-full flex items-center",
+            // Safe area padding for mobile devices
+            "pb-[env(safe-area-inset-bottom)]"
+          )}
+        >
+          {children || <HeroContent title={title} subtitle={subtitle} />}
+        </Container>
       </section>
     );
   }
@@ -190,16 +142,21 @@ Hero.displayName = "Hero";
  * - Subtitle: text-base → lg:text-[36px], max-w-[530px]
  */
 export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
-  ({ title, subtitle, multiline = false, className, ...props }, ref) => {
+  ({ title, subtitle, className, ...props }, ref) => {
     const defaultTitle = "Épanouir sa féminité";
     const defaultSubtitle = "AVEC PAULINE ROUSSEL";
 
-    const renderTitle = (titleText: string, isMultiline: boolean) => {
-      if (isMultiline && titleText.includes("\n")) {
-        return titleText.split("\n").map((line, index) => (
+    /**
+     * Renders title with automatic line break detection.
+     * If title contains \n, splits into multiple lines with <br /> tags.
+     */
+    const renderTitle = (titleText: string) => {
+      if (titleText.includes("\n")) {
+        const lines = titleText.split("\n");
+        return lines.map((line, index) => (
           <React.Fragment key={index}>
             {line}
-            {index < titleText.split("\n").length - 1 && <br />}
+            {index < lines.length - 1 && <br />}
           </React.Fragment>
         ));
       }
@@ -241,7 +198,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               "mb-2 sm:mb-3 md:mb-4"
             )}
           >
-            {renderTitle(title || defaultTitle, multiline)}
+            {renderTitle(title || defaultTitle)}
           </h1>
         </FadeInTitle>
 

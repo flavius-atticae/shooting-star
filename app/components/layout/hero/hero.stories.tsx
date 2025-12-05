@@ -9,12 +9,13 @@ const meta: Meta<typeof Hero> = {
     docs: {
       description: {
         component: `
-Hero principal avec titre multiline, sous-titre et variantes de hauteur.
+Hero principal avec titre, sous-titre et variantes de hauteur.
 
 **Features**:
 - Typography impact (Ivyora Display + Barlow)
 - Variants: default, full-height
-- Multiline support avec \\n
+- Automatic line break detection (\\n in title)
+- Uses shared Container component (xl size)
 - Touch targets ≥ 44px
 - WCAG 2.1 AA compliant
 
@@ -35,9 +36,6 @@ Hero principal avec titre multiline, sous-titre et variantes de hauteur.
     subtitle: {
       control: "text",
     },
-    multiline: {
-      control: "boolean",
-    },
   },
 };
 
@@ -50,6 +48,5 @@ export const Default: Story = {
     title: `Épanouir
 sa féminité`,
     subtitle: "Avec Pauline Roussel",
-    multiline: true,
   },
 };
