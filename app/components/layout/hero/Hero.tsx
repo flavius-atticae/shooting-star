@@ -199,8 +199,8 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               // Letter spacing (Figma: -2.72px ≈ -0.02em at desktop)
               "tracking-tight lg:tracking-[-0.02em]",
 
-              // Weight
-              "font-bold",
+              // Weight - lighter for elegant Ivyora Display
+              "font-normal",
 
               // Margin
               "mb-2 sm:mb-3 md:mb-4"
