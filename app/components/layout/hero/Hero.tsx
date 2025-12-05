@@ -33,11 +33,7 @@ export const HERO_BREAKPOINTS = {
   mobile: 400,
   tablet: 500,
   desktop: 600,
-  borderRadius: {
-    mobile: 24,
-    tablet: 48,
-    desktop: 64,
-  },
+  borderRadius: 12, // rounded-xl, consistent with CTA section
 } as const;
 
 export interface HeroProps {
@@ -46,8 +42,6 @@ export interface HeroProps {
   subtitle?: string;
   variant?: HeroVariant;
   children?: React.ReactNode;
-  /** Container size - uses the shared Container component for consistent layout */
-  containerSize?: "sm" | "md" | "lg" | "xl" | "full";
 }
 
 /**
@@ -86,15 +80,7 @@ export interface HeroContentProps {
  */
 export const Hero = React.forwardRef<HTMLElement, HeroProps>(
   (
-    {
-      className,
-      title,
-      subtitle,
-      variant = "default",
-      children,
-      containerSize,
-      ...props
-    },
+    { className, title, subtitle, variant = "default", children, ...props },
     ref
   ) => {
     const variantConfig = HERO_VARIANTS[variant];
@@ -126,7 +112,7 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
         {...props}
       >
         <Container
-          size={containerSize || "xl"}
+          size="xl"
           className={cn(
             "h-full flex items-center",
             // Safe area padding for mobile devices
@@ -199,8 +185,8 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               // Letter spacing (Figma: -2.72px ≈ -0.02em at desktop)
               "tracking-tight lg:tracking-[-0.02em]",
 
-              // Weight - lighter for elegant Ivyora Display
-              "font-normal",
+              // Weight
+              "font-bold",
 
               // Margin
               "mb-2 sm:mb-3 md:mb-4"
