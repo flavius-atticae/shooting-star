@@ -160,10 +160,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
     return (
       <div
         ref={ref}
-        className={cn(
-          "flex flex-col items-start space-y-2 md:space-y-4",
-          className
-        )}
+        className={cn("flex flex-col items-start", className)}
         {...props}
       >
         {/* Main Title - Mobile-first with Figma desktop specs */}
@@ -177,7 +174,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               "text-primary",
 
               // Mobile-first responsive sizing (Figma: 136px at desktop)
-              "text-4xl sm:text-6xl md:text-7xl lg:text-[136px]",
+              "text-5xl sm:text-6xl md:text-7xl",
 
               // Line height
               "leading-[1.3] lg:leading-normal",
@@ -186,10 +183,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               "tracking-tight lg:tracking-[-0.02em]",
 
               // Weight
-              "font-bold",
-
-              // Margin
-              "mb-2 sm:mb-3 md:mb-4"
+              "font-medium"
             )}
           >
             {renderTitle(title || defaultTitle)}
@@ -206,8 +200,8 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               // Color - Primary green
               "text-primary",
 
-              // Mobile-first responsive sizing (Figma: 36px at desktop)
-              "text-base sm:text-xl md:text-2xl lg:text-[36px]",
+              // Mobile-first responsive sizing (smaller than before)
+              "text-sm sm:text-base md:text-lg lg:text-xl",
 
               // Line height
               "leading-relaxed",
@@ -224,8 +218,8 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               // Alignment
               "text-left",
 
-              // Margin
-              "mt-4 sm:mt-6 md:mt-8"
+              // Margin - closer to title
+              "mt-1 sm:mt-2"
             )}
           >
             {subtitle || defaultSubtitle}
