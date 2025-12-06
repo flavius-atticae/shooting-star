@@ -42,9 +42,14 @@ Hero principal avec titre, sous-titre et variantes de hauteur.
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+// ============================================================
+// VISUAL STORIES (Chromatic snapshots)
+// These stories capture static state for visual regression testing
+// ============================================================
+
 /**
  * Default Hero - Standard responsive height
- * Used for most pages with responsive sizing (400px → 600px)
+ * Visual regression testing across all breakpoints (375 → 1536px)
  */
 export const Default: Story = {
   args: {
@@ -52,6 +57,11 @@ export const Default: Story = {
     title: `Épanouir
 sa féminité`,
     subtitle: "Avec Pauline Roussel",
+  },
+  parameters: {
+    chromatic: {
+      viewports: [375, 768, 1280, 1536],
+    },
   },
 };
 
@@ -67,6 +77,9 @@ sa féminité`,
     subtitle: "Avec Pauline Roussel",
   },
   parameters: {
+    chromatic: {
+      viewports: [375, 768, 1280],
+    },
     docs: {
       description: {
         story:
@@ -75,6 +88,11 @@ sa féminité`,
     },
   },
 };
+
+// ============================================================
+// FEATURE STORIES (Chromatic disabled - tested via Default story)
+// These stories demonstrate specific features
+// ============================================================
 
 /**
  * Single Line Title - No automatic line break
@@ -87,6 +105,7 @@ export const SingleLineTitle: Story = {
     subtitle: "Accompagnement personnalisé",
   },
   parameters: {
+    chromatic: { disableSnapshot: true },
     docs: {
       description: {
         story:
@@ -109,6 +128,7 @@ avec douceur`,
     subtitle: "Yoga & Bien-être périnatal",
   },
   parameters: {
+    chromatic: { disableSnapshot: true },
     docs: {
       description: {
         story:
@@ -146,6 +166,7 @@ export const CustomContent: Story = {
     </Hero>
   ),
   parameters: {
+    chromatic: { disableSnapshot: true },
     docs: {
       description: {
         story:
