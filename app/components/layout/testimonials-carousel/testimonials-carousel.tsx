@@ -73,9 +73,12 @@ export function TestimonialsCarousel({
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
+  const carouselContainerRef = React.useRef<HTMLDivElement>(null);
 
   // Check for prefers-reduced-motion
   React.useEffect(() => {
+    if (typeof window === "undefined") return;
+    
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
 
@@ -102,7 +105,6 @@ export function TestimonialsCarousel({
   React.useEffect(() => {
     if (!emblaApi) return;
 
-    onInit(emblaApi);
     onSelect(emblaApi);
     emblaApi.on("reInit", onInit);
     emblaApi.on("reInit", onSelect);
@@ -146,11 +148,16 @@ export function TestimonialsCarousel({
     [emblaApi]
   );
 
-  // Keyboard navigation
+  // Keyboard navigation - scoped to carousel container
   React.useEffect(() => {
-    if (!emblaApi) return;
+    if (!emblaApi || !carouselContainerRef.current) return;
+
+    const container = carouselContainerRef.current;
 
     const handleKeyDown = (e: KeyboardEvent) => {
+      // Only handle if carousel or its children have focus
+      if (!container.contains(document.activeElement)) return;
+      
       if (e.key === "ArrowLeft") {
         e.preventDefault();
         scrollPrev();
@@ -160,8 +167,8 @@ export function TestimonialsCarousel({
       }
     };
 
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    container.addEventListener("keydown", handleKeyDown as any);
+    return () => container.removeEventListener("keydown", handleKeyDown as any);
   }, [emblaApi, scrollPrev, scrollNext]);
 
   // Don't render if no testimonials
@@ -195,15 +202,17 @@ export function TestimonialsCarousel({
         ) : (
           // Carousel for multiple testimonials
           <div
+            ref={carouselContainerRef}
             className="relative"
             role="region"
             aria-label="Testimonials carousel"
             aria-roledescription="carousel"
+            tabIndex={0}
           >
             {/* Carousel viewport */}
             <div className="overflow-hidden" ref={emblaRef}>
               <div className="flex -ml-4 sm:-ml-6">
-                {testimonials.map((testimonial) => (
+                {testimonials.map((testimonial, index) => (
                   <div
                     key={testimonial.id}
                     className={cn(
@@ -216,7 +225,7 @@ export function TestimonialsCarousel({
                     )}
                     role="group"
                     aria-roledescription="slide"
-                    aria-label={`${testimonials.indexOf(testimonial) + 1} of ${testimonials.length}`}
+                    aria-label={`${index + 1} of ${testimonials.length}`}
                   >
                     <TestimonialCard testimonial={testimonial} />
                   </div>
