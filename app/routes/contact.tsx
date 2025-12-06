@@ -8,7 +8,7 @@ import type { ContactFormData } from "~/components/contact";
 /**
  * Meta tags for the Contact page
  */
-export function meta({}: Route.MetaArgs) {
+export function meta(_args: Route.MetaArgs) {
   return [
     {
       title: "Contact - Pauline Roussel | Yoga Prénatal & Accompagnement",
