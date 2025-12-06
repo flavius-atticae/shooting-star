@@ -142,8 +142,8 @@ export function ContactForm({
       className={cn(
         // Layout
         "flex flex-col gap-6 p-8 md:p-10 lg:p-12",
-        // Background - white with rounded corners
-        "bg-white rounded-lg shadow-sm",
+        // Background - transparent to blend with parent beige background
+        "bg-transparent",
         className
       )}
       {...props}
@@ -168,7 +168,7 @@ export function ContactForm({
                     placeholder="John Appleseed"
                     {...field}
                     disabled={isLoading}
-                    className="bg-white"
+                    className="bg-transparent"
                   />
                 </FormControl>
                 <FormMessage />
@@ -191,7 +191,7 @@ export function ContactForm({
                     placeholder="example@email.com"
                     {...field}
                     disabled={isLoading}
-                    className="bg-white"
+                    className="bg-transparent"
                   />
                 </FormControl>
                 <FormMessage />
@@ -212,7 +212,7 @@ export function ContactForm({
                   <Select
                     {...field}
                     disabled={isLoading}
-                    className="bg-white"
+                    className="bg-transparent"
                   >
                     {AVAILABILITY_OPTIONS.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -240,7 +240,7 @@ export function ContactForm({
                     placeholder="Message"
                     {...field}
                     disabled={isLoading}
-                    className="bg-white min-h-[120px]"
+                    className="bg-transparent min-h-[120px]"
                   />
                 </FormControl>
                 <FormMessage />
