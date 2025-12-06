@@ -126,8 +126,8 @@ export function ContactForm({
       className={cn(
         // Layout
         "flex flex-col gap-6 p-8 md:p-10 lg:p-12",
-        // Background - white/cream
-        "bg-white",
+        // Background - white with rounded corners
+        "bg-white rounded-lg shadow-sm",
         className
       )}
       {...props}

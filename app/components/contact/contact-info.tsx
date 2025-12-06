@@ -13,7 +13,7 @@ export interface ContactInfoProps extends React.HTMLAttributes<HTMLDivElement> {
 /**
  * ContactInfo Component - Left column contact information
  *
- * Displays contact details on a green sage background with white text:
+ * Displays contact details in sage green text on beige/cream background:
  * - Title "Écris-moi"
  * - Introduction text
  * - Location (Montreal)
@@ -24,7 +24,7 @@ export interface ContactInfoProps extends React.HTMLAttributes<HTMLDivElement> {
  * - Proper heading hierarchy
  * - Semantic HTML
  * - ARIA labels on links
- * - WCAG 2.1 AA compliant contrast (white on green)
+ * - WCAG 2.1 AA compliant contrast
  *
  * Usage:
  * ```tsx
@@ -36,11 +36,10 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
     <div
       className={cn(
         // Layout
-        "flex flex-col gap-6 p-8 md:p-10 lg:p-12",
-        // Background - sage green from brand colors
-        "bg-primary",
-        // Text color
-        "text-white",
+        "flex flex-col gap-6",
+        // No background - inherits from parent section
+        // Text color - primary green
+        "text-primary",
         className
       )}
       {...props}
@@ -49,7 +48,7 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
       <h2
         className={cn(
           "font-heading text-4xl sm:text-5xl lg:text-6xl",
-          "text-white mb-4"
+          "text-primary mb-4"
         )}
       >
         Écris-moi
@@ -59,7 +58,7 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
       <p
         className={cn(
           "font-body text-base sm:text-lg leading-relaxed",
-          "text-white/90 mb-2"
+          "text-primary/90 mb-2"
         )}
       >
         Contacte-moi pour échanger sur ton parcours, tes besoins et découvrir
@@ -70,10 +69,10 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
       {/* Location */}
       <div className="flex items-start gap-3 mb-2">
         <MapPin
-          className="w-5 h-5 mt-1 flex-shrink-0"
+          className="w-5 h-5 mt-1 flex-shrink-0 text-primary"
           aria-hidden="true"
         />
-        <p className="font-body text-base sm:text-lg text-white/90">
+        <p className="font-body text-base sm:text-lg text-primary/90">
           Grande région de Montréal
         </p>
       </div>
@@ -81,16 +80,16 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
       {/* Email */}
       <div className="flex items-start gap-3 mb-4">
         <Mail
-          className="w-5 h-5 mt-1 flex-shrink-0"
+          className="w-5 h-5 mt-1 flex-shrink-0 text-primary"
           aria-hidden="true"
         />
         <a
           href="mailto:pauline.roussel@gmail.com"
           className={cn(
-            "font-body text-base sm:text-lg text-white hover:text-white/80",
+            "font-body text-base sm:text-lg text-primary hover:text-primary/80",
             "underline underline-offset-4 transition-all duration-200",
             // Accessibility - focus states
-            "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary",
+            "outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
             // Touch target - pregnancy-safe minimum 44px
             "min-h-[44px] flex items-center"
           )}
@@ -104,7 +103,7 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
       <p
         className={cn(
           "font-heading text-2xl sm:text-3xl italic",
-          "text-white mt-4"
+          "text-primary mt-4"
         )}
       >
         J'ai hâte de faire votre rencontre

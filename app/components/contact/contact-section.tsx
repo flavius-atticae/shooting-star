@@ -23,14 +23,15 @@ export interface ContactSectionProps
  * ContactSection Component - Two-column layout with contact info and form
  *
  * Features:
- * - Left column: ContactInfo with contact details on sage green background
+ * - Left column: ContactInfo with contact details in sage green text
  * - Right column: ContactForm with form fields on white background
  * - Responsive: stacks vertically on mobile, side-by-side on desktop
  * - WCAG 2.1 AA compliant
  *
  * Layout:
- * - Desktop: 2-column grid (1fr 1fr)
- * - Tablet: 2-column grid (may adjust)
+ * - Background: Beige/cream accent color
+ * - Desktop: 2-column grid with gap
+ * - Tablet: 2-column grid with reduced gap
  * - Mobile: Single column stack (info first, then form)
  *
  * Accessibility:
@@ -54,7 +55,7 @@ export function ContactSection({
   return (
     <Section
       as="section"
-      background="primary"
+      background="accent"
       spacing={spacing}
       className={className}
       aria-label="Formulaire de contact"
@@ -65,12 +66,10 @@ export function ContactSection({
         className={cn(
           // Grid setup
           "grid grid-cols-1 md:grid-cols-2",
-          // Remove gaps - components handle their own padding
-          "gap-0",
+          // Gap between columns
+          "gap-8 md:gap-12 lg:gap-16",
           // Full width
-          "w-full",
-          // Overflow handling for rounded corners
-          "overflow-hidden rounded-lg md:rounded-xl"
+          "w-full max-w-6xl mx-auto"
         )}
       >
         {/* Left Column - Contact Info */}
