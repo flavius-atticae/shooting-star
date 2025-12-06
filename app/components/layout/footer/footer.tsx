@@ -170,22 +170,21 @@ export function Footer({
   "aria-describedby": ariaDescribedBy,
   ...props
 }: FooterProps) {
-  // Overlap compensation classes - adds padding-top to make room for overlapping section
-  const overlapCompensationClasses = {
-    none: "",
-    sm: "pt-8 md:pt-12",
-    md: "pt-12 md:pt-16",
-    lg: "pt-16 md:pt-20",
-    responsive: "md:pt-16", // Only applies on tablet+
-  } as const;
-
-  // Safe getter to avoid object injection vulnerability
+  // Safe getter using switch to avoid object injection vulnerability
   const getOverlapCompensation = (): string => {
-    const validKeys: readonly string[] = ["none", "sm", "md", "lg", "responsive"];
-    if (validKeys.includes(hasOverlap)) {
-      return overlapCompensationClasses[hasOverlap];
+    switch (hasOverlap) {
+      case "sm":
+        return "pt-8 md:pt-12";
+      case "md":
+        return "pt-12 md:pt-16";
+      case "lg":
+        return "pt-16 md:pt-20";
+      case "responsive":
+        return "md:pt-16"; // Only applies on tablet+
+      case "none":
+      default:
+        return "";
     }
-    return overlapCompensationClasses.none;
   };
 
   return (

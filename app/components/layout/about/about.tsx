@@ -58,24 +58,24 @@ export interface MethodItem {
  * <About />
  * ```
  */
-// Overlap class mapping for negative margin effect
-const overlapClasses = {
-  none: "",
-  sm: "-mb-8 md:-mb-12 relative z-10",
-  md: "-mb-12 md:-mb-16 relative z-10",
-  lg: "-mb-16 md:-mb-20 relative z-10",
-  responsive: "md:-mb-16 relative z-10", // Only applies on tablet+
-} as const;
+// Type for overlap options
+type OverlapSize = "none" | "sm" | "md" | "lg" | "responsive";
 
-// Safe getter to avoid object injection vulnerability
-const getOverlapClass = (
-  key: keyof typeof overlapClasses
-): string => {
-  const validKeys: readonly string[] = ["none", "sm", "md", "lg", "responsive"];
-  if (validKeys.includes(key)) {
-    return overlapClasses[key];
+// Safe getter using switch to avoid object injection vulnerability
+const getOverlapClass = (size: OverlapSize): string => {
+  switch (size) {
+    case "sm":
+      return "-mb-8 md:-mb-12 relative z-10";
+    case "md":
+      return "-mb-12 md:-mb-16 relative z-10";
+    case "lg":
+      return "-mb-16 md:-mb-20 relative z-10";
+    case "responsive":
+      return "md:-mb-16 relative z-10"; // Only applies on tablet+
+    case "none":
+    default:
+      return "";
   }
-  return overlapClasses.none;
 };
 
 export function About({
