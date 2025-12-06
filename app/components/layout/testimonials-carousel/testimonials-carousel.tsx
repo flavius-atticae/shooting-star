@@ -105,7 +105,11 @@ export function TestimonialsCarousel({
   React.useEffect(() => {
     if (!emblaApi) return;
 
+    // Initialize snapshots and selection state
+    onInit(emblaApi);
     onSelect(emblaApi);
+    
+    // Listen for changes
     emblaApi.on("reInit", onInit);
     emblaApi.on("reInit", onSelect);
     emblaApi.on("select", onSelect);
@@ -154,21 +158,23 @@ export function TestimonialsCarousel({
 
     const container = carouselContainerRef.current;
 
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: Event) => {
+      const keyboardEvent = e as KeyboardEvent;
+      
       // Only handle if carousel or its children have focus
       if (!container.contains(document.activeElement)) return;
       
-      if (e.key === "ArrowLeft") {
-        e.preventDefault();
+      if (keyboardEvent.key === "ArrowLeft") {
+        keyboardEvent.preventDefault();
         scrollPrev();
-      } else if (e.key === "ArrowRight") {
-        e.preventDefault();
+      } else if (keyboardEvent.key === "ArrowRight") {
+        keyboardEvent.preventDefault();
         scrollNext();
       }
     };
 
-    container.addEventListener("keydown", handleKeyDown as any);
-    return () => container.removeEventListener("keydown", handleKeyDown as any);
+    container.addEventListener("keydown", handleKeyDown);
+    return () => container.removeEventListener("keydown", handleKeyDown);
   }, [emblaApi, scrollPrev, scrollNext]);
 
   // Don't render if no testimonials
