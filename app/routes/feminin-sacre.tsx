@@ -10,34 +10,34 @@ import type { EventCardProps } from "~/components/layout/event-card";
 const eventsData: EventCardProps[] = [
   {
     id: "event-1",
-    title: "Atelier varié abcde",
+    title: "Cercle de femmes",
     date: "7 Juin 2025",
-    time: "13:00",
+    time: "19:00",
     imageUrl: undefined, // Placeholder - replace with actual image path
-    imageAlt: "Atelier de féminin sacré",
+    imageAlt: "Cercle de femmes du féminin sacré",
     detailsHref: "#", // TODO: Link to event details page when implemented
   },
   {
     id: "event-2",
-    title: "Atelier varié abcde",
-    date: "7 Juin 2025",
-    time: "13:00",
+    title: "Yoga du féminin sacré",
+    date: "14 Juin 2025",
+    time: "10:00",
     imageUrl: undefined,
-    imageAlt: "Atelier de féminin sacré",
+    imageAlt: "Atelier yoga du féminin sacré",
     detailsHref: "#",
   },
   {
     id: "event-3",
-    title: "Atelier varié abcde",
-    date: "7 Juin 2025",
-    time: "13:00",
+    title: "Rituel de la nouvelle lune",
+    date: "21 Juin 2025",
+    time: "20:00",
     imageUrl: undefined,
-    imageAlt: "Atelier de féminin sacré",
+    imageAlt: "Rituel de la nouvelle lune",
     detailsHref: "#",
   },
 ];
 
-const introText = `Tu ressens l'élan de te reconnecter à ton corps, à ton énergie féminine et à ta puissance intérieure? Les ateliers de Yoga de la Femme Sacré sont un refuge pour toutes sa richesse et sa diversité. Dans un espace bienveillant, sacré et sans jugement, tu pourras te déposer, respirer et t'exprimer librement. À travers le mouvement, la méditation et des pratiques inspirées du féminin sacré, ces rencontres te permettront de renouer avec ton cycle, tes émotions et ton intuition profonde. C'est un moment pour toi, pour te redécouvrir et laisser fleurir la beauté unique de ton féminin, soutenue par la sororité et l'énergie du cercle.`;
+const introText = `Tu ressens l'élan de te reconnecter à ton corps, à ton énergie féminine et à ta puissance intérieure? Les ateliers de Yoga de la Femme Sacré sont un refuge pour toute sa richesse et sa diversité. Dans un espace bienveillant, sacré et sans jugement, tu pourras te déposer, respirer et t'exprimer librement. À travers le mouvement, la méditation et des pratiques inspirées du féminin sacré, ces rencontres te permettront de renouer avec ton cycle, tes émotions et ton intuition profonde. C'est un moment pour toi, pour te redécouvrir et laisser fleurir la beauté unique de ton féminin, soutenue par la sororité et l'énergie du cercle.`;
 
 export function meta({}: Route.MetaArgs) {
   return [
