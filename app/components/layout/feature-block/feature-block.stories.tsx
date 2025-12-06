@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { within, userEvent, expect } from "storybook/test";
+import { within, expect } from "storybook/test";
 import { FeatureBlock } from "./feature-block";
 
 const meta: Meta<typeof FeatureBlock> = {
@@ -17,7 +17,6 @@ Bloc de contenu réutilisable avec texte et image en layout asymétrique.
 - Typography: Ivyora Display (title) + Barlow (description)
 - Image avec placeholder automatique
 - Responsive: 2 colonnes desktop → stack mobile
-- Touch targets ≥ 44px
 - WCAG 2.1 AA compliant
 
 **Pregnancy-safe**: Espacement généreux, couleurs apaisantes du design system.
@@ -72,6 +71,7 @@ export const Default: Story = {
     title: "Cours privés",
     description:
       "Des séances de yoga personnalisées, adaptées à vos besoins et à votre rythme. Un accompagnement individuel pour approfondir votre pratique dans un cadre bienveillant et sécuritaire.",
+    imageAlt: "Illustration des cours de yoga privés",
     layout: "text-left",
   },
   parameters: {
@@ -90,6 +90,7 @@ export const TextRight: Story = {
     title: "Cours en studio",
     description:
       "Rejoignez nos cours de groupe dans une atmosphère chaleureuse et conviviale. Parfait pour celles qui apprécient l'énergie collective et le soutien d'une communauté bienveillante.",
+    imageAlt: "Illustration des cours de yoga en studio",
     layout: "text-right",
   },
   parameters: {
@@ -126,6 +127,7 @@ export const NoImage: Story = {
     title: "Séances de yoga adapté",
     description:
       "Le yoga peut être pratiqué par toutes, peu importe votre condition physique ou votre âge. Nous adaptons les postures pour respecter vos limites et vos capacités.",
+    imageAlt: "Illustration des séances de yoga adapté",
     layout: "text-right",
   },
   parameters: {
@@ -144,6 +146,7 @@ export const WithButton: Story = {
     title: "Yoga prénatal personnalisé",
     description:
       "Un accompagnement sur mesure pendant votre grossesse. Des séances adaptées à chaque trimestre pour vous préparer sereinement à l'accouchement.",
+    imageAlt: "Illustration du yoga prénatal personnalisé",
     layout: "text-left",
   },
   parameters: {
@@ -161,6 +164,7 @@ export const LongContent: Story = {
     title: "Yoga postnatal et récupération en douceur",
     description:
       "Après l'accouchement, prenez le temps de retrouver votre corps en douceur. Nos cours de yoga postnatal sont spécialement conçus pour accompagner votre récupération physique et émotionnelle. Chaque séance respecte votre rythme et vos besoins particuliers pendant cette période de transformation. Nous travaillons sur le renforcement du plancher pelvien, la réduction des tensions musculaires, et le bien-être émotionnel dans un environnement sûr et bienveillant.",
+    imageAlt: "Illustration du yoga postnatal et récupération",
     layout: "text-right",
   },
   parameters: {
@@ -180,16 +184,19 @@ export const Alternating: Story = {
       <FeatureBlock
         title="Cours privés"
         description="Des séances de yoga personnalisées, adaptées à vos besoins et à votre rythme. Un accompagnement individuel pour approfondir votre pratique."
+        imageAlt="Illustration des cours de yoga privés"
         layout="text-left"
       />
       <FeatureBlock
         title="Cours en studio"
         description="Rejoignez nos cours de groupe dans une atmosphère chaleureuse et conviviale. Parfait pour celles qui apprécient l'énergie collective."
+        imageAlt="Illustration des cours de yoga en studio"
         layout="text-right"
       />
       <FeatureBlock
         title="Cours en entreprises"
         description="Offrez à vos employées un moment de détente et de ressourcement. Des cours de yoga adaptés au milieu professionnel."
+        imageAlt="Illustration des cours de yoga en entreprises"
         layout="text-left"
       />
     </div>
@@ -215,6 +222,7 @@ export const MobileViewport: Story = {
     title: "Cours pour futures mamans",
     description:
       "Yoga prénatal adapté à chaque trimestre. Accompagnement bienveillant pour votre bien-être et celui de bébé.",
+    imageAlt: "Illustration des cours pour futures mamans",
     layout: "text-left",
   },
   parameters: {
@@ -239,6 +247,7 @@ export const ButtonInteraction: Story = {
   args: {
     title: "Cours de yoga",
     description: "Description du cours de yoga.",
+    imageAlt: "Illustration du cours de yoga",
     layout: "text-left",
   },
   parameters: {
@@ -331,6 +340,7 @@ export const KeyboardNavigation: Story = {
   args: {
     title: "Navigation au clavier",
     description: "Testez la navigation avec Tab.",
+    imageAlt: "Illustration de la navigation au clavier",
     layout: "text-left",
   },
   parameters: {
@@ -379,6 +389,7 @@ export const FrenchContent: Story = {
     title: "Cours de yoga prénatal",
     description:
       "Découvrez nos cours adaptés à chaque trimestre de votre grossesse. Un accompagnement bienveillant pour vous et bébé.",
+    imageAlt: "Illustration du cours de yoga prénatal",
     layout: "text-left",
   },
   parameters: {

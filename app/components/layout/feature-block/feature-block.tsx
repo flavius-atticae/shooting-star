@@ -27,7 +27,6 @@ export interface FeatureBlockProps {
  * - Responsive design: 2-column desktop → stacked mobile
  * - Image placeholder support
  * - WCAG 2.1 AA compliant
- * - Touch targets ≥ 44px
  *
  * Usage:
  * ```tsx
@@ -44,7 +43,7 @@ export function FeatureBlock({
   title,
   description,
   imageSrc,
-  imageAlt = "",
+  imageAlt,
   layout = "text-left",
   className,
   "aria-labelledby": ariaLabelledBy,
@@ -55,6 +54,9 @@ export function FeatureBlock({
 
   // Image placeholder if no image provided
   const displayImageSrc = imageSrc || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%23dae6ea'/%3E%3C/svg%3E";
+  
+  // Generate meaningful alt text if not provided
+  const displayImageAlt = imageAlt ?? `Illustration - ${title}`;
   
   return (
     <article
@@ -99,7 +101,7 @@ export function FeatureBlock({
       >
         <img
           src={displayImageSrc}
-          alt={imageAlt}
+          alt={displayImageAlt}
           className="w-full h-full object-cover"
           loading="lazy"
         />
