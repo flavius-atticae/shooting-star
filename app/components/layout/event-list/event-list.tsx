@@ -1,5 +1,4 @@
 import * as React from "react";
-import { cn } from "~/lib/utils";
 import { Container } from "~/components/ui/container";
 import { Section } from "~/components/ui/section";
 import { EventCard, type EventCardProps } from "~/components/layout/event-card";
@@ -78,11 +77,13 @@ export function EventList({
         )}
 
         {/* Events Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-          {events.map((event) => (
-            <EventCard key={event.id} {...event} />
-          ))}
-        </div>
+        {events.length > 0 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+            {events.map((event) => (
+              <EventCard key={event.id} {...event} />
+            ))}
+          </div>
+        )}
 
         {/* Empty state */}
         {events.length === 0 && (

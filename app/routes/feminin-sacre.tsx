@@ -13,7 +13,7 @@ const eventsData: EventCardProps[] = [
     title: "Cercle de femmes",
     date: "7 Juin 2025",
     time: "19:00",
-    imageUrl: undefined, // Placeholder - replace with actual image path
+    // imageUrl: undefined, // TODO: Add event image
     imageAlt: "Cercle de femmes du féminin sacré",
     detailsHref: "#", // TODO: Link to event details page when implemented
   },
@@ -22,7 +22,7 @@ const eventsData: EventCardProps[] = [
     title: "Yoga du féminin sacré",
     date: "14 Juin 2025",
     time: "10:00",
-    imageUrl: undefined,
+    // imageUrl: undefined, // TODO: Add event image
     imageAlt: "Atelier yoga du féminin sacré",
     detailsHref: "#",
   },
@@ -31,7 +31,7 @@ const eventsData: EventCardProps[] = [
     title: "Rituel de la nouvelle lune",
     date: "21 Juin 2025",
     time: "20:00",
-    imageUrl: undefined,
+    // imageUrl: undefined, // TODO: Add event image
     imageAlt: "Rituel de la nouvelle lune",
     detailsHref: "#",
   },
@@ -39,7 +39,7 @@ const eventsData: EventCardProps[] = [
 
 const introText = `Tu ressens l'élan de te reconnecter à ton corps, à ton énergie féminine et à ta puissance intérieure? Les ateliers de Yoga du Féminin Sacré sont un refuge pour toute sa richesse et sa diversité. Dans un espace bienveillant, sacré et sans jugement, tu pourras te déposer, respirer et t'exprimer librement. À travers le mouvement, la méditation et des pratiques inspirées du féminin sacré, ces rencontres te permettront de renouer avec ton cycle, tes émotions et ton intuition profonde. C'est un moment pour toi, pour te redécouvrir et laisser fleurir la beauté unique de ton féminin, soutenue par la sororité et l'énergie du cercle.`;
 
-export function meta({}: Route.MetaArgs) {
+export function meta(_args: Route.MetaArgs) {
   return [
     {
       title: "Féminin Sacré - Ateliers Variés | Pauline Roussel",

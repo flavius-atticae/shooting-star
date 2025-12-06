@@ -54,9 +54,8 @@ describe("EventList Component - Pregnancy-Safe Testing", () => {
     it("should not render intro paragraph when not provided", () => {
       render(<EventList events={mockEvents} />);
 
-      const paragraphs = screen.queryAllByRole("paragraph");
-      // Should only have paragraphs from event cards, not intro
-      expect(paragraphs.length).toBe(0);
+      // Should not render the intro paragraph when introText is not provided
+      expect(screen.queryByText(defaultIntroText)).not.toBeInTheDocument();
     });
 
     it("should render all event cards", () => {

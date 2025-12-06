@@ -73,7 +73,7 @@ export const Default: Story = {
     title: "Atelier varié abcde",
     date: "7 Juin 2025",
     time: "13:00",
-    imageUrl: undefined, // Using placeholder background
+    // imageUrl omitted - will use placeholder
     imageAlt: "Photo de l'atelier varié",
     detailsHref: "#",
   },
@@ -88,7 +88,7 @@ export const WithoutImage: Story = {
     title: "Cercle de femmes",
     date: "14 Juin 2025",
     time: "19:00",
-    imageUrl: undefined,
+    // imageUrl omitted - will use placeholder
     imageAlt: "",
     detailsHref: "#",
   },
@@ -104,7 +104,7 @@ export const LongTitle: Story = {
       "Atelier spécial féminin sacré : célébration de la féminité et rituels de passage",
     date: "21 Juin 2025",
     time: "10:00",
-    imageUrl: undefined,
+    // imageUrl omitted - will use placeholder
     detailsHref: "#",
   },
 };
@@ -118,7 +118,9 @@ export const WithClickHandler: Story = {
     title: "Mama blessing",
     date: "28 Juin 2025",
     time: "15:00",
-    onDetailsClick: () => alert("Details clicked!"),
+    onDetailsClick: () => {
+      alert("Details clicked!");
+    },
   },
 };
 
