@@ -54,7 +54,7 @@ export function AboutContent({
       <div className="lg:col-span-2">
         {/* Title */}
         <h2
-          className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-secondary text-left leading-tight mb-6 sm:mb-8"
+          className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl text-secondary text-left leading-tight mb-6 sm:mb-8"
           id="about-heading"
         >
           À propos

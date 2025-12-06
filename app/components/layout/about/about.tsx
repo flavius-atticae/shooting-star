@@ -4,12 +4,12 @@ import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 import { AboutContent } from "./about-content";
 
-export interface AboutSectionProps extends Omit<
+export interface AboutProps extends Omit<
   React.HTMLAttributes<HTMLElement>,
   "children"
 > {
   /** Custom section spacing override */
-  spacing?: "compact" | "normal" | "spacious";
+  spacing?: "none" | "compact" | "normal" | "spacious";
   /** Custom container size */
   containerSize?: "sm" | "md" | "lg" | "xl";
   /** Custom className for additional styling */
@@ -45,17 +45,17 @@ export interface MethodItem {
  *
  * Usage:
  * ```tsx
- * <AboutSection />
+ * <About />
  * ```
  */
-export function AboutSection({
-  spacing = "normal",
-  containerSize = "lg",
+export function About({
+  spacing = "compact",
+  containerSize = "xl",
   className,
   "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
   ...props
-}: AboutSectionProps) {
+}: AboutProps) {
   // Contenu par défaut pour la méthode
   const defaultMethodItems: MethodItem[] = [
     {
@@ -80,9 +80,11 @@ export function AboutSection({
 
   return (
     <Section
-      background="transparent"
+      background="accent"
       spacing={spacing}
-      className={cn("px-6 sm:px-8 lg:px-12", className)}
+      insetY="sm"
+      rounded="md"
+      className={cn(className)}
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
       lang="fr"
@@ -90,7 +92,7 @@ export function AboutSection({
     >
       <Container size={containerSize}>
         {/* Container avec background gris et bords arrondis */}
-        <div className="bg-gris rounded-2xl p-8 sm:p-10 lg:p-12">
+        <div className="py-6 sm:py-8 lg:py-10 px-4 sm:px-6">
           {/* Row 1: About Content */}
           <AboutContent />
 
@@ -103,7 +105,7 @@ export function AboutSection({
             {/* Section Title */}
             <h2
               id="method-heading"
-              className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-secondary text-left leading-tight"
+              className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl text-secondary text-left leading-tight"
             >
               Ma méthode
             </h2>
@@ -143,7 +145,7 @@ export function AboutSection({
                     {/* Method Title */}
                     <h3
                       id={`method-${item.id}-title`}
-                      className="font-heading font-bold text-xl sm:text-2xl text-secondary leading-tight"
+                      className="font-heading font-medium text-2xl sm:text-4xl text-secondary leading-tight"
                     >
                       {item.title}
                     </h3>
