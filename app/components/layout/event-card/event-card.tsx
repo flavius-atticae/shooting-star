@@ -68,6 +68,15 @@ export function EventCard({
 }: EventCardProps & Omit<React.HTMLAttributes<HTMLDivElement>, "children">) {
   const dateTimeLabel = `${date} - ${time}`;
 
+  // Warn in development if neither detailsHref nor onDetailsClick is provided
+  if (process.env.NODE_ENV === "development") {
+    if (!detailsHref && !onDetailsClick) {
+      console.warn(
+        `EventCard "${title}" (id: ${id}): Neither detailsHref nor onDetailsClick provided. Button will not render.`
+      );
+    }
+  }
+
   return (
     <article
       className={cn(
@@ -93,7 +102,7 @@ export function EventCard({
         {/* Right: Date/Time (above right line) */}
         <div className="flex flex-col items-start md:items-end">
           <time
-            dateTime={`${date} ${time}`}
+            dateTime={`${date} ${time}`} // TODO: Convert to ISO 8601 format (e.g., "2025-06-07T13:00:00") for proper machine readability
             className="font-sans text-sm text-primary/80"
           >
             {dateTimeLabel}

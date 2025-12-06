@@ -15,14 +15,12 @@ Event list section for displaying Féminin Sacré workshop events.
 **Features**:
 - Section title (Ivyora Display font)
 - Intro paragraph (Barlow font)
-- Responsive grid of EventCard components
+- Vertical single-column layout of EventCard components (events are stacked)
 - Empty state when no events
 - Pregnancy-safe spacing and colors
 
 **Layout**:
-- 1 column on mobile
-- 2 columns on tablet
-- 3 columns on desktop
+- Single column at all breakpoints (mobile, tablet, desktop)
 
 **Accessibility**:
 - Semantic HTML with proper heading hierarchy

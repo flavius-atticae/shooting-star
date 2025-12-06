@@ -15,7 +15,7 @@ Event card component for displaying Féminin Sacré workshop events.
 - Event image with fallback background
 - Title, date, and time display
 - Details button (green background, white text)
-- Responsive layout (stacks on mobile, horizontal on desktop)
+- Internal info sections are responsive (stack vertically on mobile, horizontally on desktop); overall card structure remains vertical at all breakpoints
 - Touch targets ≥ 44px (WCAG 2.1 AA)
 - Pregnancy-safe colors and animations
 
