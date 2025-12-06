@@ -443,11 +443,11 @@ export const TypographyStructure: Story = {
       expect(title).toHaveClass("text-secondary");
     });
 
-    // Verify descriptions use font-sans
+    // Verify descriptions use font-sans and text-secondary
     const descriptions = canvasElement.querySelectorAll("article p");
     descriptions.forEach((description) => {
       expect(description).toHaveClass("font-sans");
-      expect(description).toHaveClass("text-neutral");
+      expect(description).toHaveClass("text-secondary");
     });
   },
 };

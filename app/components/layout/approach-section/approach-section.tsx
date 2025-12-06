@@ -81,7 +81,7 @@ export function ApproachSection({
         {/* Main Section Title */}
         <h2
           id="approach-heading"
-          className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl text-primary text-center leading-tight mb-12 sm:mb-16 lg:mb-20"
+          className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl text-primary text-left leading-tight mb-12 sm:mb-16 lg:mb-20"
         >
           {title}
         </h2>
@@ -110,17 +110,22 @@ export function ApproachSection({
 
                 {/* Description Paragraph */}
                 <p
-                  className="font-sans text-base sm:text-lg text-neutral text-center max-w-3xl mx-auto leading-relaxed"
+                  className="font-sans text-base sm:text-lg text-secondary text-center max-w-3xl mx-auto leading-relaxed"
                   aria-describedby={`approach-${item.id}-title`}
                 >
                   {item.description}
                 </p>
               </article>
 
-              {/* Vertical Divider - only between items, not after the last one */}
+              {/* Vertical Divider - progressively shorter for each item */}
               {index < items.length - 1 && (
                 <div className="flex justify-center" aria-hidden="true">
-                  <div className="w-px h-16 sm:h-20 lg:h-24 bg-secondary"></div>
+                  <div 
+                    className="w-px bg-secondary"
+                    style={{
+                      height: `${Math.max(20, 96 - (index * 16))}px`,
+                    }}
+                  ></div>
                 </div>
               )}
             </React.Fragment>
