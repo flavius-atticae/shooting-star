@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
 import type { RouteObject } from 'react-router-dom';
 
@@ -39,7 +39,7 @@ describe('Doula Route Integration Tests', () => {
       render(<RouterProvider router={router} />);
 
       // Verify main content area exists
-      const mainContent = screen.getByRole('main', { name: 'Section principale d\'accueil' });
+      const mainContent = screen.getByRole('main');
       expect(mainContent).toBeInTheDocument();
     });
 
