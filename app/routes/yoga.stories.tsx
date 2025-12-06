@@ -52,10 +52,15 @@ Page Yoga complète - Enseignement du Yoga par Pauline Roussel.
       },
     },
     chromatic: {
-      viewports: [320, 768, 1024, 1440],
+      viewports: [375, 768, 1280, 1536],
     },
   },
   tags: ["autodocs"],
+};
+
+// Shared parameter for disabling Chromatic snapshots on interaction tests
+const NO_CHROMATIC = {
+  chromatic: { disableSnapshot: true },
 };
 
 export default meta;
@@ -87,9 +92,6 @@ export const Default: Story = {
  */
 export const MobileViewport: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: "mobile1",
-    },
     chromatic: {
       viewports: [375, 428], // iPhone sizes
     },
@@ -111,9 +113,6 @@ export const MobileViewport: Story = {
  */
 export const TabletViewport: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: "tablet",
-    },
     chromatic: {
       viewports: [768, 834], // iPad sizes
     },
@@ -136,9 +135,6 @@ export const TabletViewport: Story = {
  */
 export const DesktopViewport: Story = {
   parameters: {
-    viewport: {
-      defaultViewport: "desktop",
-    },
     chromatic: {
       viewports: [1280, 1440, 1920],
     },
@@ -168,9 +164,7 @@ export const DesktopViewport: Story = {
  * - Footer
  */
 export const FullPageIntegration: Story = {
-  parameters: {
-    chromatic: { disableSnapshot: true },
-  },
+  parameters: NO_CHROMATIC,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -232,9 +226,7 @@ export const FullPageIntegration: Story = {
  * - Footer landmark
  */
 export const AccessibilityStructure: Story = {
-  parameters: {
-    chromatic: { disableSnapshot: true },
-  },
+  parameters: NO_CHROMATIC,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -281,9 +273,7 @@ export const AccessibilityStructure: Story = {
  * - Logical tab order
  */
 export const KeyboardNavigation: Story = {
-  parameters: {
-    chromatic: { disableSnapshot: true },
-  },
+  parameters: NO_CHROMATIC,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -311,9 +301,7 @@ export const KeyboardNavigation: Story = {
  * Ensures all text content is properly displayed in French (fr-CA).
  */
 export const FrenchContent: Story = {
-  parameters: {
-    chromatic: { disableSnapshot: true },
-  },
+  parameters: NO_CHROMATIC,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -345,9 +333,7 @@ export const FrenchContent: Story = {
  * - Footer after main content
  */
 export const PageStructure: Story = {
-  parameters: {
-    chromatic: { disableSnapshot: true },
-  },
+  parameters: NO_CHROMATIC,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -384,9 +370,7 @@ export const PageStructure: Story = {
  * - Block 3: text-left (Cours en entreprises)
  */
 export const FeatureBlocksLayout: Story = {
-  parameters: {
-    chromatic: { disableSnapshot: true },
-  },
+  parameters: NO_CHROMATIC,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -421,9 +405,7 @@ export const FeatureBlocksLayout: Story = {
  * - Proper styling and layout
  */
 export const CallToActionSection: Story = {
-  parameters: {
-    chromatic: { disableSnapshot: true },
-  },
+  parameters: NO_CHROMATIC,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
@@ -455,9 +437,7 @@ export const CallToActionSection: Story = {
  * - Maintain aspect ratio
  */
 export const ResponsiveImages: Story = {
-  parameters: {
-    chromatic: { disableSnapshot: true },
-  },
+  parameters: NO_CHROMATIC,
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
