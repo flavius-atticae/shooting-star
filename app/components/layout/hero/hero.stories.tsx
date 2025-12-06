@@ -132,7 +132,7 @@ avec douceur`,
     docs: {
       description: {
         story:
-          "Titre sur plusieurs lignes. Les `\\n` dans le titre sont automatiquement convertis en `<br />`.",
+          "Titre sur plusieurs lignes. Les `\\n` dans le titre sont automatiquement convertis en sauts de ligne.",
       },
     },
   },
