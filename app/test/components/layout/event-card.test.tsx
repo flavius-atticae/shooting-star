@@ -1,6 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
+import userEvent from "@testing-library/user-event";
 import { EventCard } from "../../../components/layout/event-card";
 
 describe("EventCard Component - Pregnancy-Safe Testing", () => {
@@ -132,6 +133,17 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
       const button = screen.getByRole("button");
       expect(button).toBeInTheDocument();
       expect(button).toHaveTextContent("DÉTAILS");
+    });
+
+    it("should call onDetailsClick when button is clicked", async () => {
+      const user = userEvent.setup();
+      const handleClick = vi.fn();
+      render(<EventCard {...mockEvent} onDetailsClick={handleClick} />);
+
+      const button = screen.getByRole("button");
+      await user.click(button);
+
+      expect(handleClick).toHaveBeenCalledTimes(1);
     });
 
     it("should have minimum touch target size (44px)", () => {

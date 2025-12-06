@@ -142,31 +142,33 @@ export function EventCard({
       </div>
 
       {/* Bottom Row: Button on Right (below right line) */}
-      <div className="flex flex-col md:flex-row md:items-start md:justify-end gap-4 px-2">
-        {/* Details Button (below right line) */}
-        {detailsHref ? (
-          <Button
-            variant="default"
-            size="default"
-            className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full"
-            asChild
-          >
-            <a href={detailsHref} aria-label={`Voir les détails de ${title}`}>
+      {(detailsHref || onDetailsClick) && (
+        <div className="flex flex-col md:flex-row md:items-start md:justify-end gap-4 px-2">
+          {/* Details Button (below right line) */}
+          {detailsHref ? (
+            <Button
+              variant="default"
+              size="default"
+              className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full"
+              asChild
+            >
+              <a href={detailsHref} aria-label={`Voir les détails de ${title}`}>
+                DÉTAILS
+              </a>
+            </Button>
+          ) : (
+            <Button
+              variant="default"
+              size="default"
+              className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full"
+              onClick={onDetailsClick}
+              aria-label={`Voir les détails de ${title}`}
+            >
               DÉTAILS
-            </a>
-          </Button>
-        ) : (
-          <Button
-            variant="default"
-            size="default"
-            className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full"
-            onClick={onDetailsClick}
-            aria-label={`Voir les détails de ${title}`}
-          >
-            DÉTAILS
-          </Button>
-        )}
-      </div>
+            </Button>
+          )}
+        </div>
+      )}
     </article>
   );
 }
