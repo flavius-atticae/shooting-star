@@ -114,6 +114,7 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
         <Container
           size="xl"
           className={cn(
+            "px-4 sm:px-8 md:px-10",
             "h-full flex items-center",
             // Safe area padding for mobile devices
             "pb-[env(safe-area-inset-bottom)]"

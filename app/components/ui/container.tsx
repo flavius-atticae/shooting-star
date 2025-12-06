@@ -6,24 +6,25 @@ export type ContainerSize = "sm" | "md" | "lg" | "xl" | "full";
 
 /**
  * Get container size classes using switch statement to avoid object injection warnings.
+ * Container only handles max-width and centering, not padding.
  */
 function getContainerSizeClass(size: ContainerSize): string {
   switch (size) {
     case "sm":
       // Narrow constraint for focused content (articles, forms)
-      return "max-w-2xl mx-auto px-4 sm:px-6";
+      return "max-w-2xl mx-auto";
     case "md":
       // Standard size for most content
-      return "max-w-4xl mx-auto px-4 sm:px-6 lg:px-8";
+      return "max-w-4xl mx-auto";
     case "lg":
       // Large for dashboards and complex layouts
-      return "max-w-6xl mx-auto px-4 sm:px-6 lg:px-8";
+      return "max-w-6xl mx-auto";
     case "xl":
       // Extra large for very wide content
-      return "max-w-7xl mx-auto px-4 sm:px-6 lg:px-10";
+      return "max-w-7xl mx-auto";
     case "full":
-      // Full width with padding only
-      return "w-full px-4 sm:px-6 lg:px-8";
+      // Full width
+      return "w-full";
   }
 }
 
