@@ -79,12 +79,12 @@ export default function Home() {
         {/* Services Section - Doula, Yoga, Féminin */}
         <Services services={servicesData} containerSize="xl" />
 
-        {/* About Section - Présentation + Méthode */}
-        <About spacing="none" containerSize="xl" />
+        {/* About Section - Présentation + Méthode (overlaps Footer on tablet+) */}
+        <About spacing="none" containerSize="xl" overlapNext="sm" />
       </main>
 
-      {/* Footer - Navigation et contact */}
-      <Footer />
+      {/* Footer - Navigation et contact (compensates for About overlap) */}
+      <Footer hasOverlap="sm" />
     </>
   );
 }

@@ -34,7 +34,7 @@ export interface FooterProps extends Omit<
   "children"
 > {
   /** Custom section spacing override */
-  spacing?: "compact" | "normal" | "spacious";
+  spacing?: "none" | "compact" | "normal" | "spacious";
   /** Custom container size */
   containerSize?: "sm" | "md" | "lg" | "xl";
   /** Navigation links configuration */
@@ -45,6 +45,16 @@ export interface FooterProps extends Omit<
   onNewsletterSignup?: (email: string) => void | Promise<void>;
   /** Whether newsletter signup is loading */
   isNewsletterLoading?: boolean;
+  /**
+   * Compensate for overlap from previous section (e.g., About with overlapNext)
+   * Adds padding-top to create space for the overlapping section
+   * - "none": No compensation (default)
+   * - "sm": Small compensation (matches About overlapNext="sm")
+   * - "md": Medium compensation (matches About overlapNext="md")
+   * - "lg": Large compensation (matches About overlapNext="lg")
+   * - "responsive": Only applies on tablet+ (matches About overlapNext="responsive")
+   */
+  hasOverlap?: "none" | "sm" | "md" | "lg" | "responsive";
   /** Custom className for additional styling */
   className?: string;
   /** Accessibility props */
@@ -148,23 +158,45 @@ const defaultSocialLinks: SocialLink[] = [
  * ```
  */
 export function Footer({
-  spacing = "normal",
+  spacing = "compact",
   containerSize = "xl",
   navLinks = defaultNavLinks,
   socialLinks = defaultSocialLinks,
   onNewsletterSignup,
   isNewsletterLoading = false,
+  hasOverlap = "none",
   className,
   "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
   ...props
 }: FooterProps) {
+  // Safe getter using switch to avoid object injection vulnerability
+  const getOverlapCompensation = (): string => {
+    switch (hasOverlap) {
+      case "sm":
+        return "pt-8 md:pt-12";
+      case "md":
+        return "pt-12 md:pt-16";
+      case "lg":
+        return "pt-16 md:pt-20";
+      case "responsive":
+        return "md:pt-16"; // Only applies on tablet+
+      case "none":
+      default:
+        return "";
+    }
+  };
+
   return (
     <Section
       background="transparent"
-      spacing="compact"
+      spacing="normal"
       as="footer"
-      className={cn("bg-primary w-full pb-0", className)}
+      className={cn(
+        "bg-primary w-full pb-0",
+        getOverlapCompensation(),
+        className
+      )}
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
       lang="fr"
@@ -179,7 +211,7 @@ export function Footer({
             // Vertical and horizontal alignment - top aligned for Figma conformance
             "items-start justify-items-start md:justify-items-center",
             // Padding for rounded container - Progressive Enhancement (48px → 64px → 80px)
-            "px-6 py-12 sm:px-8 md:py-16 lg:py-20"
+            "px-6 py-6 sm:px-8 md:py-8"
           )}
         >
           {/* Column 1: Logo Section (inline) */}
