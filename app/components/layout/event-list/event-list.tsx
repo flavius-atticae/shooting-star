@@ -22,13 +22,13 @@ export interface EventListProps {
  * Displays a section with:
  * - Title ("Tous les événements" or custom)
  * - Intro paragraph
- * - Grid of EventCard components
- * - Responsive layout (1 col mobile, 2 cols tablet, 3 cols desktop)
+ * - Vertical list of EventCard components
+ * - Single-column layout as per mockup design
  *
  * Design specs:
  * - Title: Ivyora Display, green color
  * - Intro text: Barlow, green color
- * - Grid with gap for breathing room
+ * - Vertical stack with generous spacing
  * - Pregnancy-safe spacing and colors
  *
  * Usage:
@@ -76,9 +76,9 @@ export function EventList({
           </p>
         )}
 
-        {/* Events Grid */}
+        {/* Events List - Vertical layout as per mockup */}
         {events.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+          <div className="flex flex-col gap-12 lg:gap-16">
             {events.map((event) => (
               <EventCard key={event.id} {...event} />
             ))}

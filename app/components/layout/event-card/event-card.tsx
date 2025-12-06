@@ -27,19 +27,20 @@ export interface EventCardProps {
  * EventCard Component - Event card for Féminin Sacré page
  *
  * Displays event information with:
- * - Event image (with fallback background)
- * - Event title in Barlow Bold
- * - Date and time
- * - Details button (green with white text)
- * - Responsive layout
+ * - Centered blue/cool colored image box
+ * - Decorative horizontal lines on sides
+ * - Event title on the left
+ * - Date, time, and details button on the right
+ * - Vertical layout
  * - WCAG 2.1 AA compliant
  * - Touch targets ≥ 44px
  *
- * Design specs:
- * - Image aspect ratio: 16:9 or similar
- * - Text color: --color-primary (green)
- * - Button: green background, white text
- * - Rounded corners for soft feel
+ * Design specs (from mockup):
+ * - Centered image box with cool background
+ * - Horizontal divider lines extending from image
+ * - Title left-aligned
+ * - Date/time and button right-aligned
+ * - Pregnancy-safe spacing and colors
  *
  * Usage:
  * ```tsx
@@ -70,46 +71,58 @@ export function EventCard({
   return (
     <article
       className={cn(
-        "flex flex-col gap-4 w-full",
+        "flex flex-col w-full",
         "motion-safe:transition-transform motion-safe:duration-200",
         className
       )}
       aria-labelledby={`event-title-${id}`}
       {...props}
     >
-      {/* Event Image */}
-      <div
-        className={cn(
-          "w-full aspect-video rounded-xl overflow-hidden",
-          "bg-cool", // Fallback background color
-          imageUrl ? "" : "flex items-center justify-center"
-        )}
-      >
-        {imageUrl ? (
-          <img
-            src={imageUrl}
-            alt={imageAlt || title}
-            className="w-full h-full object-cover"
-            loading="lazy"
-          />
-        ) : (
-          <div className="text-secondary text-sm font-sans">
-            {/* Placeholder for event image */}
-          </div>
-        )}
+      {/* Image Box with Horizontal Lines */}
+      <div className="relative flex items-center justify-center mb-6">
+        {/* Left horizontal line */}
+        <div className="flex-1 h-[1px] bg-primary/20" />
+        
+        {/* Centered Image Box */}
+        <div
+          className={cn(
+            "mx-4 w-48 h-48 md:w-56 md:h-56 rounded-xl overflow-hidden flex-shrink-0",
+            "bg-cool", // Fallback background color
+            imageUrl ? "" : "flex items-center justify-center"
+          )}
+        >
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt={imageAlt || title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          ) : (
+            <div className="text-secondary text-sm font-sans">
+              {/* Placeholder for event image */}
+            </div>
+          )}
+        </div>
+
+        {/* Right horizontal line */}
+        <div className="flex-1 h-[1px] bg-primary/20" />
       </div>
 
-      {/* Event Info */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-        <div className="flex flex-col gap-1">
-          {/* Event Title */}
+      {/* Event Info - Title on Left, Date/Time and Button on Right */}
+      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 px-2">
+        {/* Left: Event Title */}
+        <div className="flex-1">
           <h3
             id={`event-title-${id}`}
-            className="font-sans font-bold text-base sm:text-lg text-primary leading-tight"
+            className="font-sans font-normal text-base md:text-lg text-primary leading-tight"
           >
             {title}
           </h3>
+        </div>
 
+        {/* Right: Date/Time and Button */}
+        <div className="flex flex-col items-start md:items-end gap-3">
           {/* Date and Time */}
           <time
             dateTime={`${date} ${time}`}
@@ -117,31 +130,31 @@ export function EventCard({
           >
             {dateTimeLabel}
           </time>
-        </div>
 
-        {/* Details Button */}
-        {detailsHref ? (
-          <Button
-            variant="default"
-            size="default"
-            className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full self-start sm:self-center"
-            asChild
-          >
-            <a href={detailsHref} aria-label={`Voir les détails de ${title}`}>
+          {/* Details Button */}
+          {detailsHref ? (
+            <Button
+              variant="default"
+              size="default"
+              className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full"
+              asChild
+            >
+              <a href={detailsHref} aria-label={`Voir les détails de ${title}`}>
+                DÉTAILS
+              </a>
+            </Button>
+          ) : (
+            <Button
+              variant="default"
+              size="default"
+              className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full"
+              onClick={onDetailsClick}
+              aria-label={`Voir les détails de ${title}`}
+            >
               DÉTAILS
-            </a>
-          </Button>
-        ) : (
-          <Button
-            variant="default"
-            size="default"
-            className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full self-start sm:self-center"
-            onClick={onDetailsClick}
-            aria-label={`Voir les détails de ${title}`}
-          >
-            DÉTAILS
-          </Button>
-        )}
+            </Button>
+          )}
+        </div>
       </div>
     </article>
   );

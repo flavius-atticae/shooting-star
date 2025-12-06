@@ -159,22 +159,20 @@ describe("EventList Component - Pregnancy-Safe Testing", () => {
     });
   });
 
-  describe("Responsive Grid Layout", () => {
-    it("should have responsive grid classes", () => {
+  describe("Responsive Vertical Layout", () => {
+    it("should have vertical flex layout", () => {
       const { container } = render(<EventList events={mockEvents} />);
 
-      const grid = container.querySelector(".grid");
-      expect(grid).toHaveClass("grid-cols-1");
-      expect(grid).toHaveClass("md:grid-cols-2");
-      expect(grid).toHaveClass("lg:grid-cols-3");
+      const layout = container.querySelector(".flex.flex-col");
+      expect(layout).toBeInTheDocument();
     });
 
     it("should have pregnancy-safe gap spacing", () => {
       const { container } = render(<EventList events={mockEvents} />);
 
-      const grid = container.querySelector(".grid");
-      expect(grid).toHaveClass("gap-8");
-      expect(grid).toHaveClass("lg:gap-10");
+      const layout = container.querySelector(".flex.flex-col");
+      expect(layout).toHaveClass("gap-12");
+      expect(layout).toHaveClass("lg:gap-16");
     });
   });
 
