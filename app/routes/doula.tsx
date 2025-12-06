@@ -1,4 +1,5 @@
 import type { Route } from "./+types/doula";
+import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { Footer } from "~/components/layout/footer/footer";
 
@@ -23,6 +24,9 @@ export function meta({}: Route.MetaArgs) {
 export default function DoulaPage() {
   return (
     <>
+      {/* Header - Navigation principale */}
+      <Header />
+
       <main id="main-content" role="main">
         {/* Hero Section - Accompagnement de doula */}
         <Hero

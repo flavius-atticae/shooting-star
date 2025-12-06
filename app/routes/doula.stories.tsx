@@ -8,6 +8,7 @@ import DoulaPage from "./doula";
  * 
  * This story demonstrates the foundational Doula page with:
  * - Route accessible at /doula
+ * - Header component with navigation
  * - Hero section with French title "Accompagnement de doula"
  * - Subtitle "AVEC PAULINE ROUSSEL"
  * - Footer component
@@ -15,7 +16,7 @@ import DoulaPage from "./doula";
  * 
  * Technical details:
  * - Follows pattern from home.tsx
- * - Uses existing Hero and Footer components
+ * - Uses existing Header, Hero and Footer components
  * - WCAG 2.1 AA compliant
  * - Responsive (mobile, tablet, desktop)
  * - French language content
@@ -37,7 +38,7 @@ type Story = StoryObj<typeof DoulaPage>;
 /**
  * Default Doula Page
  * 
- * Displays the complete doula page with Hero and Footer.
+ * Displays the complete doula page with Header, Hero and Footer.
  * This is the initial implementation for Phase 1.
  */
 export const Default: Story = {
