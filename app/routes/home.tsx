@@ -2,10 +2,10 @@ import type { Route } from "./+types/home";
 import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { CallToAction } from "~/components/layout/call-to-action";
-import { ServicesSection } from "~/components/layout/services-section/services-section";
+import { Services } from "~/components/layout/services";
 import { AboutSection } from "~/components/layout/about-section/about-section";
 import { Footer } from "~/components/layout/footer/footer";
-import type { ServiceItem } from "~/components/layout/services-section/service-card";
+import type { ServiceItem } from "~/components/layout/services/service-card";
 
 // Configuration des services pour la landing page
 const servicesData: ServiceItem[] = [
@@ -77,11 +77,7 @@ export default function Home() {
         />
 
         {/* Services Section - Doula, Yoga, Féminin */}
-        <ServicesSection
-          services={servicesData}
-          spacing="normal"
-          containerSize="xl"
-        />
+        <Services services={servicesData} containerSize="xl" />
 
         {/* About Section - Présentation + Méthode */}
         <AboutSection spacing="normal" containerSize="xl" />

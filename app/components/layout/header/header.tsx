@@ -58,7 +58,7 @@ export function Header({ className, defaultOpen = false }: HeaderProps) {
       )}
       role="banner"
     >
-      <Container size="xl" className="h-full">
+      <Container size="xl" className="h-full px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-3 items-center h-full">
           {/* Mobile Menu Trigger - Left side on mobile */}
           <div className="flex items-center justify-start">

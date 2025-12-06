@@ -4,7 +4,7 @@ import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 import { ServiceCard, type ServiceItem } from "./service-card";
 
-export interface ServicesSectionProps extends Omit<
+export interface ServicesProps extends Omit<
   React.HTMLAttributes<HTMLElement>,
   "children"
 > {
@@ -13,9 +13,13 @@ export interface ServicesSectionProps extends Omit<
   /** Array of services to display */
   services: ServiceItem[];
   /** Custom section spacing override */
-  spacing?: "compact" | "normal" | "spacious";
+  spacing?: "none" | "compact" | "normal" | "spacious";
   /** Custom container size */
   containerSize?: "sm" | "md" | "lg" | "xl";
+  /** Horizontal inset - creates the "floating card" effect with space from viewport edges */
+  insetX?: "none" | "sm" | "md" | "lg";
+  /** Vertical inset - creates space above/below the section background */
+  insetY?: "none" | "sm" | "md" | "lg";
   /** Custom className for additional styling */
   className?: string;
   /** Accessibility props */
@@ -36,7 +40,7 @@ export interface ServicesSectionProps extends Omit<
  *
  * Usage:
  * ```tsx
- * <ServicesSection
+ * <Services
  *   services={[
  *     {
  *       id: "yoga-prenatal",
@@ -49,28 +53,32 @@ export interface ServicesSectionProps extends Omit<
  * />
  * ```
  */
-export function ServicesSection({
+export function Services({
   title = "Mes services",
   services,
-  spacing = "normal",
-  containerSize = "lg",
+  spacing = "none",
+  containerSize = "xl",
+  insetX = "none",
+  insetY = "none",
   className,
   "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
   ...props
-}: ServicesSectionProps) {
+}: ServicesProps) {
   return (
     <Section
       background="transparent"
       spacing={spacing}
+      insetX={insetX}
+      insetY={insetY}
       className={className}
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
       {...props}
     >
-      <Container size={containerSize}>
+      <Container size={containerSize} className="px-4 sm:px-6">
         {/* Section Title */}
-        <h2 className="font-heading font-bold text-3xl sm:text-4xl lg:text-5xl text-primary text-left leading-tight mb-8 sm:mb-12">
+        <h2 className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl text-primary text-left leading-tight mb-8 sm:mb-12">
           {title}
         </h2>
 

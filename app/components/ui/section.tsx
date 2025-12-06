@@ -9,7 +9,7 @@ type BackgroundVariant =
   | "accent"
   | "soft"
   | "transparent";
-type SpacingVariant = "compact" | "normal" | "spacious";
+type SpacingVariant = "none" | "compact" | "normal" | "spacious";
 
 export interface SectionProps extends Omit<
   HTMLAttributes<HTMLElement>,
@@ -95,6 +95,8 @@ function getBackgroundClass(background: BackgroundVariant): string {
 
 function getSpacingClass(spacing: SpacingVariant): string {
   switch (spacing) {
+    case "none":
+      return "";
     case "compact":
       return "py-8";
     case "spacious":

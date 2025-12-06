@@ -81,7 +81,7 @@ export function CallToAction({
       aria-describedby={ariaDescribedBy}
       {...props}
     >
-      <Container size="xl">
+      <Container size="xl" className="px-4 sm:px-6 lg:px-8">
         <div className="p-8 sm:p-10 lg:p-12 text-center">
           {/* Title */}
           <h2 className="font-heading font-medium text-4xl md:text-5xl text-accent text-center leading-tight mb-4 sm:mb-6">
