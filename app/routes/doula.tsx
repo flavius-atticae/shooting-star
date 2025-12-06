@@ -3,7 +3,7 @@ import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { Footer } from "~/components/layout/footer/footer";
 
-export function meta({}: Route.MetaArgs) {
+export function meta(_args: Route.MetaArgs) {
   return [
     {
       title: "Accompagnement de doula - Pauline Roussel",
