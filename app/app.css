@@ -50,6 +50,16 @@
 @font-face {
   font-family: "Ivyora Display";
   src:
+    url("/fonts/ivyora-display-medium.woff2") format("woff2"),
+    url("/fonts/ivyora-display-medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ivyora Display";
+  src:
     url("/fonts/ivyora-display-bold.woff2") format("woff2"),
     url("/fonts/ivyora-display-bold.woff") format("woff");
   font-weight: 700;

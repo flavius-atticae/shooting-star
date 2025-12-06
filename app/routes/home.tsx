@@ -65,8 +65,6 @@ export default function Home() {
           variant="default"
           title={"Épanouir\nsa féminité"}
           subtitle="Avec Pauline Roussel"
-          multiline={true}
-          containerSize="xl"
         />
 
         {/* CTA Section - Placement stratégique après Hero */}

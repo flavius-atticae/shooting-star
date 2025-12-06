@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "~/lib/utils";
+import { Container } from "~/components/ui/container";
 import { FadeInTitle, FadeInSubtitle } from "./hero-animations";
 
 /**
@@ -32,11 +33,7 @@ export const HERO_BREAKPOINTS = {
   mobile: 400,
   tablet: 500,
   desktop: 600,
-  borderRadius: {
-    mobile: 24,
-    tablet: 48,
-    desktop: 64,
-  },
+  borderRadius: 12, // rounded-xl, consistent with CTA section
 } as const;
 
 export interface HeroProps {
@@ -44,10 +41,7 @@ export interface HeroProps {
   title?: string;
   subtitle?: string;
   variant?: HeroVariant;
-  multiline?: boolean;
   children?: React.ReactNode;
-  /** Custom container size (if provided, uses Container instead of responsive padding) */
-  containerSize?: "sm" | "md" | "lg" | "xl";
 }
 
 /**
@@ -56,7 +50,6 @@ export interface HeroProps {
 export interface HeroContentProps {
   title?: string;
   subtitle?: string;
-  multiline?: boolean;
   className?: string;
 }
 
@@ -87,16 +80,7 @@ export interface HeroContentProps {
  */
 export const Hero = React.forwardRef<HTMLElement, HeroProps>(
   (
-    {
-      className,
-      title,
-      subtitle,
-      variant = "default",
-      multiline,
-      children,
-      containerSize,
-      ...props
-    },
+    { className, title, subtitle, variant = "default", children, ...props },
     ref
   ) => {
     const variantConfig = HERO_VARIANTS[variant];
@@ -111,9 +95,6 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
           // Background color - pregnancy-safe bg-gris
           "bg-gris",
 
-          // Container queries for responsive behavior
-          "@container",
-
           // Variant-specific height classes
           variantConfig.classes,
 
@@ -122,14 +103,7 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
             "min-h-[calc(400px+env(safe-area-inset-bottom))] md:min-h-[500px] lg:min-h-[600px]",
 
           // Rounded bottom edges - skip for full-height variant
-          variant !== "full-height" &&
-            "rounded-b-3xl @md:rounded-b-[3rem] @lg:rounded-b-[4rem]",
-
-          // Flex for content alignment - left aligned layout
-          "flex items-center justify-start",
-
-          // Safe area padding for mobile devices
-          "pb-[env(safe-area-inset-bottom)] px-[env(safe-area-inset-left)] pr-[env(safe-area-inset-right)]",
+          variant !== "full-height" && "rounded-b-xl",
 
           className
         )}
@@ -137,44 +111,16 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
         aria-label="Section principale d'accueil"
         {...props}
       >
-        {containerSize ? (
-          <div
-            className={cn(
-              "h-full w-full flex items-center justify-start relative z-10",
-              containerSize === "xl" && "max-w-7xl",
-              containerSize === "lg" && "max-w-6xl",
-              containerSize === "md" && "max-w-4xl",
-              containerSize === "sm" && "max-w-2xl",
-              "px-4 sm:px-6 lg:px-8"
-            )}
-          >
-            <div className="w-full">
-              {children || (
-                <HeroContent
-                  title={title}
-                  subtitle={subtitle}
-                  multiline={multiline}
-                />
-              )}
-            </div>
-          </div>
-        ) : (
-          <div
-            className={cn(
-              "h-full w-full flex items-center justify-start relative z-10",
-              "px-6 @sm:px-8 @md:px-12 @lg:px-16 @xl:px-20",
-              "@container"
-            )}
-          >
-            {children || (
-              <HeroContent
-                title={title}
-                subtitle={subtitle}
-                multiline={multiline}
-              />
-            )}
-          </div>
-        )}
+        <Container
+          size="xl"
+          className={cn(
+            "h-full flex items-center",
+            // Safe area padding for mobile devices
+            "pb-[env(safe-area-inset-bottom)]"
+          )}
+        >
+          {children || <HeroContent title={title} subtitle={subtitle} />}
+        </Container>
       </section>
     );
   }
@@ -190,16 +136,21 @@ Hero.displayName = "Hero";
  * - Subtitle: text-base → lg:text-[36px], max-w-[530px]
  */
 export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
-  ({ title, subtitle, multiline = false, className, ...props }, ref) => {
+  ({ title, subtitle, className, ...props }, ref) => {
     const defaultTitle = "Épanouir sa féminité";
     const defaultSubtitle = "AVEC PAULINE ROUSSEL";
 
-    const renderTitle = (titleText: string, isMultiline: boolean) => {
-      if (isMultiline && titleText.includes("\n")) {
-        return titleText.split("\n").map((line, index) => (
+    /**
+     * Renders title with automatic line break detection.
+     * If title contains \n, splits into multiple lines with <br /> tags.
+     */
+    const renderTitle = (titleText: string) => {
+      if (titleText.includes("\n")) {
+        const lines = titleText.split("\n");
+        return lines.map((line, index) => (
           <React.Fragment key={index}>
             {line}
-            {index < titleText.split("\n").length - 1 && <br />}
+            {index < lines.length - 1 && <br />}
           </React.Fragment>
         ));
       }
@@ -209,10 +160,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
     return (
       <div
         ref={ref}
-        className={cn(
-          "flex flex-col items-start space-y-2 md:space-y-4",
-          className
-        )}
+        className={cn("flex flex-col items-start", className)}
         {...props}
       >
         {/* Main Title - Mobile-first with Figma desktop specs */}
@@ -226,7 +174,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               "text-primary",
 
               // Mobile-first responsive sizing (Figma: 136px at desktop)
-              "text-4xl sm:text-6xl md:text-7xl lg:text-[136px]",
+              "text-5xl sm:text-6xl md:text-7xl",
 
               // Line height
               "leading-[1.3] lg:leading-normal",
@@ -235,13 +183,10 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               "tracking-tight lg:tracking-[-0.02em]",
 
               // Weight
-              "font-bold",
-
-              // Margin
-              "mb-2 sm:mb-3 md:mb-4"
+              "font-medium"
             )}
           >
-            {renderTitle(title || defaultTitle, multiline)}
+            {renderTitle(title || defaultTitle)}
           </h1>
         </FadeInTitle>
 
@@ -255,8 +200,8 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               // Color - Primary green
               "text-primary",
 
-              // Mobile-first responsive sizing (Figma: 36px at desktop)
-              "text-base sm:text-xl md:text-2xl lg:text-[36px]",
+              // Mobile-first responsive sizing (smaller than before)
+              "text-sm sm:text-base md:text-lg lg:text-xl",
 
               // Line height
               "leading-relaxed",
@@ -273,8 +218,8 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               // Alignment
               "text-left",
 
-              // Margin
-              "mt-4 sm:mt-6 md:mt-8"
+              // Margin - closer to title
+              "mt-1 sm:mt-2"
             )}
           >
             {subtitle || defaultSubtitle}
