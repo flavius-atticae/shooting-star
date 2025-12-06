@@ -95,29 +95,32 @@ export function CallToAction({
 
           {/* CTA Button - wrapped in max-width container to prevent overflow */}
           <div className="flex justify-center w-full">
-            {buttonHref ? (
-              <Button variant="cta" size="cta" asChild className="max-w-full">
-                <a
-                  href={buttonHref}
-                  target={buttonTarget}
-                  rel={
-                    buttonTarget === "_blank" ? "noopener noreferrer" : undefined
-                  }
-                  className="whitespace-normal sm:whitespace-nowrap px-6 sm:px-8"
+            {(() => {
+              const buttonClasses = "max-w-full whitespace-normal sm:whitespace-nowrap px-6 sm:px-8";
+              
+              return buttonHref ? (
+                <Button variant="cta" size="cta" asChild className={buttonClasses}>
+                  <a
+                    href={buttonHref}
+                    target={buttonTarget}
+                    rel={
+                      buttonTarget === "_blank" ? "noopener noreferrer" : undefined
+                    }
+                  >
+                    {buttonText}
+                  </a>
+                </Button>
+              ) : (
+                <Button 
+                  variant="cta" 
+                  size="cta" 
+                  onClick={onButtonClick}
+                  className={buttonClasses}
                 >
                   {buttonText}
-                </a>
-              </Button>
-            ) : (
-              <Button 
-                variant="cta" 
-                size="cta" 
-                onClick={onButtonClick}
-                className="max-w-full whitespace-normal sm:whitespace-nowrap px-6 sm:px-8"
-              >
-                {buttonText}
-              </Button>
-            )}
+                </Button>
+              );
+            })()}
           </div>
         </div>
       </Container>
