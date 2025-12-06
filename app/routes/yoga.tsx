@@ -2,7 +2,7 @@ import type { Route } from "./+types/yoga";
 import { Hero } from "~/components/layout/hero/Hero";
 import { Footer } from "~/components/layout/footer/footer";
 
-export function meta({}: Route.MetaArgs) {
+export function meta(_args: Route.MetaArgs) {
   return [
     {
       title: "Enseignement du Yoga - Pauline Roussel",
