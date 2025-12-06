@@ -370,10 +370,10 @@ export const KeyboardNavigation: Story = {
 
     // Find navigation buttons
     const prevButton = canvas.getByRole("button", {
-      name: /previous testimonial/i,
+      name: /témoignage précédent/i,
     });
     const nextButton = canvas.getByRole("button", {
-      name: /next testimonial/i,
+      name: /témoignage suivant/i,
     });
 
     // Verify buttons exist
