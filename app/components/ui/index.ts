@@ -11,6 +11,8 @@ export {
 } from "./card";
 export { Input } from "./input";
 export { Label } from "./label";
+export { Textarea } from "./textarea";
+export { Select } from "./select";
 export {
   Form,
   FormControl,
