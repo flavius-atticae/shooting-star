@@ -179,6 +179,15 @@ export function Footer({
     responsive: "md:pt-16", // Only applies on tablet+
   } as const;
 
+  // Safe getter to avoid object injection vulnerability
+  const getOverlapCompensation = (): string => {
+    const validKeys: readonly string[] = ["none", "sm", "md", "lg", "responsive"];
+    if (validKeys.includes(hasOverlap)) {
+      return overlapCompensationClasses[hasOverlap];
+    }
+    return overlapCompensationClasses.none;
+  };
+
   return (
     <Section
       background="transparent"
@@ -186,7 +195,7 @@ export function Footer({
       as="footer"
       className={cn(
         "bg-primary w-full pb-0",
-        overlapCompensationClasses[hasOverlap],
+        getOverlapCompensation(),
         className
       )}
       aria-labelledby={ariaLabelledBy}

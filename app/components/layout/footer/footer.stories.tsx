@@ -364,11 +364,14 @@ export const LegalSection: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Verify copyright with current year
+    // Verify copyright contains "©" and "Pauline Roussel"
+    // Using static regex to avoid security warnings about non-literal RegExp
+    const copyrightElement = canvas.getByText(/©.*Pauline Roussel/i);
+    await expect(copyrightElement).toBeInTheDocument();
+
+    // Verify the copyright text contains the current year
     const currentYear = new Date().getFullYear().toString();
-    await expect(
-      canvas.getByText(new RegExp(`© ${currentYear}.*Pauline Roussel`))
-    ).toBeInTheDocument();
+    await expect(copyrightElement.textContent).toContain(currentYear);
 
     // Verify legal links
     const legalLink = canvas.getByRole("link", { name: /mentions légales/i });

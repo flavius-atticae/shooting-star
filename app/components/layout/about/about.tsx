@@ -67,6 +67,17 @@ const overlapClasses = {
   responsive: "md:-mb-16 relative z-10", // Only applies on tablet+
 } as const;
 
+// Safe getter to avoid object injection vulnerability
+const getOverlapClass = (
+  key: keyof typeof overlapClasses
+): string => {
+  const validKeys: readonly string[] = ["none", "sm", "md", "lg", "responsive"];
+  if (validKeys.includes(key)) {
+    return overlapClasses[key];
+  }
+  return overlapClasses.none;
+};
+
 export function About({
   spacing = "compact",
   containerSize = "xl",
@@ -104,7 +115,7 @@ export function About({
       spacing={spacing}
       insetY="sm"
       rounded="md"
-      className={cn(overlapClasses[overlapNext], className)}
+      className={cn(getOverlapClass(overlapNext), className)}
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
       lang="fr"
