@@ -54,7 +54,7 @@ export default function YogaPage() {
               {/* Cours en studio */}
               <FeatureBlock
                 title="Cours en studio"
-                description="Plonge dans un espace chaleureux et sécurisant où chaque séance t'invite à te reconnecter à ton corps et à ton souffle. Des pratiques guidées pour relâcher les tensions, éveiller ton énergie et nourrir ton bien-être au quotidien. Retrouve moi dans un studio près de chez toi."
+                description="Plonge dans un espace chaleureux et sécurisant où chaque séance t'invite à te reconnecter à ton corps et à ton souffle. Des pratiques guidées pour relâcher les tensions, éveiller ton énergie et nourrir ton bien-être au quotidien. Retrouve-moi dans un studio près de chez toi."
                 layout="text-right"
                 imageAlt="Cours de yoga en studio"
               />
