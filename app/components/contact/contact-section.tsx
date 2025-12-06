@@ -55,28 +55,38 @@ export function ContactSection({
   return (
     <Section
       as="section"
-      background="accent"
+      background="white"
       spacing={spacing}
       className={className}
       aria-label="Formulaire de contact"
       {...props}
     >
-      {/* Two-column grid layout */}
+      {/* Rounded container with beige background */}
       <div
         className={cn(
-          // Grid setup
-          "grid grid-cols-1 md:grid-cols-2",
-          // Gap between columns
-          "gap-8 md:gap-12 lg:gap-16",
-          // Full width
+          // Container with rounded corners and beige background
+          "bg-gris rounded-2xl md:rounded-3xl",
+          // Padding inside the container
+          "p-8 md:p-12 lg:p-16",
+          // Max width and centering
           "w-full max-w-6xl mx-auto"
         )}
       >
-        {/* Left Column - Contact Info */}
-        <ContactInfo />
+        {/* Two-column grid layout */}
+        <div
+          className={cn(
+            // Grid setup
+            "grid grid-cols-1 md:grid-cols-2",
+            // Gap between columns
+            "gap-8 md:gap-12 lg:gap-16"
+          )}
+        >
+          {/* Left Column - Contact Info */}
+          <ContactInfo />
 
-        {/* Right Column - Contact Form */}
-        <ContactForm onSubmit={onSubmit} isLoading={isLoading} />
+          {/* Right Column - Contact Form */}
+          <ContactForm onSubmit={onSubmit} isLoading={isLoading} />
+        </div>
       </div>
     </Section>
   );
