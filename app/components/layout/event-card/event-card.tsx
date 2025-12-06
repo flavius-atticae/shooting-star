@@ -79,7 +79,7 @@ export function EventCard({
       {...props}
     >
       {/* Top Row: Title on Left, Date/Time on Right (above lines) */}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-4 px-2">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-1 px-2">
         {/* Left: Event Title (above left line) */}
         <div className="flex-1">
           <h3
@@ -102,7 +102,7 @@ export function EventCard({
       </div>
 
       {/* Image Box with Horizontal Lines */}
-      <div className="relative flex items-center justify-center mb-4">
+      <div className="relative flex items-center justify-center mb-1">
         {/* Left horizontal line */}
         <div className="flex-1 h-[1px] bg-primary/20" />
         
