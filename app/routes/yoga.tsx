@@ -1,8 +1,9 @@
 import type { Route } from "./+types/yoga";
+import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { Footer } from "~/components/layout/footer/footer";
 
-export function meta(_args: Route.MetaArgs) {
+export function meta({}: Route.MetaArgs) {
   return [
     {
       title: "Enseignement du Yoga - Pauline Roussel",
@@ -23,7 +24,10 @@ export function meta(_args: Route.MetaArgs) {
 export default function YogaPage() {
   return (
     <>
-      <main id="main-content">
+      {/* Header - Navigation principale */}
+      <Header />
+
+      <main id="main-content" role="main">
         {/* Hero Section - Enseignement du yoga */}
         <Hero
           variant="default"
