@@ -52,14 +52,6 @@ Bloc de contenu réutilisable avec texte et image en layout asymétrique.
       options: ["text-left", "text-right"],
       description: "Layout direction",
     },
-    href: {
-      control: "text",
-      description: "Optional link for CTA button",
-    },
-    buttonText: {
-      control: "text",
-      description: "Optional CTA button text",
-    },
   },
 };
 
@@ -145,14 +137,13 @@ export const NoImage: Story = {
 
 /**
  * With Button - CTA button included
+ * NOTE: Buttons have been removed from the component
  */
 export const WithButton: Story = {
   args: {
     title: "Yoga prénatal personnalisé",
     description:
       "Un accompagnement sur mesure pendant votre grossesse. Des séances adaptées à chaque trimestre pour vous préparer sereinement à l'accouchement.",
-    buttonText: "Réserver une séance",
-    href: "/contact",
     layout: "text-left",
   },
   parameters: {
@@ -170,8 +161,6 @@ export const LongContent: Story = {
     title: "Yoga postnatal et récupération en douceur",
     description:
       "Après l'accouchement, prenez le temps de retrouver votre corps en douceur. Nos cours de yoga postnatal sont spécialement conçus pour accompagner votre récupération physique et émotionnelle. Chaque séance respecte votre rythme et vos besoins particuliers pendant cette période de transformation. Nous travaillons sur le renforcement du plancher pelvien, la réduction des tensions musculaires, et le bien-être émotionnel dans un environnement sûr et bienveillant.",
-    buttonText: "En savoir plus sur le yoga postnatal",
-    href: "/services/yoga-postnatal",
     layout: "text-right",
   },
   parameters: {
@@ -192,22 +181,16 @@ export const Alternating: Story = {
         title="Cours privés"
         description="Des séances de yoga personnalisées, adaptées à vos besoins et à votre rythme. Un accompagnement individuel pour approfondir votre pratique."
         layout="text-left"
-        buttonText="En savoir plus"
-        href="/yoga/cours-prives"
       />
       <FeatureBlock
         title="Cours en studio"
         description="Rejoignez nos cours de groupe dans une atmosphère chaleureuse et conviviale. Parfait pour celles qui apprécient l'énergie collective."
         layout="text-right"
-        buttonText="Voir les horaires"
-        href="/yoga/studio"
       />
       <FeatureBlock
         title="Cours en entreprises"
         description="Offrez à vos employées un moment de détente et de ressourcement. Des cours de yoga adaptés au milieu professionnel."
         layout="text-left"
-        buttonText="Demander un devis"
-        href="/contact"
       />
     </div>
   ),
@@ -232,8 +215,6 @@ export const MobileViewport: Story = {
     title: "Cours pour futures mamans",
     description:
       "Yoga prénatal adapté à chaque trimestre. Accompagnement bienveillant pour votre bien-être et celui de bébé.",
-    buttonText: "Découvrir",
-    href: "/prenatal",
     layout: "text-left",
   },
   parameters: {
@@ -252,14 +233,12 @@ export const MobileViewport: Story = {
 // ============================================================
 
 /**
- * Tests button interaction and touch target size
+ * Tests layout and structure
  */
 export const ButtonInteraction: Story = {
   args: {
     title: "Cours de yoga",
     description: "Description du cours de yoga.",
-    buttonText: "Réserver maintenant",
-    href: "/contact",
     layout: "text-left",
   },
   parameters: {
@@ -268,17 +247,13 @@ export const ButtonInteraction: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Find the button/link
-    const link = canvas.getByRole("link", { name: /Réserver maintenant/i });
-    await expect(link).toBeInTheDocument();
+    // Verify the block renders
+    const article = canvasElement.querySelector("article");
+    await expect(article).toBeInTheDocument();
 
-    // Verify link is visible and has correct href
-    await expect(link).toBeVisible();
-    await expect(link).toHaveAttribute("href", "/contact");
-
-    // Verify touch target size (WCAG 2.1 AA - minimum 44px)
-    const linkRect = link.getBoundingClientRect();
-    await expect(linkRect.height).toBeGreaterThanOrEqual(44);
+    // Verify heading exists
+    const heading = canvas.getByRole("heading", { name: /Cours de yoga/i });
+    await expect(heading).toBeInTheDocument();
   },
 };
 
@@ -355,8 +330,6 @@ export const KeyboardNavigation: Story = {
   args: {
     title: "Navigation au clavier",
     description: "Testez la navigation avec Tab.",
-    buttonText: "Bouton focusable",
-    href: "/test",
     layout: "text-left",
   },
   parameters: {
@@ -365,13 +338,9 @@ export const KeyboardNavigation: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    const link = canvas.getByRole("link", { name: /Bouton focusable/i });
-
-    // Tab to the button
-    await userEvent.tab();
-
-    // Verify button received focus
-    await expect(link).toHaveFocus();
+    // Verify heading exists
+    const heading = canvas.getByRole("heading", { name: /Navigation au clavier/i });
+    await expect(heading).toBeInTheDocument();
   },
 };
 

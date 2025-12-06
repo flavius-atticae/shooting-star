@@ -1,6 +1,5 @@
 import * as React from "react";
 import { cn } from "~/lib/utils";
-import { Button } from "~/components/ui/button";
 
 export interface FeatureBlockProps {
   /** Block title - displayed in Ivyora Display font */
@@ -13,10 +12,6 @@ export interface FeatureBlockProps {
   imageAlt?: string;
   /** Layout direction - determines text/image position */
   layout?: "text-left" | "text-right";
-  /** Optional link for the block */
-  href?: string;
-  /** Optional CTA button text */
-  buttonText?: string;
   /** Custom className for additional styling */
   className?: string;
   /** Accessibility props */
@@ -42,8 +37,6 @@ export interface FeatureBlockProps {
  *   imageSrc="/images/private-yoga.jpg"
  *   imageAlt="Séance de yoga privée"
  *   layout="text-left"
- *   buttonText="En savoir plus"
- *   href="/yoga/cours-prives"
  * />
  * ```
  */
@@ -53,8 +46,6 @@ export function FeatureBlock({
   imageSrc,
   imageAlt = "",
   layout = "text-left",
-  href,
-  buttonText,
   className,
   "aria-labelledby": ariaLabelledBy,
   ...props
@@ -88,7 +79,7 @@ export function FeatureBlock({
         )}
       >
         {/* Title */}
-        <h3 className="font-heading font-medium text-3xl sm:text-4xl lg:text-5xl text-primary leading-tight">
+        <h3 className="font-heading font-medium text-3xl sm:text-4xl lg:text-5xl text-secondary leading-tight">
           {title}
         </h3>
 
@@ -96,24 +87,6 @@ export function FeatureBlock({
         <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
           {description}
         </p>
-
-        {/* Optional CTA Button */}
-        {buttonText && href && (
-          <div className="pt-2">
-            <Button
-              variant="cta"
-              size="cta"
-              asChild
-            >
-              <a
-                href={href}
-                aria-label={`${buttonText} pour ${title}`}
-              >
-                {buttonText}
-              </a>
-            </Button>
-          </div>
-        )}
       </div>
 
       {/* Image */}
