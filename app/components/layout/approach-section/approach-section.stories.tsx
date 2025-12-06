@@ -363,8 +363,6 @@ export const ApproachItemsStructure: Story = {
     chromatic: { disableSnapshot: true },
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
     // Verify articles inside list items
     const articles = canvasElement.querySelectorAll("article");
     await expect(articles.length).toBe(5);

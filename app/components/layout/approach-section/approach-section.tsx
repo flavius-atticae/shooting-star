@@ -1,5 +1,4 @@
 import * as React from "react";
-import { cn } from "~/lib/utils";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 
@@ -111,7 +110,6 @@ export function ApproachSection({
                 {/* Description Paragraph */}
                 <p
                   className="font-sans text-base sm:text-lg text-secondary text-center max-w-3xl mx-auto leading-relaxed"
-                  aria-describedby={`approach-${item.id}-title`}
                 >
                   {item.description}
                 </p>
