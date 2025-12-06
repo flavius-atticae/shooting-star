@@ -5,4 +5,5 @@ export default [
   route("doula", "routes/doula.tsx"),
   route("health", "routes/health.tsx"),
   route("components-test", "routes/components-test.tsx"),
+  route("yoga", "routes/yoga.tsx"),
 ] satisfies RouteConfig;
