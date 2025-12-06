@@ -85,7 +85,6 @@ export function InspirationsGrid({
           "lg:grid-cols-3" // Desktop: 3 columns
         )}
         role="list"
-        aria-labelledby="inspirations-heading"
       >
         {items.map((item) => (
           <div key={item.id} role="listitem">
