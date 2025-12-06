@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { AboutSection } from "./about-section";
 
 const meta = {
-  title: "Layout/3. About",
+  title: "Layout/4. About",
   component: AboutSection,
   parameters: {
     layout: "fullscreen",

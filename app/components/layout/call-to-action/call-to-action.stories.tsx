@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { CTASection } from "./cta-section";
+import { CallToAction } from "./call-to-action";
 
-const meta: Meta<typeof CTASection> = {
-  title: "Layout/5. Call To Action",
-  component: CTASection,
+const meta: Meta<typeof CallToAction> = {
+  title: "Layout/3. Call To Action",
+  component: CallToAction,
   parameters: {
     layout: "fullscreen",
     docs: {

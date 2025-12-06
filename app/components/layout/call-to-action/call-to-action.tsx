@@ -4,7 +4,7 @@ import { Button } from "~/components/ui/button";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 
-export interface CTASectionProps extends Omit<
+export interface CallToActionProps extends Omit<
   React.HTMLAttributes<HTMLElement>,
   "children"
 > {
@@ -24,15 +24,17 @@ export interface CTASectionProps extends Omit<
   buttonTarget?: "_blank" | "_self" | "_parent" | "_top";
   /** Custom section spacing override */
   spacing?: "compact" | "normal" | "spacious";
-  /** Custom container size */
-  containerSize?: "sm" | "md" | "lg" | "xl";
+  /** Horizontal inset - creates the "floating card" effect with space from viewport edges */
+  insetX?: "none" | "sm" | "md" | "lg";
+  /** Vertical inset - creates space above/below the section background */
+  insetY?: "none" | "sm" | "md" | "lg";
   /** Accessibility props */
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
 }
 
 /**
- * CTA Section Component - Section avec call-to-action pregnancy-safe
+ * CallToAction Component - Section avec call-to-action pregnancy-safe
  *
  * Conçu spécifiquement pour le site de Pauline Roussel avec :
  * - Fond transparent avec padding généreux
@@ -44,7 +46,7 @@ export interface CTASectionProps extends Omit<
  *
  * Usage:
  * ```tsx
- * <CTASection
+ * <CallToAction
  *   title="Rejoignez nos ateliers"
  *   subtitle="Accompagnement bienveillant pour votre maternité"
  *   buttonText="Contactez-moi"
@@ -52,33 +54,37 @@ export interface CTASectionProps extends Omit<
  * />
  * ```
  */
-export function CTASection({
+export function CallToAction({
   title,
   subtitle,
   buttonText,
   onButtonClick,
   buttonHref,
   buttonTarget = "_self",
-  spacing = "normal",
-  containerSize = "md",
+  spacing = "compact",
+  insetX = "sm",
+  insetY = "sm",
   className,
   "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
   ...props
-}: CTASectionProps) {
+}: CallToActionProps) {
   return (
     <Section
-      background="transparent"
+      background="accent"
       spacing={spacing}
-      className={cn("px-6 sm:px-8 lg:px-12", className)}
+      insetX={insetX}
+      insetY={insetY}
+      rounded="md"
+      className={cn(className)}
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
       {...props}
     >
-      <Container size={containerSize}>
-        <div className="bg-gris rounded-xl p-8 sm:p-10 lg:p-12 text-center">
+      <Container size="xl">
+        <div className="p-8 sm:p-10 lg:p-12 text-center">
           {/* Title */}
-          <h2 className="font-heading font-bold text-2xl sm:text-3xl lg:text-4xl text-accent text-center leading-tight mb-4 sm:mb-6">
+          <h2 className="font-heading font-medium text-4xl md:text-5xl text-accent text-center leading-tight mb-4 sm:mb-6">
             {title}
           </h2>
 

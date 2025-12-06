@@ -1,7 +1,7 @@
 import type { Route } from "./+types/home";
 import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
-import { CTASection } from "~/components/layout/cta-section/cta-section";
+import { CallToAction } from "~/components/layout/call-to-action";
 import { ServicesSection } from "~/components/layout/services-section/services-section";
 import { AboutSection } from "~/components/layout/about-section/about-section";
 import { Footer } from "~/components/layout/footer/footer";
@@ -68,13 +68,12 @@ export default function Home() {
         />
 
         {/* CTA Section - Placement stratégique après Hero */}
-        <CTASection
+        <CallToAction
           title="Réservez votre accompagnement"
           subtitle="Ensemble, créons l'espace dont vous avez besoin"
           buttonText="Contactez-moi"
           buttonHref="/contact"
-          spacing="normal"
-          containerSize="xl"
+          spacing="compact"
         />
 
         {/* Services Section - Doula, Yoga, Féminin */}

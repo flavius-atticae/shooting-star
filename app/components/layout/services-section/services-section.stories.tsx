@@ -30,7 +30,7 @@ const defaultServices: ServiceItem[] = [
 ];
 
 const meta: Meta<typeof ServicesSection> = {
-  title: "Layout/4. Services",
+  title: "Layout/5. Services",
   component: ServicesSection,
   parameters: {
     layout: "fullscreen",
