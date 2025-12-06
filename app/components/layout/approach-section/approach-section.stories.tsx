@@ -49,8 +49,9 @@ Section "Mon approche" pour la page Doula avec 5 sous-sections thématiques.
 
 **Features**:
 - Titre principal en Ivyora Display (vert foncé)
-- Titres décoratifs en Moontime (cursive/script)
+- Titres décoratifs en Ivyora Display (bleu secondaire)
 - Descriptions en Barlow (centré)
+- Séparateurs verticaux entre les sections (bleu secondaire)
 - Espacement vertical généreux entre sous-sections
 - Layout responsive (mobile, tablet, desktop)
 - Touch targets ≥ 44px
@@ -435,10 +436,10 @@ export const TypographyStructure: Story = {
     await expect(mainTitle).toHaveClass("font-heading");
     await expect(mainTitle).toHaveClass("text-primary");
 
-    // Verify decorative titles use font-accent
+    // Verify decorative titles use font-heading
     const decorativeTitles = canvasElement.querySelectorAll("h3");
     decorativeTitles.forEach((title) => {
-      expect(title).toHaveClass("font-accent");
+      expect(title).toHaveClass("font-heading");
       expect(title).toHaveClass("text-secondary");
     });
 

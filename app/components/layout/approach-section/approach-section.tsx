@@ -6,7 +6,7 @@ import { Container } from "~/components/ui/container";
 export interface ApproachItem {
   /** Unique identifier for the approach item */
   id: string;
-  /** Decorative title - displayed in cursive/script font (Moontime) */
+  /** Decorative title - displayed in Ivyora Display font */
   title: string;
   /** Description paragraph - displayed in Barlow font */
   description: string;
@@ -36,8 +36,9 @@ export interface ApproachSectionProps extends Omit<
  *
  * Designed specifically for Pauline Roussel's website with:
  * - Main title in Ivyora Display (dark green)
- * - Decorative titles in Moontime (cursive/script font)
- * - Descriptions in Barlow (justified or centered)
+ * - Decorative titles in Ivyora Display (secondary color)
+ * - Descriptions in Barlow (centered)
+ * - Vertical dividers between sections (secondary color)
  * - 5 thematic subsections about the maternal journey
  * - Generous vertical spacing between subsections
  * - Responsive layout (mobile, tablet, desktop)
@@ -87,34 +88,42 @@ export function ApproachSection({
 
         {/* Approach Items */}
         <div
-          className="space-y-12 sm:space-y-16 lg:space-y-20"
+          className="flex flex-col"
           role="list"
           aria-labelledby="approach-heading"
         >
-          {items.map((item) => (
-            <article
-              key={item.id}
-              className="space-y-4 sm:space-y-6"
-              role="listitem"
-              lang="fr"
-              aria-labelledby={`approach-${item.id}-title`}
-            >
-              {/* Decorative Title - Cursive/Script font */}
-              <h3
-                id={`approach-${item.id}-title`}
-                className="font-accent font-normal text-3xl sm:text-4xl lg:text-5xl text-secondary text-center leading-relaxed"
+          {items.map((item, index) => (
+            <React.Fragment key={item.id}>
+              <article
+                className="space-y-4 sm:space-y-6 py-8 sm:py-10 lg:py-12"
+                role="listitem"
+                lang="fr"
+                aria-labelledby={`approach-${item.id}-title`}
               >
-                {item.title}
-              </h3>
+                {/* Decorative Title - Ivyora Display font */}
+                <h3
+                  id={`approach-${item.id}-title`}
+                  className="font-heading font-medium text-3xl sm:text-4xl lg:text-5xl text-secondary text-center leading-relaxed"
+                >
+                  {item.title}
+                </h3>
 
-              {/* Description Paragraph */}
-              <p
-                className="font-sans text-base sm:text-lg text-neutral text-center max-w-3xl mx-auto leading-relaxed"
-                aria-describedby={`approach-${item.id}-title`}
-              >
-                {item.description}
-              </p>
-            </article>
+                {/* Description Paragraph */}
+                <p
+                  className="font-sans text-base sm:text-lg text-neutral text-center max-w-3xl mx-auto leading-relaxed"
+                  aria-describedby={`approach-${item.id}-title`}
+                >
+                  {item.description}
+                </p>
+              </article>
+
+              {/* Vertical Divider - only between items, not after the last one */}
+              {index < items.length - 1 && (
+                <div className="flex justify-center" aria-hidden="true">
+                  <div className="w-px h-16 sm:h-20 lg:h-24 bg-secondary"></div>
+                </div>
+              )}
+            </React.Fragment>
           ))}
         </div>
 
