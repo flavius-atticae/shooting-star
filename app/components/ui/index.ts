@@ -17,7 +17,7 @@ export {
 } from "./form";
 
 // Layout Components - Phase 1
-export { Container, containerVariants, type ContainerProps } from "./container";
+export { Container, type ContainerProps, type ContainerSize } from "./container";
 export { Section, type SectionProps } from "./section";
 
 // Background System - Phase 1 Final

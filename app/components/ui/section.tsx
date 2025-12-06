@@ -1,57 +1,104 @@
 import { cn } from "~/lib/utils";
 import type { ReactNode, HTMLAttributes, ElementType } from "react";
 
+type InsetSize = "none" | "sm" | "md" | "lg";
+type RoundedSize = "none" | "sm" | "md" | "lg" | "xl";
+type BackgroundVariant = "white" | "primary" | "accent" | "soft" | "transparent";
+type SpacingVariant = "compact" | "normal" | "spacious";
+
 export interface SectionProps extends Omit<
   HTMLAttributes<HTMLElement>,
   "children"
 > {
   children: ReactNode;
-  spacing?: "compact" | "normal" | "spacious";
-  background?: "white" | "primary" | "accent" | "soft" | "transparent";
+  spacing?: SpacingVariant;
+  background?: BackgroundVariant;
   /**
    * Horizontal inset - adds wrapper padding so the background
    * doesn't touch viewport edges. Creates the "floating card" effect.
    */
-  insetX?: "none" | "sm" | "md" | "lg";
+  insetX?: InsetSize;
   /**
    * Vertical inset - adds wrapper padding for vertical spacing
    * around the section background.
    */
-  insetY?: "none" | "sm" | "md" | "lg";
+  insetY?: InsetSize;
   /** Border radius for rounded corners */
-  rounded?: "none" | "sm" | "md" | "lg" | "xl";
+  rounded?: RoundedSize;
   as?: ElementType;
 }
 
-const insetXClasses = {
-  none: "",
-  sm: "px-4 sm:px-6",
-  md: "px-6 sm:px-8 lg:px-12",
-  lg: "px-8 sm:px-12 lg:px-16",
-};
+function getInsetXClass(insetX: InsetSize): string {
+  switch (insetX) {
+    case "sm":
+      return "px-4 sm:px-6";
+    case "md":
+      return "px-6 sm:px-8 lg:px-12";
+    case "lg":
+      return "px-8 sm:px-12 lg:px-16";
+    case "none":
+    default:
+      return "";
+  }
+}
 
-const insetYClasses = {
-  none: "",
-  sm: "py-4 sm:py-6",
-  md: "py-6 sm:py-8 lg:py-12",
-  lg: "py-8 sm:py-12 lg:py-16",
-};
+function getInsetYClass(insetY: InsetSize): string {
+  switch (insetY) {
+    case "sm":
+      return "py-4 sm:py-6";
+    case "md":
+      return "py-6 sm:py-8 lg:py-12";
+    case "lg":
+      return "py-8 sm:py-12 lg:py-16";
+    case "none":
+    default:
+      return "";
+  }
+}
 
-const roundedClasses = {
-  none: "",
-  sm: "rounded-lg",
-  md: "rounded-xl",
-  lg: "rounded-2xl",
-  xl: "rounded-3xl",
-};
+function getRoundedClass(rounded: RoundedSize): string {
+  switch (rounded) {
+    case "sm":
+      return "rounded-lg";
+    case "md":
+      return "rounded-xl";
+    case "lg":
+      return "rounded-2xl";
+    case "xl":
+      return "rounded-3xl";
+    case "none":
+    default:
+      return "";
+  }
+}
 
-const backgroundClasses = {
-  white: "bg-white",
-  primary: "bg-primary",
-  accent: "bg-gris",
-  soft: "bg-gradient-to-br from-white to-gris/30",
-  transparent: "bg-transparent",
-};
+function getBackgroundClass(background: BackgroundVariant): string {
+  switch (background) {
+    case "white":
+      return "bg-white";
+    case "primary":
+      return "bg-primary";
+    case "accent":
+      return "bg-gris";
+    case "soft":
+      return "bg-gradient-to-br from-white to-gris/30";
+    case "transparent":
+    default:
+      return "bg-transparent";
+  }
+}
+
+function getSpacingClass(spacing: SpacingVariant): string {
+  switch (spacing) {
+    case "compact":
+      return "py-8";
+    case "spacious":
+      return "py-16 lg:py-24";
+    case "normal":
+    default:
+      return "py-12 lg:py-16";
+  }
+}
 
 export function Section({
   children,
@@ -64,19 +111,13 @@ export function Section({
   className,
   ...props
 }: SectionProps) {
-  const spacingClass = {
-    compact: "py-8",
-    normal: "py-12 lg:py-16",
-    spacious: "py-16 lg:py-24",
-  }[spacing];
-
   const sectionContent = (
     <Component
       className={cn(
         "w-full",
-        spacingClass,
-        roundedClasses[rounded],
-        backgroundClasses[background],
+        getSpacingClass(spacing),
+        getRoundedClass(rounded),
+        getBackgroundClass(background),
         className
       )}
       {...props}
@@ -90,7 +131,7 @@ export function Section({
   if (hasInset) {
     return (
       <div
-        className={cn("w-full", insetXClasses[insetX], insetYClasses[insetY])}
+        className={cn("w-full", getInsetXClass(insetX), getInsetYClass(insetY))}
       >
         {sectionContent}
       </div>
