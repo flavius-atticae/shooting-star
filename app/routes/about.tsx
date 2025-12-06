@@ -3,8 +3,6 @@ import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { CallToAction } from "~/components/layout/call-to-action";
 import { Footer } from "~/components/layout/footer/footer";
-import { AboutContent } from "~/components/layout/about/about-content";
-import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 import type { MethodItem } from "~/components/layout/about";
 
@@ -63,18 +61,18 @@ export default function AboutPage() {
         />
 
         {/* About Section - À propos de moi with custom content */}
-        <Section background="white" spacing="normal">
+        <section className="bg-white py-12 sm:py-16 lg:py-20">
           <Container size="xl" className="px-4 sm:px-6 lg:px-8">
             <AboutContentWithSections />
           </Container>
-        </Section>
+        </section>
 
         {/* Inspirations Section - Mes inspirations using method pattern */}
-        <Section background="gris" spacing="normal">
+        <section className="bg-gris py-12 sm:py-16 lg:py-20">
           <Container size="xl" className="px-4 sm:px-6 lg:px-8">
             <InspirationsSection items={inspirationItems} />
           </Container>
-        </Section>
+        </section>
 
         {/* Call-to-Action Section */}
         <CallToAction
