@@ -66,7 +66,7 @@ export function TestimonialCard({
 
       {/* Author info */}
       {(testimonial.author || testimonial.context) && (
-        <footer className="mt-auto pt-4">
+        <div className="mt-auto pt-4">
           {testimonial.author && (
             <cite className="font-heading text-lg sm:text-xl text-primary not-italic block">
               {testimonial.author}
@@ -77,7 +77,7 @@ export function TestimonialCard({
               {testimonial.context}
             </p>
           )}
-        </footer>
+        </div>
       )}
     </article>
   );
