@@ -54,7 +54,7 @@ export function TestimonialCard({
         "motion-reduce:transition-none",
         className
       )}
-      aria-label={testimonial.author ? `Testimonial from ${testimonial.author}` : "Anonymous testimonial"}
+      aria-label={testimonial.author ? `Témoignage de ${testimonial.author}` : "Témoignage anonyme"}
       {...props}
     >
       {/* Quote */}

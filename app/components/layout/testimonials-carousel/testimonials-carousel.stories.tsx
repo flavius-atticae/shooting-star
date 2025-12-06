@@ -414,7 +414,7 @@ export const TouchNavigation: Story = {
     await expect(carousel).toBeInTheDocument();
     await expect(carousel).toHaveAttribute(
       "aria-label",
-      "Testimonials carousel"
+      "Carrousel de témoignages"
     );
 
     // Verify slides exist
@@ -422,7 +422,7 @@ export const TouchNavigation: Story = {
     await expect(slides.length).toBe(5);
 
     // Verify first slide has proper aria-label
-    await expect(slides[0]).toHaveAttribute("aria-label", "1 of 5");
+    await expect(slides[0]).toHaveAttribute("aria-label", "1 sur 5");
   },
 };
 
@@ -467,8 +467,6 @@ export const PaginationInteraction: Story = {
     chromatic: { disableSnapshot: true },
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
-
     // Find pagination buttons
     const paginationButtons = canvasElement.querySelectorAll(
       '[role="tab"]'

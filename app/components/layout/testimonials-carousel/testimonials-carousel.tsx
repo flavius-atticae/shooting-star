@@ -211,7 +211,7 @@ export function TestimonialsCarousel({
             ref={carouselContainerRef}
             className="relative"
             role="region"
-            aria-label="Testimonials carousel"
+            aria-label="Carrousel de témoignages"
             aria-roledescription="carousel"
             tabIndex={0}
           >
@@ -231,7 +231,7 @@ export function TestimonialsCarousel({
                     )}
                     role="group"
                     aria-roledescription="slide"
-                    aria-label={`${index + 1} of ${testimonials.length}`}
+                    aria-label={`${index + 1} sur ${testimonials.length}`}
                   >
                     <TestimonialCard testimonial={testimonial} />
                   </div>
@@ -247,7 +247,7 @@ export function TestimonialsCarousel({
                   size="icon"
                   onClick={scrollPrev}
                   disabled={!canScrollPrev}
-                  aria-label="Previous testimonial"
+                  aria-label="Témoignage précédent"
                   className={cn(
                     "rounded-full",
                     !canScrollPrev && "opacity-50 cursor-not-allowed"
@@ -260,7 +260,7 @@ export function TestimonialsCarousel({
                   size="icon"
                   onClick={scrollNext}
                   disabled={!canScrollNext}
-                  aria-label="Next testimonial"
+                  aria-label="Témoignage suivant"
                   className={cn(
                     "rounded-full",
                     !canScrollNext && "opacity-50 cursor-not-allowed"
@@ -276,7 +276,7 @@ export function TestimonialsCarousel({
               <div
                 className="flex justify-center gap-2 mt-6"
                 role="tablist"
-                aria-label="Testimonial pagination"
+                aria-label="Pagination des témoignages"
               >
                 {scrollSnaps.map((_, index) => (
                   <button
@@ -284,17 +284,23 @@ export function TestimonialsCarousel({
                     type="button"
                     onClick={() => scrollTo(index)}
                     className={cn(
-                      "size-3 rounded-full transition-all",
-                      "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
-                      index === selectedIndex
-                        ? "bg-primary w-8"
-                        : "bg-primary/30 hover:bg-primary/50"
+                      "size-12 flex items-center justify-center rounded-full transition-all",
+                      "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
                     )}
-                    aria-label={`Go to testimonial ${index + 1}`}
-                    aria-current={index === selectedIndex ? "true" : "false"}
+                    aria-label={`Aller au témoignage ${index + 1}`}
+                    aria-current={index === selectedIndex ? "true" : undefined}
                     role="tab"
                     aria-selected={index === selectedIndex}
-                  />
+                  >
+                    <span
+                      className={cn(
+                        "size-3 rounded-full transition-all",
+                        index === selectedIndex
+                          ? "bg-primary w-8"
+                          : "bg-primary/30 hover:bg-primary/50"
+                      )}
+                    />
+                  </button>
                 ))}
               </div>
             )}
