@@ -3,7 +3,12 @@ import type { ReactNode, HTMLAttributes, ElementType } from "react";
 
 type InsetSize = "none" | "sm" | "md" | "lg";
 type RoundedSize = "none" | "sm" | "md" | "lg" | "xl";
-type BackgroundVariant = "white" | "primary" | "accent" | "soft" | "transparent";
+type BackgroundVariant =
+  | "white"
+  | "primary"
+  | "accent"
+  | "soft"
+  | "transparent";
 type SpacingVariant = "compact" | "normal" | "spacious";
 
 export interface SectionProps extends Omit<

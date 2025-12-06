@@ -2,30 +2,40 @@
 export { Button, buttonVariants } from "./button";
 import * as React from "react";
 import { buttonVariants } from "./button";
-export { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./card";
+export {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "./card";
 export { Input } from "./input";
 export { Label } from "./label";
-export { 
-  Form, 
-  FormControl, 
-  FormDescription, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
+export {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
   FormMessage,
-  useFormField 
+  useFormField,
 } from "./form";
 
 // Layout Components - Phase 1
-export { Container, type ContainerProps, type ContainerSize } from "./container";
+export {
+  Container,
+  type ContainerProps,
+  type ContainerSize,
+} from "./container";
 export { Section, type SectionProps } from "./section";
 
 // Background System - Phase 1 Final
-export { 
-  Background, 
-  BackgroundPattern, 
+export {
+  Background,
+  BackgroundPattern,
   useBackgroundClasses,
-  type BackgroundProps 
+  type BackgroundProps,
 } from "./background";
 
 // Re-export types for convenience
@@ -36,20 +46,20 @@ export type ButtonProps = React.ComponentProps<"button"> &
 
 // Constants pour usage externe
 export const PHASE_1_COMPONENTS = [
-  'Button',
-  'Card', 
-  'Input',
-  'Label', 
-  'Form',
-  'Container',
-  'Section',
-  'Background'
+  "Button",
+  "Card",
+  "Input",
+  "Label",
+  "Form",
+  "Container",
+  "Section",
+  "Background",
 ] as const;
 
 export const BACKGROUND_VARIANTS = [
-  'white',
-  'accent', 
-  'soft',
-  'gradient-soft',
-  'gradient-warm'
+  "white",
+  "accent",
+  "soft",
+  "gradient-soft",
+  "gradient-warm",
 ] as const;
