@@ -227,11 +227,7 @@ export const ServicesSection: Story = {
     await expect(canvas.getByText("Préparation à la naissance")).toBeInTheDocument();
     await expect(canvas.getByText("Examen de grossesse")).toBeInTheDocument();
     await expect(canvas.getByText("Post-partum immédiat")).toBeInTheDocument();
-    
-    // "Yoga prénatal" appears twice (once in Approach, once in Services), so use getAllByText
-    const yogaPrenatalElements = canvas.getAllByText(/^Yoga prénatal$/);
-    await expect(yogaPrenatalElements.length).toBeGreaterThanOrEqual(1);
-    
+    await expect(canvas.getByText("Yoga prénatal")).toBeInTheDocument();
     await expect(canvas.getByText("Yoga postnatal")).toBeInTheDocument();
     
     // "Mama Blessing" appears in both ApproachSection and Services section
