@@ -52,18 +52,11 @@ describe("ContactInfo Component", () => {
   });
 
   describe("Styling", () => {
-    it("should have primary background color", () => {
+    it("should have primary text color", () => {
       const { container } = render(<ContactInfo />);
 
       const element = container.firstChild as HTMLElement;
-      expect(element).toHaveClass("bg-primary");
-    });
-
-    it("should have white text color", () => {
-      const { container } = render(<ContactInfo />);
-
-      const element = container.firstChild as HTMLElement;
-      expect(element).toHaveClass("text-white");
+      expect(element).toHaveClass("text-primary");
     });
   });
 
@@ -112,11 +105,11 @@ describe("ContactInfo Component", () => {
   });
 
   describe("Pregnancy-Safe Design", () => {
-    it("should use calming green background", () => {
+    it("should use calming green text color", () => {
       const { container } = render(<ContactInfo />);
 
       const element = container.firstChild as HTMLElement;
-      expect(element).toHaveClass("bg-primary");
+      expect(element).toHaveClass("text-primary");
     });
 
     it("should have adequate spacing for readability", () => {

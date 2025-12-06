@@ -20,14 +20,14 @@ import { Button } from "~/components/ui/button";
  * Form validation schema using Zod
  */
 const contactFormSchema = z.object({
-  name: z.string().min(2, {
+  name: z.string().trim().min(2, {
     message: "Le nom doit contenir au moins 2 caractères.",
   }),
   email: z.string().email({
     message: "Veuillez entrer une adresse courriel valide.",
   }),
   availability: z.string().optional(),
-  message: z.string().min(10, {
+  message: z.string().trim().min(10, {
     message: "Le message doit contenir au moins 10 caractères.",
   }),
 });
@@ -89,6 +89,8 @@ export function ContactForm({
   ...props
 }: ContactFormProps) {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
+  const [error, setError] = React.useState(false);
+  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -100,8 +102,19 @@ export function ContactForm({
     },
   });
 
+  // Cleanup timeout on unmount
+  React.useEffect(() => {
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, []);
+
   const handleSubmit = async (data: ContactFormData) => {
     try {
+      setError(false);
+      
       if (onSubmit) {
         await onSubmit(data);
       }
@@ -113,11 +126,14 @@ export function ContactForm({
       form.reset();
       
       // Hide success message after 5 seconds
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
-    } catch (error) {
-      console.error("Form submission error:", error);
+    } catch (err) {
+      setError(true);
+      if (import.meta.env.DEV) {
+        console.error("Form submission error:", err);
+      }
     }
   };
 
@@ -256,6 +272,20 @@ export function ContactForm({
             >
               Merci pour votre message ! Je vous répondrai dans les plus brefs
               délais.
+            </div>
+          )}
+
+          {/* Error Message */}
+          {error && (
+            <div
+              role="alert"
+              aria-live="polite"
+              className={cn(
+                "p-4 rounded-md bg-destructive/10 border border-destructive/20",
+                "text-destructive font-body text-sm"
+              )}
+            >
+              Une erreur s'est produite. Veuillez réessayer.
             </div>
           )}
         </form>

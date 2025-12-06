@@ -7,7 +7,12 @@ const meta = {
   parameters: {
     layout: "centered",
     backgrounds: {
-      default: "dark",
+      default: "beige",
+      values: [
+        { name: "beige", value: "#F5F4F2" }, // matches bg-gris
+        { name: "light", value: "#ffffff" },
+        { name: "dark", value: "#222222" },
+      ],
     },
   },
   tags: ["autodocs"],

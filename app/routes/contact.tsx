@@ -53,7 +53,9 @@ export default function Contact() {
    */
   const handleFormSubmit = async (data: ContactFormData) => {
     // Log form data (development only)
-    console.log("Contact form submitted:", data);
+    if (import.meta.env.DEV) {
+      console.log("Contact form submitted:", data);
+    }
 
     // TODO: Future implementation
     // - Send to Formspree, Netlify Forms, or custom API
