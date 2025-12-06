@@ -46,7 +46,7 @@ describe("ContactInfo Component", () => {
       render(<ContactInfo />);
 
       expect(
-        screen.getByText(/j'ai hâte de faire votre rencontre/i)
+        screen.getByText(/j'ai hâte de faire ta rencontre/i)
       ).toBeInTheDocument();
     });
   });
@@ -99,7 +99,7 @@ describe("ContactInfo Component", () => {
         screen.getByText(/grande région de montréal/i)
       ).toBeInTheDocument();
       expect(
-        screen.getByText(/j'ai hâte de faire votre rencontre/i)
+        screen.getByText(/j'ai hâte de faire ta rencontre/i)
       ).toBeInTheDocument();
     });
   });

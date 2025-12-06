@@ -106,7 +106,7 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
           "text-primary mt-4"
         )}
       >
-        J'ai hâte de faire votre rencontre
+        J'ai hâte de faire ta rencontre
       </p>
     </div>
   );

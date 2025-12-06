@@ -24,7 +24,7 @@ export interface ContactSectionProps
  *
  * Features:
  * - Left column: ContactInfo with contact details in sage green text
- * - Right column: ContactForm with form fields on white background
+ * - Right column: ContactForm with form fields using transparent backgrounds that blend with the beige/cream container
  * - Responsive: stacks vertically on mobile, side-by-side on desktop
  * - WCAG 2.1 AA compliant
  *

@@ -126,6 +126,7 @@ export function ContactForm({
       form.reset();
       
       // Hide success message after 5 seconds
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
         setIsSubmitted(false);
       }, 5000);
