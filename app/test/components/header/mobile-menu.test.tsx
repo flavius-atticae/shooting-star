@@ -17,11 +17,11 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => (
 
 describe("MobileMenu Component - Pregnancy-Safe Design", () => {
   let user: ReturnType<typeof userEvent.setup>;
-  let mockOnClose: ReturnType<typeof vi.fn>;
+  let mockOnClose: () => void;
 
   beforeEach(() => {
     user = userEvent.setup();
-    mockOnClose = vi.fn();
+    mockOnClose = vi.fn<() => void>();
     // Reset body overflow styles
     document.body.style.overflow = "unset";
 
