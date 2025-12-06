@@ -3,6 +3,83 @@ import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { Footer } from "~/components/layout/footer/footer";
 import { ApproachSection, type ApproachItem } from "~/components/layout/approach-section";
+import { Services, type ServiceItem } from "~/components/layout/services";
+
+// Configuration des services pour la page doula - "À la carte"
+const doulaServices: ServiceItem[] = [
+  {
+    id: "preparation-naissance",
+    title: "Préparation à la naissance",
+    description:
+      "Accompagnement ciblé pour se préparer à l'accouchement à son rythme. Approche des techniques de respiration, de relaxation, de visualisation de la naissance avec confort et sérénité.",
+    buttonText: "En savoir plus",
+    buttonHref: "/doula/preparation-naissance",
+  },
+  {
+    id: "examen-grossesse",
+    title: "Examen de grossesse",
+    description:
+      "Consultation dédiée pour soulager les inconforts, douleurs et petits soucis de grossesse. Conseils personnalisés et solutions naturelles pour se sentir mieux au quotidien.",
+    buttonText: "En savoir plus",
+    buttonHref: "/doula/examen-grossesse",
+  },
+  {
+    id: "post-partum-immediat",
+    title: "Post-partum immédiat",
+    description:
+      "Soutien précieux après la naissance pour traverser les premiers jours avec plus de confort et de sérénité. Accompagnement physique, émotionnel et énergétique selon les besoins.",
+    buttonText: "En savoir plus",
+    buttonHref: "/doula/post-partum-immediat",
+  },
+  {
+    id: "yoga-prenatal",
+    title: "Yoga prénatal",
+    description:
+      "Séances de yoga adaptées à chaque trimestre pour renforcer les muscles, optimiser le souffle et cultiver un état de détente idéal pour vivre sa grossesse en complément de son suivi avec son·a aîné·e.",
+    buttonText: "En savoir plus",
+    buttonHref: "/doula/yoga-prenatal",
+  },
+  {
+    id: "yoga-postnatal",
+    title: "Yoga postnatal",
+    description:
+      "Pratique douce pour soutenir la récupération après l'accouchement, reconnecter son corps et son énergie, et tisser le lien avec son bébé.",
+    buttonText: "En savoir plus",
+    buttonHref: "/doula/yoga-postnatal",
+  },
+  {
+    id: "mama-blessing",
+    title: "Mama Blessing",
+    description:
+      "Cérémonie sur mesure pour honorer la future maman, célébrer sa vie qui grandit en elle, et la sentir soutenue et entourée pour sa naissance.",
+    buttonText: "En savoir plus",
+    buttonHref: "/doula/mama-blessing",
+  },
+  {
+    id: "yoga-prenatal-partenaire",
+    title: "Yoga prénatal avec partenaire",
+    description:
+      "Moment partagé pour préparer l'arrivée de bébé ensemble. Exercices de respiration et écoute mutuelle pour renforcer la complicité et la confiance.",
+    buttonText: "En savoir plus",
+    buttonHref: "/doula/yoga-prenatal-partenaire",
+  },
+  {
+    id: "consultation-doula",
+    title: "Consultation doula",
+    description:
+      "Rencontre personnalisée pour répondre à vos questions, écouter et se guider selon son parcours et ses besoins spécifiques, et préparer n'importe quel moment de la maternité.",
+    buttonText: "En savoir plus",
+    buttonHref: "/doula/consultation-doula",
+  },
+  {
+    id: "consultation-extra",
+    title: "Consultation extra",
+    description:
+      "Rendez-vous ponctuel à ajouter à un forfait complet pour approfondir un sujet précis. Répond à des nouvelles questions ou de nouveaux besoins. Flexible et personnalisable selon les besoins.",
+    buttonText: "En savoir plus",
+    buttonHref: "/doula/consultation-extra",
+  },
+];
 
 export function meta(_args: Route.MetaArgs) {
   return [
@@ -74,7 +151,11 @@ export default function DoulaPage() {
         <ApproachSection items={approachItems} spacing="spacious" />
 
         {/* Services - À la carte */}
-        {/* TODO: Add Services component for doula offerings */}
+        <Services
+          title="À la carte"
+          services={doulaServices}
+          spacing="normal"
+        />
 
         {/* CallToAction - Réservez un appel découverte */}
         {/* TODO: Add CallToAction component */}

@@ -11,12 +11,14 @@ import DoulaPage from "./doula";
  * - Header component with navigation
  * - Hero section with French title "Accompagnement de doula"
  * - Subtitle "AVEC PAULINE ROUSSEL"
+ * - ApproachSection with "Mon approche" items
+ * - Services section with "À la carte" offerings
  * - Footer component
  * - Placeholder comments for future sections
  * 
  * Technical details:
  * - Follows pattern from home.tsx
- * - Uses existing Header, Hero and Footer components
+ * - Uses existing Header, Hero, ApproachSection, Services and Footer components
  * - WCAG 2.1 AA compliant
  * - Responsive (mobile, tablet, desktop)
  * - French language content
@@ -198,5 +200,46 @@ export const PageStructure: Story = {
     // Footer should exist
     const footer = canvas.getByRole("contentinfo");
     await expect(footer).toBeInTheDocument();
+  },
+};
+
+/**
+ * Services Section Validation - Phase 3
+ * 
+ * Validates that the "À la carte" Services section is properly integrated:
+ * - Section title "À la carte" is displayed
+ * - All 9 service cards are rendered
+ * - Each service has correct structure (title, description, button)
+ * - Responsive grid layout (3x3 on desktop)
+ */
+export const ServicesSection: Story = {
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+
+    // Verify Services section title "À la carte"
+    const servicesTitle = canvas.getByRole("heading", {
+      level: 2,
+      name: "À la carte",
+    });
+    await expect(servicesTitle).toBeInTheDocument();
+
+    // Verify specific service titles are present (all 9 services)
+    await expect(canvas.getByText("Préparation à la naissance")).toBeInTheDocument();
+    await expect(canvas.getByText("Examen de grossesse")).toBeInTheDocument();
+    await expect(canvas.getByText("Post-partum immédiat")).toBeInTheDocument();
+    await expect(canvas.getByText("Yoga prénatal")).toBeInTheDocument();
+    await expect(canvas.getByText("Yoga postnatal")).toBeInTheDocument();
+    
+    // "Mama Blessing" appears in both ApproachSection and Services section
+    const mamaBlessingElements = canvas.getAllByText("Mama Blessing");
+    await expect(mamaBlessingElements.length).toBeGreaterThanOrEqual(2);
+    
+    await expect(canvas.getByText("Yoga prénatal avec partenaire")).toBeInTheDocument();
+    await expect(canvas.getByText("Consultation doula")).toBeInTheDocument();
+    await expect(canvas.getByText("Consultation extra")).toBeInTheDocument();
+
+    // Verify CTA buttons exist (should be multiple "En savoir plus" buttons)
+    const ctaButtons = canvas.getAllByRole("link", { name: /En savoir plus/ });
+    await expect(ctaButtons.length).toBeGreaterThanOrEqual(9);
   },
 };
