@@ -4,6 +4,7 @@ import { Hero } from "~/components/layout/hero/Hero";
 import { Footer } from "~/components/layout/footer/footer";
 import { ApproachSection, type ApproachItem } from "~/components/layout/approach-section";
 import { Services, type ServiceItem } from "~/components/layout/services";
+import { TestimonialsCarousel, type Testimonial } from "~/components/layout/testimonials-carousel";
 
 // Configuration des services pour la page doula - "À la carte"
 const doulaServices: ServiceItem[] = [
@@ -78,6 +79,30 @@ const doulaServices: ServiceItem[] = [
       "Rendez-vous ponctuel à ajouter à un forfait complet pour approfondir un sujet précis. Répond à des nouvelles questions ou de nouveaux besoins. Flexible et personnalisable selon les besoins.",
     buttonText: "En savoir plus",
     buttonHref: "/doula/consultation-extra",
+  },
+];
+
+// Testimonials for the doula page
+const doulaTestimonials: Testimonial[] = [
+  {
+    id: "1",
+    quote:
+      "Pauline m'a accompagnée avec une douceur et une écoute incroyables. Je me suis sentie soutenue à chaque étape de ma grossesse.",
+    author: "Marie",
+    context: "Accompagnée en 2024",
+  },
+  {
+    id: "2",
+    quote:
+      "Le yoga prénatal avec Pauline a été un vrai moment de ressourcement. J'ai appris à écouter mon corps et à me connecter à mon bébé.",
+    author: "Sophie",
+    context: "Maman de 2 enfants",
+  },
+  {
+    id: "3",
+    quote:
+      "La cérémonie Mama Blessing restera un souvenir inoubliable. Un moment magique entourée de mes proches.",
+    author: "Camille",
   },
 ];
 
@@ -161,7 +186,13 @@ export default function DoulaPage() {
         {/* TODO: Add CallToAction component */}
 
         {/* TestimonialsCarousel - Témoignages */}
-        {/* TODO: Add TestimonialsCarousel component */}
+        <TestimonialsCarousel
+          title="Douce et à l'écoute"
+          testimonials={doulaTestimonials}
+          showNavigation
+          showPagination
+          spacing="spacious"
+        />
       </main>
 
       {/* Footer - Navigation et contact */}
