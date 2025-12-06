@@ -23,7 +23,7 @@ export function meta({}: Route.MetaArgs) {
 export default function YogaPage() {
   return (
     <>
-      <main id="main-content" role="main">
+      <main id="main-content">
         {/* Hero Section - Enseignement du yoga */}
         <Hero
           variant="default"
@@ -31,17 +31,13 @@ export default function YogaPage() {
           subtitle="AVEC PAULINE ROUSSEL"
         />
 
-        {/* FeatureBlock - Cours privés */}
-        {/* TODO: Add FeatureBlock component when available */}
-
-        {/* FeatureBlock - Cours en studio */}
-        {/* TODO: Add FeatureBlock component when available */}
-
-        {/* FeatureBlock - Cours en entreprises */}
-        {/* TODO: Add FeatureBlock component when available */}
-
-        {/* CallToAction */}
-        {/* TODO: Add CallToAction component when available */}
+        {/*
+          Sections à venir (voir issue #149) :
+          - FeatureBlock - Cours privés
+          - FeatureBlock - Cours en studio
+          - FeatureBlock - Cours en entreprises
+          - CallToAction
+        */}
       </main>
 
       {/* Footer - Navigation et contact */}
