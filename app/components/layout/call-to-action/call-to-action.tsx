@@ -82,7 +82,7 @@ export function CallToAction({
       {...props}
     >
       <Container size="xl" className="px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-10 lg:p-12 text-center">
+        <div className="p-6 sm:p-10 lg:p-12 text-center">
           {/* Title */}
           <h2 className="font-heading font-medium text-4xl md:text-5xl text-accent text-center leading-tight mb-4 sm:mb-6">
             {title}
@@ -93,24 +93,32 @@ export function CallToAction({
             {subtitle}
           </p>
 
-          {/* CTA Button */}
-          {buttonHref ? (
-            <Button variant="cta" size="cta" asChild>
-              <a
-                href={buttonHref}
-                target={buttonTarget}
-                rel={
-                  buttonTarget === "_blank" ? "noopener noreferrer" : undefined
-                }
+          {/* CTA Button - wrapped in max-width container to prevent overflow */}
+          <div className="flex justify-center w-full">
+            {buttonHref ? (
+              <Button variant="cta" size="cta" asChild className="max-w-full">
+                <a
+                  href={buttonHref}
+                  target={buttonTarget}
+                  rel={
+                    buttonTarget === "_blank" ? "noopener noreferrer" : undefined
+                  }
+                  className="whitespace-normal sm:whitespace-nowrap px-6 sm:px-8"
+                >
+                  {buttonText}
+                </a>
+              </Button>
+            ) : (
+              <Button 
+                variant="cta" 
+                size="cta" 
+                onClick={onButtonClick}
+                className="max-w-full whitespace-normal sm:whitespace-nowrap px-6 sm:px-8"
               >
                 {buttonText}
-              </a>
-            </Button>
-          ) : (
-            <Button variant="cta" size="cta" onClick={onButtonClick}>
-              {buttonText}
-            </Button>
-          )}
+              </Button>
+            )}
+          </div>
         </div>
       </Container>
     </Section>
