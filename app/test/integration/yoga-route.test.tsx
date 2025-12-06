@@ -244,9 +244,9 @@ describe('Yoga Route Integration Tests', () => {
     it('should render without layout errors on mobile viewport', () => {
       const router = createTestRouter();
       
-      // Simulate mobile viewport (following HERO_BREAKPOINTS.mobile = 400)
-      global.innerWidth = 375;
-      global.innerHeight = 667;
+      // Note: jsdom does not support viewport simulation via global.innerWidth
+      // This test validates that the page renders without errors
+      // Visual responsive testing is handled by Storybook/Chromatic
       
       render(<RouterProvider router={router} />);
 
@@ -259,9 +259,9 @@ describe('Yoga Route Integration Tests', () => {
     it('should render without layout errors on tablet viewport', () => {
       const router = createTestRouter();
       
-      // Simulate tablet viewport (following HERO_BREAKPOINTS.tablet = 500)
-      global.innerWidth = 768;
-      global.innerHeight = 1024;
+      // Note: jsdom does not support viewport simulation via global.innerWidth
+      // This test validates that the page renders without errors
+      // Visual responsive testing is handled by Storybook/Chromatic
       
       render(<RouterProvider router={router} />);
 
@@ -274,9 +274,9 @@ describe('Yoga Route Integration Tests', () => {
     it('should render without layout errors on desktop viewport', () => {
       const router = createTestRouter();
       
-      // Simulate desktop viewport (following HERO_BREAKPOINTS.desktop = 600)
-      global.innerWidth = 1920;
-      global.innerHeight = 1080;
+      // Note: jsdom does not support viewport simulation via global.innerWidth
+      // This test validates that the page renders without errors
+      // Visual responsive testing is handled by Storybook/Chromatic
       
       render(<RouterProvider router={router} />);
 
