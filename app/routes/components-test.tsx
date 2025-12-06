@@ -26,7 +26,7 @@ import {
   useBackgroundClasses,
 } from "~/components/ui/background";
 import { Header } from "~/components/layout/header";
-import { AboutSection } from "~/components/layout/about-section";
+import { About } from "~/components/layout/about";
 import { Footer } from "~/components/layout/footer";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -623,7 +623,7 @@ export default function ComponentsTest() {
               About Section Component - Phase 1 Base Structure
             </CardTitle>
             <CardDescription>
-              Testing AboutSection with pregnancy-safe design, responsive
+              Testing About component with pregnancy-safe design, responsive
               layout, and default content
             </CardDescription>
           </CardHeader>
@@ -682,7 +682,7 @@ export default function ComponentsTest() {
       </div>
 
       {/* About Section Component - Full Display */}
-      <AboutSection />
+      <About />
 
       {/* Footer Component Test */}
       <Card>

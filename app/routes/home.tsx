@@ -3,7 +3,7 @@ import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { CallToAction } from "~/components/layout/call-to-action";
 import { Services } from "~/components/layout/services";
-import { AboutSection } from "~/components/layout/about-section/about-section";
+import { About } from "~/components/layout/about";
 import { Footer } from "~/components/layout/footer/footer";
 import type { ServiceItem } from "~/components/layout/services/service-card";
 
@@ -80,7 +80,7 @@ export default function Home() {
         <Services services={servicesData} containerSize="xl" />
 
         {/* About Section - Présentation + Méthode */}
-        <AboutSection spacing="normal" containerSize="xl" />
+        <About spacing="none" containerSize="xl" />
       </main>
 
       {/* Footer - Navigation et contact */}
