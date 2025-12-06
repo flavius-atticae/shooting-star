@@ -41,6 +41,11 @@ Section À propos avec contenu biographique et méthode d'accompagnement.
       options: ["sm", "md", "lg", "xl"],
       description: "Maximum content width",
     },
+    overlapNext: {
+      control: "select",
+      options: ["none", "sm", "md", "lg", "responsive"],
+      description: "Overlap amount to extend over the next section (Footer)",
+    },
   },
 } satisfies Meta<typeof About>;
 
@@ -88,6 +93,43 @@ export const SpaciousSpacing: Story = {
       },
     },
   },
+};
+
+/**
+ * Overlap Footer - Demonstrates the floating effect over Footer
+ * Tests the overlapNext prop with responsive behavior
+ */
+export const OverlapFooter: Story = {
+  args: {
+    spacing: "none",
+    containerSize: "xl",
+    overlapNext: "responsive",
+  },
+  parameters: {
+    chromatic: {
+      viewports: [375, 768, 1280],
+    },
+    docs: {
+      description: {
+        story:
+          "Effet de chevauchement où About flotte au-dessus du Footer (tablet+ uniquement).",
+      },
+    },
+  },
+  decorators: [
+    (Story) => (
+      <div className="min-h-screen flex flex-col">
+        <div className="flex-1">
+          <Story />
+        </div>
+        <div className="bg-primary text-white p-8 md:pt-24">
+          <p className="text-center opacity-70">
+            ↑ Footer area (notice the overlap on tablet+)
+          </p>
+        </div>
+      </div>
+    ),
+  ],
 };
 
 // ============================================================
