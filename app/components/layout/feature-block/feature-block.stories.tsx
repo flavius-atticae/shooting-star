@@ -264,6 +264,7 @@ export const LayoutSwitching: Story = {
   args: {
     title: "Test Layout",
     description: "Testing layout switching",
+    imageAlt: "Test image for layout switching",
     layout: "text-right",
   },
   parameters: {
@@ -351,6 +352,7 @@ export const ImagePlaceholder: Story = {
   args: {
     title: "Sans image",
     description: "Test du placeholder automatique",
+    imageAlt: "Placeholder image",
     layout: "text-left",
   },
   parameters: {
