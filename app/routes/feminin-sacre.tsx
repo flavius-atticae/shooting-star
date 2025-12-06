@@ -37,7 +37,7 @@ const eventsData: EventCardProps[] = [
   },
 ];
 
-const introText = `Tu ressens l'élan de te reconnecter à ton corps, à ton énergie féminine et à ta puissance intérieure? Les ateliers de Yoga de la Femme Sacré sont un refuge pour toute sa richesse et sa diversité. Dans un espace bienveillant, sacré et sans jugement, tu pourras te déposer, respirer et t'exprimer librement. À travers le mouvement, la méditation et des pratiques inspirées du féminin sacré, ces rencontres te permettront de renouer avec ton cycle, tes émotions et ton intuition profonde. C'est un moment pour toi, pour te redécouvrir et laisser fleurir la beauté unique de ton féminin, soutenue par la sororité et l'énergie du cercle.`;
+const introText = `Tu ressens l'élan de te reconnecter à ton corps, à ton énergie féminine et à ta puissance intérieure? Les ateliers de Yoga du Féminin Sacré sont un refuge pour toute sa richesse et sa diversité. Dans un espace bienveillant, sacré et sans jugement, tu pourras te déposer, respirer et t'exprimer librement. À travers le mouvement, la méditation et des pratiques inspirées du féminin sacré, ces rencontres te permettront de renouer avec ton cycle, tes émotions et ton intuition profonde. C'est un moment pour toi, pour te redécouvrir et laisser fleurir la beauté unique de ton féminin, soutenue par la sororité et l'énergie du cercle.`;
 
 export function meta({}: Route.MetaArgs) {
   return [
