@@ -78,8 +78,31 @@ export function EventCard({
       aria-labelledby={`event-title-${id}`}
       {...props}
     >
+      {/* Top Row: Title on Left, Date/Time on Right (above lines) */}
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-4 px-2">
+        {/* Left: Event Title (above left line) */}
+        <div className="flex-1">
+          <h3
+            id={`event-title-${id}`}
+            className="font-sans font-normal text-base md:text-lg text-primary leading-tight"
+          >
+            {title}
+          </h3>
+        </div>
+
+        {/* Right: Date/Time (above right line) */}
+        <div className="flex flex-col items-start md:items-end">
+          <time
+            dateTime={`${date} ${time}`}
+            className="font-sans text-sm text-primary/80"
+          >
+            {dateTimeLabel}
+          </time>
+        </div>
+      </div>
+
       {/* Image Box with Horizontal Lines */}
-      <div className="relative flex items-center justify-center mb-6">
+      <div className="relative flex items-center justify-center mb-4">
         {/* Left horizontal line */}
         <div className="flex-1 h-[1px] bg-primary/20" />
         
@@ -109,52 +132,31 @@ export function EventCard({
         <div className="flex-1 h-[1px] bg-primary/20" />
       </div>
 
-      {/* Event Info - Title on Left, Date/Time and Button on Right */}
-      <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 px-2">
-        {/* Left: Event Title */}
-        <div className="flex-1">
-          <h3
-            id={`event-title-${id}`}
-            className="font-sans font-normal text-base md:text-lg text-primary leading-tight"
+      {/* Bottom Row: Button on Right (below right line) */}
+      <div className="flex flex-col md:flex-row md:items-start md:justify-end gap-4 px-2">
+        {/* Details Button (below right line) */}
+        {detailsHref ? (
+          <Button
+            variant="default"
+            size="default"
+            className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full"
+            asChild
           >
-            {title}
-          </h3>
-        </div>
-
-        {/* Right: Date/Time and Button */}
-        <div className="flex flex-col items-start md:items-end gap-3">
-          {/* Date and Time */}
-          <time
-            dateTime={`${date} ${time}`}
-            className="font-sans text-sm text-primary/80"
-          >
-            {dateTimeLabel}
-          </time>
-
-          {/* Details Button */}
-          {detailsHref ? (
-            <Button
-              variant="default"
-              size="default"
-              className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full"
-              asChild
-            >
-              <a href={detailsHref} aria-label={`Voir les détails de ${title}`}>
-                DÉTAILS
-              </a>
-            </Button>
-          ) : (
-            <Button
-              variant="default"
-              size="default"
-              className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full"
-              onClick={onDetailsClick}
-              aria-label={`Voir les détails de ${title}`}
-            >
+            <a href={detailsHref} aria-label={`Voir les détails de ${title}`}>
               DÉTAILS
-            </Button>
-          )}
-        </div>
+            </a>
+          </Button>
+        ) : (
+          <Button
+            variant="default"
+            size="default"
+            className="bg-primary text-white hover:bg-primary/90 min-h-[44px] px-6 rounded-full"
+            onClick={onDetailsClick}
+            aria-label={`Voir les détails de ${title}`}
+          >
+            DÉTAILS
+          </Button>
+        )}
       </div>
     </article>
   );
