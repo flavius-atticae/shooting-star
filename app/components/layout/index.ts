@@ -15,6 +15,9 @@ export type {
   SocialPlatform,
 } from "./footer";
 
+export { FeatureBlock } from "./feature-block";
+export type { FeatureBlockProps } from "./feature-block";
+
 // Re-export UI components pour usage avec layout
 export { Container, type ContainerSize } from "../ui/container";
 export { Section } from "../ui/section";
