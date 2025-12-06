@@ -1,5 +1,6 @@
 import * as React from "react";
 import useEmblaCarousel from "embla-carousel-react";
+import type { EmblaCarouselType } from "embla-carousel";
 import { cn } from "~/lib/utils";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
@@ -87,11 +88,11 @@ export function TestimonialsCarousel({
   }, []);
 
   // Initialize carousel state
-  const onInit = React.useCallback((emblaApi: any) => {
+  const onInit = React.useCallback((emblaApi: EmblaCarouselType) => {
     setScrollSnaps(emblaApi.scrollSnapList());
   }, []);
 
-  const onSelect = React.useCallback((emblaApi: any) => {
+  const onSelect = React.useCallback((emblaApi: EmblaCarouselType) => {
     setSelectedIndex(emblaApi.selectedScrollSnap());
     setCanScrollPrev(emblaApi.canScrollPrev());
     setCanScrollNext(emblaApi.canScrollNext());
