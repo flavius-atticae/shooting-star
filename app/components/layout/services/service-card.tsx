@@ -81,7 +81,7 @@ export function ServiceCard({
       {service.icon && <div className="mb-4 text-white">{service.icon}</div>}
 
       {/* Title */}
-      <h3 className="font-heading font-medium text-3xl sm:text-5xl text-white leading-tight mb-4">
+      <h3 className="font-heading font-medium text-3xl sm:text-4xl text-white leading-tight mb-4">
         {service.title}
       </h3>
 

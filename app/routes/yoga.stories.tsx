@@ -5,7 +5,7 @@ import YogaPage from "./yoga";
 
 /**
  * Yoga Page - Complete Storybook Tests (Phase 4)
- * 
+ *
  * This story provides comprehensive testing for the Yoga page with:
  * - Complete page composition with all sections
  * - Hero section with "Enseignement du yoga" title
@@ -15,7 +15,7 @@ import YogaPage from "./yoga";
  * - Accessibility validation (WCAG 2.1 AA)
  * - Keyboard navigation tests
  * - Integration tests validating all sections
- * 
+ *
  * Technical details:
  * - Uses existing Header, Hero, FeatureBlock, CallToAction, Footer components
  * - Follows pattern from home.tsx and doula.tsx
@@ -73,7 +73,7 @@ type Story = StoryObj<typeof meta>;
 
 /**
  * Default Yoga Page - Complete page with all sections
- * 
+ *
  * Visual regression testing across all breakpoints (320 → 1440px)
  */
 export const Default: Story = {
@@ -86,7 +86,7 @@ export const Default: Story = {
 
 /**
  * Mobile Viewport - Focused mobile rendering test
- * 
+ *
  * Tests responsive behavior on mobile devices (375px width).
  * All sections should stack vertically.
  */
@@ -108,7 +108,7 @@ export const MobileViewport: Story = {
 
 /**
  * Tablet Viewport - Tablet rendering test
- * 
+ *
  * Tests responsive behavior on tablet devices (768px width).
  */
 export const TabletViewport: Story = {
@@ -129,7 +129,7 @@ export const TabletViewport: Story = {
 
 /**
  * Desktop Viewport - Desktop rendering test
- * 
+ *
  * Tests responsive behavior on desktop (1920px width).
  * This is the primary design target.
  */
@@ -156,7 +156,7 @@ export const DesktopViewport: Story = {
 
 /**
  * Full Page Integration Test - Validates all sections
- * 
+ *
  * Tests the complete page composition and all critical elements:
  * - Hero section with correct title
  * - All 3 FeatureBlocks with correct content
@@ -169,41 +169,54 @@ export const FullPageIntegration: Story = {
     const canvas = within(canvasElement);
 
     // Verify Hero section
-    const heroTitle = canvas.getByRole("heading", {
-      level: 1,
-      name: /Enseignement du yoga/i,
-    });
+    const heroTitle = canvas.getByRole("heading", { level: 1 });
     await expect(heroTitle).toBeInTheDocument();
+    await expect(heroTitle).toHaveTextContent(/Enseignement/i);
+    await expect(heroTitle).toHaveTextContent(/du yoga/i);
 
     const heroSubtitle = canvas.getByText(/AVEC PAULINE ROUSSEL/i);
     await expect(heroSubtitle).toBeInTheDocument();
 
     // Verify the 3 FeatureBlocks
-    await expect(canvas.getByRole("heading", {
-      level: 3,
-      name: /Cours privés/i,
-    })).toBeInTheDocument();
-    
-    await expect(canvas.getByRole("heading", {
-      level: 3,
-      name: /Cours en studio/i,
-    })).toBeInTheDocument();
-    
-    await expect(canvas.getByRole("heading", {
-      level: 3,
-      name: /Cours en entreprises/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 3,
+        name: /Cours privés/i,
+      })
+    ).toBeInTheDocument();
+
+    await expect(
+      canvas.getByRole("heading", {
+        level: 3,
+        name: /Cours en studio/i,
+      })
+    ).toBeInTheDocument();
+
+    await expect(
+      canvas.getByRole("heading", {
+        level: 3,
+        name: /Cours en entreprises/i,
+      })
+    ).toBeInTheDocument();
 
     // Verify FeatureBlock descriptions are present
-    await expect(canvas.getByText(/accompagnement personnalisé/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/espace chaleureux et sécurisant/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/moment de ressourcement/i)).toBeInTheDocument();
+    await expect(
+      canvas.getByText(/accompagnement personnalisé/i)
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText(/espace chaleureux et sécurisant/i)
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText(/moment de ressourcement/i)
+    ).toBeInTheDocument();
 
     // Verify CallToAction section
-    await expect(canvas.getByRole("heading", {
-      level: 2,
-      name: /douceur et bienveillance/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 2,
+        name: /douceur et bienveillance/i,
+      })
+    ).toBeInTheDocument();
 
     const ctaButton = canvas.getByRole("link", {
       name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i,
@@ -218,7 +231,7 @@ export const FullPageIntegration: Story = {
 
 /**
  * Accessibility Structure Validation - WCAG 2.1 AA
- * 
+ *
  * Validates semantic HTML structure and accessibility:
  * - Proper landmark regions
  * - Correct heading hierarchy
@@ -238,7 +251,8 @@ export const AccessibilityStructure: Story = {
     // Check for proper heading hierarchy (h1)
     const h1 = canvas.getByRole("heading", { level: 1 });
     await expect(h1).toBeInTheDocument();
-    await expect(h1).toHaveTextContent(/Enseignement du yoga/i);
+    await expect(h1).toHaveTextContent(/Enseignement/i);
+    await expect(h1).toHaveTextContent(/du yoga/i);
 
     // Check for Hero region with French label
     const heroRegion = canvas.getByRole("region", {
@@ -266,7 +280,7 @@ export const AccessibilityStructure: Story = {
 
 /**
  * Keyboard Navigation Test
- * 
+ *
  * Tests that all interactive elements are keyboard accessible:
  * - Tab navigation through CTA button
  * - Focus states visible
@@ -284,7 +298,7 @@ export const KeyboardNavigation: Story = {
 
     // Tab to the CTA button (simulate keyboard navigation)
     await userEvent.tab();
-    
+
     // Verify button is reachable
     await expect(ctaButton).toBeInTheDocument();
 
@@ -297,7 +311,7 @@ export const KeyboardNavigation: Story = {
 
 /**
  * French Content Validation
- * 
+ *
  * Ensures all text content is properly displayed in French (fr-CA).
  */
 export const FrenchContent: Story = {
@@ -305,8 +319,10 @@ export const FrenchContent: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Verify French title
-    await expect(canvas.getByText(/Enseignement du yoga/i)).toBeInTheDocument();
+    // Verify French title (split by line break)
+    const title = canvas.getByRole("heading", { level: 1 });
+    await expect(title).toHaveTextContent(/Enseignement/i);
+    await expect(title).toHaveTextContent(/du yoga/i);
 
     // Verify French subtitle
     await expect(canvas.getByText(/AVEC PAULINE ROUSSEL/i)).toBeInTheDocument();
@@ -317,14 +333,18 @@ export const FrenchContent: Story = {
     await expect(canvas.getByText(/Cours en entreprises/i)).toBeInTheDocument();
 
     // Verify French CTA content
-    await expect(canvas.getByText(/douceur et bienveillance/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/RÉSERVEZ UN APPEL DÉCOUVERTE/i)).toBeInTheDocument();
+    await expect(
+      canvas.getByText(/douceur et bienveillance/i)
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByText(/RÉSERVEZ UN APPEL DÉCOUVERTE/i)
+    ).toBeInTheDocument();
   },
 };
 
 /**
  * Page Structure Validation
- * 
+ *
  * Validates that the page has the correct structure:
  * - Header at top
  * - Hero as first element in main
@@ -363,7 +383,7 @@ export const PageStructure: Story = {
 
 /**
  * FeatureBlocks Alternating Layout Test
- * 
+ *
  * Validates that the 3 FeatureBlocks have alternating layouts:
  * - Block 1: text-left (Cours privés)
  * - Block 2: text-right (Cours en studio)
@@ -398,7 +418,7 @@ export const FeatureBlocksLayout: Story = {
 
 /**
  * CallToAction Integration Test
- * 
+ *
  * Validates the CallToAction section integration:
  * - Correct title and subtitle
  * - Button with correct text and href
@@ -430,7 +450,7 @@ export const CallToActionSection: Story = {
 
 /**
  * Responsive Images Test
- * 
+ *
  * Validates that all images in FeatureBlocks:
  * - Have proper loading strategy (lazy)
  * - Have alt text for accessibility

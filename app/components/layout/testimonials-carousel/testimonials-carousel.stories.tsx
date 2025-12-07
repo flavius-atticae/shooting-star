@@ -43,29 +43,34 @@ const manyTestimonials: Testimonial[] = [
   ...placeholderTestimonials,
   {
     id: "6",
-    quote: "Une doula exceptionnelle qui m'a vraiment accompagnée avec son cœur.",
+    quote:
+      "Une doula exceptionnelle qui m'a vraiment accompagnée avec son cœur.",
     author: "Anne",
     context: "Accompagnée en 2023",
   },
   {
     id: "7",
-    quote: "Je recommande vivement Pauline pour son professionnalisme et sa douceur.",
+    quote:
+      "Je recommande vivement Pauline pour son professionnalisme et sa douceur.",
     author: "Catherine",
   },
   {
     id: "8",
-    quote: "Le soutien post-partum m'a été d'une aide précieuse dans les premiers jours.",
+    quote:
+      "Le soutien post-partum m'a été d'une aide précieuse dans les premiers jours.",
     author: "Émilie",
     context: "Maman de 3 enfants",
   },
   {
     id: "9",
-    quote: "Une présence rassurante pendant mon accouchement. Merci infiniment!",
+    quote:
+      "Une présence rassurante pendant mon accouchement. Merci infiniment!",
     author: "Véronique",
   },
   {
     id: "10",
-    quote: "Les ateliers de préparation à la naissance étaient parfaits pour mon couple.",
+    quote:
+      "Les ateliers de préparation à la naissance étaient parfaits pour mon couple.",
     author: "Sarah",
     context: "Accompagnée en 2024",
   },
@@ -168,10 +173,10 @@ type Story = StoryObj<typeof meta>;
  */
 export const Default: Story = {
   args: {
-    title: "Douce et à l'écoute",
     testimonials: placeholderTestimonials,
     showNavigation: true,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: {
@@ -185,10 +190,10 @@ export const Default: Story = {
  */
 export const ManyTestimonials: Story = {
   args: {
-    title: "Ce que nos clientes disent",
     testimonials: manyTestimonials,
     showNavigation: true,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: {
@@ -207,8 +212,8 @@ export const ManyTestimonials: Story = {
  */
 export const SingleTestimonial: Story = {
   args: {
-    title: "Témoignage",
     testimonials: [placeholderTestimonials[0]],
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
@@ -225,12 +230,12 @@ export const SingleTestimonial: Story = {
  */
 export const WithAutoPlay: Story = {
   args: {
-    title: "Témoignages",
     testimonials: placeholderTestimonials,
     autoPlay: true,
     autoPlayInterval: 3000,
     showNavigation: true,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
@@ -248,16 +253,17 @@ export const WithAutoPlay: Story = {
  */
 export const NoNavigation: Story = {
   args: {
-    title: "Témoignages",
     testimonials: placeholderTestimonials,
     showNavigation: false,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story: "Carrousel sans flèches de navigation (swipe et dots seulement).",
+        story:
+          "Carrousel sans flèches de navigation (swipe et dots seulement).",
       },
     },
   },
@@ -268,16 +274,17 @@ export const NoNavigation: Story = {
  */
 export const NoPagination: Story = {
   args: {
-    title: "Témoignages",
     testimonials: placeholderTestimonials,
     showNavigation: true,
     showPagination: false,
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story: "Carrousel sans indicateurs de pagination (flèches et swipe seulement).",
+        story:
+          "Carrousel sans indicateurs de pagination (flèches et swipe seulement).",
       },
     },
   },
@@ -288,16 +295,17 @@ export const NoPagination: Story = {
  */
 export const AnonymousTestimonials: Story = {
   args: {
-    title: "Ils témoignent",
     testimonials: anonymousTestimonials,
     showNavigation: true,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story: "Témoignages sans noms d'auteurs pour préserver la confidentialité.",
+        story:
+          "Témoignages sans noms d'auteurs pour préserver la confidentialité.",
       },
     },
   },
@@ -308,11 +316,11 @@ export const AnonymousTestimonials: Story = {
  */
 export const SpaciousSpacing: Story = {
   args: {
-    title: "Témoignages",
     testimonials: placeholderTestimonials,
     spacing: "spacious",
     showNavigation: true,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
@@ -329,11 +337,11 @@ export const SpaciousSpacing: Story = {
  */
 export const CompactSpacing: Story = {
   args: {
-    title: "Témoignages",
     testimonials: placeholderTestimonials,
     spacing: "compact",
     showNavigation: true,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
@@ -357,10 +365,10 @@ export const CompactSpacing: Story = {
  */
 export const KeyboardNavigation: Story = {
   args: {
-    title: "Témoignages",
     testimonials: placeholderTestimonials,
     showNavigation: true,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
@@ -397,10 +405,10 @@ export const KeyboardNavigation: Story = {
  */
 export const TouchNavigation: Story = {
   args: {
-    title: "Témoignages",
     testimonials: placeholderTestimonials,
     showNavigation: true,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
@@ -433,12 +441,12 @@ export const TouchNavigation: Story = {
  */
 export const ReducedMotion: Story = {
   args: {
-    title: "Témoignages",
     testimonials: placeholderTestimonials,
     autoPlay: true,
     autoPlayInterval: 2000,
     showNavigation: true,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
@@ -458,26 +466,21 @@ export const ReducedMotion: Story = {
  */
 export const PaginationInteraction: Story = {
   args: {
-    title: "Témoignages",
     testimonials: placeholderTestimonials,
     showNavigation: true,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
   },
   play: async ({ canvasElement }) => {
     // Find pagination buttons
-    const paginationButtons = canvasElement.querySelectorAll(
-      '[role="tab"]'
-    );
+    const paginationButtons = canvasElement.querySelectorAll('[role="tab"]');
     await expect(paginationButtons.length).toBeGreaterThan(0);
 
     // Verify first dot is selected
-    await expect(paginationButtons[0]).toHaveAttribute(
-      "aria-selected",
-      "true"
-    );
+    await expect(paginationButtons[0]).toHaveAttribute("aria-selected", "true");
     await expect(paginationButtons[0]).toHaveAttribute("aria-current", "true");
 
     // Click second pagination dot
@@ -495,10 +498,10 @@ export const PaginationInteraction: Story = {
  */
 export const AccessibilityStructure: Story = {
   args: {
-    title: "Douce et à l'écoute",
     testimonials: placeholderTestimonials,
     showNavigation: true,
     showPagination: true,
+    showTitle: false,
   },
   parameters: {
     chromatic: { disableSnapshot: true },
@@ -506,12 +509,12 @@ export const AccessibilityStructure: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Verify main heading
-    const heading = canvas.getByRole("heading", {
-      level: 2,
-      name: /douce et à l'écoute/i,
+    // Verify testimonial author heading (H3) instead of section title
+    const authorHeading = canvas.getByRole("heading", {
+      level: 3,
+      name: /marie/i,
     });
-    await expect(heading).toBeInTheDocument();
+    await expect(authorHeading).toBeInTheDocument();
 
     // Verify section landmark exists
     const section = canvasElement.querySelector("section");

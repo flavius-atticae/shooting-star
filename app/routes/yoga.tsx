@@ -35,7 +35,7 @@ export default function YogaPage() {
         {/* Hero Section - Enseignement du yoga */}
         <Hero
           variant="default"
-          title="Enseignement du yoga"
+          title={"Enseignement\ndu yoga"}
           subtitle="AVEC PAULINE ROUSSEL"
         />
 

@@ -18,6 +18,8 @@ export interface TestimonialsCarouselProps extends Omit<
   autoPlayInterval?: number;
   showNavigation?: boolean;
   showPagination?: boolean;
+  showTitle?: boolean;
+  background?: "transparent" | "gris" | "white";
   spacing?: "none" | "compact" | "normal" | "spacious";
   containerSize?: "sm" | "md" | "lg" | "xl";
   className?: string;
@@ -54,6 +56,8 @@ export function TestimonialsCarousel({
   autoPlayInterval = 5000,
   showNavigation = true,
   showPagination = true,
+  showTitle = true,
+  background = "transparent",
   spacing = "normal",
   containerSize = "xl",
   className,
@@ -79,7 +83,7 @@ export function TestimonialsCarousel({
   // Check for prefers-reduced-motion
   React.useEffect(() => {
     if (typeof window === "undefined") return;
-    
+
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
 
@@ -109,7 +113,7 @@ export function TestimonialsCarousel({
     // Initialize snapshots and selection state
     onInit(emblaApi);
     onSelect(emblaApi);
-    
+
     // Listen for changes
     emblaApi.on("reInit", onInit);
     emblaApi.on("reInit", onSelect);
@@ -162,7 +166,7 @@ export function TestimonialsCarousel({
     const handleKeyDown = (keyboardEvent: KeyboardEvent) => {
       // Only handle if carousel or its children have focus
       if (!container.contains(document.activeElement)) return;
-      
+
       if (keyboardEvent.key === "ArrowLeft") {
         keyboardEvent.preventDefault();
         scrollPrev();
@@ -184,21 +188,30 @@ export function TestimonialsCarousel({
   // Single testimonial - no carousel needed
   const isSingleTestimonial = testimonials.length === 1;
 
+  // Background class mapping
+  const backgroundClasses = {
+    transparent: "",
+    gris: "bg-gris",
+    white: "bg-white",
+  };
+
   return (
     <Section
       background="transparent"
       spacing={spacing}
-      className={className}
+      className={cn(backgroundClasses[background], className)}
       lang="fr"
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
       {...props}
     >
       <Container size={containerSize} className="px-4 sm:px-6">
-        {/* Section Title */}
-        <h2 className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl text-primary text-left leading-tight mb-8 sm:mb-12">
-          {title}
-        </h2>
+        {/* Section Title - optionnel */}
+        {showTitle && title && (
+          <h2 className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl text-primary text-left leading-tight mb-8 sm:mb-12">
+            {title}
+          </h2>
+        )}
 
         {isSingleTestimonial ? (
           // Single testimonial - no carousel
@@ -249,7 +262,7 @@ export function TestimonialsCarousel({
                   disabled={!canScrollPrev}
                   aria-label="Témoignage précédent"
                   className={cn(
-                    "rounded-full",
+                    "rounded-full border-primary text-primary hover:bg-primary hover:text-white",
                     !canScrollPrev && "opacity-50 cursor-not-allowed"
                   )}
                 >
@@ -262,7 +275,7 @@ export function TestimonialsCarousel({
                   disabled={!canScrollNext}
                   aria-label="Témoignage suivant"
                   className={cn(
-                    "rounded-full",
+                    "rounded-full border-primary text-primary hover:bg-primary hover:text-white",
                     !canScrollNext && "opacity-50 cursor-not-allowed"
                   )}
                 >
