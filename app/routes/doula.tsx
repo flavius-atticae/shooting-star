@@ -4,6 +4,7 @@ import { Hero } from "~/components/layout/hero/Hero";
 import { Footer } from "~/components/layout/footer/footer";
 import { ApproachSection, type ApproachItem } from "~/components/layout/approach-section";
 import { Services, type ServiceItem } from "~/components/layout/services";
+import { CallToAction } from "~/components/layout/call-to-action";
 import { TestimonialsCarousel, type Testimonial } from "~/components/layout/testimonials-carousel";
 
 // Configuration des services pour la page doula - "À la carte"
@@ -183,7 +184,13 @@ export default function DoulaPage() {
         />
 
         {/* CallToAction - Réservez un appel découverte */}
-        {/* TODO: Add CallToAction component */}
+        <CallToAction
+          title="Prête à vivre ta maternité en toute sérénité ?"
+          subtitle="Que ce soit pour préparer la naissance, soulager les inconforts de grossesse ou traverser le post-partum avec douceur, je t'accompagne avec écoute et bienveillance. Ensemble, créons un espace de confiance pour honorer ton parcours unique."
+          buttonText="RÉSERVEZ UN APPEL DÉCOUVERTE"
+          buttonHref="/contact"
+          spacing="normal"
+        />
 
         {/* TestimonialsCarousel - Témoignages */}
         <TestimonialsCarousel
