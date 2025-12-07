@@ -215,7 +215,7 @@ export function About({
                     <h3
                       id={`method-${item.id}-title`}
                       className={cn(
-                        "font-medium text-2xl sm:text-4xl text-secondary leading-tight",
+                        "font-medium text-3xl sm:text-5xl lg:text-7xl text-secondary leading-tight",
                         useAccentFont ? "font-accent" : "font-heading"
                       )}
                     >
