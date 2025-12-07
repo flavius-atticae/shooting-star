@@ -3,10 +3,10 @@ import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { CallToAction } from "~/components/layout/call-to-action";
 import { Footer } from "~/components/layout/footer/footer";
-import { Container } from "~/components/ui/container";
+import { About } from "~/components/layout/about";
 import type { MethodItem } from "~/components/layout/about";
 
-export function meta({}: Route.MetaArgs) {
+export function meta(_args: Route.MetaArgs) {
   return [
     {
       title: "À propos - Pauline Roussel | Doula et Professeure de Yoga",
@@ -25,7 +25,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function AboutPage() {
-  // Custom inspirations using the same pattern as method items
+  // Custom inspirations for the About page
   const inspirationItems: MethodItem[] = [
     {
       id: "holistique",
@@ -60,19 +60,15 @@ export default function AboutPage() {
           subtitle="DOULA ET PROFESSEURE DE YOGA"
         />
 
-        {/* About Section - À propos de moi with custom content */}
-        <section className="bg-white py-12 sm:py-16 lg:py-20">
-          <Container size="xl" className="px-4 sm:px-6 lg:px-8">
-            <AboutContentWithSections />
-          </Container>
-        </section>
-
-        {/* Inspirations Section - Mes inspirations using method pattern */}
-        <section className="bg-gris py-12 sm:py-16 lg:py-20">
-          <Container size="xl" className="px-4 sm:px-6 lg:px-8">
-            <InspirationsSection items={inspirationItems} />
-          </Container>
-        </section>
+        {/* About Section - À propos de moi + Mes inspirations */}
+        <About
+          spacing="normal"
+          containerSize="xl"
+          aboutContent={<AboutContentWithSections />}
+          methodItems={inspirationItems}
+          methodTitle="Mes inspirations"
+          useAccentFont={true}
+        />
 
         {/* Call-to-Action Section */}
         <CallToAction
@@ -91,33 +87,36 @@ export default function AboutPage() {
 }
 
 /**
- * AboutContentWithSections - Extends AboutContent pattern for the About page
+ * AboutContentWithSections - Custom content for the About page
  * Uses the same layout as AboutContent but with multiple subsections
  */
 function AboutContentWithSections() {
   return (
-    <section className="space-y-8 sm:space-y-10 lg:space-y-12" lang="fr" aria-labelledby="about-section-heading">
-      {/* Section Title */}
-      <h2
-        id="about-section-heading"
-        className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl text-primary text-center leading-tight"
-      >
-        À propos de moi
-      </h2>
+    <div
+      className="grid gap-6 sm:gap-8 lg:gap-12 grid-cols-1 lg:grid-cols-3"
+      lang="fr"
+    >
+      {/* Text Content - Takes first 2 columns on desktop */}
+      <div className="lg:col-span-2">
+        {/* Title */}
+        <h2
+          className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl text-secondary text-left leading-tight mb-6 sm:mb-8"
+          id="about-heading"
+        >
+          À propos de moi
+        </h2>
 
-      {/* Two-column layout: Text (left) + Photo (right) - same pattern as AboutContent */}
-      <div className="grid gap-8 sm:gap-10 lg:gap-12 grid-cols-1 lg:grid-cols-3">
-        {/* Left Column - Text Content (2/3 on desktop) */}
-        <div className="lg:col-span-2 space-y-8 sm:space-y-10">
+        {/* Content - Four subsections */}
+        <div className="space-y-8 sm:space-y-10" aria-labelledby="about-heading">
           {/* Qui suis-je? */}
           <article className="space-y-4" aria-labelledby="qui-suis-je-title">
             <h3
               id="qui-suis-je-title"
-              className="font-heading font-medium text-2xl sm:text-3xl lg:text-4xl text-primary leading-tight"
+              className="font-heading font-medium text-2xl sm:text-3xl lg:text-4xl text-secondary leading-tight"
             >
               Qui suis-je?
             </h3>
-            <p className="font-sans text-base sm:text-lg text-primary leading-relaxed">
+            <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
               Curieuse et ouverte, j'aime apprendre encore et encore pour mieux
               servir. Passionnée par la Femme, sa complexité et les multiples
               rites de passage qui jalonnent sa vie, je me nourris de toutes
@@ -134,12 +133,12 @@ function AboutContentWithSections() {
           <article className="space-y-4" aria-labelledby="mon-parcours-title">
             <h3
               id="mon-parcours-title"
-              className="font-heading font-medium text-2xl sm:text-3xl lg:text-4xl text-primary leading-tight"
+              className="font-heading font-medium text-2xl sm:text-3xl lg:text-4xl text-secondary leading-tight"
             >
               Mon parcours
             </h3>
             <div className="space-y-4">
-              <p className="font-sans text-base sm:text-lg text-primary leading-relaxed">
+              <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
                 Danseuse classique et contemporaine de formation, le mouvement a
                 toujours été mon langage. Après avoir exploré le fitness et
                 l'entraînement, c'est le yoga qui m'a permis de ralentir, de
@@ -151,7 +150,7 @@ function AboutContentWithSections() {
                 femme, un espace pour se reconnecter à son énergie féminine, à
                 ses cycles et à son identité profonde.
               </p>
-              <p className="font-sans text-base sm:text-lg text-primary leading-relaxed">
+              <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
                 Devenir doula s'est imposé comme la suite logique : soutenir les
                 parents dans leur cheminement, les outiller et leur offrir une
                 présence rassurante et humaine pour accueillir bébé avec
@@ -167,11 +166,11 @@ function AboutContentWithSections() {
           >
             <h3
               id="ce-qui-inspire-title"
-              className="font-heading font-medium text-2xl sm:text-3xl lg:text-4xl text-primary leading-tight"
+              className="font-heading font-medium text-2xl sm:text-3xl lg:text-4xl text-secondary leading-tight"
             >
               Ce qui m'inspire
             </h3>
-            <p className="font-sans text-base sm:text-lg text-primary leading-relaxed">
+            <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
               La puissance et la résilience des femmes. La nature et ses cycles.
               La capacité du corps humain à traverser, s'adapter et rayonner.
               J'entretiens cette inspiration en me formant sans cesse, en
@@ -186,11 +185,11 @@ function AboutContentWithSections() {
           <article className="space-y-4" aria-labelledby="ma-methode-title">
             <h3
               id="ma-methode-title"
-              className="font-heading font-medium text-2xl sm:text-3xl lg:text-4xl text-primary leading-tight"
+              className="font-heading font-medium text-2xl sm:text-3xl lg:text-4xl text-secondary leading-tight"
             >
               Ma méthode
             </h3>
-            <p className="font-sans text-base sm:text-lg text-primary leading-relaxed">
+            <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
               Holistique et personnalisée, ancrée dans le respect et l'écoute.
               Je propose un accompagnement qui invite les femmes à se révéler, à
               s'écouter et à s'épanouir. C'est un chemin d'ancrage et de
@@ -199,88 +198,36 @@ function AboutContentWithSections() {
             </p>
           </article>
         </div>
-
-        {/* Right Column - Photo (1/3 on desktop) - same pattern as AboutContent */}
-        <div className="lg:col-span-1">
-          <figure
-            className="w-full aspect-[4/5] rounded-2xl bg-primary flex items-end justify-start transition-colors duration-200 p-6 min-h-[350px] sm:min-h-[450px] lg:min-h-0"
-            role="img"
-            aria-labelledby="pauline-photo-caption"
-            aria-describedby="pauline-photo-description"
-          >
-            <figcaption className="text-left">
-              <div
-                className="font-sans font-bold text-white text-lg sm:text-xl"
-                id="pauline-photo-caption"
-              >
-                Pauline Roussel
-              </div>
-              <div className="font-sans font-normal text-white text-sm sm:text-base">
-                Doula et professeure de yoga
-              </div>
-            </figcaption>
-
-            <div id="pauline-photo-description" className="sr-only">
-              Photo de Pauline Roussel, doula et professeure de yoga spécialisée
-              en périnatal et accompagnement de la femme.
-            </div>
-          </figure>
-        </div>
       </div>
-    </section>
-  );
-}
 
-/**
- * InspirationsSection - Uses the same pattern as the About component's method section
- * for consistency across the site
- */
-function InspirationsSection({ items }: { items: MethodItem[] }) {
-  return (
-    <section
-      className="space-y-8 sm:space-y-10 lg:space-y-12"
-      lang="fr"
-      aria-labelledby="inspirations-heading"
-    >
-      {/* Section Title */}
-      <h2
-        id="inspirations-heading"
-        className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl text-primary text-center leading-tight"
-      >
-        Mes inspirations
-      </h2>
-
-      {/* Grid of Inspiration Cards - using same pattern as method section */}
-      <div
-        className="grid gap-8 sm:gap-10 lg:gap-12 grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-        role="list"
-      >
-        {items.map((item) => (
-          <div key={item.id} role="listitem">
-            <article
-              className="space-y-3 sm:space-y-4"
-              lang="fr"
-              aria-labelledby={`inspiration-${item.id}-title`}
+      {/* Image Placeholder - Takes 3rd column on desktop */}
+      <div className="lg:col-span-1">
+        <figure
+          className="w-full aspect-[4/5] rounded-2xl bg-secondary flex items-end justify-start transition-colors duration-200 p-6 min-h-[350px] sm:min-h-[450px] lg:min-h-0"
+          role="img"
+          aria-labelledby="pauline-photo-caption"
+          aria-describedby="pauline-photo-description"
+        >
+          {/* Text content in bottom left */}
+          <div className="text-left">
+            <div
+              className="font-sans font-bold text-white text-lg sm:text-xl"
+              id="pauline-photo-caption"
             >
-              {/* Card Title - using accent font like in mockup */}
-              <h3
-                id={`inspiration-${item.id}-title`}
-                className="font-accent text-3xl sm:text-4xl lg:text-5xl text-primary leading-tight"
-              >
-                {item.title}
-              </h3>
-
-              {/* Card Description */}
-              <p
-                className="font-sans text-base sm:text-lg text-primary leading-relaxed"
-                aria-describedby={`inspiration-${item.id}-title`}
-              >
-                {item.description}
-              </p>
-            </article>
+              Pauline Roussel
+            </div>
+            <div className="font-sans font-normal text-white text-sm sm:text-base">
+              Doula et professeure de yoga
+            </div>
           </div>
-        ))}
+
+          {/* Hidden description for accessibility */}
+          <div id="pauline-photo-description" className="sr-only">
+            Photo de Pauline Roussel, doula et professeure de yoga spécialisée
+            en périnatal et accompagnement de la femme.
+          </div>
+        </figure>
       </div>
-    </section>
+    </div>
   );
 }
