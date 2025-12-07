@@ -24,6 +24,16 @@ export interface AboutProps extends Omit<
   overlapNext?: "none" | "sm" | "md" | "lg" | "responsive";
   /** Custom className for additional styling */
   className?: string;
+  /** Custom content for the about section (replaces default AboutContent) */
+  aboutContent?: React.ReactNode;
+  /** Custom method items (replaces default method items) */
+  methodItems?: MethodItem[];
+  /** Custom title for the method section */
+  methodTitle?: string;
+  /** Use accent font (Moontime) for method titles instead of heading font */
+  useAccentFont?: boolean;
+  /** Background color variant (default: "accent" for green/sage) */
+  background?: "white" | "primary" | "accent" | "soft" | "transparent";
   /** Accessibility props */
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
@@ -53,9 +63,30 @@ export interface MethodItem {
  * - Rangée 1 : Texte À propos (2/3) + Photo placeholder (1/3)
  * - Rangée 2 : Ma méthode en 3 colonnes avec séparateurs
  *
- * Usage:
+ * **Custom Props**: This component now supports customization via:
+ * - `aboutContent`: Replace default AboutContent with custom ReactNode
+ * - `methodItems`: Provide custom method items array
+ * - `methodTitle`: Change the method section title
+ * - `useAccentFont`: Use Moontime cursive font for method titles instead of Ivyora Display
+ *
+ * Usage (Default):
  * ```tsx
  * <About />
+ * ```
+ *
+ * Usage (Custom - About Page):
+ * ```tsx
+ * <About
+ *   background="white"
+ *   aboutContent={<CustomAboutContent />}
+ *   methodItems={[
+ *     { id: "holistique", title: "Holistique", description: "..." },
+ *     { id: "bienveillante", title: "Bienveillante", description: "..." },
+ *     { id: "engagee", title: "Engagée", description: "..." }
+ *   ]}
+ *   methodTitle="Mes inspirations"
+ *   useAccentFont
+ * />
  * ```
  */
 // Type for overlap options
@@ -83,6 +114,11 @@ export function About({
   containerSize = "xl",
   overlapNext = "none",
   className,
+  aboutContent,
+  methodItems,
+  methodTitle = "Ma méthode",
+  useAccentFont = false,
+  background = "accent",
   "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
   ...props
@@ -109,9 +145,11 @@ export function About({
     },
   ];
 
+  const items = methodItems || defaultMethodItems;
+
   return (
     <Section
-      background="accent"
+      background={background}
       spacing={spacing}
       insetY="sm"
       rounded="md"
@@ -125,7 +163,7 @@ export function About({
         {/* Container avec background gris et bords arrondis */}
         <div className="py-6 sm:py-8 lg:py-10 px-4 sm:px-6">
           {/* Row 1: About Content */}
-          <AboutContent />
+          {aboutContent || <AboutContent />}
 
           {/* Row 2: Method Section - Integrated directly */}
           <section
@@ -138,7 +176,7 @@ export function About({
               id="method-heading"
               className="font-heading font-medium text-4xl sm:text-5xl lg:text-6xl text-secondary text-left leading-tight"
             >
-              Ma méthode
+              {methodTitle}
             </h2>
 
             {/* Method Columns Grid */}
@@ -154,7 +192,7 @@ export function About({
               role="list"
               aria-labelledby="method-heading"
             >
-              {defaultMethodItems.map((item, index) => (
+              {items.map((item, index) => (
                 <div
                   key={item.id}
                   className={cn(
@@ -163,7 +201,7 @@ export function About({
                     // First column: no left padding
                     index === 0 && "lg:pl-0",
                     // Last column: no right padding
-                    index === defaultMethodItems.length - 1 && "lg:pr-0"
+                    index === items.length - 1 && "lg:pr-0"
                   )}
                   role="listitem"
                 >
@@ -176,7 +214,10 @@ export function About({
                     {/* Method Title */}
                     <h3
                       id={`method-${item.id}-title`}
-                      className="font-heading font-medium text-2xl sm:text-4xl text-secondary leading-tight"
+                      className={cn(
+                        "font-medium text-2xl sm:text-4xl text-secondary leading-tight",
+                        useAccentFont ? "font-accent" : "font-heading"
+                      )}
                     >
                       {item.title}
                     </h3>
