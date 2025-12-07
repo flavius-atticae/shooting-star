@@ -67,7 +67,7 @@ export default function AboutPage() {
           aboutContent={<AboutContentWithSections />}
           methodItems={inspirationItems}
           methodTitle="Mes inspirations"
-          useAccentFont={true}
+          useAccentFont
         />
 
         {/* Call-to-Action Section */}
