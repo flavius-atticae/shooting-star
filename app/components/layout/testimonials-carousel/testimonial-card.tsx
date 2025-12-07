@@ -49,11 +49,12 @@ export function TestimonialCard({
   return (
     <article
       className={cn(
-        "bg-accent rounded-xl p-6 sm:p-8 flex flex-col h-full",
+        "rounded-xl p-6 sm:p-8 flex flex-col h-full",
         "transform-gpu motion-safe:transition-transform motion-safe:duration-200",
         "motion-reduce:transition-none",
         className
       )}
+      style={{ backgroundColor: '#af6868' }}
       aria-label={testimonial.author ? `Témoignage de ${testimonial.author}` : "Témoignage anonyme"}
       {...props}
     >
