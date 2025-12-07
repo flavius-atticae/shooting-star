@@ -84,7 +84,7 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
           aria-hidden="true"
         />
         <a
-          href="mailto:pauline.roussel@gmail.com"
+          href="mailto:pauline@paulineroussel.ca"
           className={cn(
             "font-body text-base sm:text-lg text-primary hover:text-primary/80",
             "underline underline-offset-4 transition-all duration-200",
