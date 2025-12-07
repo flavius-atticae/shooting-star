@@ -50,7 +50,7 @@ const AVAILABILITY_OPTIONS = [
 /**
  * Props for the ContactForm component
  */
-export interface ContactFormProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ContactFormProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
   /** Callback when form is successfully submitted */
   onSubmit?: (data: ContactFormData) => void | Promise<void>;
   /** Whether the form is in loading state */
