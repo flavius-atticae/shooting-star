@@ -49,7 +49,7 @@ export function TestimonialCard({
   return (
     <article
       className={cn(
-        "bg-soft rounded-xl p-6 sm:p-8 flex flex-col h-full",
+        "bg-accent rounded-xl p-6 sm:p-8 flex flex-col h-full",
         "transform-gpu motion-safe:transition-transform motion-safe:duration-200",
         "motion-reduce:transition-none",
         className

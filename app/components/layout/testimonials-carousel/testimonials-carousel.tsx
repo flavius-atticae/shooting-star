@@ -62,10 +62,11 @@ export function TestimonialsCarousel({
   ...props
 }: TestimonialsCarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
-    align: "start",
-    loop: testimonials.length > 3,
+    align: "center",
+    loop: testimonials.length > 1,
     skipSnaps: false,
     dragFree: false,
+    containScroll: "trimSnaps",
   });
 
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -222,11 +223,11 @@ export function TestimonialsCarousel({
                     key={testimonial.id}
                     className={cn(
                       "flex-shrink-0 pl-4 sm:pl-6",
-                      // Responsive slide widths
+                      // Responsive slide widths - centered with peek
                       "min-w-0", // Reset min-width
-                      "w-full", // Mobile: 1 slide
-                      "sm:w-1/2", // Tablet: 2 slides
-                      "lg:w-1/3" // Desktop: 3 slides
+                      "w-[85%]", // Mobile: 1 slide with peek (85% width)
+                      "sm:w-[70%]", // Tablet: 1 slide centered with more peek
+                      "lg:w-[60%]" // Desktop: 1 slide centered with side peeks
                     )}
                     role="group"
                     aria-roledescription="slide"
