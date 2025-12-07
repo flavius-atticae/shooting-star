@@ -244,9 +244,9 @@ describe('Yoga Route Integration Tests', () => {
     it('should render without layout errors on mobile viewport', () => {
       const router = createTestRouter();
       
-      // Note: jsdom does not support viewport simulation via global.innerWidth
-      // This test validates that the page renders without errors
-      // Visual responsive testing is handled by Storybook/Chromatic
+      // Simulate mobile viewport
+      global.innerWidth = 375;
+      global.innerHeight = 667;
       
       render(<RouterProvider router={router} />);
 
@@ -259,9 +259,9 @@ describe('Yoga Route Integration Tests', () => {
     it('should render without layout errors on tablet viewport', () => {
       const router = createTestRouter();
       
-      // Note: jsdom does not support viewport simulation via global.innerWidth
-      // This test validates that the page renders without errors
-      // Visual responsive testing is handled by Storybook/Chromatic
+      // Simulate tablet viewport
+      global.innerWidth = 768;
+      global.innerHeight = 1024;
       
       render(<RouterProvider router={router} />);
 
@@ -274,9 +274,9 @@ describe('Yoga Route Integration Tests', () => {
     it('should render without layout errors on desktop viewport', () => {
       const router = createTestRouter();
       
-      // Note: jsdom does not support viewport simulation via global.innerWidth
-      // This test validates that the page renders without errors
-      // Visual responsive testing is handled by Storybook/Chromatic
+      // Simulate desktop viewport
+      global.innerWidth = 1920;
+      global.innerHeight = 1080;
       
       render(<RouterProvider router={router} />);
 
@@ -288,7 +288,7 @@ describe('Yoga Route Integration Tests', () => {
   });
 
   describe('FeatureBlocks Layout', () => {
-    it('should have alternating layouts (text-left, text-right, text-left)', () => {
+    it('should render FeatureBlocks in correct order', () => {
       const router = createTestRouter();
       const { container } = render(<RouterProvider router={router} />);
 
