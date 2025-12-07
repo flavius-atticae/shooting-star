@@ -7,8 +7,10 @@ import { ContactForm, type ContactFormData } from "./contact-form";
 /**
  * Props for the ContactSection component
  */
-export interface ContactSectionProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, "onSubmit"> {
+export interface ContactSectionProps extends Omit<
+  React.HTMLAttributes<HTMLElement>,
+  "onSubmit"
+> {
   /** Callback when form is successfully submitted */
   onSubmit?: (data: ContactFormData) => void | Promise<void>;
   /** Whether the form is in loading state */
@@ -59,6 +61,7 @@ export function ContactSection({
       spacing={spacing}
       className={className}
       aria-label="Formulaire de contact"
+      insetX="sm"
       {...props}
     >
       {/* Rounded container with beige background */}

@@ -161,7 +161,7 @@ export function ContactForm({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-neutral uppercase text-xs font-semibold tracking-wide">
+                <FormLabel className="text-primary uppercase text-xs font-semibold tracking-wide">
                   NOM
                 </FormLabel>
                 <FormControl>
@@ -169,7 +169,7 @@ export function ContactForm({
                     placeholder="John Appleseed"
                     {...field}
                     disabled={isLoading}
-                    className="bg-transparent"
+                    className="bg-transparent text-primary border-2 border-primary/30 focus:border-primary"
                   />
                 </FormControl>
                 <FormMessage />
@@ -183,7 +183,7 @@ export function ContactForm({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-neutral uppercase text-xs font-semibold tracking-wide">
+                <FormLabel className="text-primary uppercase text-xs font-semibold tracking-wide">
                   EMAIL
                 </FormLabel>
                 <FormControl>
@@ -192,7 +192,7 @@ export function ContactForm({
                     placeholder="example@email.com"
                     {...field}
                     disabled={isLoading}
-                    className="bg-transparent"
+                    className="bg-transparent text-primary border-2 border-primary/30 focus:border-primary"
                   />
                 </FormControl>
                 <FormMessage />
@@ -206,14 +206,14 @@ export function ContactForm({
             name="availability"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-neutral uppercase text-xs font-semibold tracking-wide">
+                <FormLabel className="text-primary uppercase text-xs font-semibold tracking-wide">
                   PLAGE HORAIRE
                 </FormLabel>
                 <FormControl>
                   <Select
                     {...field}
                     disabled={isLoading}
-                    className="bg-transparent"
+                    className="text-primary border-2 border-primary/30 focus:border-primary"
                   >
                     {AVAILABILITY_OPTIONS.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -233,7 +233,7 @@ export function ContactForm({
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-neutral uppercase text-xs font-semibold tracking-wide">
+                <FormLabel className="text-primary uppercase text-xs font-semibold tracking-wide">
                   MESSAGE
                 </FormLabel>
                 <FormControl>
@@ -241,7 +241,7 @@ export function ContactForm({
                     placeholder="Message"
                     {...field}
                     disabled={isLoading}
-                    className="bg-transparent min-h-[120px]"
+                    className="bg-transparent text-primary border-2 border-primary/30 focus:border-primary min-h-[120px]"
                   />
                 </FormControl>
                 <FormMessage />
@@ -255,7 +255,8 @@ export function ContactForm({
             disabled={isLoading}
             className={cn(
               "w-full uppercase font-semibold tracking-wide",
-              "min-h-[48px] text-base"
+              "min-h-[48px] text-base",
+              "rounded-full bg-primary text-white hover:bg-primary/90"
             )}
           >
             {isLoading ? "ENVOI EN COURS..." : "ENVOYER"}

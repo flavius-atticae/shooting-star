@@ -47,7 +47,7 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
       {/* Title */}
       <h2
         className={cn(
-          "font-heading text-4xl sm:text-5xl lg:text-6xl",
+          "font-heading font-medium text-4xl sm:text-5xl lg:text-6xl",
           "text-primary mb-4"
         )}
       >
@@ -95,7 +95,7 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
           )}
           aria-label="Envoyer un courriel à Pauline Roussel"
         >
-          pauline.roussel@gmail.com
+          pauline@paulineroussel.ca
         </a>
       </div>
 
