@@ -82,7 +82,7 @@ export function CallToAction({
       {...props}
     >
       <Container size="xl" className="px-4 sm:px-6 lg:px-8">
-        <div className="p-8 sm:p-10 lg:p-12 text-center">
+        <div className="p-6 sm:p-10 lg:p-12 text-center">
           {/* Title */}
           <h2 className="font-heading font-medium text-4xl md:text-5xl text-accent text-center leading-tight mb-4 sm:mb-6">
             {title}
@@ -93,24 +93,35 @@ export function CallToAction({
             {subtitle}
           </p>
 
-          {/* CTA Button */}
-          {buttonHref ? (
-            <Button variant="cta" size="cta" asChild>
-              <a
-                href={buttonHref}
-                target={buttonTarget}
-                rel={
-                  buttonTarget === "_blank" ? "noopener noreferrer" : undefined
-                }
-              >
-                {buttonText}
-              </a>
-            </Button>
-          ) : (
-            <Button variant="cta" size="cta" onClick={onButtonClick}>
-              {buttonText}
-            </Button>
-          )}
+          {/* CTA Button - wrapped in max-width container to prevent overflow */}
+          <div className="flex justify-center w-full">
+            {(() => {
+              const buttonClasses = "max-w-full whitespace-normal sm:whitespace-nowrap px-6 sm:px-8";
+              
+              return buttonHref ? (
+                <Button variant="cta" size="cta" asChild className={buttonClasses}>
+                  <a
+                    href={buttonHref}
+                    target={buttonTarget}
+                    rel={
+                      buttonTarget === "_blank" ? "noopener noreferrer" : undefined
+                    }
+                  >
+                    {buttonText}
+                  </a>
+                </Button>
+              ) : (
+                <Button 
+                  variant="cta" 
+                  size="cta" 
+                  onClick={onButtonClick}
+                  className={buttonClasses}
+                >
+                  {buttonText}
+                </Button>
+              );
+            })()}
+          </div>
         </div>
       </Container>
     </Section>
