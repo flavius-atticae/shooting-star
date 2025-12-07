@@ -158,9 +158,7 @@ export function TestimonialsCarousel({
 
     const container = carouselContainerRef.current;
 
-    const handleKeyDown = (e: Event) => {
-      const keyboardEvent = e as KeyboardEvent;
-      
+    const handleKeyDown = (keyboardEvent: KeyboardEvent) => {
       // Only handle if carousel or its children have focus
       if (!container.contains(document.activeElement)) return;
       
@@ -190,6 +188,7 @@ export function TestimonialsCarousel({
       background="transparent"
       spacing={spacing}
       className={className}
+      lang="fr"
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
       {...props}
