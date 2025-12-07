@@ -95,6 +95,7 @@ function AboutContentWithSections() {
     <div
       className="grid gap-6 sm:gap-8 lg:gap-12 grid-cols-1 lg:grid-cols-3"
       lang="fr"
+      aria-labelledby="about-heading"
     >
       {/* Text Content - Takes first 2 columns on desktop */}
       <div className="lg:col-span-2">
@@ -208,8 +209,8 @@ function AboutContentWithSections() {
           aria-labelledby="pauline-photo-caption"
           aria-describedby="pauline-photo-description"
         >
-          {/* Text content in bottom left */}
-          <div className="text-left">
+          {/* Caption text in bottom left */}
+          <figcaption className="text-left">
             <div
               className="font-sans font-bold text-white text-lg sm:text-xl"
               id="pauline-photo-caption"
@@ -219,7 +220,7 @@ function AboutContentWithSections() {
             <div className="font-sans font-normal text-white text-sm sm:text-base">
               Doula et professeure de yoga
             </div>
-          </div>
+          </figcaption>
 
           {/* Hidden description for accessibility */}
           <div id="pauline-photo-description" className="sr-only">
