@@ -37,7 +37,7 @@ Page Féminin Sacré complète - Ateliers variés par Pauline Roussel.
 
 **Composition**:
 - Header avec navigation
-- Hero "Le féminin sacré ateliers variés"
+- Hero "Le féminin sacré\\nateliers variés"
 - EventList avec 3 événements
 - CallToAction "Un accompagnement rempli de douceur et bienveillance"
 - Footer
