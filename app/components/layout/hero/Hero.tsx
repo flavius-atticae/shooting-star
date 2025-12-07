@@ -175,7 +175,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               "text-primary",
 
               // Mobile-first responsive sizing (Figma: 136px at desktop)
-              "text-5xl sm:text-6xl md:text-7xl",
+              "text-5xl sm:text-6xl md:text-8xl",
 
               // Line height
               "leading-[1.3] lg:leading-normal",

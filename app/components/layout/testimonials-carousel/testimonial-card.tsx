@@ -49,35 +49,38 @@ export function TestimonialCard({
   return (
     <article
       className={cn(
-        "rounded-xl p-6 sm:p-8 flex flex-col h-full",
+        "bg-gris rounded-xl p-6 sm:p-8 flex flex-col h-full text-center",
         "transform-gpu motion-safe:transition-transform motion-safe:duration-200",
         "motion-reduce:transition-none",
         className
       )}
-      style={{ backgroundColor: '#af6868' }}
-      aria-label={testimonial.author ? `Témoignage de ${testimonial.author}` : "Témoignage anonyme"}
+      aria-label={
+        testimonial.author
+          ? `Témoignage de ${testimonial.author}`
+          : "Témoignage anonyme"
+      }
       {...props}
     >
+      {/* Author as title - displayed first */}
+      {testimonial.author && (
+        <h3 className="font-heading font-medium text-4xl sm:text-5xl md:text-7xl py-2 sm:py-6 md:py-8 text-primary mb-4">
+          {testimonial.author}
+        </h3>
+      )}
+
       {/* Quote */}
       <blockquote className="flex-grow">
-        <p className="font-sans text-base sm:text-lg text-neutral leading-relaxed mb-4 before:content-['«'] after:content-['»']">
+        <p className="font-sans text-base sm:text-lg text-primary leading-relaxed">
           {testimonial.quote}
         </p>
       </blockquote>
 
-      {/* Author info */}
-      {(testimonial.author || testimonial.context) && (
+      {/* Context info */}
+      {testimonial.context && (
         <div className="mt-auto pt-4">
-          {testimonial.author && (
-            <cite className="font-heading text-lg sm:text-xl text-primary not-italic block">
-              {testimonial.author}
-            </cite>
-          )}
-          {testimonial.context && (
-            <p className="font-sans text-sm text-neutral/70 mt-1">
-              {testimonial.context}
-            </p>
-          )}
+          <p className="font-sans text-sm text-primary/70">
+            {testimonial.context}
+          </p>
         </div>
       )}
     </article>

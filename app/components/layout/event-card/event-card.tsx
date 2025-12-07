@@ -87,10 +87,10 @@ export function EventCard({
       aria-labelledby={`event-title-${id}`}
       {...props}
     >
-      {/* Top Row: Title on Left, Date/Time on Right (above lines) */}
-      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-1 px-2">
-        {/* Left: Event Title (above left line) */}
-        <div className="flex-1">
+      {/* Top Row: Title on Left, Date/Time on Right (aligned to bottom, near the line) */}
+      <div className="flex flex-col md:flex-row md:justify-between gap-4 mb-1 px-2 min-h-[60px]">
+        {/* Left: Event Title (aligned to bottom) */}
+        <div className="flex-1 flex items-end">
           <h3
             id={`event-title-${id}`}
             className="font-sans font-normal text-base md:text-lg text-primary leading-tight"
@@ -99,8 +99,8 @@ export function EventCard({
           </h3>
         </div>
 
-        {/* Right: Date/Time (above right line) */}
-        <div className="flex flex-col items-start md:items-end">
+        {/* Right: Date/Time (aligned to bottom) */}
+        <div className="flex items-end">
           <time
             dateTime={`${date} ${time}`} // TODO: Convert to ISO 8601 format (e.g., "2025-06-07T13:00:00") for proper machine readability
             className="font-sans text-sm text-primary/80"
@@ -114,7 +114,7 @@ export function EventCard({
       <div className="relative flex items-center justify-center mb-1">
         {/* Left horizontal line */}
         <div className="flex-1 h-[1px] bg-primary/20" />
-        
+
         {/* Centered Image Box */}
         <div
           className={cn(

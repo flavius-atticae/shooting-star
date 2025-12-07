@@ -2,10 +2,16 @@ import type { Route } from "./+types/doula";
 import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { Footer } from "~/components/layout/footer/footer";
-import { ApproachSection, type ApproachItem } from "~/components/layout/approach-section";
+import {
+  ApproachSection,
+  type ApproachItem,
+} from "~/components/layout/approach-section";
 import { Services, type ServiceItem } from "~/components/layout/services";
 import { CallToAction } from "~/components/layout/call-to-action";
-import { TestimonialsCarousel, type Testimonial } from "~/components/layout/testimonials-carousel";
+import {
+  TestimonialsCarousel,
+  type Testimonial,
+} from "~/components/layout/testimonials-carousel";
 
 // Configuration des services pour la page doula - "À la carte"
 const doulaServices: ServiceItem[] = [
@@ -169,7 +175,7 @@ export default function DoulaPage() {
         {/* Hero Section - Accompagnement de doula */}
         <Hero
           variant="default"
-          title="Accompagnement de doula"
+          title={"Accompagnement\nde doula"}
           subtitle="AVEC PAULINE ROUSSEL"
         />
 
@@ -194,10 +200,10 @@ export default function DoulaPage() {
 
         {/* TestimonialsCarousel - Témoignages */}
         <TestimonialsCarousel
-          title="Douce et à l'écoute"
           testimonials={doulaTestimonials}
           showNavigation
           showPagination
+          showTitle={false}
           spacing="spacious"
         />
       </main>

@@ -5,14 +5,14 @@ import DoulaPage from "./doula";
 
 /**
  * Doula Page - Complete Storybook Tests (Phase 5)
- * 
+ *
  * Comprehensive test suite for the Doula page including:
  * - Full page integration tests
  * - Accessibility structure validation (WCAG 2.1 AA)
  * - Keyboard navigation tests
  * - Responsive viewport tests (320px, 768px, 1024px, 1440px)
  * - All sections: Hero, ApproachSection, Services, CallToAction, Testimonials, Footer
- * 
+ *
  * Page composition:
  * - Route accessible at /doula
  * - Header component with navigation
@@ -23,7 +23,7 @@ import DoulaPage from "./doula";
  * - CallToAction for booking
  * - TestimonialsCarousel with client testimonials
  * - Footer component
- * 
+ *
  * Technical details:
  * - Uses React Router decorators for route context
  * - All components follow WCAG 2.1 AA guidelines
@@ -79,7 +79,7 @@ type Story = StoryObj<typeof DoulaPage>;
 
 /**
  * Default Doula Page
- * 
+ *
  * Displays the complete doula page with Header, Hero and Footer.
  * This is the initial implementation for Phase 1.
  */
@@ -94,7 +94,8 @@ export const Default: Story = {
     // Verify Hero section with correct French title
     const title = canvas.getByRole("heading", { level: 1 });
     await expect(title).toBeInTheDocument();
-    await expect(title).toHaveTextContent("Accompagnement de doula");
+    await expect(title).toHaveTextContent(/Accompagnement/i);
+    await expect(title).toHaveTextContent(/de doula/i);
 
     // Verify Hero subtitle
     const subtitle = canvas.getByText("AVEC PAULINE ROUSSEL");
@@ -104,7 +105,7 @@ export const Default: Story = {
 
 /**
  * Accessibility Check
- * 
+ *
  * Validates WCAG 2.1 AA compliance:
  * - Proper semantic HTML structure
  * - Correct heading hierarchy
@@ -122,7 +123,8 @@ export const AccessibilityCheck: Story = {
     // Check for proper heading hierarchy (h1)
     const h1 = canvas.getByRole("heading", { level: 1 });
     await expect(h1).toBeInTheDocument();
-    await expect(h1).toHaveTextContent("Accompagnement de doula");
+    await expect(h1).toHaveTextContent(/Accompagnement/i);
+    await expect(h1).toHaveTextContent(/de doula/i);
 
     // Check for Hero region with French label
     const heroRegion = canvas.getByRole("region", {
@@ -138,15 +140,17 @@ export const AccessibilityCheck: Story = {
 
 /**
  * French Content Validation
- * 
+ *
  * Ensures all text content is properly displayed in French (fr-CA).
  */
 export const FrenchContent: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Verify French title
-    await expect(canvas.getByText("Accompagnement de doula")).toBeInTheDocument();
+    // Verify French title (split by line break)
+    const title = canvas.getByRole("heading", { level: 1 });
+    await expect(title).toHaveTextContent(/Accompagnement/i);
+    await expect(title).toHaveTextContent(/de doula/i);
 
     // Verify French subtitle
     await expect(canvas.getByText("AVEC PAULINE ROUSSEL")).toBeInTheDocument();
@@ -155,7 +159,7 @@ export const FrenchContent: Story = {
 
 /**
  * Mobile Viewport
- * 
+ *
  * Tests responsive behavior on mobile devices (375px width).
  * Hero should maintain proper sizing and layout.
  */
@@ -177,7 +181,7 @@ export const MobileViewport: Story = {
 
 /**
  * Tablet Viewport
- * 
+ *
  * Tests responsive behavior on tablet devices (768px width).
  */
 export const TabletViewport: Story = {
@@ -198,7 +202,7 @@ export const TabletViewport: Story = {
 
 /**
  * Desktop Viewport
- * 
+ *
  * Tests responsive behavior on desktop (1920px width).
  * This is the primary design target.
  */
@@ -220,7 +224,7 @@ export const DesktopViewport: Story = {
 
 /**
  * Page Structure Validation
- * 
+ *
  * Validates that the page has the correct structure:
  * - Hero as first element in main
  * - Footer after main content
@@ -245,7 +249,7 @@ export const PageStructure: Story = {
 
 /**
  * Services Section Validation - Phase 3
- * 
+ *
  * Validates that the "À la carte" Services section is properly integrated:
  * - Section title "À la carte" is displayed
  * - All 9 service cards are rendered
@@ -264,17 +268,21 @@ export const ServicesSection: Story = {
     await expect(servicesTitle).toBeInTheDocument();
 
     // Verify specific service titles are present (all 9 services)
-    await expect(canvas.getByText("Préparation à la naissance")).toBeInTheDocument();
+    await expect(
+      canvas.getByText("Préparation à la naissance")
+    ).toBeInTheDocument();
     await expect(canvas.getByText("Examen de grossesse")).toBeInTheDocument();
     await expect(canvas.getByText("Post-partum immédiat")).toBeInTheDocument();
     await expect(canvas.getByText("Yoga prénatal")).toBeInTheDocument();
     await expect(canvas.getByText("Yoga postnatal")).toBeInTheDocument();
-    
+
     // "Mama Blessing" appears in both ApproachSection and Services section
     const mamaBlessingElements = canvas.getAllByText("Mama Blessing");
     await expect(mamaBlessingElements.length).toBeGreaterThanOrEqual(2);
-    
-    await expect(canvas.getByText("Yoga prénatal avec partenaire")).toBeInTheDocument();
+
+    await expect(
+      canvas.getByText("Yoga prénatal avec partenaire")
+    ).toBeInTheDocument();
     await expect(canvas.getByText("Consultation doula")).toBeInTheDocument();
     await expect(canvas.getByText("Consultation extra")).toBeInTheDocument();
 
@@ -286,7 +294,7 @@ export const ServicesSection: Story = {
 
 /**
  * Full Page Integration Test - Phase 5
- * 
+ *
  * Comprehensive integration test validating all sections of the Doula page:
  * - Hero section with title and subtitle
  * - ApproachSection with "Mon approche"
@@ -303,43 +311,60 @@ export const FullPageIntegration: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify Hero section
-    await expect(canvas.getByRole("heading", { level: 1 })).toHaveTextContent("Accompagnement de doula");
+    const heroTitle = canvas.getByRole("heading", { level: 1 });
+    await expect(heroTitle).toHaveTextContent(/Accompagnement/i);
+    await expect(heroTitle).toHaveTextContent(/de doula/i);
     await expect(canvas.getByText("AVEC PAULINE ROUSSEL")).toBeInTheDocument();
-    
+
     // Verify ApproachSection with "Mon approche"
     const approachHeading = canvas.getByRole("heading", {
       level: 2,
       name: /Mon approche/i,
     });
     await expect(approachHeading).toBeInTheDocument();
-    
+
     // Verify all 5 approach items
-    await expect(canvas.getByRole("heading", { level: 3, name: /Pendant la grossesse/i })).toBeInTheDocument();
-    await expect(canvas.getByRole("heading", { level: 3, name: /L'accouchement/i })).toBeInTheDocument();
-    await expect(canvas.getByRole("heading", { level: 3, name: /4e trimestre/i })).toBeInTheDocument();
-    await expect(canvas.getByRole("heading", { level: 3, name: /Sur mesure/i })).toBeInTheDocument();
-    
+    await expect(
+      canvas.getByRole("heading", { level: 3, name: /Pendant la grossesse/i })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", { level: 3, name: /L'accouchement/i })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", { level: 3, name: /4e trimestre/i })
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", { level: 3, name: /Sur mesure/i })
+    ).toBeInTheDocument();
+
     // Verify Services section with "À la carte"
     const servicesHeading = canvas.getByRole("heading", {
       level: 2,
       name: "À la carte",
     });
     await expect(servicesHeading).toBeInTheDocument();
-    
+
     // Verify CallToAction
-    await expect(canvas.getByText(/Prête à vivre ta maternité en toute sérénité/i)).toBeInTheDocument();
-    await expect(canvas.getByRole("link", { name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i })).toBeInTheDocument();
-    
-    // Verify TestimonialsCarousel with "Douce et à l'écoute"
-    const testimonialsHeading = canvas.getByRole("heading", {
-      level: 2,
-      name: /Douce et à l'écoute/i,
+    await expect(
+      canvas.getByText(/Prête à vivre ta maternité en toute sérénité/i)
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("link", { name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i })
+    ).toBeInTheDocument();
+
+    // Verify TestimonialsCarousel (pas de titre global, chaque témoignage a son propre titre)
+    await expect(
+      canvas.getByText(/douceur et une écoute incroyables/i)
+    ).toBeInTheDocument();
+    // Vérifier qu'un des auteurs est affiché comme titre H3
+    const testimonialAuthor = canvas.getByRole("heading", {
+      level: 3,
+      name: /Marie/i,
     });
-    await expect(testimonialsHeading).toBeInTheDocument();
-    await expect(canvas.getByText(/douceur et une écoute incroyables/i)).toBeInTheDocument();
-    
+    await expect(testimonialAuthor).toBeInTheDocument();
+
     // Verify Footer
     const footer = canvas.getByRole("contentinfo");
     await expect(footer).toBeInTheDocument();
@@ -348,7 +373,7 @@ export const FullPageIntegration: Story = {
 
 /**
  * Accessibility Structure - Phase 5
- * 
+ *
  * Validates complete accessibility structure:
  * - Semantic HTML landmarks
  * - Proper heading hierarchy (H1 > H2 > H3)
@@ -362,36 +387,39 @@ export const AccessibilityStructure: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify main landmark with id
     const main = canvas.getByRole("main");
     await expect(main).toBeInTheDocument();
     await expect(main).toHaveAttribute("id", "main-content");
-    
+
     // Verify heading hierarchy
     // H1 - Hero title
     const h1Elements = canvas.getAllByRole("heading", { level: 1 });
     await expect(h1Elements.length).toBe(1);
-    await expect(h1Elements[0]).toHaveTextContent("Accompagnement de doula");
-    
-    // H2 - Section titles (Mon approche, À la carte, CTA, Testimonials)
+    await expect(h1Elements[0]).toHaveTextContent(/Accompagnement/i);
+    await expect(h1Elements[0]).toHaveTextContent(/de doula/i);
+
+    // H2 - Section titles (Mon approche, À la carte, CTA - Testimonials n'a plus de titre)
     const h2Elements = canvas.getAllByRole("heading", { level: 2 });
-    await expect(h2Elements.length).toBeGreaterThanOrEqual(4);
-    
-    // H3 - Approach items and service cards
+    await expect(h2Elements.length).toBeGreaterThanOrEqual(3);
+
+    // H3 - Approach items, service cards, and testimonial author names
     const h3Elements = canvas.getAllByRole("heading", { level: 3 });
-    await expect(h3Elements.length).toBeGreaterThanOrEqual(14); // 5 approach + 9 services
-    
+    await expect(h3Elements.length).toBeGreaterThanOrEqual(17); // 5 approach + 9 services + 3 testimonials
+
     // Verify Hero region
     const heroRegion = canvas.getByRole("region", {
       name: "Section principale d'accueil",
     });
     await expect(heroRegion).toBeInTheDocument();
-    
+
     // Verify carousel region
-    const carouselRegion = canvasElement.querySelector('[role="region"][aria-label*="Carrousel"]');
+    const carouselRegion = canvasElement.querySelector(
+      '[role="region"][aria-label*="Carrousel"]'
+    );
     await expect(carouselRegion).toBeInTheDocument();
-    
+
     // Verify footer contentinfo
     const footer = canvas.getByRole("contentinfo");
     await expect(footer).toBeInTheDocument();
@@ -400,7 +428,7 @@ export const AccessibilityStructure: Story = {
 
 /**
  * Keyboard Navigation - Phase 5
- * 
+ *
  * Tests keyboard navigation through all interactive elements:
  * - Navigation links in header
  * - Service cards links
@@ -414,24 +442,30 @@ export const KeyboardNavigation: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify all interactive elements are keyboard accessible
     // Service card links
-    const serviceLinks = canvas.getAllByRole("link", { name: /En savoir plus/i });
+    const serviceLinks = canvas.getAllByRole("link", {
+      name: /En savoir plus/i,
+    });
     await expect(serviceLinks.length).toBeGreaterThanOrEqual(9);
-    
+
     // Each link should be focusable
     serviceLinks.forEach((link) => {
       expect(link).toHaveAttribute("href");
     });
-    
+
     // CallToAction button
-    const ctaButton = canvas.getByRole("link", { name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i });
+    const ctaButton = canvas.getByRole("link", {
+      name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i,
+    });
     await expect(ctaButton).toBeInTheDocument();
     await expect(ctaButton).toHaveAttribute("href", "/contact");
-    
+
     // Testimonials navigation buttons (if visible)
-    const navButtons = canvasElement.querySelectorAll('button[aria-label*="témoignage"]');
+    const navButtons = canvasElement.querySelectorAll(
+      'button[aria-label*="témoignage"]'
+    );
     if (navButtons.length > 0) {
       navButtons.forEach((button) => {
         expect(button).toBeInTheDocument();
@@ -442,7 +476,7 @@ export const KeyboardNavigation: Story = {
 
 /**
  * Responsive Viewports - Phase 5
- * 
+ *
  * Chromatic visual regression testing across all required viewports:
  * - 320px (small mobile)
  * - 768px (tablet)
@@ -457,7 +491,7 @@ export const ResponsiveViewports: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
-    
+
     // Verify page renders correctly at all viewports
     await expect(canvas.getByRole("main")).toBeInTheDocument();
     await expect(canvas.getByRole("heading", { level: 1 })).toBeInTheDocument();

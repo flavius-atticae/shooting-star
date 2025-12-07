@@ -61,7 +61,7 @@ export default function FemininSacre() {
         {/* Hero Section - "Le féminin sacré ateliers variés" */}
         <Hero
           variant="default"
-          title="Le féminin sacré\nateliers variés"
+          title={"Le féminin sacré\nateliers variés"}
           subtitle="AVEC PAULINE ROUSSEL"
         />
 
