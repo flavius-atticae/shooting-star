@@ -10,30 +10,24 @@ import type { EventCardProps } from "~/components/layout/event-card";
 const eventsData: EventCardProps[] = [
   {
     id: "event-1",
-    title: "Cercle de femmes",
+    title: "Atelier varié abcde",
     date: "7 Juin 2025",
-    time: "19:00",
-    // imageUrl: undefined, // TODO: Add event image
-    imageAlt: "Cercle de femmes du féminin sacré",
-    detailsHref: "#", // TODO: Link to event details page when implemented
+    time: "13:00",
+    detailsHref: "/feminin-sacre/atelier-1",
   },
   {
     id: "event-2",
-    title: "Yoga du féminin sacré",
-    date: "14 Juin 2025",
-    time: "10:00",
-    // imageUrl: undefined, // TODO: Add event image
-    imageAlt: "Atelier yoga du féminin sacré",
-    detailsHref: "#",
+    title: "Atelier varié abcde",
+    date: "7 Juin 2025",
+    time: "13:00",
+    detailsHref: "/feminin-sacre/atelier-2",
   },
   {
     id: "event-3",
-    title: "Rituel de la nouvelle lune",
-    date: "21 Juin 2025",
-    time: "20:00",
-    // imageUrl: undefined, // TODO: Add event image
-    imageAlt: "Rituel de la nouvelle lune",
-    detailsHref: "#",
+    title: "Atelier varié abcde",
+    date: "7 Juin 2025",
+    time: "13:00",
+    detailsHref: "/feminin-sacre/atelier-3",
   },
 ];
 
