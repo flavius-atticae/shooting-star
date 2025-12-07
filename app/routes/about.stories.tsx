@@ -178,8 +178,9 @@ export const FullPageIntegration: Story = {
     });
     await expect(heroTitle).toBeInTheDocument();
 
-    const heroSubtitle = canvas.getByText(/DOULA ET PROFESSEURE DE YOGA/i);
-    await expect(heroSubtitle).toBeInTheDocument();
+    // Verify Hero subtitle (appears multiple times on page, use within to scope to Hero region)
+    const heroRegion = canvas.getByRole("region", { name: /Section principale d'accueil/i });
+    await expect(within(heroRegion).getByText(/DOULA ET PROFESSEURE DE YOGA/i)).toBeInTheDocument();
 
     // Verify About section with 4 subsections
     await expect(canvas.getByRole("heading", {
@@ -304,26 +305,28 @@ export const FrenchContent: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Verify French title
-    await expect(canvas.getByText(/Pauline Roussel/i)).toBeInTheDocument();
+    // Verify French title (using role to target the h1 specifically)
+    const heroTitle = canvas.getByRole("heading", { level: 1 });
+    await expect(heroTitle).toHaveTextContent(/Pauline Roussel/i);
 
-    // Verify French subtitle
-    await expect(canvas.getByText(/DOULA ET PROFESSEURE DE YOGA/i)).toBeInTheDocument();
+    // Verify French subtitle (appears multiple times, check it exists)
+    const subtitles = canvas.getAllByText(/DOULA ET PROFESSEURE DE YOGA/i);
+    await expect(subtitles.length).toBeGreaterThanOrEqual(1);
 
-    // Verify French About subsection titles
-    await expect(canvas.getByText(/Qui suis-je/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/Mon parcours/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/Ce qui m'inspire/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/Ma méthode/i)).toBeInTheDocument();
+    // Verify French About subsection titles (using headings)
+    await expect(canvas.getByRole("heading", { name: /Qui suis-je/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("heading", { name: /Mon parcours/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("heading", { name: /Ce qui m'inspire/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("heading", { name: /Ma méthode/i })).toBeInTheDocument();
 
-    // Verify French inspiration titles
-    await expect(canvas.getByText(/Holistique/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/Bienveillante/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/Engagée/i)).toBeInTheDocument();
+    // Verify French inspiration titles (using headings)
+    await expect(canvas.getByRole("heading", { name: /Holistique/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("heading", { name: /Bienveillante/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("heading", { name: /Engagée/i })).toBeInTheDocument();
 
     // Verify French CTA content
-    await expect(canvas.getByText(/douceur et bienveillance/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/RÉSERVEZ UN APPEL DÉCOUVERTE/i)).toBeInTheDocument();
+    await expect(canvas.getByRole("heading", { name: /douceur et bienveillance/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i })).toBeInTheDocument();
   },
 };
 
@@ -383,15 +386,17 @@ export const AboutSectionContent: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Verify content from each subsection
-    await expect(canvas.getByText(/Curieuse et ouverte/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/Danseuse classique/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/puissance et la résilience des femmes/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/Holistique et personnalisée/i)).toBeInTheDocument();
+    // Verify content from each subsection (these are unique text fragments)
+    await expect(canvas.getByText(/Curieuse et ouverte, j'aime apprendre/i)).toBeInTheDocument();
+    await expect(canvas.getByText(/Danseuse classique et contemporaine/i)).toBeInTheDocument();
+    await expect(canvas.getByText(/La puissance et la résilience des femmes/i)).toBeInTheDocument();
+    await expect(canvas.getByText(/Holistique et personnalisée, ancrée/i)).toBeInTheDocument();
 
-    // Verify photo caption
-    await expect(canvas.getByText(/Pauline Roussel/i)).toBeInTheDocument();
-    await expect(canvas.getByText(/Doula et professeure de yoga/i)).toBeInTheDocument();
+    // Verify photo caption (these appear multiple times, check they exist)
+    const paulineText = canvas.getAllByText(/Pauline Roussel/i);
+    await expect(paulineText.length).toBeGreaterThanOrEqual(1);
+    const doulaText = canvas.getAllByText(/Doula et professeure de yoga/i);
+    await expect(doulaText.length).toBeGreaterThanOrEqual(1);
   },
 };
 
@@ -405,16 +410,16 @@ export const InspirationsCards: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement);
 
-    // Verify Holistique card
-    await expect(canvas.getByText(/Holistique/i)).toBeInTheDocument();
+    // Verify Holistique card (use heading to be more specific)
+    await expect(canvas.getByRole("heading", { name: /Holistique/i })).toBeInTheDocument();
     await expect(canvas.getByText(/corps, mental, émotions et énergie/i)).toBeInTheDocument();
 
-    // Verify Bienveillante card
-    await expect(canvas.getByText(/Bienveillante/i)).toBeInTheDocument();
+    // Verify Bienveillante card (use heading to be more specific)
+    await expect(canvas.getByRole("heading", { name: /Bienveillante/i })).toBeInTheDocument();
     await expect(canvas.getByText(/espace doux, sécurisant et empathique/i)).toBeInTheDocument();
 
-    // Verify Engagée card
-    await expect(canvas.getByText(/Engagée/i)).toBeInTheDocument();
+    // Verify Engagée card (use heading to be more specific)
+    await expect(canvas.getByRole("heading", { name: /Engagée/i })).toBeInTheDocument();
     await expect(canvas.getByText(/Je m'implique pleinement/i)).toBeInTheDocument();
   },
 };

@@ -6,7 +6,7 @@ import { Footer } from "~/components/layout/footer/footer";
 import { About } from "~/components/layout/about";
 import type { MethodItem } from "~/components/layout/about";
 
-export function meta(_args: Route.MetaArgs) {
+export function meta({}: Route.MetaArgs) {
   return [
     {
       title: "À propos - Pauline Roussel | Doula et Professeure de Yoga",
@@ -62,6 +62,7 @@ export default function AboutPage() {
 
         {/* About Section - À propos de moi + Mes inspirations */}
         <About
+          background="white"
           spacing="normal"
           containerSize="xl"
           aboutContent={<AboutContentWithSections />}

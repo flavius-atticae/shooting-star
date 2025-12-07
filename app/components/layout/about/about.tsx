@@ -32,6 +32,8 @@ export interface AboutProps extends Omit<
   methodTitle?: string;
   /** Use accent font (Moontime) for method titles instead of heading font */
   useAccentFont?: boolean;
+  /** Background color variant (default: "accent" for green/sage) */
+  background?: "white" | "primary" | "accent" | "soft" | "transparent";
   /** Accessibility props */
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
@@ -75,6 +77,7 @@ export interface MethodItem {
  * Usage (Custom - About Page):
  * ```tsx
  * <About
+ *   background="white"
  *   aboutContent={<CustomAboutContent />}
  *   methodItems={[
  *     { id: "holistique", title: "Holistique", description: "..." },
@@ -115,6 +118,7 @@ export function About({
   methodItems,
   methodTitle = "Ma méthode",
   useAccentFont = false,
+  background = "accent",
   "aria-labelledby": ariaLabelledBy,
   "aria-describedby": ariaDescribedBy,
   ...props
@@ -145,7 +149,7 @@ export function About({
 
   return (
     <Section
-      background="accent"
+      background={background}
       spacing={spacing}
       insetY="sm"
       rounded="md"

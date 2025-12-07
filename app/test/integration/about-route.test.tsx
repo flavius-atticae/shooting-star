@@ -251,11 +251,11 @@ describe('About Route Integration Tests', () => {
       expect(footerIndex).toBeGreaterThan(mainIndex);
     });
 
-    it('should have About section with green/sage background', () => {
+    it('should have About section with white background', () => {
       const router = createTestRouter();
-      const { container } = render(<RouterProvider router={router} />);
+      render(<RouterProvider router={router} />);
 
-      // About component uses Section with background="accent" which gives green/sage bg
+      // About component uses Section with background="white" for the About page
       // Verify the about content exists
       expect(screen.getByRole('heading', { name: /À propos de moi/i })).toBeInTheDocument();
     });
@@ -340,7 +340,7 @@ describe('About Route Integration Tests', () => {
   describe('Inspirations Section', () => {
     it('should render all 3 inspiration cards in correct order', () => {
       const router = createTestRouter();
-      const { container } = render(<RouterProvider router={router} />);
+      render(<RouterProvider router={router} />);
 
       // Verify all three cards are present
       expect(screen.getByRole('heading', { name: /Holistique/i })).toBeInTheDocument();
