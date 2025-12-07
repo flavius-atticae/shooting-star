@@ -50,7 +50,10 @@ const AVAILABILITY_OPTIONS = [
 /**
  * Props for the ContactForm component
  */
-export interface ContactFormProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
+export interface ContactFormProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "onSubmit"
+> {
   /** Callback when form is successfully submitted */
   onSubmit?: (data: ContactFormData) => void | Promise<void>;
   /** Whether the form is in loading state */
@@ -114,17 +117,17 @@ export function ContactForm({
   const handleSubmit = async (data: ContactFormData) => {
     try {
       setError(false);
-      
+
       if (onSubmit) {
         await onSubmit(data);
       }
-      
+
       // Show success message
       setIsSubmitted(true);
-      
+
       // Reset form
       form.reset();
-      
+
       // Hide success message after 5 seconds
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
@@ -161,7 +164,7 @@ export function ContactForm({
             name="name"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-neutral uppercase text-xs font-semibold tracking-wide">
+                <FormLabel className="text-primary uppercase text-xs font-semibold tracking-wide">
                   NOM
                 </FormLabel>
                 <FormControl>
@@ -169,7 +172,7 @@ export function ContactForm({
                     placeholder="John Appleseed"
                     {...field}
                     disabled={isLoading}
-                    className="bg-transparent"
+                    className="bg-transparent text-primary border-2 border-primary/30 focus:border-primary"
                   />
                 </FormControl>
                 <FormMessage />
@@ -183,7 +186,7 @@ export function ContactForm({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-neutral uppercase text-xs font-semibold tracking-wide">
+                <FormLabel className="text-primary uppercase text-xs font-semibold tracking-wide">
                   EMAIL
                 </FormLabel>
                 <FormControl>
@@ -192,7 +195,7 @@ export function ContactForm({
                     placeholder="example@email.com"
                     {...field}
                     disabled={isLoading}
-                    className="bg-transparent"
+                    className="bg-transparent text-primary border-2 border-primary/30 focus:border-primary"
                   />
                 </FormControl>
                 <FormMessage />
@@ -206,14 +209,14 @@ export function ContactForm({
             name="availability"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-neutral uppercase text-xs font-semibold tracking-wide">
+                <FormLabel className="text-primary uppercase text-xs font-semibold tracking-wide">
                   PLAGE HORAIRE
                 </FormLabel>
                 <FormControl>
                   <Select
                     {...field}
                     disabled={isLoading}
-                    className="bg-transparent"
+                    className="text-primary border-2 border-primary/30 focus:border-primary"
                   >
                     {AVAILABILITY_OPTIONS.map((option) => (
                       <option key={option.value} value={option.value}>
@@ -233,7 +236,7 @@ export function ContactForm({
             name="message"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-neutral uppercase text-xs font-semibold tracking-wide">
+                <FormLabel className="text-primary uppercase text-xs font-semibold tracking-wide">
                   MESSAGE
                 </FormLabel>
                 <FormControl>
@@ -241,7 +244,7 @@ export function ContactForm({
                     placeholder="Message"
                     {...field}
                     disabled={isLoading}
-                    className="bg-transparent min-h-[120px]"
+                    className="bg-transparent text-primary border-2 border-primary/30 focus:border-primary min-h-[120px]"
                   />
                 </FormControl>
                 <FormMessage />
@@ -255,7 +258,8 @@ export function ContactForm({
             disabled={isLoading}
             className={cn(
               "w-full uppercase font-semibold tracking-wide",
-              "min-h-[48px] text-base"
+              "min-h-[48px] text-base",
+              "rounded-full bg-primary text-white hover:bg-primary/90"
             )}
           >
             {isLoading ? "ENVOI EN COURS..." : "ENVOYER"}

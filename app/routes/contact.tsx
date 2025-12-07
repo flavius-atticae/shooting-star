@@ -1,8 +1,9 @@
 import type { Route } from "./+types/contact";
 import { Header } from "~/components/layout/header/header";
-import { Hero } from "~/components/layout/hero/Hero";
 import { ContactSection } from "~/components/contact";
 import { Footer } from "~/components/layout/footer/footer";
+import { Container } from "~/components/ui/container";
+import { Section } from "~/components/ui/section";
 import type { ContactFormData } from "~/components/contact";
 
 /**
@@ -72,12 +73,19 @@ export default function Contact() {
       <Header />
 
       <main id="main-content" role="main">
-        {/* Hero Section - "Contact" */}
-        <Hero
-          variant="default"
-          title="Contact"
-          subtitle="ENVIE D'EN SAVOIR PLUS OU DE COMMENCER TON ACCOMPAGNEMENT ?"
-        />
+        {/* Page Header - Title and subtitle on white background */}
+        <Section spacing="normal" background="white">
+          <Container size="xl" className="px-4 sm:px-6 lg:px-8">
+            <div>
+              <h1 className="font-heading font-medium text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-primary leading-tight mb-4">
+                Contact
+              </h1>
+              <p className="font-sans text-sm sm:text-base md:text-lg text-primary/80 uppercase tracking-wide">
+                Envie d'en savoir plus ou de commencer ton accompagnement ?
+              </p>
+            </div>
+          </Container>
+        </Section>
 
         {/* Contact Section - Two-column layout with form */}
         <ContactSection onSubmit={handleFormSubmit} spacing="normal" />
