@@ -61,9 +61,29 @@ export interface MethodItem {
  * - Rangée 1 : Texte À propos (2/3) + Photo placeholder (1/3)
  * - Rangée 2 : Ma méthode en 3 colonnes avec séparateurs
  *
- * Usage:
+ * **Custom Props**: This component now supports customization via:
+ * - `aboutContent`: Replace default AboutContent with custom ReactNode
+ * - `methodItems`: Provide custom method items array
+ * - `methodTitle`: Change the method section title
+ * - `useAccentFont`: Use Moontime cursive font for method titles instead of Ivyora Display
+ *
+ * Usage (Default):
  * ```tsx
  * <About />
+ * ```
+ *
+ * Usage (Custom - About Page):
+ * ```tsx
+ * <About
+ *   aboutContent={<CustomAboutContent />}
+ *   methodItems={[
+ *     { id: "holistique", title: "Holistique", description: "..." },
+ *     { id: "bienveillante", title: "Bienveillante", description: "..." },
+ *     { id: "engagee", title: "Engagée", description: "..." }
+ *   ]}
+ *   methodTitle="Mes inspirations"
+ *   useAccentFont
+ * />
  * ```
  */
 // Type for overlap options
