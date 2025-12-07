@@ -6,7 +6,7 @@ import { Footer } from "~/components/layout/footer/footer";
 import { About } from "~/components/layout/about";
 import type { MethodItem } from "~/components/layout/about";
 
-export function meta({}: Route.MetaArgs) {
+export function meta(_args: Route.MetaArgs) {
   return [
     {
       title: "À propos - Pauline Roussel | Doula et Professeure de Yoga",
