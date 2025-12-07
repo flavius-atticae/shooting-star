@@ -50,7 +50,10 @@ const AVAILABILITY_OPTIONS = [
 /**
  * Props for the ContactForm component
  */
-export interface ContactFormProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onSubmit'> {
+export interface ContactFormProps extends Omit<
+  React.HTMLAttributes<HTMLDivElement>,
+  "onSubmit"
+> {
   /** Callback when form is successfully submitted */
   onSubmit?: (data: ContactFormData) => void | Promise<void>;
   /** Whether the form is in loading state */
@@ -114,17 +117,17 @@ export function ContactForm({
   const handleSubmit = async (data: ContactFormData) => {
     try {
       setError(false);
-      
+
       if (onSubmit) {
         await onSubmit(data);
       }
-      
+
       // Show success message
       setIsSubmitted(true);
-      
+
       // Reset form
       form.reset();
-      
+
       // Hide success message after 5 seconds
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
       timeoutRef.current = setTimeout(() => {
