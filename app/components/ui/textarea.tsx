@@ -1,11 +1,45 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "~/lib/utils"
+import { cn } from "~/lib/utils";
 
-function Textarea({
+/**
+ * Props for the Textarea component
+ */
+export interface TextareaProps extends React.ComponentProps<"textarea"> {
+  /** Custom className */
+  className?: string;
+}
+
+/**
+ * Textarea - Multi-line text input component
+ *
+ * A styled textarea field with comprehensive form states and accessibility features.
+ *
+ * Features:
+ * - Minimum height of 80px for usability
+ * - Vertical resizing enabled
+ * - Focus and validation states
+ * - Dark mode support
+ * - Responsive text sizing
+ *
+ * Accessibility:
+ * - WCAG 2.1 AA compliant
+ * - Clear focus indicators with ring
+ * - Invalid state with aria-invalid
+ * - Disabled state with proper cursor
+ * - High contrast placeholders
+ * - Resizable for user control
+ *
+ * @example
+ * ```tsx
+ * <Textarea placeholder="Enter your message..." />
+ * <Textarea rows={5} aria-invalid={true} />
+ * ```
+ */
+export function Textarea({
   className,
   ...props
-}: React.ComponentProps<"textarea">) {
+}: TextareaProps) {
   return (
     <textarea
       data-slot="textarea"
@@ -27,7 +61,5 @@ function Textarea({
       )}
       {...props}
     />
-  )
+  );
 }
-
-export { Textarea }

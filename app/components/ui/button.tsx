@@ -4,6 +4,9 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "~/lib/utils";
 
+/**
+ * Button variant styles using class-variance-authority
+ */
 const buttonVariants = cva(
   "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
   {
@@ -39,16 +42,70 @@ const buttonVariants = cva(
   }
 );
 
-function Button({
+/**
+ * Props for the Button component
+ */
+export interface ButtonProps
+  extends React.ComponentProps<"button">,
+    VariantProps<typeof buttonVariants> {
+  /** Render as child component using Radix UI Slot */
+  asChild?: boolean;
+  /** Custom className */
+  className?: string;
+}
+
+/**
+ * Button - Interactive button component
+ *
+ * A versatile button component with multiple variants and sizes.
+ * Built with Radix UI Slot for composition and class-variance-authority for variants.
+ *
+ * Features:
+ * - Multiple style variants (default, destructive, outline, ghost, link, CTA)
+ * - Multiple sizes (sm, default, lg, icon, cta)
+ * - Slot composition for rendering as any element
+ * - SVG icon support with automatic sizing
+ * - Full keyboard and focus management
+ *
+ * Variants:
+ * - `default`: Primary brand button with shadow
+ * - `destructive`: Warning/danger actions
+ * - `outline`: Secondary actions with border
+ * - `secondary`: Alternative secondary style
+ * - `ghost`: Minimal button for tertiary actions
+ * - `link`: Link-styled button
+ * - `cta`: Call-to-action with rounded-full shape (48px height)
+ * - `service-card`: White button for service cards
+ *
+ * Sizes:
+ * - `sm` / `default`: 44px height (WCAG 2.1 AA minimum)
+ * - `lg`: 48px height (pregnancy-safe comfortable size)
+ * - `icon`: 48x48px for icon-only buttons
+ * - `cta`: Custom padding for call-to-action buttons
+ *
+ * Accessibility:
+ * - WCAG 2.1 AA compliant touch targets (minimum 44x44px)
+ * - Clear focus indicators with ring
+ * - Disabled state with proper cursor and opacity
+ * - Invalid state support with aria-invalid
+ * - SVG icons are pointer-events-none for better click handling
+ *
+ * @example
+ * ```tsx
+ * <Button>Click me</Button>
+ * <Button variant="destructive" size="lg">Delete</Button>
+ * <Button variant="cta" asChild>
+ *   <a href="/contact">Contact Us</a>
+ * </Button>
+ * ```
+ */
+export function Button({
   className,
   variant,
   size,
   asChild = false,
   ...props
-}: React.ComponentProps<"button"> &
-  VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  }) {
+}: ButtonProps) {
   const Comp = asChild ? Slot : "button";
 
   return (
@@ -60,4 +117,4 @@ function Button({
   );
 }
 
-export { Button, buttonVariants };
+export { buttonVariants };
