@@ -1,36 +1,115 @@
 /**
  * Progressive Enhancement Components
- * 
+ *
  * Components that adapt their rendering based on browser capabilities
  * to provide optimal UX across all supported browsers.
  */
 
-import * as React from "react"
-import { useBrowserFeature, useProgressiveEnhancement, useMotionPreferences } from "~/hooks/use-browser-support"
-import { cn } from "~/lib/utils"
+import * as React from "react";
+
+import {
+  useBrowserFeature,
+  useProgressiveEnhancement,
+  useMotionPreferences,
+} from "~/hooks/use-browser-support";
+import { cn } from "~/lib/utils";
+
+// ============================================================================
+// Types
+// ============================================================================
 
 /**
- * Props for feature-gated components
+ * Props for FeatureGate component
  */
-interface FeatureGateProps {
+export interface FeatureGateProps {
   /** Feature to check for support */
-  feature: Parameters<typeof useBrowserFeature>[0]
+  feature: Parameters<typeof useBrowserFeature>[0];
   /** Children to render when feature is supported */
-  children: React.ReactNode
+  children: React.ReactNode;
   /** Optional fallback to render when feature is not supported */
-  fallback?: React.ReactNode
+  fallback?: React.ReactNode;
   /** Optional wrapper component */
-  as?: React.ElementType
+  as?: React.ElementType;
+  /** Custom className */
+  className?: string;
   /** Additional props for wrapper */
-  [key: string]: any
+  [key: string]: any;
 }
 
 /**
+ * Props for EnhancedGrid component
+ */
+export interface EnhancedGridProps
+  extends React.HTMLAttributes<HTMLDivElement> {
+  /** Number of columns for the grid */
+  columns?: 2 | 3 | 4;
+  /** Gap between grid items */
+  gap?: string;
+  /** Enable container query context */
+  enableContainerQuery?: boolean;
+  /** Container name for specific targeting */
+  containerName?: string;
+  /** Custom className */
+  className?: string;
+}
+
+/**
+ * Props for MotionSafe component
+ */
+export interface MotionSafeProps extends React.HTMLAttributes<HTMLDivElement> {
+  /** Animation classes to apply when motion is safe */
+  animationClass: string;
+  /** Fallback classes when motion should be reduced */
+  fallbackClass?: string;
+  /** Force disable animations regardless of user preference */
+  disabled?: boolean;
+  /** Custom className */
+  className?: string;
+}
+
+/**
+ * Props for EnhancedImage component
+ */
+export interface EnhancedImageProps
+  extends React.ImgHTMLAttributes<HTMLImageElement> {
+  /** Fallback for when aspect-ratio CSS property is not supported */
+  aspectRatio?: string;
+  /** Whether to use intersection observer for lazy loading */
+  lazy?: boolean;
+  /** Custom className */
+  className?: string;
+}
+
+// ============================================================================
+// Components
+// ============================================================================
+
+/**
  * FeatureGate - Conditionally render content based on browser feature support
- * 
+ *
+ * Renders different content based on whether a specific browser feature is supported.
+ * Uses the browser-support detection system to determine capabilities.
+ *
+ * Features:
+ * - Feature detection for modern browser APIs
+ * - Graceful fallback rendering
+ * - Optional wrapper component
+ * - Zero-dependency on feature availability
+ *
+ * Supported Features:
+ * - containerQueries
+ * - cssGrid
+ * - intersectionObserver
+ * - aspectRatio
+ * - And more from useBrowserFeature hook
+ *
+ * Accessibility:
+ * - Content parity between feature and fallback
+ * - No layout shift when feature not supported
+ *
  * @example
  * ```tsx
- * <FeatureGate 
+ * <FeatureGate
  *   feature="containerQueries"
  *   fallback={<LegacyGrid />}
  * >
@@ -43,37 +122,42 @@ export const FeatureGate: React.FC<FeatureGateProps> = ({
   children,
   fallback = null,
   as: Component = React.Fragment,
+  className,
   ...props
 }) => {
-  const isSupported = useBrowserFeature(feature)
-  
-  const content = isSupported ? children : fallback
-  
+  const isSupported = useBrowserFeature(feature);
+
+  const content = isSupported ? children : fallback;
+
   if (Component === React.Fragment) {
-    return <>{content}</>
+    return <>{content}</>;
   }
-  
-  return <Component {...props}>{content}</Component>
-}
+
+  return (
+    <Component className={className} {...props}>
+      {content}
+    </Component>
+  );
+};
 
 /**
- * Props for enhanced grid component
- */
-interface EnhancedGridProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Number of columns for the grid */
-  columns?: 2 | 3 | 4
-  /** Gap between grid items */
-  gap?: string
-  /** Enable container query context */
-  enableContainerQuery?: boolean
-  /** Container name for specific targeting */
-  containerName?: string
-}
-
-/**
- * EnhancedGrid - Progressive grid that uses Container Queries when available
- * Falls back to responsive media queries on unsupported browsers
- * 
+ * EnhancedGrid - Progressive grid with Container Queries
+ *
+ * Grid component that uses Container Queries when available, falling back to
+ * responsive media queries on unsupported browsers.
+ *
+ * Features:
+ * - Container Queries for modern browsers
+ * - Media query fallback for legacy browsers
+ * - Configurable column count (2, 3, or 4)
+ * - Custom gap support
+ * - Named container support
+ *
+ * Accessibility:
+ * - Semantic HTML
+ * - Consistent layout across browsers
+ * - No layout shift between feature levels
+ *
  * @example
  * ```tsx
  * <EnhancedGrid columns={3} gap="gap-6">
@@ -92,61 +176,66 @@ export const EnhancedGrid: React.FC<EnhancedGridProps> = ({
   className,
   ...props
 }) => {
-  const { useModernLayout } = useProgressiveEnhancement()
-  const hasContainerQueries = useBrowserFeature('containerQueries')
-  
+  const { useModernLayout } = useProgressiveEnhancement();
+  const hasContainerQueries = useBrowserFeature("containerQueries");
+
   // Modern approach with container queries
   if (useModernLayout && hasContainerQueries && enableContainerQuery) {
-    const containerClass = containerName ? "container-name-content" : "container-query"
-    const gridClass = `cq-grid-${columns}`
-    
+    const containerClass = containerName
+      ? "container-name-content"
+      : "container-query";
+    const gridClass = `cq-grid-${columns}`;
+
     return (
       <div
         className={cn(containerClass, gridClass, gap, className)}
-        style={containerName ? { containerName } as React.CSSProperties : undefined}
+        style={
+          containerName
+            ? ({ containerName } as React.CSSProperties)
+            : undefined
+        }
         {...props}
       >
         {children}
       </div>
-    )
+    );
   }
-  
+
   // Fallback approach with media queries
   const fallbackGridClasses = {
     2: "grid grid-cols-1 md:grid-cols-2",
     3: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
-    4: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-  }
-  
+    4: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+  };
+
   return (
-    <div 
-      className={cn(fallbackGridClasses[columns], gap, className)}
-      {...props}
-    >
+    <div className={cn(fallbackGridClasses[columns], gap, className)} {...props}>
       {children}
     </div>
-  )
-}
-
-/**
- * Props for motion-safe animation wrapper
- */
-interface MotionSafeProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Animation classes to apply when motion is safe */
-  animationClass: string
-  /** Fallback classes when motion should be reduced */
-  fallbackClass?: string
-  /** Force disable animations regardless of user preference */
-  disabled?: boolean
-}
+  );
+};
 
 /**
  * MotionSafe - Wrapper that respects user's motion preferences
- * Critical for pregnancy-safe UX (nausea considerations)
- * 
+ *
+ * Applies animations only when safe for the user, respecting prefers-reduced-motion.
+ * Critical for pregnancy-safe UX (nausea considerations).
+ *
+ * Features:
+ * - Automatic motion preference detection
+ * - Configurable animation and fallback classes
+ * - Force disable option
+ * - Zero motion when user prefers reduced motion
+ *
+ * Accessibility:
+ * - Respects prefers-reduced-motion media query
+ * - WCAG 2.1 Animation from Interactions guideline
+ * - Pregnancy-safe (reduces nausea triggers)
+ * - Provides non-animated fallback
+ *
  * @example
  * ```tsx
- * <MotionSafe 
+ * <MotionSafe
  *   animationClass="animate-fadeIn duration-300"
  *   fallbackClass="opacity-100"
  * >
@@ -162,37 +251,38 @@ export const MotionSafe: React.FC<MotionSafeProps> = ({
   className,
   ...props
 }) => {
-  const { shouldAnimate } = useMotionPreferences()
-  
-  const appliedClass = (disabled || !shouldAnimate) ? fallbackClass : animationClass
-  
+  const { shouldAnimate } = useMotionPreferences();
+
+  const appliedClass =
+    disabled || !shouldAnimate ? fallbackClass : animationClass;
+
   return (
-    <div 
-      className={cn(appliedClass, className)}
-      {...props}
-    >
+    <div className={cn(appliedClass, className)} {...props}>
       {children}
     </div>
-  )
-}
-
-/**
- * Props for enhanced image component
- */
-interface EnhancedImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
-  /** Fallback for when aspect-ratio CSS property is not supported */
-  aspectRatio?: string
-  /** Whether to use intersection observer for lazy loading */
-  lazy?: boolean
-}
+  );
+};
 
 /**
  * EnhancedImage - Image component with progressive enhancement
- * Uses modern CSS features when available, graceful fallbacks otherwise
- * 
+ *
+ * Image component that uses modern CSS features when available with graceful fallbacks.
+ * Supports aspect ratio CSS property with Tailwind fallbacks and lazy loading.
+ *
+ * Features:
+ * - aspect-ratio CSS property support
+ * - Tailwind class fallbacks for unsupported browsers
+ * - Intersection Observer lazy loading
+ * - Graceful degradation
+ *
+ * Accessibility:
+ * - Requires alt text (inherited from img)
+ * - Lazy loading with intersection observer
+ * - No layout shift with aspect ratio
+ *
  * @example
  * ```tsx
- * <EnhancedImage 
+ * <EnhancedImage
  *   src="/image.jpg"
  *   alt="Description"
  *   aspectRatio="16/9"
@@ -207,110 +297,131 @@ export const EnhancedImage: React.FC<EnhancedImageProps> = ({
   style,
   ...props
 }) => {
-  const hasAspectRatio = useBrowserFeature('aspectRatio')
-  const { useLazyLoading } = useProgressiveEnhancement()
-  const imgRef = React.useRef<HTMLImageElement>(null)
-  const [isVisible, setIsVisible] = React.useState(!lazy)
-  
+  const hasAspectRatio = useBrowserFeature("aspectRatio");
+  const { useLazyLoading } = useProgressiveEnhancement();
+  const imgRef = React.useRef<HTMLImageElement>(null);
+  const [isVisible, setIsVisible] = React.useState(!lazy);
+
   // Intersection Observer for lazy loading
   React.useEffect(() => {
-    if (!lazy || !useLazyLoading || isVisible) return
-    
+    if (!lazy || !useLazyLoading || isVisible) return;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.disconnect()
+          setIsVisible(true);
+          observer.disconnect();
         }
       },
-      { rootMargin: '50px' }
-    )
-    
+      { rootMargin: "50px" }
+    );
+
     if (imgRef.current) {
-      observer.observe(imgRef.current)
+      observer.observe(imgRef.current);
     }
-    
-    return () => observer.disconnect()
-  }, [lazy, useLazyLoading, isVisible])
-  
+
+    return () => observer.disconnect();
+  }, [lazy, useLazyLoading, isVisible]);
+
   const appliedStyle = React.useMemo(() => {
-    let combinedStyle = { ...style }
-    
+    let combinedStyle = { ...style };
+
     // Apply aspect ratio if supported and provided
     if (aspectRatio && hasAspectRatio) {
-      combinedStyle.aspectRatio = aspectRatio
+      combinedStyle.aspectRatio = aspectRatio;
     }
-    
-    return combinedStyle
-  }, [style, aspectRatio, hasAspectRatio])
-  
+
+    return combinedStyle;
+  }, [style, aspectRatio, hasAspectRatio]);
+
   const appliedClassName = React.useMemo(() => {
-    let classes = [className]
-    
+    let classes = [className];
+
     // Add fallback classes when aspect-ratio is not supported
     if (aspectRatio && !hasAspectRatio) {
       // Common aspect ratios with Tailwind fallbacks
       const ratioClasses: Record<string, string> = {
-        '16/9': 'aspect-video',
-        '4/3': 'aspect-[4/3]',
-        '1/1': 'aspect-square',
-        '3/2': 'aspect-[3/2]'
-      }
-      classes.push(ratioClasses[aspectRatio] || 'aspect-auto')
+        "16/9": "aspect-video",
+        "4/3": "aspect-[4/3]",
+        "1/1": "aspect-square",
+        "3/2": "aspect-[3/2]",
+      };
+      classes.push(ratioClasses[aspectRatio] || "aspect-auto");
     }
-    
-    return cn(...classes)
-  }, [className, aspectRatio, hasAspectRatio])
-  
+
+    return cn(...classes);
+  }, [className, aspectRatio, hasAspectRatio]);
+
   return (
     <img
       ref={imgRef}
       className={appliedClassName}
       style={appliedStyle}
       {...props}
-      {...(lazy && !isVisible ? { 'data-lazy': 'true' } : {})}
+      {...(lazy && !isVisible ? { "data-lazy": "true" } : {})}
     />
-  )
-}
+  );
+};
 
 /**
- * Browser capability indicator for development/debugging
- * Only renders in development mode
+ * BrowserCapabilityIndicator - Development debugging tool
+ *
+ * Visual indicator showing browser capabilities and support tier.
+ * Only renders in development mode.
+ *
+ * Features:
+ * - Shows browser tier (modern/legacy/minimal)
+ * - Lists supported features
+ * - Indicates missing critical features
+ * - Color-coded by tier level
+ *
+ * @example
+ * ```tsx
+ * // In development layout
+ * <BrowserCapabilityIndicator />
+ * ```
  */
 export const BrowserCapabilityIndicator: React.FC = () => {
-  const { capabilities, features } = useProgressiveEnhancement()
-  
+  const { capabilities, features } = useProgressiveEnhancement();
+
   // Only show in development
-  if (process.env.NODE_ENV !== 'development') {
-    return null
+  if (process.env.NODE_ENV !== "development") {
+    return null;
   }
-  
+
   const tierColors = {
-    modern: 'bg-green-100 text-green-800',
-    legacy: 'bg-yellow-100 text-yellow-800', 
-    minimal: 'bg-red-100 text-red-800'
-  }
-  
+    modern: "bg-green-100 text-green-800",
+    legacy: "bg-yellow-100 text-yellow-800",
+    minimal: "bg-red-100 text-red-800",
+  };
+
   return (
     <div className="fixed bottom-4 right-4 z-50 p-2 rounded-lg border shadow-lg bg-white text-xs">
       <div className="flex items-center gap-2 mb-1">
-        <span className={cn('px-2 py-1 rounded text-xs font-medium', tierColors[capabilities.tier])}>
+        <span
+          className={cn(
+            "px-2 py-1 rounded text-xs font-medium",
+            tierColors[capabilities.tier]
+          )}
+        >
           {capabilities.tier}
         </span>
         <span className="text-gray-600">Browser Tier</span>
       </div>
-      
+
       <div className="text-gray-500 text-xs">
-        <div>Grid: {features.cssGrid ? '✅' : '❌'}</div>
-        <div>Container Queries: {features.containerQueries ? '✅' : '❌'}</div>
-        <div>Intersection Observer: {features.intersectionObserver ? '✅' : '❌'}</div>
+        <div>Grid: {features.cssGrid ? "✅" : "❌"}</div>
+        <div>Container Queries: {features.containerQueries ? "✅" : "❌"}</div>
+        <div>
+          Intersection Observer: {features.intersectionObserver ? "✅" : "❌"}
+        </div>
       </div>
-      
+
       {capabilities.missingCriticalFeatures.length > 0 && (
         <div className="mt-1 text-xs text-red-600">
-          Missing: {capabilities.missingCriticalFeatures.join(', ')}
+          Missing: {capabilities.missingCriticalFeatures.join(", ")}
         </div>
       )}
     </div>
-  )
-}
+  );
+};
