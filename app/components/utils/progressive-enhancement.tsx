@@ -49,8 +49,6 @@ export interface EnhancedGridProps
   enableContainerQuery?: boolean;
   /** Container name for specific targeting */
   containerName?: string;
-  /** Custom className */
-  className?: string;
 }
 
 /**
@@ -63,8 +61,6 @@ export interface MotionSafeProps extends React.ComponentProps<"div"> {
   fallbackClass?: string;
   /** Force disable animations regardless of user preference */
   disabled?: boolean;
-  /** Custom className */
-  className?: string;
 }
 
 /**
@@ -76,8 +72,7 @@ export interface EnhancedImageProps
   aspectRatio?: string;
   /** Whether to use intersection observer for lazy loading */
   lazy?: boolean;
-  /** Custom className */
-  className?: string;
+}
 }
 
 // ============================================================================

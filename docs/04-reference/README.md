@@ -31,7 +31,7 @@ import * as React from "react";
 import { cn } from "~/lib/utils";
 
 // 2. Types
-export interface ComponentNameProps extends React.HTMLAttributes<HTMLElement> {
+export interface ComponentNameProps extends React.ComponentProps<"div"> {
   /** Prop description */
   propName: string;
 }

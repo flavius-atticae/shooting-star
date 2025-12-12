@@ -74,13 +74,11 @@ Every component should have an explicit props interface:
 /**
  * Props for the ComponentName component
  */
-export interface ComponentNameProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ComponentNameProps extends React.ComponentProps<"div"> {
   /** Main title text */
   title: string;
   /** Optional subtitle */
   subtitle?: string;
-  /** Custom styling className */
-  className?: string;
   /** Click handler */
   onClick?: () => void;
 }
@@ -90,12 +88,14 @@ export interface ComponentNameProps extends React.HTMLAttributes<HTMLDivElement>
 
 - Name: `ComponentNameProps` (PascalCase + "Props" suffix)
 - Always export the interface
-- Extend appropriate React HTML attributes when applicable:
-  - `React.HTMLAttributes<HTMLDivElement>` for divs
-  - `React.HTMLAttributes<HTMLElement>` for semantic elements
+- Extend appropriate React component props when applicable:
+  - `React.ComponentProps<"div">` for divs
+  - `React.ComponentProps<"section">` for semantic elements
   - `React.ComponentProps<"button">` for buttons
+  - `React.ComponentProps<"input">` for inputs
 - Document each prop with JSDoc comments
 - Mark optional props with `?`
+- Avoid redeclaring properties already in ComponentProps (like `className`)
 - Use `Omit<>` to exclude conflicting props when needed
 
 ### Additional Types
@@ -310,15 +310,21 @@ export type { SizeVariant, ColorScheme };
 import * as React from "react";
 import { cn } from "~/lib/utils";
 
+// ============================================================================
+// Types
+// ============================================================================
+
 /**
  * Props for the Badge component
  */
-export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface BadgeProps extends React.ComponentProps<"span"> {
   /** Badge variant */
   variant?: "default" | "success" | "warning" | "error";
-  /** Custom className */
-  className?: string;
 }
+
+// ============================================================================
+// Component
+// ============================================================================
 
 /**
  * Badge - Display status or category labels
@@ -373,6 +379,10 @@ import * as React from "react";
 import { cn } from "~/lib/utils";
 import { Container } from "~/components/ui/container";
 
+// ============================================================================
+// Types
+// ============================================================================
+
 /**
  * Hero variant types
  */
@@ -381,18 +391,20 @@ export type HeroVariant = "default" | "full-height";
 /**
  * Props for the Hero component
  */
-export interface HeroProps extends React.HTMLAttributes<HTMLElement> {
+export interface HeroProps extends React.ComponentProps<"section"> {
   /** Main title text */
   title?: string;
   /** Subtitle text */
   subtitle?: string;
   /** Hero variant */
   variant?: HeroVariant;
-  /** Custom className */
-  className?: string;
   /** Child elements */
   children?: React.ReactNode;
 }
+
+// ============================================================================
+// Component
+// ============================================================================
 
 /**
  * Hero - Main hero section for landing pages
@@ -495,28 +507,20 @@ export type CardSize = "sm" | "md" | "lg";
 /**
  * Props for the Card component
  */
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CardProps extends React.ComponentProps<"div"> {
   /** Card size variant */
   size?: CardSize;
-  /** Custom className */
-  className?: string;
 }
 
 /**
  * Props for the CardHeader component
  */
-export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Custom className */
-  className?: string;
-}
+export interface CardHeaderProps extends React.ComponentProps<"div"> {}
 
 /**
  * Props for the CardContent component
  */
-export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  /** Custom className */
-  className?: string;
-}
+export interface CardContentProps extends React.ComponentProps<"div"> {}
 
 // ============================================================================
 // Components
