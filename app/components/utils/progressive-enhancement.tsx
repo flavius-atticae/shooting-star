@@ -33,7 +33,7 @@ export interface FeatureGateProps {
   /** Custom className */
   className?: string;
   /** Additional props for wrapper */
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
@@ -202,14 +202,22 @@ export const EnhancedGrid: React.FC<EnhancedGridProps> = ({
   }
 
   // Fallback approach with media queries
-  const fallbackGridClasses = {
-    2: "grid grid-cols-1 md:grid-cols-2",
-    3: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
-    4: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+  // Safe grid class selection based on column count
+  const getGridClass = (cols: 2 | 3 | 4): string => {
+    switch (cols) {
+      case 2:
+        return "grid grid-cols-1 md:grid-cols-2";
+      case 3:
+        return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+      case 4:
+        return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+      default:
+        return "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
+    }
   };
 
   return (
-    <div className={cn(fallbackGridClasses[columns], gap, className)} {...props}>
+    <div className={cn(getGridClass(columns), gap, className)} {...props}>
       {children}
     </div>
   );
@@ -320,7 +328,9 @@ export const EnhancedImage: React.FC<EnhancedImageProps> = ({
       observer.observe(imgRef.current);
     }
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+    };
   }, [lazy, useLazyLoading, isVisible]);
 
   const appliedStyle = React.useMemo(() => {
@@ -339,14 +349,22 @@ export const EnhancedImage: React.FC<EnhancedImageProps> = ({
 
     // Add fallback classes when aspect-ratio is not supported
     if (aspectRatio && !hasAspectRatio) {
-      // Common aspect ratios with Tailwind fallbacks
-      const ratioClasses: Record<string, string> = {
-        "16/9": "aspect-video",
-        "4/3": "aspect-[4/3]",
-        "1/1": "aspect-square",
-        "3/2": "aspect-[3/2]",
+      // Safe aspect ratio class selection
+      const getRatioClass = (ratio: string): string => {
+        switch (ratio) {
+          case "16/9":
+            return "aspect-video";
+          case "4/3":
+            return "aspect-[4/3]";
+          case "1/1":
+            return "aspect-square";
+          case "3/2":
+            return "aspect-[3/2]";
+          default:
+            return "aspect-auto";
+        }
       };
-      classes.push(ratioClasses[aspectRatio] || "aspect-auto");
+      classes.push(getRatioClass(aspectRatio));
     }
 
     return cn(...classes);
