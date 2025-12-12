@@ -2,6 +2,10 @@ import * as React from "react";
 
 import { cn } from "~/lib/utils";
 
+// ============================================================================
+// Types
+// ============================================================================
+
 /**
  * Props for the Input component
  */
@@ -11,6 +15,10 @@ export interface InputProps extends React.ComponentProps<"input"> {
   /** Custom className */
   className?: string;
 }
+
+// ============================================================================
+// Component
+// ============================================================================
 
 /**
  * Input - Form input field component

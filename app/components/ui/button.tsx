@@ -4,6 +4,10 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "~/lib/utils";
 
+// ============================================================================
+// Types
+// ============================================================================
+
 /**
  * Button variant styles using class-variance-authority
  */
@@ -53,6 +57,10 @@ export interface ButtonProps
   /** Custom className */
   className?: string;
 }
+
+// ============================================================================
+// Component
+// ============================================================================
 
 /**
  * Button - Interactive button component

@@ -13,7 +13,7 @@ export type ContainerSize = "sm" | "md" | "lg" | "xl" | "full";
 /**
  * Props for the Container component
  */
-export interface ContainerProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ContainerProps extends React.ComponentProps<"div"> {
   /** Container size variant */
   size?: ContainerSize;
   /** Element to render as */

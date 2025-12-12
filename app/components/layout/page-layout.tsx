@@ -13,7 +13,7 @@ import type { BackgroundVariant, SpacingVariant } from "~/components/ui/section"
 /**
  * Props for the PageLayout component
  */
-export interface PageLayoutProps {
+export interface PageLayoutProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Content to render within the page */
   children: React.ReactNode;
   /** Background variant */
@@ -66,29 +66,37 @@ export interface PageLayoutProps {
  * </PageLayout>
  * ```
  */
-export function PageLayout({
-  children,
-  background = "white",
-  spacing = "normal",
-  enableContainerQueries = false,
-  className,
-}: PageLayoutProps) {
-  return (
-    <div className={cn("min-h-screen", className)}>
-      <Section
-        background={background}
-        spacing={spacing}
-        className="min-h-screen flex flex-col"
-      >
-        <Container
-          className={cn(
-            "flex-1 flex flex-col px-4 sm:px-6 lg:px-8",
-            enableContainerQueries && "@container"
-          )}
+export const PageLayout = React.forwardRef<HTMLDivElement, PageLayoutProps>(
+  (
+    {
+      children,
+      background = "white",
+      spacing = "normal",
+      enableContainerQueries = false,
+      className,
+      ...props
+    },
+    ref
+  ) => {
+    return (
+      <div ref={ref} className={cn("min-h-screen", className)} {...props}>
+        <Section
+          background={background}
+          spacing={spacing}
+          className="min-h-screen flex flex-col"
         >
-          {children}
-        </Container>
-      </Section>
-    </div>
-  );
-}
+          <Container
+            className={cn(
+              "flex-1 flex flex-col px-4 sm:px-6 lg:px-8",
+              enableContainerQueries && "@container"
+            )}
+          >
+            {children}
+          </Container>
+        </Section>
+      </div>
+    );
+  }
+);
+
+PageLayout.displayName = "PageLayout";
