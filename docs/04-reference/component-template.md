@@ -225,7 +225,10 @@ export function ComponentName({
 ### Component Body
 
 - Use `cn()` utility for className composition
-- Include data attributes for testing: `data-slot="component-name"`
+- Include data attributes for testing/styling: `data-slot="component-name"`
+  - Used for component identification in tests
+  - Provides stable selectors that don't change with styling
+  - Convention inherited from shadcn/ui component library
 - Spread remaining props: `{...props}`
 - Add comments for complex logic sections
 - Extract complex logic into helper functions
@@ -629,6 +632,97 @@ When creating or updating a component, ensure:
 - [Testing Strategy](../02-architecture/testing-strategy.md)
 - [Storybook Setup](../02-architecture/storybook-setup.md)
 - [Security Guidelines](./guidelines.md)
+
+## Testing Components
+
+### Test File Naming
+
+Test files should follow this naming convention:
+- Unit tests: `component-name.test.tsx`
+- Integration tests: `feature-name.test.tsx`
+- E2E tests: Use Playwright in `app/test/e2e/`
+
+### Test Location
+
+- Component tests: `app/test/components/`
+- Integration tests: `app/test/integration/`
+- Pattern tests: `app/test/patterns/`
+
+### Example Test Structure
+
+```typescript
+import { describe, it, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { ComponentName } from "~/components/ui/component-name";
+
+describe("ComponentName", () => {
+  it("renders with default props", () => {
+    render(<ComponentName title="Test" />);
+    expect(screen.getByText("Test")).toBeInTheDocument();
+  });
+
+  it("applies custom className", () => {
+    render(<ComponentName title="Test" className="custom-class" />);
+    const element = screen.getByTestId("component-name"); // or use data-slot
+    expect(element).toHaveClass("custom-class");
+  });
+
+  it("meets accessibility requirements", () => {
+    const { container } = render(<ComponentName title="Test" />);
+    // Add accessibility assertions
+  });
+});
+```
+
+See [Testing Strategy](../02-architecture/testing-strategy.md) for complete guidelines.
+
+## Storybook Stories
+
+### Story File Naming
+
+Story files should be colocated with components:
+- Pattern: `component-name.stories.tsx`
+- Location: Same directory as the component
+
+### Example Story Structure
+
+```typescript
+import type { Meta, StoryObj } from "@storybook/react";
+import { ComponentName } from "./component-name";
+
+const meta = {
+  title: "UI/ComponentName",
+  component: ComponentName,
+  parameters: {
+    layout: "centered",
+  },
+  tags: ["autodocs"],
+  argTypes: {
+    variant: {
+      control: "select",
+      options: ["default", "primary", "secondary"],
+    },
+  },
+} satisfies Meta<typeof ComponentName>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    title: "Example Title",
+  },
+};
+
+export const Primary: Story = {
+  args: {
+    title: "Primary Variant",
+    variant: "primary",
+  },
+};
+```
+
+See [Storybook Setup](../02-architecture/storybook-setup.md) for complete guidelines.
 
 ---
 
