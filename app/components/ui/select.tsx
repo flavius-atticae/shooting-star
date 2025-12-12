@@ -1,11 +1,47 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "~/lib/utils"
+import { cn } from "~/lib/utils";
 
-function Select({
+/**
+ * Props for the Select component
+ */
+export interface SelectProps extends React.ComponentProps<"select"> {
+  /** Custom className */
+  className?: string;
+}
+
+/**
+ * Select - Dropdown selection component
+ *
+ * A styled select element with custom arrow indicator and form states.
+ *
+ * Features:
+ * - Custom dropdown arrow in primary color (#618462)
+ * - Focus and validation states
+ * - Dark mode support
+ * - Responsive text sizing
+ * - Native select behavior for maximum compatibility
+ *
+ * Accessibility:
+ * - WCAG 2.1 AA compliant
+ * - Native select element for keyboard navigation
+ * - Clear focus indicators with ring
+ * - Invalid state with aria-invalid
+ * - Disabled state with proper cursor
+ *
+ * @example
+ * ```tsx
+ * <Select>
+ *   <option value="">Choose an option</option>
+ *   <option value="1">Option 1</option>
+ *   <option value="2">Option 2</option>
+ * </Select>
+ * ```
+ */
+export function Select({
   className,
   ...props
-}: React.ComponentProps<"select">) {
+}: SelectProps) {
   return (
     <select
       data-slot="select"
@@ -27,7 +63,5 @@ function Select({
       )}
       {...props}
     />
-  )
+  );
 }
-
-export { Select }

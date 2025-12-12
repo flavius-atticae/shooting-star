@@ -4,6 +4,10 @@ import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 import { AboutContent } from "./about-content";
 
+// ============================================================================
+// Types
+// ============================================================================
+
 export interface AboutProps extends Omit<
   React.HTMLAttributes<HTMLElement>,
   "children"
@@ -47,6 +51,10 @@ export interface MethodItem {
   /** Method description - displayed in Barlow font */
   description: string;
 }
+
+// ============================================================================
+// Component
+// ============================================================================
 
 /**
  * About Section Component - Section À propos pregnancy-safe

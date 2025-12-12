@@ -2,6 +2,10 @@ import * as React from "react";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 
+// ============================================================================
+// Types
+// ============================================================================
+
 export interface ApproachItem {
   /** Unique identifier for the approach item */
   id: string;
@@ -29,6 +33,10 @@ export interface ApproachSectionProps extends Omit<
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
 }
+
+// ============================================================================
+// Component
+// ============================================================================
 
 /**
  * ApproachSection Component - Section "Mon approche" for doula page

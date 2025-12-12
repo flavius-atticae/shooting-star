@@ -1,22 +1,45 @@
+import * as React from "react";
 import { cn } from "~/lib/utils";
-import type { ReactNode, HTMLAttributes, ElementType } from "react";
 
-type InsetSize = "none" | "sm" | "md" | "lg";
-type RoundedSize = "none" | "sm" | "md" | "lg" | "xl";
-type BackgroundVariant =
+// ============================================================================
+// Types
+// ============================================================================
+
+/**
+ * Inset size options for horizontal and vertical spacing
+ */
+export type InsetSize = "none" | "sm" | "md" | "lg";
+
+/**
+ * Rounded corner size options
+ */
+export type RoundedSize = "none" | "sm" | "md" | "lg" | "xl";
+
+/**
+ * Background variant options
+ */
+export type BackgroundVariant =
   | "white"
   | "primary"
   | "accent"
   | "soft"
   | "transparent";
-type SpacingVariant = "none" | "compact" | "normal" | "spacious";
 
-export interface SectionProps extends Omit<
-  HTMLAttributes<HTMLElement>,
-  "children"
-> {
-  children: ReactNode;
+/**
+ * Spacing variant options
+ */
+export type SpacingVariant = "none" | "compact" | "normal" | "spacious";
+
+/**
+ * Props for the Section component
+ */
+export interface SectionProps
+  extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
+  /** Content to render within the section */
+  children: React.ReactNode;
+  /** Vertical spacing variant */
   spacing?: SpacingVariant;
+  /** Background variant */
   background?: BackgroundVariant;
   /**
    * Horizontal inset - adds wrapper padding so the background
@@ -30,9 +53,19 @@ export interface SectionProps extends Omit<
   insetY?: InsetSize;
   /** Border radius for rounded corners */
   rounded?: RoundedSize;
-  as?: ElementType;
+  /** Element to render as */
+  as?: React.ElementType;
+  /** Custom className */
+  className?: string;
 }
 
+// ============================================================================
+// Helper Functions
+// ============================================================================
+
+/**
+ * Get horizontal inset classes
+ */
 function getInsetXClass(insetX: InsetSize): string {
   switch (insetX) {
     case "sm":
@@ -47,6 +80,9 @@ function getInsetXClass(insetX: InsetSize): string {
   }
 }
 
+/**
+ * Get vertical inset classes
+ */
 function getInsetYClass(insetY: InsetSize): string {
   switch (insetY) {
     case "sm":
@@ -61,6 +97,9 @@ function getInsetYClass(insetY: InsetSize): string {
   }
 }
 
+/**
+ * Get rounded corner classes
+ */
 function getRoundedClass(rounded: RoundedSize): string {
   switch (rounded) {
     case "sm":
@@ -77,6 +116,9 @@ function getRoundedClass(rounded: RoundedSize): string {
   }
 }
 
+/**
+ * Get background color classes
+ */
 function getBackgroundClass(background: BackgroundVariant): string {
   switch (background) {
     case "white":
@@ -93,6 +135,9 @@ function getBackgroundClass(background: BackgroundVariant): string {
   }
 }
 
+/**
+ * Get spacing classes
+ */
 function getSpacingClass(spacing: SpacingVariant): string {
   switch (spacing) {
     case "none":
@@ -107,6 +152,63 @@ function getSpacingClass(spacing: SpacingVariant): string {
   }
 }
 
+// ============================================================================
+// Component
+// ============================================================================
+
+/**
+ * Section - Flexible section wrapper component
+ *
+ * A versatile section component with configurable spacing, background, and insets.
+ * Designed for creating consistent layouts throughout the application.
+ *
+ * Features:
+ * - Multiple background variants (white, primary, accent, soft gradient, transparent)
+ * - Configurable vertical spacing (none, compact, normal, spacious)
+ * - Horizontal and vertical insets for "floating card" effect
+ * - Rounded corners support
+ * - Polymorphic component (render as any element)
+ *
+ * Background Variants:
+ * - `white`: Pure white background
+ * - `primary`: Primary brand color (#618462)
+ * - `accent`: Soft beige (gris)
+ * - `soft`: Gradient from white to soft beige
+ * - `transparent`: No background (default)
+ *
+ * Spacing Variants:
+ * - `none`: No vertical padding
+ * - `compact`: py-8
+ * - `normal`: py-12 lg:py-16 (default)
+ * - `spacious`: py-16 lg:py-24
+ *
+ * Inset System:
+ * When insetX or insetY is set, the section is wrapped in a div with padding,
+ * creating a "floating card" effect where the background doesn't touch the edges.
+ *
+ * Accessibility:
+ * - Semantic HTML through `as` prop
+ * - Works with all standard HTML attributes
+ * - No layout constraints affecting reading order
+ *
+ * @example
+ * ```tsx
+ * <Section background="white" spacing="normal">
+ *   <h2>Section Title</h2>
+ *   <p>Section content</p>
+ * </Section>
+ *
+ * <Section
+ *   background="accent"
+ *   spacing="compact"
+ *   insetX="md"
+ *   insetY="sm"
+ *   rounded="lg"
+ * >
+ *   <p>Floating card with rounded corners</p>
+ * </Section>
+ * ```
+ */
 export function Section({
   children,
   spacing = "normal",

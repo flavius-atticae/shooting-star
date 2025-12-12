@@ -3,6 +3,10 @@ import { cn } from "~/lib/utils";
 import { Container } from "~/components/ui/container";
 import { FadeInTitle, FadeInSubtitle } from "./hero-animations";
 
+// ============================================================================
+// Types
+// ============================================================================
+
 /**
  * Hero variant types for different use cases
  */
@@ -52,6 +56,10 @@ export interface HeroContentProps {
   subtitle?: string;
   className?: string;
 }
+
+// ============================================================================
+// Component
+// ============================================================================
 
 /**
  * Hero section component for Pauline Roussel website

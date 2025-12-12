@@ -1,12 +1,43 @@
-import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
+import * as React from "react";
+import * as LabelPrimitive from "@radix-ui/react-label";
 
-import { cn } from "~/lib/utils"
+import { cn } from "~/lib/utils";
 
-function Label({
+/**
+ * Props for the Label component
+ */
+export interface LabelProps extends React.ComponentProps<typeof LabelPrimitive.Root> {
+  /** Custom className */
+  className?: string;
+}
+
+/**
+ * Label - Form label component
+ *
+ * A styled label component built on Radix UI for form fields.
+ *
+ * Features:
+ * - Automatic association with form controls
+ * - Disabled state styling
+ * - Flexible layout with gap support
+ * - Non-selectable text for better UX
+ *
+ * Accessibility:
+ * - WCAG 2.1 AA compliant
+ * - Semantic label element
+ * - Proper disabled state handling
+ * - Works with peer-disabled utilities
+ *
+ * @example
+ * ```tsx
+ * <Label htmlFor="email">Email Address</Label>
+ * <Input id="email" type="email" />
+ * ```
+ */
+export function Label({
   className,
   ...props
-}: React.ComponentProps<typeof LabelPrimitive.Root>) {
+}: LabelProps) {
   return (
     <LabelPrimitive.Root
       data-slot="label"
@@ -16,7 +47,5 @@ function Label({
       )}
       {...props}
     />
-  )
+  );
 }
-
-export { Label }
