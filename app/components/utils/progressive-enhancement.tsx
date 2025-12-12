@@ -40,7 +40,7 @@ export interface FeatureGateProps {
  * Props for EnhancedGrid component
  */
 export interface EnhancedGridProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+  extends React.ComponentProps<"div"> {
   /** Number of columns for the grid */
   columns?: 2 | 3 | 4;
   /** Gap between grid items */
@@ -56,7 +56,7 @@ export interface EnhancedGridProps
 /**
  * Props for MotionSafe component
  */
-export interface MotionSafeProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface MotionSafeProps extends React.ComponentProps<"div"> {
   /** Animation classes to apply when motion is safe */
   animationClass: string;
   /** Fallback classes when motion should be reduced */

@@ -5,7 +5,7 @@ import { Mail, MapPin } from "lucide-react";
 /**
  * Props for the ContactInfo component
  */
-export interface ContactInfoProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface ContactInfoProps extends React.ComponentProps<"div"> {
   /** Custom className for additional styling */
   className?: string;
 }
