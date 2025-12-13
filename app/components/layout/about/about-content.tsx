@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "~/lib/utils";
 
-export interface AboutContentProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AboutContentProps extends React.ComponentProps<"div"> {
   /** Custom className for additional styling */
   className?: string;
   /** Optional custom about text content */

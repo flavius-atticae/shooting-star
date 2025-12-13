@@ -4,6 +4,10 @@ import { Button } from "~/components/ui/button";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 
+// ============================================================================
+// Types
+// ============================================================================
+
 export interface CallToActionProps extends Omit<
   React.HTMLAttributes<HTMLElement>,
   "children"
@@ -32,6 +36,10 @@ export interface CallToActionProps extends Omit<
   "aria-labelledby"?: string;
   "aria-describedby"?: string;
 }
+
+// ============================================================================
+// Component
+// ============================================================================
 
 /**
  * CallToAction Component - Section avec call-to-action pregnancy-safe

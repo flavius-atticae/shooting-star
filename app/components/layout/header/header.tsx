@@ -5,6 +5,10 @@ import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 import { MobileMenu } from "./mobile-menu";
 
+// ============================================================================
+// Types
+// ============================================================================
+
 /**
  * Desktop navigation links configuration
  */
@@ -20,6 +24,10 @@ export interface HeaderProps {
   /** For Storybook visual testing only - renders menu in open state */
   defaultOpen?: boolean;
 }
+
+// ============================================================================
+// Component
+// ============================================================================
 
 /**
  * Main Header component for Pauline Roussel website
