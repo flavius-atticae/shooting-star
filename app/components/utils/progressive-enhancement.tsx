@@ -73,7 +73,6 @@ export interface EnhancedImageProps
   /** Whether to use intersection observer for lazy loading */
   lazy?: boolean;
 }
-}
 
 // ============================================================================
 // Components
