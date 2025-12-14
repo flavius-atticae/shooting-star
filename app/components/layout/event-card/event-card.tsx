@@ -50,13 +50,16 @@ function toIsoDateTime(date: string, time: string): string | null {
   if (cachedMonth === null) return null;
 
   let normalizedMonth = cachedMonth;
-  if (!normalizedMonth) {
+  if (cachedMonth === undefined) {
     const computedMonth = normalizeMonthName(monthName);
 
-    const isValidMonth = Boolean(FRENCH_MONTHS[computedMonth]);
+    const isValidMonth = computedMonth in FRENCH_MONTHS;
     MONTH_NORMALIZATION_CACHE.set(monthName, isValidMonth ? computedMonth : null);
     if (MONTH_NORMALIZATION_CACHE.size > 50) {
-      MONTH_NORMALIZATION_CACHE.clear();
+      const [firstKey] = MONTH_NORMALIZATION_CACHE.keys();
+      if (firstKey) {
+        MONTH_NORMALIZATION_CACHE.delete(firstKey);
+      }
     }
     if (!isValidMonth) return null;
 
