@@ -61,12 +61,10 @@ export type {
 } from "~/components/ui/form";
 
 // Layout Components - Phase 1
-export {
-  Container,
-  type ContainerProps,
-  type ContainerSize,
-} from "~/components/ui/container";
-export { Section, type SectionProps } from "~/components/ui/section";
+export { Container } from "~/components/ui/container";
+export type { ContainerProps, ContainerSize } from "~/components/ui/container";
+export { Section } from "~/components/ui/section";
+export type { SectionProps } from "~/components/ui/section";
 
 // Constants pour usage externe
 export const PHASE_1_COMPONENTS = [
