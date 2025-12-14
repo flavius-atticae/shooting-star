@@ -2,6 +2,40 @@ import * as React from "react";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 
+const FRENCH_MONTHS: Record<string, string> = {
+  janvier: "01",
+  février: "02",
+  fevrier: "02",
+  mars: "03",
+  avril: "04",
+  mai: "05",
+  juin: "06",
+  juillet: "07",
+  août: "08",
+  aout: "08",
+  septembre: "09",
+  octobre: "10",
+  novembre: "11",
+  décembre: "12",
+  decembre: "12",
+};
+
+function toIsoDate(date: string, time: string) {
+  const [day, monthName, year] = date.split(" ");
+  if (!day || !monthName || !year) return null;
+
+  const normalizedMonth = monthName
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase();
+
+  const month = FRENCH_MONTHS[normalizedMonth];
+  if (!month) return null;
+
+  const paddedDay = day.padStart(2, "0");
+  return `${year}-${month}-${paddedDay}T${time}`;
+}
+
 export interface EventCardProps {
   /** Event unique identifier */
   id: string;
@@ -67,6 +101,7 @@ export function EventCard({
   ...props
 }: EventCardProps & Omit<React.HTMLAttributes<HTMLDivElement>, "children">) {
   const dateTimeLabel = `${date} - ${time}`;
+  const dateTimeValue = toIsoDate(date, time) ?? `${date} ${time}`;
 
   // Warn in development if neither detailsHref nor onDetailsClick is provided
   if (process.env.NODE_ENV === "development") {
@@ -102,7 +137,7 @@ export function EventCard({
         {/* Right: Date/Time (aligned to bottom) */}
         <div className="flex items-end">
           <time
-            dateTime={`${date} ${time}`} // TODO: Convert to ISO 8601 format (e.g., "2025-06-07T13:00:00") for proper machine readability
+            dateTime={dateTimeValue}
             className="font-sans text-sm text-primary/80"
           >
             {dateTimeLabel}

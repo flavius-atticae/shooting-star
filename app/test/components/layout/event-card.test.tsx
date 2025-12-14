@@ -84,9 +84,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
 
       const timeElement = screen.getByText(`${mockEvent.date} - ${mockEvent.time}`);
       expect(timeElement.tagName).toBe("TIME");
-      // NOTE: dateTime should use ISO 8601 format for proper machine readability
-      // This is a known limitation to be addressed in a future update
-      expect(timeElement).toHaveAttribute("dateTime", `${mockEvent.date} ${mockEvent.time}`);
+      expect(timeElement).toHaveAttribute("dateTime", "2025-06-07T13:00");
     });
 
     it("should have descriptive aria-label for details button", () => {
