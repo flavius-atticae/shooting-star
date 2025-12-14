@@ -24,10 +24,15 @@ const FRENCH_MONTHS: Record<string, string> = {
  * Converts a French-formatted date (e.g., "7 Juin 2025") and 24h time (e.g., "13:00")
  * to an ISO 8601 date-time string ("2025-06-07T13:00").
  * Returns null when parsing fails.
+ *
+ * @param date French date in "DD Mois YYYY" format (month name in French)
+ * @param time Time in 24-hour format ("HH:mm" or "HH:mm:ss")
  */
 function toIsoDate(date: string, time: string) {
-  const [day, monthName, year] = date.split(" ");
-  if (!day || !monthName || !year) return null;
+  const dateMatch = /^(\d{1,2})\s+([^\s]+)\s+(\d{4})$/u.exec(date);
+  if (!dateMatch) return null;
+
+  const [, day, monthName, year] = dateMatch;
 
   const timeMatch = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(time);
   if (!timeMatch) return null;
