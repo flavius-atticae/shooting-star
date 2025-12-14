@@ -4,23 +4,18 @@ import { Button } from "~/components/ui/button";
 
 const FRENCH_MONTHS: Record<string, string> = {
   janvier: "01",
-  février: "02",
   fevrier: "02",
   mars: "03",
   avril: "04",
   mai: "05",
   juin: "06",
   juillet: "07",
-  août: "08",
   aout: "08",
   septembre: "09",
   octobre: "10",
   novembre: "11",
-  décembre: "12",
   decembre: "12",
 };
-
-const MONTH_NORMALIZATION_CACHE = new Map<string, string | null>();
 
 function normalizeMonthName(monthName: string) {
   return monthName
@@ -37,42 +32,38 @@ function normalizeMonthName(monthName: string) {
  * @param date French date in "DD Mois YYYY" format (month name in French)
  * @param time Time in 24-hour format ("HH:mm" or "HH:mm:ss")
  */
-function toIsoDateTime(date: string, time: string): string | null {
+export function toIsoDateTime(date: string, time: string): string | null {
   const dateMatch = /^(\d{1,2})\s+([^\s]+)\s+(\d{4})$/u.exec(date);
   if (!dateMatch) return null;
 
   const [, day, monthName, year] = dateMatch;
+  const dayNumber = Number.parseInt(day, 10);
+  if (!Number.isInteger(dayNumber) || dayNumber < 1 || dayNumber > 31) return null;
 
   const timeMatch = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(time);
   if (!timeMatch) return null;
+  const [, hourRaw, minuteRaw, secondRaw] = timeMatch;
 
-  const cachedMonth = MONTH_NORMALIZATION_CACHE.get(monthName);
-  if (cachedMonth === null) return null;
+  const hour = Number.parseInt(hourRaw, 10);
+  const minute = Number.parseInt(minuteRaw, 10);
+  const second = secondRaw !== undefined ? Number.parseInt(secondRaw, 10) : undefined;
 
-  let normalizedMonth = cachedMonth;
-  if (cachedMonth === undefined) {
-    const computedMonth = normalizeMonthName(monthName);
+  const isValidHour = Number.isInteger(hour) && hour >= 0 && hour <= 23;
+  const isValidMinute = Number.isInteger(minute) && minute >= 0 && minute <= 59;
+  const isValidSecond =
+    second === undefined || (Number.isInteger(second) && second >= 0 && second <= 59);
 
-    const isValidMonth = computedMonth in FRENCH_MONTHS;
-    MONTH_NORMALIZATION_CACHE.set(monthName, isValidMonth ? computedMonth : null);
-    while (MONTH_NORMALIZATION_CACHE.size > 50) {
-      const [firstKey] = MONTH_NORMALIZATION_CACHE.keys();
-      if (!firstKey) break;
-      MONTH_NORMALIZATION_CACHE.delete(firstKey);
-    }
-    if (!isValidMonth) return null;
+  if (!isValidHour || !isValidMinute || !isValidSecond) return null;
 
-    normalizedMonth = computedMonth;
-  }
+  const normalizedMonth = normalizeMonthName(monthName);
 
   const month = FRENCH_MONTHS[normalizedMonth];
   if (!month) return null;
 
-  const paddedDay = day.padStart(2, "0");
-  const [_, hour, minute, second] = timeMatch;
-  const paddedHour = hour.padStart(2, "0");
-  const paddedMinute = minute.padStart(2, "0");
-  const paddedSecond = second ? second.padStart(2, "0") : undefined;
+  const paddedDay = dayNumber.toString().padStart(2, "0");
+  const paddedHour = hour.toString().padStart(2, "0");
+  const paddedMinute = minute.toString().padStart(2, "0");
+  const paddedSecond = second !== undefined ? second.toString().padStart(2, "0") : undefined;
 
   const normalizedTime = paddedSecond
     ? `${paddedHour}:${paddedMinute}:${paddedSecond}`
