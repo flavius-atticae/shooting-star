@@ -55,11 +55,10 @@ function toIsoDateTime(date: string, time: string): string | null {
 
     const isValidMonth = computedMonth in FRENCH_MONTHS;
     MONTH_NORMALIZATION_CACHE.set(monthName, isValidMonth ? computedMonth : null);
-    if (MONTH_NORMALIZATION_CACHE.size > 50) {
+    while (MONTH_NORMALIZATION_CACHE.size > 50) {
       const [firstKey] = MONTH_NORMALIZATION_CACHE.keys();
-      if (firstKey) {
-        MONTH_NORMALIZATION_CACHE.delete(firstKey);
-      }
+      if (!firstKey) break;
+      MONTH_NORMALIZATION_CACHE.delete(firstKey);
     }
     if (!isValidMonth) return null;
 
