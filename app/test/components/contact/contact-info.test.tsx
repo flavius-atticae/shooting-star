@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import { ContactInfo } from "../../../components/contact/contact-info";
+import { ContactInfo } from "~/components/contact";
 
 describe("ContactInfo Component", () => {
   describe("Rendering", () => {

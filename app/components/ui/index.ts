@@ -1,18 +1,47 @@
+// Background System - Phase 1 Final
+export {
+  Background,
+  BackgroundPattern,
+  useBackgroundClasses,
+} from "~/components/ui/background";
+export type {
+  BackgroundProps,
+  BackgroundPatternProps,
+  BackgroundPatternType,
+  BackgroundPatternIntensity,
+} from "~/components/ui/background";
+
 // Foundation Components - Phase 1
-export { Button, buttonVariants } from "./button";
-import * as React from "react";
-import { buttonVariants } from "./button";
+export { Button, buttonVariants } from "~/components/ui/button";
+export type { ButtonProps } from "~/components/ui/button";
+
 export {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-} from "./card";
-export { Input } from "./input";
-export { Label } from "./label";
-export { Textarea } from "./textarea";
-export { Select } from "./select";
+} from "~/components/ui/card";
+export type {
+  CardActionProps,
+  CardContentProps,
+  CardDescriptionProps,
+  CardFooterProps,
+  CardHeaderProps,
+  CardProps,
+  CardTitleProps,
+} from "~/components/ui/card";
+
+export { Input } from "~/components/ui/input";
+export type { InputProps } from "~/components/ui/input";
+export { Label } from "~/components/ui/label";
+export type { LabelProps } from "~/components/ui/label";
+export { Textarea } from "~/components/ui/textarea";
+export type { TextareaProps } from "~/components/ui/textarea";
+export { Select } from "~/components/ui/select";
+export type { SelectProps } from "~/components/ui/select";
 export {
   Form,
   FormControl,
@@ -22,29 +51,22 @@ export {
   FormLabel,
   FormMessage,
   useFormField,
-} from "./form";
+} from "~/components/ui/form";
+export type {
+  FormControlProps,
+  FormDescriptionProps,
+  FormItemProps,
+  FormLabelProps,
+  FormMessageProps,
+} from "~/components/ui/form";
 
 // Layout Components - Phase 1
 export {
   Container,
   type ContainerProps,
   type ContainerSize,
-} from "./container";
-export { Section, type SectionProps } from "./section";
-
-// Background System - Phase 1 Final
-export {
-  Background,
-  BackgroundPattern,
-  useBackgroundClasses,
-  type BackgroundProps,
-} from "./background";
-
-// Re-export types for convenience
-export type ButtonProps = React.ComponentProps<"button"> &
-  import("class-variance-authority").VariantProps<typeof buttonVariants> & {
-    asChild?: boolean;
-  };
+} from "~/components/ui/container";
+export { Section, type SectionProps } from "~/components/ui/section";
 
 // Constants pour usage externe
 export const PHASE_1_COMPONENTS = [

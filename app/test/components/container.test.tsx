@@ -1,7 +1,7 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import { Container } from "../../components/ui/container";
+import { Container } from "~/components/ui";
 
 describe("Container Component - Pregnancy-Safe Testing", () => {
   describe("Size Variants - Real TailwindCSS Classes", () => {

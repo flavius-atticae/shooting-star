@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
-import { EventCard } from "../../../components/layout/event-card";
+import { EventCard } from "~/components/layout/event-card";
 
 describe("EventCard Component - Pregnancy-Safe Testing", () => {
   const mockEvent = {
