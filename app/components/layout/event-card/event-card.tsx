@@ -22,6 +22,13 @@ const FRENCH_MONTHS: Record<string, string> = {
 
 const MONTH_NORMALIZATION_CACHE = new Map<string, string | null>();
 
+function normalizeMonthName(monthName: string) {
+  return monthName
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .toLowerCase();
+}
+
 /**
  * Converts a French-formatted date (e.g., "7 Juin 2025") and 24h time (e.g., "13:00")
  * to an ISO 8601 date-time string ("2025-06-07T13:00").
@@ -44,13 +51,13 @@ function toIsoDateTime(date: string, time: string): string | null {
 
   let normalizedMonth = cachedMonth;
   if (!normalizedMonth) {
-    const computedMonth = monthName
-      .normalize("NFD")
-      .replace(/\p{Diacritic}/gu, "")
-      .toLowerCase();
+    const computedMonth = normalizeMonthName(monthName);
 
     const isValidMonth = Boolean(FRENCH_MONTHS[computedMonth]);
     MONTH_NORMALIZATION_CACHE.set(monthName, isValidMonth ? computedMonth : null);
+    if (MONTH_NORMALIZATION_CACHE.size > 50) {
+      MONTH_NORMALIZATION_CACHE.clear();
+    }
     if (!isValidMonth) return null;
 
     normalizedMonth = computedMonth;
