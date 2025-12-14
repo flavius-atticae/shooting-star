@@ -20,9 +20,17 @@ const FRENCH_MONTHS: Record<string, string> = {
   decembre: "12",
 };
 
+/**
+ * Converts a French-formatted date (e.g., "7 Juin 2025") and 24h time (e.g., "13:00")
+ * to an ISO 8601 date-time string ("2025-06-07T13:00").
+ * Returns null when parsing fails.
+ */
 function toIsoDate(date: string, time: string) {
   const [day, monthName, year] = date.split(" ");
   if (!day || !monthName || !year) return null;
+
+  const timeMatch = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(time);
+  if (!timeMatch) return null;
 
   const normalizedMonth = monthName
     .normalize("NFD")
@@ -33,7 +41,16 @@ function toIsoDate(date: string, time: string) {
   if (!month) return null;
 
   const paddedDay = day.padStart(2, "0");
-  return `${year}-${month}-${paddedDay}T${time}`;
+  const [_, hour, minute, second] = timeMatch;
+  const paddedHour = hour.padStart(2, "0");
+  const paddedMinute = minute.padStart(2, "0");
+  const paddedSecond = second ? second.padStart(2, "0") : undefined;
+
+  const normalizedTime = paddedSecond
+    ? `${paddedHour}:${paddedMinute}:${paddedSecond}`
+    : `${paddedHour}:${paddedMinute}`;
+
+  return `${year}-${month}-${paddedDay}T${normalizedTime}`;
 }
 
 export interface EventCardProps {
