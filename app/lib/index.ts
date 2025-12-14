@@ -12,8 +12,8 @@ export {
   classifyBrowserCapability,
   browserSupportDebug,
   BROWSER_TEST_MATRIX,
-  type BrowserCapability
-} from './browser-support'
+  type BrowserCapability,
+} from "~/lib/browser-support";
 
 // Utility functions
-export { cn } from './utils'
+export { cn } from "~/lib/utils";

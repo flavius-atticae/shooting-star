@@ -12,5 +12,5 @@ export {
   useContainerQueries,
   useMotionPreferences,
   useProgressiveEnhancement,
-  useBrowserSupportDebug
-} from './use-browser-support'
+  useBrowserSupportDebug,
+} from "~/hooks/use-browser-support";

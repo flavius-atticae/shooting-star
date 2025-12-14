@@ -25,7 +25,7 @@ export { FeatureBlock } from "./feature-block";
 export type { FeatureBlockProps } from "./feature-block";
 
 // Re-export UI components pour usage avec layout
-export { Container, type ContainerSize } from "../ui/container";
-export { Section } from "../ui/section";
-export type { ContainerProps } from "../ui/container";
-export type { SectionProps } from "../ui/section";
+export { Container, type ContainerSize } from "~/components/ui/container";
+export { Section } from "~/components/ui/section";
+export type { ContainerProps } from "~/components/ui/container";
+export type { SectionProps } from "~/components/ui/section";

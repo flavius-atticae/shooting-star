@@ -1,8 +1,8 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
-import { EventList } from "../../../components/layout/event-list";
-import type { EventCardProps } from "../../../components/layout/event-card";
+import { EventList } from "~/components/layout/event-list";
+import type { EventCardProps } from "~/components/layout/event-card";
 
 describe("EventList Component - Pregnancy-Safe Testing", () => {
   const mockEvents: EventCardProps[] = [

@@ -1,7 +1,7 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import { Background } from '../../components/ui/background';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import { describe, it, expect } from "vitest";
+import { Background } from "~/components/ui";
 
 describe('Background Component - Pregnancy-Safe Testing', () => {
   describe('Pregnancy-Safe Variants', () => {
