@@ -39,15 +39,18 @@ function toIsoDate(date: string, time: string): string | null {
   const timeMatch = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(time);
   if (!timeMatch) return null;
 
-  const normalizedMonth =
-    MONTH_NORMALIZATION_CACHE.get(monthName) ??
-    monthName
+  let normalizedMonth = MONTH_NORMALIZATION_CACHE.get(monthName);
+  if (!normalizedMonth) {
+    const computedMonth = monthName
       .normalize("NFD")
       .replace(/\p{Diacritic}/gu, "")
       .toLowerCase();
 
-  if (!MONTH_NORMALIZATION_CACHE.has(monthName)) {
-    MONTH_NORMALIZATION_CACHE.set(monthName, normalizedMonth);
+    if (FRENCH_MONTHS[computedMonth]) {
+      MONTH_NORMALIZATION_CACHE.set(monthName, computedMonth);
+    }
+
+    normalizedMonth = computedMonth;
   }
 
   const month = FRENCH_MONTHS[normalizedMonth];
