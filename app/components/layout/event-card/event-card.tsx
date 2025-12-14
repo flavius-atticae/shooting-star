@@ -20,7 +20,7 @@ const FRENCH_MONTHS: Record<string, string> = {
   decembre: "12",
 };
 
-const MONTH_NORMALIZATION_CACHE = new Map<string, string>();
+const MONTH_NORMALIZATION_CACHE = new Map<string, string | null>();
 
 /**
  * Converts a French-formatted date (e.g., "7 Juin 2025") and 24h time (e.g., "13:00")
@@ -30,7 +30,7 @@ const MONTH_NORMALIZATION_CACHE = new Map<string, string>();
  * @param date French date in "DD Mois YYYY" format (month name in French)
  * @param time Time in 24-hour format ("HH:mm" or "HH:mm:ss")
  */
-function toIsoDate(date: string, time: string): string | null {
+function toIsoDateTime(date: string, time: string): string | null {
   const dateMatch = /^(\d{1,2})\s+([^\s]+)\s+(\d{4})$/u.exec(date);
   if (!dateMatch) return null;
 
@@ -39,16 +39,19 @@ function toIsoDate(date: string, time: string): string | null {
   const timeMatch = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(time);
   if (!timeMatch) return null;
 
-  let normalizedMonth = MONTH_NORMALIZATION_CACHE.get(monthName);
+  const cachedMonth = MONTH_NORMALIZATION_CACHE.get(monthName);
+  if (cachedMonth === null) return null;
+
+  let normalizedMonth = cachedMonth;
   if (!normalizedMonth) {
     const computedMonth = monthName
       .normalize("NFD")
       .replace(/\p{Diacritic}/gu, "")
       .toLowerCase();
 
-    if (FRENCH_MONTHS[computedMonth]) {
-      MONTH_NORMALIZATION_CACHE.set(monthName, computedMonth);
-    }
+    const isValidMonth = Boolean(FRENCH_MONTHS[computedMonth]);
+    MONTH_NORMALIZATION_CACHE.set(monthName, isValidMonth ? computedMonth : null);
+    if (!isValidMonth) return null;
 
     normalizedMonth = computedMonth;
   }
@@ -134,7 +137,7 @@ export function EventCard({
   ...props
 }: EventCardProps & Omit<React.HTMLAttributes<HTMLDivElement>, "children">) {
   const dateTimeLabel = `${date} - ${time}`;
-  const dateTimeValue = toIsoDate(date, time) ?? `${date} ${time}`;
+  const dateTimeValue = toIsoDateTime(date, time) ?? `${date} ${time}`;
 
   // Warn in development if neither detailsHref nor onDetailsClick is provided
   if (process.env.NODE_ENV === "development") {
