@@ -2,26 +2,43 @@ import * as React from "react";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 
-const FRENCH_MONTHS: Record<string, string> = {
-  janvier: "01",
-  fevrier: "02",
-  mars: "03",
-  avril: "04",
-  mai: "05",
-  juin: "06",
-  juillet: "07",
-  aout: "08",
-  septembre: "09",
-  octobre: "10",
-  novembre: "11",
-  decembre: "12",
-};
-
 function normalizeMonthName(monthName: string) {
   return monthName
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase();
+}
+
+function getFrenchMonth(monthName: string): string | undefined {
+  const normalized = normalizeMonthName(monthName);
+  switch (normalized) {
+    case "janvier":
+      return "01";
+    case "fevrier":
+      return "02";
+    case "mars":
+      return "03";
+    case "avril":
+      return "04";
+    case "mai":
+      return "05";
+    case "juin":
+      return "06";
+    case "juillet":
+      return "07";
+    case "aout":
+      return "08";
+    case "septembre":
+      return "09";
+    case "octobre":
+      return "10";
+    case "novembre":
+      return "11";
+    case "decembre":
+      return "12";
+    default:
+      return undefined;
+  }
 }
 
 /**
@@ -40,13 +57,14 @@ export function toIsoDateTime(date: string, time: string): string | null {
   const dayNumber = Number.parseInt(day, 10);
   if (!Number.isInteger(dayNumber) || dayNumber < 1 || dayNumber > 31) return null;
 
+  // eslint-disable-next-line security/detect-unsafe-regex -- Simple time pattern with bounded digits; no catastrophic backtracking
   const timeMatch = /^(\d{1,2}):(\d{2})(?::(\d{2}))?$/.exec(time);
   if (!timeMatch) return null;
   const [, hourRaw, minuteRaw, secondRaw] = timeMatch;
 
   const hour = Number.parseInt(hourRaw, 10);
   const minute = Number.parseInt(minuteRaw, 10);
-  const second = secondRaw !== undefined ? Number.parseInt(secondRaw, 10) : undefined;
+  const second = secondRaw ? Number.parseInt(secondRaw, 10) : undefined;
 
   const isValidHour = Number.isInteger(hour) && hour >= 0 && hour <= 23;
   const isValidMinute = Number.isInteger(minute) && minute >= 0 && minute <= 59;
@@ -55,9 +73,7 @@ export function toIsoDateTime(date: string, time: string): string | null {
 
   if (!isValidHour || !isValidMinute || !isValidSecond) return null;
 
-  const normalizedMonth = normalizeMonthName(monthName);
-
-  const month = FRENCH_MONTHS[normalizedMonth];
+  const month = getFrenchMonth(monthName);
   if (!month) return null;
 
   const paddedDay = dayNumber.toString().padStart(2, "0");
