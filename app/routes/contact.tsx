@@ -1,10 +1,10 @@
 import type { Route } from "./+types/contact";
 import { Header } from "~/components/layout/header/header";
-import { ContactSection } from "~/components/contact";
+import { ContactSection } from "~/components/layout/contact";
 import { Footer } from "~/components/layout/footer/footer";
 import { Container } from "~/components/ui/container";
 import { Section } from "~/components/ui/section";
-import type { ContactFormData } from "~/components/contact";
+import type { ContactFormData } from "~/components/layout/contact";
 
 /**
  * Meta tags for the Contact page
