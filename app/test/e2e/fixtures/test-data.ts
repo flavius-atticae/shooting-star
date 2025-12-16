@@ -5,11 +5,11 @@
  * Based on real pregnancy and postpartum user scenarios
  */
 
-// Import centralized performance thresholds
-import { PERFORMANCE_THRESHOLDS as PerformanceThresholdsImport } from "~/lib/performance-thresholds";
+// Import centralized performance thresholds for internal and external use
+import { PERFORMANCE_THRESHOLDS } from "~/lib/performance-thresholds";
 
 // Re-export for external use
-export { PERFORMANCE_THRESHOLDS } from "~/lib/performance-thresholds";
+export { PERFORMANCE_THRESHOLDS };
 
 // Quebec healthcare system integration data
 export const QUEBEC_HEALTHCARE = {
@@ -217,6 +217,6 @@ export const TEST_DATA = {
   BOOKING_SCENARIOS,
   VALIDATION_PATTERNS,
   ACCESSIBILITY_SCENARIOS,
-  PERFORMANCE_THRESHOLDS: PerformanceThresholdsImport,
+  PERFORMANCE_THRESHOLDS,
   ERROR_SCENARIOS
 } as const;
