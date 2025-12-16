@@ -49,8 +49,8 @@ export function meta(_args: Route.MetaArgs) {
 export default function Contact() {
   /**
    * Handle form submission
-   * For now, just logs to console and shows success message
-   * TODO: Implement backend integration (Formspree, Netlify Forms, or custom API)
+   * For now, just logs to console and shows success message.
+   * Integrate backend submission (Formspree, Netlify Forms, or custom API) when ready.
    */
   const handleFormSubmit = async (data: ContactFormData) => {
     // Log form data (development only)
@@ -58,7 +58,7 @@ export default function Contact() {
       console.log("Contact form submitted:", data);
     }
 
-    // TODO: Future implementation
+    // Future implementation:
     // - Send to Formspree, Netlify Forms, or custom API
     // - Add proper error handling
     // - Add analytics tracking
