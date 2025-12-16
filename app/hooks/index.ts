@@ -10,6 +10,7 @@ export {
   useBrowserFeatures,
   useBrowserCapabilities,
   useContainerQueries,
+  useContainerQuerySupport,
   useMotionPreferences,
   useProgressiveEnhancement,
   useBrowserSupportDebug,

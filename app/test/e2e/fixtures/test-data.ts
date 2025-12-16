@@ -5,6 +5,12 @@
  * Based on real pregnancy and postpartum user scenarios
  */
 
+// Import centralized performance thresholds for internal and external use
+import { PERFORMANCE_THRESHOLDS } from "~/lib/performance-thresholds";
+
+// Re-export for external use
+export { PERFORMANCE_THRESHOLDS };
+
 // Quebec healthcare system integration data
 export const QUEBEC_HEALTHCARE = {
   HEALTH_CARDS: {
@@ -180,23 +186,6 @@ export const ACCESSIBILITY_SCENARIOS = {
     description: 'Screen reader support for pregnancy fatigue',
     requirements: ['alt-text', 'aria-labels', 'semantic-html'],
     expectedBehavior: 'Full content accessible via screen reader'
-  }
-} as const;
-
-// Performance test thresholds specific to pregnancy users
-export const PERFORMANCE_THRESHOLDS = {
-  // Pregnancy users often have slower devices/connections
-  LCP_TARGET: 2500, // ms - slightly more lenient than standard 2000ms
-  FID_TARGET: 100,  // ms - standard
-  CLS_TARGET: 0.1,  // score - standard
-  
-  // Pregnancy-specific metrics
-  TIME_TO_INTERACTIVE: 3500, // ms - allow more time for fatigue
-  BUNDLE_SIZE_LIMIT: 200, // KB - keep initial load small
-  IMAGE_OPTIMIZATION: {
-    maxSize: 500, // KB per image
-    formats: ['webp', 'avif'], // modern efficient formats
-    lazy: true // lazy loading for slower connections
   }
 } as const;
 
