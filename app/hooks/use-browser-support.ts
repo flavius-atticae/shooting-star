@@ -181,8 +181,8 @@ export function useContainerQueries() {
  * ```
  */
 export function useContainerQuerySupport(): boolean {
-  const { hasSupport } = useContainerQueries()
-  return hasSupport
+  const { hasSupport } = useContainerQueries();
+  return hasSupport;
 }
 
 /**

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import {
   cn,
   browserSupport,
@@ -107,7 +107,7 @@ describe("lib/browser-support", () => {
   describe("clearFeatureCache", () => {
     it("should clear the cache allowing fresh detection", () => {
       // First call to populate cache
-      const features1 = getFeatureSupport();
+      getFeatureSupport();
 
       // Clear cache
       clearFeatureCache();
