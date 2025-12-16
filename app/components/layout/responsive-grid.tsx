@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { cn } from "~/lib/utils";
 import { useContainerQueries } from "~/hooks/use-browser-support";
+// Import useContainerQuerySupport for use in this file and re-export for backward compatibility
+import { useContainerQuerySupport } from "~/hooks/use-browser-support";
 
 // ============================================================================
 // Types
@@ -148,29 +150,12 @@ export const AdaptiveGrid = React.forwardRef<HTMLDivElement, AdaptiveGridProps>(
 AdaptiveGrid.displayName = "AdaptiveGrid";
 
 // ============================================================================
-// Utilities
+// Utilities - Re-exported from hooks for backward compatibility
 // ============================================================================
 
-/**
- * Hook to detect container query support
- *
- * Returns whether the browser supports CSS container queries.
- * Uses the main browser-support detection system.
- *
- * @returns true if container queries are supported, false otherwise
- *
- * @example
- * ```tsx
- * function MyComponent() {
- *   const hasSupport = useContainerQuerySupport();
- *   return <div>{hasSupport ? 'Modern layout' : 'Fallback layout'}</div>;
- * }
- * ```
- */
-export function useContainerQuerySupport(): boolean {
-  const { hasSupport } = useContainerQueries();
-  return hasSupport;
-}
+// Re-export useContainerQuerySupport for backward compatibility
+// Direct imports from ~/hooks/use-browser-support are preferred
+export { useContainerQuerySupport };
 
 /**
  * AdaptiveGridDemo - Demonstration component

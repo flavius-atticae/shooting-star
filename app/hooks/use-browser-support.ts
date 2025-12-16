@@ -165,6 +165,27 @@ export function useContainerQueries() {
 }
 
 /**
+ * Simple hook to detect container query support
+ * 
+ * Returns whether the browser supports CSS container queries.
+ * Uses the main browser-support detection system.
+ * 
+ * @returns true if container queries are supported, false otherwise
+ * 
+ * @example
+ * ```tsx
+ * function MyComponent() {
+ *   const hasSupport = useContainerQuerySupport();
+ *   return <div>{hasSupport ? 'Modern layout' : 'Fallback layout'}</div>;
+ * }
+ * ```
+ */
+export function useContainerQuerySupport(): boolean {
+  const { hasSupport } = useContainerQueries()
+  return hasSupport
+}
+
+/**
  * Hook for motion preferences (pregnancy-safe UX)
  * Critical for users experiencing nausea or motion sensitivity
  * 

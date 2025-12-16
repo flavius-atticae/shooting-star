@@ -81,13 +81,8 @@ export const ACCESSIBILITY = {
   }
 } as const;
 
-// Performance testing thresholds
-export const PERFORMANCE = {
-  LCP_THRESHOLD: 2500, // ms - Core Web Vital
-  FID_THRESHOLD: 100,  // ms - Core Web Vital  
-  CLS_THRESHOLD: 0.1,  // score - Core Web Vital
-  LIGHTHOUSE_SCORE: 90, // minimum acceptable score
-} as const;
-
-// Export alias for backward compatibility
-export const PERFORMANCE_THRESHOLDS = PERFORMANCE;
+// Re-export centralized performance thresholds
+export {
+  CORE_WEB_VITALS as PERFORMANCE,
+  PERFORMANCE_THRESHOLDS,
+} from "~/lib/performance-thresholds";

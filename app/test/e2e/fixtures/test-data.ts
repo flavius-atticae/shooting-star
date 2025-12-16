@@ -183,22 +183,11 @@ export const ACCESSIBILITY_SCENARIOS = {
   }
 } as const;
 
-// Performance test thresholds specific to pregnancy users
-export const PERFORMANCE_THRESHOLDS = {
-  // Pregnancy users often have slower devices/connections
-  LCP_TARGET: 2500, // ms - slightly more lenient than standard 2000ms
-  FID_TARGET: 100,  // ms - standard
-  CLS_TARGET: 0.1,  // score - standard
-  
-  // Pregnancy-specific metrics
-  TIME_TO_INTERACTIVE: 3500, // ms - allow more time for fatigue
-  BUNDLE_SIZE_LIMIT: 200, // KB - keep initial load small
-  IMAGE_OPTIMIZATION: {
-    maxSize: 500, // KB per image
-    formats: ['webp', 'avif'], // modern efficient formats
-    lazy: true // lazy loading for slower connections
-  }
-} as const;
+// Import centralized performance thresholds for local use
+import { PERFORMANCE_THRESHOLDS as PerformanceThresholdsImport } from "~/lib/performance-thresholds";
+
+// Re-export for external use
+export { PERFORMANCE_THRESHOLDS } from "~/lib/performance-thresholds";
 
 // Error scenarios and recovery testing
 export const ERROR_SCENARIOS = {
@@ -228,6 +217,6 @@ export const TEST_DATA = {
   BOOKING_SCENARIOS,
   VALIDATION_PATTERNS,
   ACCESSIBILITY_SCENARIOS,
-  PERFORMANCE_THRESHOLDS,
+  PERFORMANCE_THRESHOLDS: PerformanceThresholdsImport,
   ERROR_SCENARIOS
 } as const;
