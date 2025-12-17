@@ -147,10 +147,15 @@ export function useContainerQueries() {
     /**
      * Get appropriate grid class with responsive Tailwind classes
      */
-    getGridClass: (columns: 2 | 3 = 2) => {
-      return columns === 3 
-        ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
-        : 'grid grid-cols-1 md:grid-cols-2'
+    getGridClass: (columns: 2 | 3 | 4 = 2) => {
+      switch (columns) {
+        case 4:
+          return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+        case 3:
+          return 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
+        default:
+          return 'grid grid-cols-1 md:grid-cols-2'
+      }
     }
   }), [])
   
