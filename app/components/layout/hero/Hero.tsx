@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "~/lib/utils";
+import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 import { FadeInTitle, FadeInSubtitle } from "./hero-animations";
 
@@ -94,14 +95,13 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
     const variantConfig = HERO_VARIANTS[variant];
 
     return (
-      <section
+      <Section
         ref={ref}
+        background="accent"
+        spacing="none"
         className={cn(
           // Layout and positioning
-          "relative w-full overflow-hidden",
-
-          // Background color - pregnancy-safe bg-gris
-          "bg-gris",
+          "relative overflow-hidden",
 
           // Variant-specific height classes
           variantConfig.classes,
@@ -130,7 +130,7 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
         >
           {children || <HeroContent title={title} subtitle={subtitle} />}
         </Container>
-      </section>
+      </Section>
     );
   }
 );
