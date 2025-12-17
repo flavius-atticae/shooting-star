@@ -45,10 +45,6 @@ export interface EnhancedGridProps
   columns?: 2 | 3 | 4;
   /** Gap between grid items */
   gap?: string;
-  /** Enable container query context */
-  enableContainerQuery?: boolean;
-  /** Container name for specific targeting */
-  containerName?: string;
 }
 
 /**
@@ -135,22 +131,19 @@ export const FeatureGate: React.FC<FeatureGateProps> = ({
 };
 
 /**
- * EnhancedGrid - Progressive grid with Container Queries
+ * EnhancedGrid - Responsive grid layout component
  *
- * Grid component that uses Container Queries when available, falling back to
- * responsive media queries on unsupported browsers.
+ * Grid component that uses responsive Tailwind CSS media queries
+ * for consistent layouts across all browsers.
  *
  * Features:
- * - Container Queries for modern browsers
- * - Media query fallback for legacy browsers
+ * - Responsive media query-based grid
  * - Configurable column count (2, 3, or 4)
  * - Custom gap support
- * - Named container support
  *
  * Accessibility:
  * - Semantic HTML
  * - Consistent layout across browsers
- * - No layout shift between feature levels
  *
  * @example
  * ```tsx
@@ -165,38 +158,10 @@ export const EnhancedGrid: React.FC<EnhancedGridProps> = ({
   children,
   columns = 2,
   gap = "gap-4",
-  enableContainerQuery = true,
-  containerName,
   className,
   ...props
 }) => {
-  const { useModernLayout } = useProgressiveEnhancement();
-  const hasContainerQueries = useBrowserFeature("containerQueries");
-
-  // Modern approach with container queries
-  if (useModernLayout && hasContainerQueries && enableContainerQuery) {
-    const containerClass = containerName
-      ? "container-name-content"
-      : "container-query";
-    const gridClass = `cq-grid-${columns}`;
-
-    return (
-      <div
-        className={cn(containerClass, gridClass, gap, className)}
-        style={
-          containerName
-            ? ({ containerName } as React.CSSProperties)
-            : undefined
-        }
-        {...props}
-      >
-        {children}
-      </div>
-    );
-  }
-
-  // Fallback approach with media queries
-  // Safe grid class selection based on column count
+  // Grid class selection based on column count using responsive Tailwind classes
   const getGridClass = (cols: 2 | 3 | 4): string => {
     switch (cols) {
       case 2:

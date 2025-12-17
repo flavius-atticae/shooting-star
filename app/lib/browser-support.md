@@ -19,10 +19,10 @@ Le système de détection de features est conçu spécifiquement pour les besoin
 import { useBrowserFeature } from '~/hooks/use-browser-support'
 
 function MyComponent() {
-  const hasContainerQueries = useBrowserFeature('containerQueries')
+  const hasGrid = useBrowserFeature('cssGrid')
   
   return (
-    <div className={hasContainerQueries ? 'cq-grid-2' : 'grid grid-cols-1 md:grid-cols-2'}>
+    <div className={hasGrid ? 'grid grid-cols-2' : 'flex flex-wrap'}>
       {/* Content */}
     </div>
   )
@@ -127,19 +127,17 @@ import { EnhancedImage } from '~/components/utils/progressive-enhancement'
 
 ### useContainerQueries
 
-Hook avancé pour Container Queries avec helpers :
+Hook pour détection de support Container Queries avec helpers pour classes de grille responsives :
 
 ```tsx
 import { useContainerQueries } from '~/hooks/use-browser-support'
 
 function ResponsiveComponent() {
-  const { hasSupport, getContainerClass, getGridClass } = useContainerQueries()
+  const { hasSupport, getGridClass } = useContainerQueries()
   
   return (
-    <div className={getContainerClass()}>
-      <div className={getGridClass(3)}>
-        {/* Content */}
-      </div>
+    <div className={getGridClass(3)}>
+      {/* Content - uses responsive Tailwind classes */}
     </div>
   )
 }
@@ -308,8 +306,7 @@ Voici un exemple complet d'utilisation du système :
 ```tsx
 import { 
   useBrowserCapabilities, 
-  useMotionPreferences,
-  useContainerQueries 
+  useMotionPreferences
 } from '~/hooks/use-browser-support'
 import { 
   FeatureGate, 
@@ -320,7 +317,6 @@ import {
 function YogaClassGrid({ classes }: { classes: YogaClass[] }) {
   const capabilities = useBrowserCapabilities()
   const { prefersReduced } = useMotionPreferences()
-  const { hasSupport: hasContainerQueries } = useContainerQueries()
   
   // Adapter l'expérience selon les capacités
   if (capabilities.tier === 'minimal') {
@@ -336,11 +332,10 @@ function YogaClassGrid({ classes }: { classes: YogaClass[] }) {
         </div>
       )}
       
-      {/* Grid adaptatif avec container queries ou media queries */}
+      {/* Grid adaptatif avec media queries responsives */}
       <EnhancedGrid 
         columns={3} 
         gap="gap-6"
-        enableContainerQuery={hasContainerQueries}
       >
         {classes.map((yogaClass) => (
           <MotionSafe
