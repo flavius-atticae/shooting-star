@@ -138,7 +138,8 @@ export function useContainerQueries() {
   const helpers = useMemo(() => ({
     /**
      * Get appropriate CSS class for container query context
-     * @deprecated Container query CSS classes have been removed. Returns empty string.
+     * @deprecated Container query CSS classes have been removed. Always returns empty string.
+     * @param _enabled - Ignored parameter kept for backward compatibility
      */
     getContainerClass: (_enabled: boolean = true) => {
       return ''
