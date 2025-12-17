@@ -23,10 +23,10 @@ import {
  * @example
  * ```tsx
  * function ResponsiveComponent() {
- *   const hasContainerQueries = useBrowserFeature('containerQueries')
+ *   const hasGrid = useBrowserFeature('cssGrid')
  *   
  *   return (
- *     <div className={hasContainerQueries ? 'cq-grid-2' : 'grid grid-cols-1 md:grid-cols-2'}>
+ *     <div className={hasGrid ? 'grid grid-cols-2' : 'flex flex-wrap'}>
  *       Content
  *     </div>
  *   )
@@ -138,25 +138,21 @@ export function useContainerQueries() {
   const helpers = useMemo(() => ({
     /**
      * Get appropriate CSS class for container query context
+     * @deprecated Container query CSS classes have been removed. Returns empty string.
      */
-    getContainerClass: (enabled: boolean = true) => {
-      if (!enabled || !hasSupport) return ''
-      return 'container-query'
+    getContainerClass: (_enabled: boolean = true) => {
+      return ''
     },
     
     /**
-     * Get appropriate grid class with fallback
+     * Get appropriate grid class with responsive Tailwind classes
      */
     getGridClass: (columns: 2 | 3 = 2) => {
-      if (hasSupport) {
-        return columns === 3 ? 'cq-grid-3' : 'cq-grid-2'
-      }
-      // Fallback to regular responsive classes
       return columns === 3 
         ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'
         : 'grid grid-cols-1 md:grid-cols-2'
     }
-  }), [hasSupport])
+  }), [])
   
   return {
     hasSupport,
