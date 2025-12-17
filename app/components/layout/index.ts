@@ -1,6 +1,3 @@
-export { PageLayout } from "./page-layout";
-export type { PageLayoutProps } from "./page-layout";
-
 // Layout sections
 export { About, AboutContent } from "./about";
 export type { AboutProps, AboutContentProps, MethodItem } from "./about";
