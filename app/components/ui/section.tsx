@@ -57,6 +57,8 @@ export interface SectionProps
   as?: React.ElementType;
   /** Custom className */
   className?: string;
+  /** Ref to the section element */
+  ref?: React.Ref<HTMLElement>;
 }
 
 // ============================================================================
@@ -218,10 +220,12 @@ export function Section({
   rounded = "none",
   as: Component = "section",
   className,
+  ref,
   ...props
 }: SectionProps) {
   const sectionContent = (
     <Component
+      ref={ref}
       className={cn(
         "w-full",
         getSpacingClass(spacing),
