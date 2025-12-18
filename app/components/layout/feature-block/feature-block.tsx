@@ -14,7 +14,7 @@ export interface FeatureBlockProps {
   imageAlt?: string;
   /** Layout direction - determines text/image position */
   layout?: "text-left" | "text-right";
-  /** Custom className for additional styling */
+  /** Custom className applied to the Section wrapper (for layout/spacing overrides) */
   className?: string;
   /** Accessibility props */
   "aria-labelledby"?: string;

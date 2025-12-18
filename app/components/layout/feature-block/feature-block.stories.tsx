@@ -83,6 +83,10 @@ Bloc de contenu réutilisable avec texte et image en layout asymétrique.
       options: ["none", "sm", "md", "lg"],
       description: "Vertical inset for floating effect",
     },
+    className: {
+      control: "text",
+      description: "Custom className applied to the Section wrapper (for layout/spacing overrides)",
+    },
   },
 };
 
