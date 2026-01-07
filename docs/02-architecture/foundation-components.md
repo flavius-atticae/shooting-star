@@ -340,6 +340,8 @@ In practice, **90% of layouts should use media queries** because they're simpler
 
 ## Complete Examples
 
+**Note**: The following examples contain French text (fr-CA) as they represent realistic UI content for the target audience (pregnant women and new mothers in Québec). While code and documentation are written in English, UI content is in French per the project's language requirements.
+
 ### Home Page Hero Section
 
 ```tsx
