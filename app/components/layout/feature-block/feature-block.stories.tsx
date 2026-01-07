@@ -6,7 +6,7 @@ const meta: Meta<typeof FeatureBlock> = {
   title: "Layout/4. Feature Block",
   component: FeatureBlock,
   parameters: {
-    layout: "padded",
+    layout: "fullscreen",
     docs: {
       description: {
         component: `
@@ -18,8 +18,15 @@ Bloc de contenu réutilisable avec texte et image en layout asymétrique.
 - Image avec placeholder automatique
 - Responsive: 2 colonnes desktop → stack mobile
 - WCAG 2.1 AA compliant
+- Intégration Section + Container pour cohérence layout
 
 **Pregnancy-safe**: Espacement généreux, couleurs apaisantes du design system.
+
+**Section & Container Props**:
+- \`spacing\`: Vertical spacing ("none" | "compact" | "normal" | "spacious")
+- \`background\`: Background variant ("white" | "primary" | "accent" | "soft" | "transparent")
+- \`containerSize\`: Width constraint ("sm" | "md" | "lg" | "xl" | "full")
+- \`insetX\` / \`insetY\`: Floating card effect spacing
 
 **Testing Strategy**:
 - Visual stories (Default, TextRight, etc.): Chromatic multi-viewport snapshots
@@ -50,6 +57,35 @@ Bloc de contenu réutilisable avec texte et image en layout asymétrique.
       control: "select",
       options: ["text-left", "text-right"],
       description: "Layout direction",
+    },
+    spacing: {
+      control: "select",
+      options: ["none", "compact", "normal", "spacious"],
+      description: "Section spacing variant",
+    },
+    background: {
+      control: "select",
+      options: ["white", "primary", "accent", "soft", "transparent"],
+      description: "Section background variant",
+    },
+    containerSize: {
+      control: "select",
+      options: ["sm", "md", "lg", "xl", "full"],
+      description: "Container size constraint",
+    },
+    insetX: {
+      control: "select",
+      options: ["none", "sm", "md", "lg"],
+      description: "Horizontal inset for floating effect",
+    },
+    insetY: {
+      control: "select",
+      options: ["none", "sm", "md", "lg"],
+      description: "Vertical inset for floating effect",
+    },
+    className: {
+      control: "text",
+      description: "Custom className applied to the Section wrapper (for layout/spacing overrides)",
     },
   },
 };
@@ -186,18 +222,21 @@ export const Alternating: Story = {
         description="Des séances de yoga personnalisées, adaptées à vos besoins et à votre rythme. Un accompagnement individuel pour approfondir votre pratique."
         imageAlt="Illustration des cours de yoga privés"
         layout="text-left"
+        spacing="none"
       />
       <FeatureBlock
         title="Cours en studio"
         description="Rejoignez nos cours de groupe dans une atmosphère chaleureuse et conviviale. Parfait pour celles qui apprécient l'énergie collective."
         imageAlt="Illustration des cours de yoga en studio"
         layout="text-right"
+        spacing="none"
       />
       <FeatureBlock
         title="Cours en entreprises"
         description="Offrez à vos employées un moment de détente et de ressourcement. Des cours de yoga adaptés au milieu professionnel."
         imageAlt="Illustration des cours de yoga en entreprises"
         layout="text-left"
+        spacing="none"
       />
     </div>
   ),
@@ -208,7 +247,7 @@ export const Alternating: Story = {
     docs: {
       description: {
         story:
-          "Démonstration de 3 blocs alternés comme sur la maquette de la page Yoga. Pattern text-left → text-right → text-left.",
+          "Démonstration de 3 blocs alternés comme sur la maquette de la page Yoga. Pattern text-left → text-right → text-left. L'espacement externe est géré par le parent, et spacing='none' évite les doubles margins.",
       },
     },
   },
