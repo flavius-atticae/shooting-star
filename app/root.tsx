@@ -13,9 +13,9 @@ import "./app.css";
 export const links: Route.LinksFunction = () => [
   {
     rel: "preload",
-    href: "/fonts/barlow-regular.ttf",
+    href: "/fonts/barlow-regular.woff2",
     as: "font",
-    type: "font/ttf",
+    type: "font/woff2",
     crossOrigin: "anonymous",
   },
   {
