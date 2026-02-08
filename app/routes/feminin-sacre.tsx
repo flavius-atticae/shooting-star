@@ -2,7 +2,7 @@ import type { Route } from "./+types/feminin-sacre";
 import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { EventList } from "~/components/layout/event-list";
-import { CallToAction } from "~/components/layout/call-to-action";
+import { DefaultCallToAction } from "~/components/layout/call-to-action";
 import { Footer } from "~/components/layout/footer/footer";
 import { eventsData, introText } from "~/data/feminin-sacre";
 
@@ -47,13 +47,7 @@ export default function FemininSacre() {
         />
 
         {/* CTA Section - Encouragement à l'accompagnement */}
-        <CallToAction
-          title="Un accompagnement rempli de douceur et bienveillance"
-          subtitle="Curieuse et ouverte, je me nourris de chaque femme croisée, de leurs multiples facettes, pour offrir un accompagnement sensible et doux, au cœur des passages et mystères du féminin."
-          buttonText="RÉSERVEZ UN APPEL DÉCOUVERTE"
-          buttonHref="/contact"
-          spacing="normal"
-        />
+        <DefaultCallToAction spacing="normal" />
       </main>
 
       {/* Footer - Navigation et contact */}

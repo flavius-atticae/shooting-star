@@ -1,7 +1,7 @@
 import type { Route } from "./+types/about";
 import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
-import { CallToAction } from "~/components/layout/call-to-action";
+import { DefaultCallToAction } from "~/components/layout/call-to-action";
 import { Footer } from "~/components/layout/footer/footer";
 import { About } from "~/components/layout/about";
 import { inspirationItems } from "~/data/about";
@@ -50,13 +50,7 @@ export default function AboutPage() {
         />
 
         {/* Call-to-Action Section */}
-        <CallToAction
-          title="Un accompagnement rempli de douceur et bienveillance"
-          subtitle="Curieuse et ouverte, je me nourris de chaque femme croisée, de leurs multiples facettes, pour offrir un accompagnement sensible et doux, au cœur des passages et mystères du féminin."
-          buttonText="RÉSERVEZ UN APPEL DÉCOUVERTE"
-          buttonHref="/contact"
-          spacing="compact"
-        />
+        <DefaultCallToAction spacing="compact" />
       </main>
 
       {/* Footer - Navigation et contact */}
