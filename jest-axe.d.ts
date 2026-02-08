@@ -5,12 +5,12 @@ declare module "jest-axe" {
     globalOptions?: Parameters<typeof import("axe-core").configure>[0];
   } & RunOptions;
 
-  function axe(
+  export function axe(
     html: Element | string,
     options?: RunOptions
   ): Promise<AxeResults>;
 
-  function configureAxe(
+  export function configureAxe(
     options?: JestAxeConfigureOptions
   ): typeof axe;
 }
