@@ -60,65 +60,6 @@ export const checkAccessibility = async (container: HTMLElement) => {
   return results;
 };
 
-// Language testing helpers for Quebec market
-export const testInFrench = (testFn: () => void | Promise<void>) => {
-  const originalLanguage = navigator.language;
-  const originalLanguages = navigator.languages;
-  
-  beforeEach(() => {
-    Object.defineProperty(navigator, "language", {
-      writable: true,
-      value: "fr-CA",
-    });
-    Object.defineProperty(navigator, "languages", {
-      writable: true,
-      value: ["fr-CA", "fr"],
-    });
-  });
-  
-  afterEach(() => {
-    Object.defineProperty(navigator, "language", {
-      writable: true,
-      value: originalLanguage,
-    });
-    Object.defineProperty(navigator, "languages", {
-      writable: true,
-      value: originalLanguages,
-    });
-  });
-  
-  return testFn;
-};
-
-export const testInEnglish = (testFn: () => void | Promise<void>) => {
-  const originalLanguage = navigator.language;
-  const originalLanguages = navigator.languages;
-  
-  beforeEach(() => {
-    Object.defineProperty(navigator, "language", {
-      writable: true,
-      value: "en-CA",
-    });
-    Object.defineProperty(navigator, "languages", {
-      writable: true,
-      value: ["en-CA", "en"],
-    });
-  });
-  
-  afterEach(() => {
-    Object.defineProperty(navigator, "language", {
-      writable: true,
-      value: originalLanguage,
-    });
-    Object.defineProperty(navigator, "languages", {
-      writable: true,
-      value: originalLanguages,
-    });
-  });
-  
-  return testFn;
-};
-
 // Responsive testing helper
 export const testResponsive = {
   mobile: () => {
