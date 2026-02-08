@@ -6,20 +6,12 @@
  *
  * @example
  * ```tsx
- * import { cn, browserSupport, PERFORMANCE_THRESHOLDS } from '~/lib';
+ * import { cn, prefersReducedMotion, PERFORMANCE_THRESHOLDS } from '~/lib';
  * ```
  */
 
-// Browser Support Detection
-export {
-  browserSupport,
-  getFeatureSupport,
-  clearFeatureCache,
-  classifyBrowserCapability,
-  browserSupportDebug,
-  BROWSER_TEST_MATRIX,
-  type BrowserCapability,
-} from "~/lib/browser-support";
+// Browser Support Detection (motion preferences only)
+export { prefersReducedMotion } from "~/lib/browser-support";
 
 // CSS Utilities
 export { cn } from "~/lib/utils";
