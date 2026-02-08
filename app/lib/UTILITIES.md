@@ -176,10 +176,10 @@ Extended container query hook with helpers.
 import { useContainerQueries } from '~/hooks';
 
 function Component() {
-  const { hasSupport, getGridClass, getContainerClass } = useContainerQueries();
+  const { hasSupport, getGridClass } = useContainerQueries();
   
   return (
-    <div className={getContainerClass()}>
+    <div>
       <div className={getGridClass(3)}>...</div>
     </div>
   );
