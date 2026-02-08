@@ -1,14 +1,13 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Pregnancy-Safe Playwright Configuration
- * 
- * This configuration prioritizes:
- * - Mobile-first testing (pregnancy device usage patterns)
+ * Playwright E2E Test Configuration
+ *
+ * - Mobile-first and desktop browser testing
  * - Accessibility validation
  * - Performance monitoring
- * - Cross-browser compatibility for diverse user bases
- * - Quebec market considerations (French language support)
+ * - Cross-browser compatibility
+ * - French (fr-CA) locale support
  */
 export default defineConfig({
   testDir: './app/test/e2e',
@@ -29,7 +28,6 @@ export default defineConfig({
   reporter: [
     ['html', { outputFolder: 'playwright-report' }],
     ['json', { outputFile: 'playwright-results.json' }],
-    // Accessibility reporter for pregnancy-safe compliance
     ['line'],
   ],
   
@@ -41,15 +39,15 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     
-    /* Screenshot on failure for pregnancy-safe UI debugging */
+    /* Screenshot on failure for debugging */
     screenshot: 'only-on-failure',
     
     /* Video recording for complex user journey analysis */
     video: 'retain-on-failure',
     
-    /* Pregnancy-safe timeout considerations */
-    actionTimeout: 15000, // Increased for users with pregnancy fatigue
-    navigationTimeout: 30000, // Allow slower network during medical appointments
+    /* Timeout for user actions and navigation */
+    actionTimeout: 15000, // 15s — generous margin for CI variability
+    navigationTimeout: 30000, // 30s — accounts for SSR cold starts
   },
 
   /* Configure projects for major browsers */
@@ -70,7 +68,7 @@ export default defineConfig({
       dependencies: ['setup'],
     },
 
-    // Mobile testing (pregnancy users mostly on mobile)
+    // Mobile testing (primary target audience)
     {
       name: 'mobile-chrome',
       use: { 
@@ -101,16 +99,16 @@ export default defineConfig({
     command: 'npm run dev',
     url: 'http://localhost:5173',
     reuseExistingServer: !process.env.CI,
-    /* Increased timeout for pregnancy-safe app startup */
+    /* Allow extra time for dev server startup in CI */
     timeout: 180 * 1000, // 3 minutes
   },
 
-  /* Global test timeout - accounting for pregnancy-related slower interactions */
+  /* Global test timeout */
   timeout: 60 * 1000, // 1 minute per test
 
   /* Expect timeout for individual assertions */
   expect: {
-    /* Timeout for expect() assertions - pregnancy-safe */
+    /* Timeout for expect() assertions */
     timeout: 10 * 1000, // 10 seconds
   },
 });
