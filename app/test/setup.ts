@@ -48,21 +48,6 @@ Object.defineProperty(global, 'ResizeObserver', {
   value: mockResizeObserver,
 });
 
-// Mock window.matchMedia for responsive/dark mode testing
-Object.defineProperty(window, "matchMedia", {
-  writable: true,
-  value: vi.fn().mockImplementation((query: string) => ({
-    matches: false,
-    media: query,
-    onchange: null,
-    addListener: vi.fn(), // deprecated
-    removeListener: vi.fn(), // deprecated
-    addEventListener: vi.fn(),
-    removeEventListener: vi.fn(),
-    dispatchEvent: vi.fn(),
-  })),
-});
-
 // Mock window.scrollTo for components that control scroll behavior
 Object.defineProperty(window, "scrollTo", {
   writable: true,
@@ -107,11 +92,11 @@ global.Intl = {
   })),
 } as any;
 
-// Pregnancy-safe testing: Mock reduced motion preference
+// Mock window.matchMedia for responsive/dark mode testing
+// Default to reduced motion for pregnancy-safe testing
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query: string) => {
-    // Default to reduced motion for pregnancy-safe testing
     const reducedMotion = query.includes("prefers-reduced-motion");
     return {
       matches: reducedMotion ? true : false,
