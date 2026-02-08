@@ -52,11 +52,11 @@ These components are designed to be composed together, not to replace Tailwind C
 | `className` | `string` | - | Additional CSS classes |
 
 **Background variants**:
-- `white` - Pure white background
+- `white` - Pure white background (default)
 - `primary` - Primary brand color (#618462)
 - `accent` - Soft beige (gris)
 - `soft` - Gradient from white to soft beige
-- `transparent` - No background (default)
+- `transparent` - No background
 
 **Spacing variants**:
 - `none` - No vertical padding
