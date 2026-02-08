@@ -28,9 +28,3 @@ export type {
   ContactFormData,
   ContactSectionProps,
 } from "./contact";
-
-// Re-export UI components pour usage avec layout
-export { Container, type ContainerSize } from "~/components/ui/container";
-export { Section } from "~/components/ui/section";
-export type { ContainerProps } from "~/components/ui/container";
-export type { SectionProps } from "~/components/ui/section";
