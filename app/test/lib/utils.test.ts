@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import {
   cn,
   browserSupport,
@@ -135,6 +135,50 @@ describe("lib/browser-support", () => {
 
       expect(capability).toHaveProperty("hasAccessibilitySupport");
       expect(typeof capability.hasAccessibilitySupport).toBe("boolean");
+    });
+
+    it("should mark browser as accessible when focusVisible and prefersReducedMotion are supported", () => {
+      vi.spyOn(browserSupport, "focusVisible").mockReturnValue(true);
+      vi.spyOn(browserSupport, "prefersReducedMotion").mockReturnValue(true);
+      clearFeatureCache();
+
+      const capability = classifyBrowserCapability();
+      expect(capability.hasAccessibilitySupport).toBe(true);
+
+      vi.restoreAllMocks();
+    });
+
+    it("should mark browser as not accessible when focusVisible is not supported", () => {
+      vi.spyOn(browserSupport, "focusVisible").mockReturnValue(false);
+      vi.spyOn(browserSupport, "prefersReducedMotion").mockReturnValue(true);
+      clearFeatureCache();
+
+      const capability = classifyBrowserCapability();
+      expect(capability.hasAccessibilitySupport).toBe(false);
+
+      vi.restoreAllMocks();
+    });
+
+    it("should mark browser as not accessible when prefersReducedMotion is not supported", () => {
+      vi.spyOn(browserSupport, "focusVisible").mockReturnValue(true);
+      vi.spyOn(browserSupport, "prefersReducedMotion").mockReturnValue(false);
+      clearFeatureCache();
+
+      const capability = classifyBrowserCapability();
+      expect(capability.hasAccessibilitySupport).toBe(false);
+
+      vi.restoreAllMocks();
+    });
+
+    it("should mark browser as not accessible when neither feature is supported", () => {
+      vi.spyOn(browserSupport, "focusVisible").mockReturnValue(false);
+      vi.spyOn(browserSupport, "prefersReducedMotion").mockReturnValue(false);
+      clearFeatureCache();
+
+      const capability = classifyBrowserCapability();
+      expect(capability.hasAccessibilitySupport).toBe(false);
+
+      vi.restoreAllMocks();
     });
   });
 
