@@ -254,8 +254,7 @@ export function classifyBrowserCapability(): BrowserCapability {
   }
 
   // Check accessibility support (critical for Quebec Law 25)
-  const hasAccessibilitySupport = features.focusVisible && 
-                                  !features.prefersReducedMotion // Inverted: false means they CAN handle motion
+  const hasAccessibilitySupport = features.focusVisible && features.prefersReducedMotion
 
   return {
     tier,
