@@ -1,6 +1,5 @@
-tools:
-    - lizard@1.17.31
-
+runtimes:
+    - java@17.0.10
     - node@22.2.0
     - python@3.11.11
 tools:

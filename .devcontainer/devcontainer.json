@@ -21,7 +21,7 @@
   },
 
   // Run commands after container is created
-  "postCreateCommand": "npm install && npx playwright install --with-deps chromium",
+  "postCreateCommand": "npm install && npx playwright install --with-deps chromium && npx bmad-method install",
 
   // VS Code customizations
   "customizations": {
