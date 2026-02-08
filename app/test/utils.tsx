@@ -132,43 +132,6 @@ export const simulatePregnancyConditions = {
   },
 };
 
-// Custom matchers for pregnancy-safe UI
-export const customMatchers = {
-  // Check if touch targets are large enough (44x44px minimum)
-  toHaveLargeTouchTarget: (element: HTMLElement) => {
-    const rect = element.getBoundingClientRect();
-    const minSize = 44; // 44px minimum for pregnancy swelling
-    
-    const pass = rect.width >= minSize && rect.height >= minSize;
-    
-    return {
-      message: () =>
-        pass
-          ? `Expected element to not have large touch target (>= ${minSize}px)`
-          : `Expected element to have large touch target (>= ${minSize}px), but got ${rect.width}x${rect.height}`,
-      pass,
-    };
-  },
-  
-  // Check if text has sufficient contrast
-  toHaveSufficientContrast: (element: HTMLElement) => {
-    const styles = window.getComputedStyle(element);
-    const color = styles.color;
-    const backgroundColor = styles.backgroundColor;
-    
-    // This is a simplified check - in real implementation, you'd use a proper contrast ratio calculator
-    const pass = color !== backgroundColor;
-    
-    return {
-      message: () =>
-        pass
-          ? "Expected element to not have sufficient contrast"
-          : "Expected element to have sufficient contrast for pregnancy vision changes",
-      pass,
-    };
-  },
-};
-
 // Export everything including the custom render
 export * from "@testing-library/react";
 export { customRender as render };
