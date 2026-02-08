@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
-import { createMemoryRouter, RouterProvider } from 'react-router-dom';
-import type { RouteObject } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider } from 'react-router';
+import type { RouteObject } from 'react-router';
 
 /**
  * Integration tests for /a-propos route (About page)
