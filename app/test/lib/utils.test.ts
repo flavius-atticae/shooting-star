@@ -102,18 +102,6 @@ describe("lib/performance-thresholds", () => {
       );
     });
 
-    it("should have TARGET aliases for backward compatibility", () => {
-      expect(PERFORMANCE_THRESHOLDS.LCP_TARGET).toBe(
-        PERFORMANCE_THRESHOLDS.LCP_THRESHOLD
-      );
-      expect(PERFORMANCE_THRESHOLDS.FID_TARGET).toBe(
-        PERFORMANCE_THRESHOLDS.FID_THRESHOLD
-      );
-      expect(PERFORMANCE_THRESHOLDS.CLS_TARGET).toBe(
-        PERFORMANCE_THRESHOLDS.CLS_THRESHOLD
-      );
-    });
-
     it("should contain pregnancy-specific metrics", () => {
       expect(PERFORMANCE_THRESHOLDS.TIME_TO_INTERACTIVE).toBe(
         PREGNANCY_PERFORMANCE.TIME_TO_INTERACTIVE

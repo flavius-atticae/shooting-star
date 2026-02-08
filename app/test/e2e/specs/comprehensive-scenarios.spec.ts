@@ -35,7 +35,7 @@ test.describe('Comprehensive User Journey Testing', () => {
     
     // Performance check - important for mobile pregnancy users
     const metrics = await helpers.measurePerformance();
-    expect(metrics.lcp).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.LCP_TARGET);
+    expect(metrics.lcp).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.LCP_THRESHOLD);
     
     console.log(`✓ Marie's journey completed successfully (${profile.gestationWeeks} weeks pregnant)`);
   });
@@ -194,9 +194,9 @@ test.describe('Performance Testing for Pregnancy Users', () => {
     const metrics = await helpers.measurePerformance();
     
     // Use pregnancy-adjusted thresholds (slightly more lenient)
-    expect(metrics.lcp).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.LCP_TARGET);
-    expect(metrics.fid).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.FID_TARGET);
-    expect(metrics.cls).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.CLS_TARGET);
+    expect(metrics.lcp).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.LCP_THRESHOLD);
+    expect(metrics.fid).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.FID_THRESHOLD);
+    expect(metrics.cls).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.CLS_THRESHOLD);
     
     console.log(`✓ Performance targets met - LCP: ${metrics.lcp}ms`);
   });
