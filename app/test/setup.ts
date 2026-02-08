@@ -2,9 +2,9 @@ import "@testing-library/jest-dom";
 import { configure } from "@testing-library/react";
 import { vi } from "vitest";
 
-// Configure React Testing Library for pregnancy-safe testing
+// Configure React Testing Library defaults
 configure({
-  // Increase timeout for users who may have slower interaction due to pregnancy fatigue
+  // Allow extra time for async operations in component tests
   asyncUtilTimeout: 3000,
   // Ensure we test in a way that reflects real user interaction
   testIdAttribute: "data-testid",
@@ -93,7 +93,7 @@ global.Intl = {
 } as any;
 
 // Mock window.matchMedia for responsive/dark mode testing
-// Default to reduced motion for pregnancy-safe testing
+// Default to reduced motion to match accessibility best practices
 Object.defineProperty(window, "matchMedia", {
   writable: true,
   value: vi.fn().mockImplementation((query: string) => {
