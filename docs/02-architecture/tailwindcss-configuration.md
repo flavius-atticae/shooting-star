@@ -15,12 +15,6 @@ The project uses TailwindCSS v4 with a comprehensive brand color system that int
 - **Light and dark mode** color mappings for shadcn/ui
 - **Custom breakpoints** and spacing system
 
-### Secondary Configuration: `/tailwind.config.js`
-- **Extended theme settings** for better IDE support
-- **Custom animations** for gentle, calming interactions
-- **Typography scale** optimized for yoga/wellness content
-- **Responsive breakpoints** tailored for the website
-
 ### Component Configuration: `/components.json`
 - **shadcn/ui integration** settings
 - **Path aliases** for component imports
@@ -208,7 +202,6 @@ animate-gentle-bounce  /* Subtle bounce effect (2s infinite) */
 ### Common Issues
 
 #### Colors not appearing
-- Ensure content paths in `tailwind.config.js` include your components
 - Verify CSS custom properties are properly defined in `app.css`
 - Check browser DevTools for CSS variable resolution
 
