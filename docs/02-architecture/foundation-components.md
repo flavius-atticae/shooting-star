@@ -89,7 +89,7 @@ These components are designed to be composed together, not to replace Tailwind C
 - `md` - max-w-4xl - Standard for most content
 - `lg` - max-w-6xl - Large for dashboards and complex layouts
 - `xl` - max-w-7xl - Extra large for very wide content
-- `full` - w-full - Full viewport width
+- `full` - w-full - Full available width of the parent element
 
 ## Recommended Patterns
 
@@ -203,10 +203,13 @@ Container doesn't apply padding by default. Add it when needed:
 
 ## Discouraged Patterns
 
+**Note**: The following examples use hypothetical component names to illustrate anti-patterns. These components don't exist in the codebase - they represent patterns to avoid.
+
 ### Don't Create Abstractions for Simple Tailwind Patterns
 
 ```tsx
 // ❌ Discouraged: Over-engineering with custom components
+// (Hypothetical example - AdaptiveGrid doesn't exist)
 <AdaptiveGrid columns={3} gap="md">
   {items.map(item => <Card key={item.id} />)}
 </AdaptiveGrid>
@@ -221,6 +224,7 @@ Container doesn't apply padding by default. Add it when needed:
 
 ```tsx
 // ❌ Discouraged: Too many wrappers
+// (Hypothetical example - these wrapper components don't exist)
 <PageLayout>
   <ContentWrapper>
     <SectionWrapper>
@@ -345,6 +349,7 @@ In practice, **90% of layouts should use media queries** because they're simpler
 ### Home Page Hero Section
 
 ```tsx
+import { Link } from "react-router";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 
@@ -363,12 +368,12 @@ export function HomeHero() {
           <p className="font-sans text-lg md:text-xl text-primary font-bold uppercase mt-4">
             Avec Pauline Roussel
           </p>
-          <a
-            href="/contact"
-            className="mt-8 px-8 py-4 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors"
+          <Link
+            to="/contact"
+            className="mt-8 px-8 py-4 bg-primary text-white rounded-full hover:bg-primary/90 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
           >
             Prendre rendez-vous
-          </a>
+          </Link>
         </div>
       </Container>
     </Section>
