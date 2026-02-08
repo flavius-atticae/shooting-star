@@ -42,11 +42,6 @@ This document outlines the core technologies, frameworks, and tools used in the 
 - Strict mode configuration
 - Path mapping for imports
 
-#### `tailwind.config.js`
-- Custom design system tokens
-- Custom breakpoints and spacing
-- Typography scale configuration
-
 ### Build Output Structure
 
 ```
