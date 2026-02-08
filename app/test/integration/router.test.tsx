@@ -2,8 +2,8 @@ import React from 'react';
 import { render, screen, waitFor, act } from '@testing-library/react';
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import userEvent from '@testing-library/user-event';
-import { createMemoryRouter, RouterProvider, Outlet } from 'react-router-dom';
-import type { RouteObject } from 'react-router-dom';
+import { createMemoryRouter, RouterProvider, Outlet } from 'react-router';
+import type { RouteObject } from 'react-router';
 
 /**
  * React Router v7 Integration Tests for Shooting Star
