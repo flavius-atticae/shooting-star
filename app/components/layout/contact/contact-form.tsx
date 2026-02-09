@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { cn } from "~/lib/utils";
-import { isHoneypotFilled, isSubmissionTooFast } from "~/lib/form-security";
+import { isHoneypotFilled, isSubmissionTooFast, sanitizeInput } from "~/lib/form-security";
 import {
   Form,
   FormControl,
@@ -129,8 +129,16 @@ export function ContactForm({
     try {
       setError(false);
 
+      // Sanitize user inputs before submission
+      const sanitizedData: ContactFormData = {
+        name: sanitizeInput(data.name),
+        email: data.email,
+        availability: data.availability,
+        message: sanitizeInput(data.message),
+      };
+
       if (onSubmit) {
-        await onSubmit(data);
+        await onSubmit(sanitizedData);
       }
 
       // Show success message
