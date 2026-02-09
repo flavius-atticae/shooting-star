@@ -124,20 +124,22 @@ export function ContactForm({
     },
   });
 
-  // Record timestamp on first meaningful user interaction with the form
+  // Record timestamp on first meaningful user interaction with the form.
+  // Handles both focus and change events to cover autofill scenarios
+  // where fields may be populated without triggering focus.
   const handleFirstInteraction = React.useCallback(
-    (event: React.FocusEvent) => {
+    (event: React.SyntheticEvent) => {
       if (interactionTimestampRef.current !== 0) return;
 
-      const focusedElement = event.target;
+      const element = event.target;
 
       // Ignore submit button focus
-      if (focusedElement instanceof HTMLButtonElement) return;
+      if (element instanceof HTMLButtonElement) return;
 
-      // Ignore honeypot field focus
+      // Ignore honeypot field interaction
       if (
-        focusedElement instanceof HTMLInputElement &&
-        focusedElement.name === "website"
+        element instanceof HTMLInputElement &&
+        element.name === "website"
       ) {
         return;
       }
@@ -213,6 +215,7 @@ export function ContactForm({
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
           onFocusCapture={handleFirstInteraction}
+          onChangeCapture={handleFirstInteraction}
           className="space-y-6"
           noValidate
         >
