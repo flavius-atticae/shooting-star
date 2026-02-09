@@ -157,6 +157,37 @@ export const useSearchParams = () => {
   return [new URLSearchParams(), setSearchParams] as const;
 };
 
+// Mock useFetcher for progressive enhancement forms in Storybook
+export const useFetcher = () => {
+  const [state, setState] = React.useState<'idle' | 'submitting' | 'loading'>('idle');
+  const [data, setData] = React.useState<any>(undefined);
+
+  const Form = React.useCallback(
+    ({ children, ...props }: React.FormHTMLAttributes<HTMLFormElement> & { children?: React.ReactNode }) => {
+      return React.createElement('form', props, children);
+    },
+    [],
+  );
+
+  const submit = React.useCallback(
+    (formData: FormData, options?: { method?: string; action?: string }) => {
+      console.log('📨 Storybook fetcher.submit:', {
+        data: Object.fromEntries(formData.entries()),
+        options,
+      });
+      setState('submitting');
+      // Simulate successful submission after a delay
+      setTimeout(() => {
+        setData({ success: true });
+        setState('idle');
+      }, 1000);
+    },
+    [],
+  );
+
+  return { state, data, Form, submit };
+};
+
 // Export default for easier importing
 export default {
   Link,
@@ -164,5 +195,6 @@ export default {
   useLocation,
   useParams,
   useSearchParams,
+  useFetcher,
   StorybookRouterProvider
 };

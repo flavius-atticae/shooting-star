@@ -25,8 +25,10 @@ import { Button } from "~/components/ui/button";
  * Form validation schema using Zod.
  * Name and message are sanitized (HTML tags stripped) before validation
  * to prevent bypassing min-length constraints with HTML padding.
+ *
+ * Exported for reuse in server-side validation (route action).
  */
-const contactFormSchema = z.object({
+export const contactFormSchema = z.object({
   name: z
     .string()
     .transform((val) => sanitizeInput(val))
@@ -55,6 +57,26 @@ const contactFormSchema = z.object({
 export type ContactFormData = z.infer<typeof contactFormSchema>;
 
 /**
+ * Type for fetcher data returned by the route action
+ */
+interface ActionData {
+  success?: boolean;
+  error?: string;
+  errors?: Record<string, string[]>;
+}
+
+/**
+ * Minimal fetcher interface compatible with React Router's useFetcher.
+ * Uses broader types to accept both the real fetcher and test mocks.
+ */
+interface FetcherLike {
+  state: string;
+  data?: ActionData;
+  Form: React.ComponentType<any>;
+  submit: (data: any, options?: any) => void;
+}
+
+/**
  * Availability options for the time slot select
  */
 const AVAILABILITY_OPTIONS = [
@@ -71,10 +93,12 @@ export interface ContactFormProps extends Omit<
   React.HTMLAttributes<HTMLDivElement>,
   "onSubmit"
 > {
-  /** Callback when form is successfully submitted */
+  /** Callback when form is successfully submitted (legacy/Storybook mode) */
   onSubmit?: (data: ContactFormData) => void | Promise<void>;
   /** Whether the form is in loading state */
   isLoading?: boolean;
+  /** Fetcher from useFetcher for progressive enhancement */
+  fetcher?: FetcherLike;
   /** Custom className for additional styling */
   className?: string;
 }
@@ -85,6 +109,7 @@ export interface ContactFormProps extends Omit<
  * Features:
  * - Name, email, availability, and message fields
  * - Client-side validation with react-hook-form and zod
+ * - Progressive enhancement via useFetcher (works without JS)
  * - Accessible form with proper ARIA attributes
  * - Loading state support
  * - Success message display
@@ -99,20 +124,30 @@ export interface ContactFormProps extends Omit<
  *
  * Usage:
  * ```tsx
+ * // With useFetcher (production)
+ * const fetcher = useFetcher();
+ * <ContactForm fetcher={fetcher} />
+ *
+ * // With onSubmit (Storybook/tests)
  * <ContactForm onSubmit={(data) => console.log(data)} />
  * ```
  */
 export function ContactForm({
   onSubmit,
   isLoading = false,
+  fetcher,
   className,
   ...props
 }: ContactFormProps) {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
-  const [error, setError] = React.useState(false);
+  const [error, setError] = React.useState<string | false>(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const [honeypot, setHoneypot] = React.useState("");
   const interactionTimestampRef = React.useRef<number>(0);
+
+  const useFetcherMode = !!fetcher;
+  const fetcherLoading = fetcher?.state === "submitting";
+  const loading = isLoading || fetcherLoading;
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -170,7 +205,56 @@ export function ContactForm({
     }, 5000);
   }, [form]);
 
+  // React to fetcher data changes (success/error from server)
+  React.useEffect(() => {
+    if (!fetcher?.data) return;
+    const actionData = fetcher.data;
+    if (actionData.success) {
+      showSuccessAndReset();
+    } else if (actionData.error) {
+      setIsSubmitted(false);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      setError(actionData.error);
+    } else if (actionData.errors) {
+      // Set server-side field errors on the form
+      for (const [field, messages] of Object.entries(actionData.errors)) {
+        if (messages && messages.length > 0) {
+          form.setError(field as keyof ContactFormData, {
+            type: "server",
+            message: messages[0],
+          });
+        }
+      }
+    }
+  }, [fetcher?.data, showSuccessAndReset, form]);
+
   const handleSubmit = async (data: ContactFormData) => {
+    if (useFetcherMode && fetcher) {
+      // Client-side anti-spam checks before submitting to server
+      const tooFast =
+        interactionTimestampRef.current === 0 ||
+        isSubmissionTooFast(interactionTimestampRef.current);
+      if (isHoneypotFilled(honeypot) || tooFast) {
+        showSuccessAndReset();
+        return;
+      }
+
+      // Submit via fetcher for progressive enhancement
+      const formData = new FormData();
+      formData.set("name", data.name);
+      formData.set("email", data.email);
+      formData.set("availability", data.availability || "");
+      formData.set("message", data.message);
+      formData.set("website", honeypot);
+      formData.set(
+        "_timestamp",
+        String(interactionTimestampRef.current),
+      );
+      fetcher.submit(formData, { method: "POST", action: "/contact" });
+      return;
+    }
+
+    // Legacy mode: onSubmit callback
     // Silent rejection for bot submissions (no interaction recorded, or too fast)
     const tooFast =
       interactionTimestampRef.current === 0 ||
@@ -194,12 +278,15 @@ export function ContactForm({
       setIsSubmitted(false);
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
 
-      setError(true);
+      setError("Une erreur s'est produite. Veuillez réessayer.");
       if (import.meta.env.DEV) {
         console.error("Form submission error:", err);
       }
     }
   };
+
+  // Choose form element: fetcher.Form for progressive enhancement, or standard form
+  const FormElement = useFetcherMode ? fetcher.Form : "form";
 
   return (
     <div
@@ -213,7 +300,9 @@ export function ContactForm({
       {...props}
     >
       <Form {...form}>
-        <form
+        <FormElement
+          method="post"
+          action="/contact"
           onSubmit={form.handleSubmit(handleSubmit)}
           onFocusCapture={handleFirstInteraction}
           onChangeCapture={handleFirstInteraction}
@@ -239,6 +328,13 @@ export function ContactForm({
             />
           </div>
 
+          {/* Hidden timestamp for server-side time check */}
+          <input
+            type="hidden"
+            name="_timestamp"
+            value={interactionTimestampRef.current || ""}
+          />
+
           {/* Name Field */}
           <FormField
             control={form.control}
@@ -252,7 +348,7 @@ export function ContactForm({
                   <Input
                     placeholder="John Appleseed"
                     {...field}
-                    disabled={isLoading}
+                    disabled={loading}
                     className="bg-transparent text-primary border-2 border-primary/30 focus:border-primary"
                   />
                 </FormControl>
@@ -275,7 +371,7 @@ export function ContactForm({
                     type="email"
                     placeholder="example@email.com"
                     {...field}
-                    disabled={isLoading}
+                    disabled={loading}
                     className="bg-transparent text-primary border-2 border-primary/30 focus:border-primary"
                   />
                 </FormControl>
@@ -296,7 +392,7 @@ export function ContactForm({
                 <FormControl>
                   <Select
                     {...field}
-                    disabled={isLoading}
+                    disabled={loading}
                     className="text-primary border-2 border-primary/30 focus:border-primary"
                   >
                     {AVAILABILITY_OPTIONS.map((option) => (
@@ -324,7 +420,7 @@ export function ContactForm({
                   <Textarea
                     placeholder="Message"
                     {...field}
-                    disabled={isLoading}
+                    disabled={loading}
                     className="bg-transparent text-primary border-2 border-primary/30 focus:border-primary min-h-[120px]"
                   />
                 </FormControl>
@@ -336,14 +432,14 @@ export function ContactForm({
           {/* Submit Button */}
           <Button
             type="submit"
-            disabled={isLoading}
+            disabled={loading}
             className={cn(
               "w-full uppercase font-semibold tracking-wide",
               "min-h-[48px] text-base",
               "rounded-full bg-primary text-white hover:bg-primary/90",
             )}
           >
-            {isLoading ? "ENVOI EN COURS..." : "ENVOYER"}
+            {loading ? "ENVOI EN COURS..." : "ENVOYER"}
           </Button>
 
           {/* Success Message */}
@@ -371,10 +467,10 @@ export function ContactForm({
                 "text-destructive font-body text-sm",
               )}
             >
-              Une erreur s'est produite. Veuillez réessayer.
+              {error}
             </div>
           )}
-        </form>
+        </FormElement>
       </Form>
     </div>
   );

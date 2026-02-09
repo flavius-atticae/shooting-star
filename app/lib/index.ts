@@ -23,6 +23,9 @@ export {
   isSubmissionTooFast,
 } from "~/lib/form-security";
 
+// Rate Limiting
+export { isRateLimited, resetRateLimiter } from "~/lib/rate-limiter";
+
 // Performance Thresholds
 export {
   CORE_WEB_VITALS,
