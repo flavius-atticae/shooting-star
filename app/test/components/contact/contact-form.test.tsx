@@ -1,10 +1,36 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { ContactForm } from "~/components/layout/contact";
 
+/**
+ * Mock Date.now to ensure the anti-spam time-check always passes in tests.
+ * The first call returns a base timestamp (simulating first interaction),
+ * and subsequent calls return base + 5000ms (well above the 3s threshold).
+ */
+function mockDateNowForFormTests() {
+  const baseTime = 1000000;
+  let callCount = 0;
+  return vi.spyOn(Date, "now").mockImplementation(() => {
+    callCount++;
+    // First call records the interaction timestamp; subsequent calls
+    // (at submit time) simulate 5 seconds of elapsed time.
+    return callCount === 1 ? baseTime : baseTime + 5000;
+  });
+}
+
 describe("ContactForm Component", () => {
+  let dateNowSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    dateNowSpy = mockDateNowForFormTests();
+  });
+
+  afterEach(() => {
+    dateNowSpy.mockRestore();
+  });
+
   describe("Rendering", () => {
     it("should render all form fields", () => {
       render(<ContactForm />);

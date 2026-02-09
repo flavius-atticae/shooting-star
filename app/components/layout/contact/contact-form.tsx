@@ -96,7 +96,7 @@ export function ContactForm({
   const [error, setError] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const [honeypot, setHoneypot] = React.useState("");
-  const [formTimestamp] = React.useState(() => Date.now());
+  const interactionTimestampRef = React.useRef<number>(0);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -108,6 +108,13 @@ export function ContactForm({
     },
   });
 
+  // Record timestamp on first user interaction with the form
+  const handleFirstInteraction = React.useCallback(() => {
+    if (interactionTimestampRef.current === 0) {
+      interactionTimestampRef.current = Date.now();
+    }
+  }, []);
+
   // Cleanup timeout on unmount
   React.useEffect(() => {
     return () => {
@@ -118,8 +125,10 @@ export function ContactForm({
   }, []);
 
   const handleSubmit = async (data: ContactFormData) => {
-    // Silent rejection for bot submissions
-    if (isHoneypotFilled(honeypot) || isSubmissionTooFast(formTimestamp)) {
+    // Silent rejection for bot submissions (no interaction recorded, or too fast)
+    const tooFast = interactionTimestampRef.current === 0
+      || isSubmissionTooFast(interactionTimestampRef.current);
+    if (isHoneypotFilled(honeypot) || tooFast) {
       setIsSubmitted(true);
       form.reset();
       setHoneypot("");
@@ -174,6 +183,7 @@ export function ContactForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
+          onFocusCapture={handleFirstInteraction}
           className="space-y-6"
           noValidate
         >
@@ -182,7 +192,7 @@ export function ContactForm({
             aria-hidden="true"
             style={{ position: "absolute", left: "-9999px", opacity: 0 }}
           >
-            <label htmlFor="website">Website</label>
+            <label htmlFor="website">Site web</label>
             <input
               type="text"
               id="website"
@@ -193,9 +203,6 @@ export function ContactForm({
               onChange={(e) => setHoneypot(e.target.value)}
             />
           </div>
-
-          {/* Timestamp for time-based bot detection */}
-          <input type="hidden" name="_timestamp" value={formTimestamp} />
 
           {/* Name Field */}
           <FormField
