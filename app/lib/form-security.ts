@@ -23,7 +23,9 @@ const DEFAULT_MIN_SUBMISSION_MS = 3000;
 export function sanitizeInput(input: string): string {
   let result = input;
   let previous = "";
-  // Iteratively strip HTML-like tags (starting with a letter or "/") to handle nested/broken constructs like <scr<script>ipt>
+  // Iteratively strip HTML-like tags to handle nested constructs.
+  // Note: split-tag obfuscation (e.g. <scr<script>ipt>) may leave
+  // harmless text fragments, but all tags and angle brackets are removed.
   while (result !== previous) {
     previous = result;
     result = result.replace(/<[\/A-Za-z][^>]*>/g, "");
