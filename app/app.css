@@ -138,21 +138,4 @@
   background-size: 20px 20px;
 }
 
-/* Pregnancy-safe background gradients */
-.bg-gradient-pregnancy-soft {
-  background: linear-gradient(
-    135deg,
-    theme("colors.white") 0%,
-    theme("colors.soft / 20%") 50%,
-    theme("colors.gris / 30%") 100%
-  );
-}
 
-.bg-gradient-pregnancy-warm {
-  background: linear-gradient(
-    135deg,
-    theme("colors.white") 0%,
-    theme("colors.warm / 15%") 50%,
-    theme("colors.gris / 25%") 100%
-  );
-}
