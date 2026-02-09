@@ -2,7 +2,7 @@ import type { Route } from "./+types/contact";
 import { data } from "react-router";
 import { Header } from "~/components/layout/header/header";
 import { ContactSection } from "~/components/layout/contact";
-import { contactFormSchema } from "~/components/layout/contact";
+import { contactFormSchema } from "~/lib/contact-form-schema";
 import { Footer } from "~/components/layout/footer/footer";
 import { Container } from "~/components/ui/container";
 import { Section } from "~/components/ui/section";
@@ -29,13 +29,23 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   // 2. Timestamp check — silent rejection for too-fast submissions
-  const timestamp = Number(formData.get("_timestamp"));
-  if (!timestamp || isSubmissionTooFast(timestamp)) {
-    return data({ success: true });
+  //    Only apply when a valid timestamp is present; missing timestamps
+  //    (e.g. no-JS form submissions) are allowed through.
+  const timestampValue = formData.get("_timestamp");
+  if (timestampValue !== null && timestampValue !== "") {
+    const timestamp = Number(timestampValue);
+    if (!Number.isNaN(timestamp) && isSubmissionTooFast(timestamp)) {
+      return data({ success: true });
+    }
   }
 
   // 3. Rate limit by IP
-  const ip = request.headers.get("x-forwarded-for") || "unknown";
+  //    x-forwarded-for may contain a comma-separated list; take the first
+  //    (client) IP and trim whitespace. Falls back to x-real-ip or "unknown".
+  const forwardedFor = request.headers.get("x-forwarded-for");
+  const ip = forwardedFor
+    ? forwardedFor.split(",")[0].trim()
+    : request.headers.get("x-real-ip") || "unknown";
   if (isRateLimited(ip)) {
     return data(
       {

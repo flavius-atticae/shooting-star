@@ -94,7 +94,7 @@ export function ContactSection({
           <ContactForm
             onSubmit={onSubmit}
             isLoading={isLoading}
-            fetcher={fetcher}
+            fetcher={onSubmit ? undefined : fetcher}
           />
         </div>
       </div>

@@ -137,11 +137,11 @@ describe("contact route action", () => {
       expect(data.success).toBe(true);
     });
 
-    it("should silently reject when timestamp is missing", async () => {
+    it("should allow submission when timestamp is missing (no-JS progressive enhancement)", async () => {
       const request = createFormRequest({
-        name: "No Timestamp",
-        email: "no@timestamp.com",
-        message: "Missing timestamp field",
+        name: "Marie Tremblay",
+        email: "marie@example.com",
+        message: "Missing timestamp field but valid form data",
         website: "",
       });
 
@@ -152,6 +152,7 @@ describe("contact route action", () => {
       } as any);
 
       const { data } = getActionResult(result);
+      // No-JS submissions don't have a timestamp — should still succeed
       expect(data.success).toBe(true);
     });
   });

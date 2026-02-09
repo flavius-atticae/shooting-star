@@ -1,13 +1,15 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { cn } from "~/lib/utils";
 import {
   isHoneypotFilled,
   isSubmissionTooFast,
-  sanitizeInput,
 } from "~/lib/form-security";
+import {
+  contactFormSchema,
+  type ContactFormData,
+} from "~/lib/contact-form-schema";
 import {
   Form,
   FormControl,
@@ -21,40 +23,8 @@ import { Textarea } from "~/components/ui/textarea";
 import { Select } from "~/components/ui/select";
 import { Button } from "~/components/ui/button";
 
-/**
- * Form validation schema using Zod.
- * Name and message are sanitized (HTML tags stripped) before validation
- * to prevent bypassing min-length constraints with HTML padding.
- *
- * Exported for reuse in server-side validation (route action).
- */
-export const contactFormSchema = z.object({
-  name: z
-    .string()
-    .transform((val) => sanitizeInput(val))
-    .pipe(
-      z.string().trim().min(2, {
-        message: "Le nom doit contenir au moins 2 caractères.",
-      }),
-    ),
-  email: z.string().email({
-    message: "Veuillez entrer une adresse courriel valide.",
-  }),
-  availability: z.string().optional(),
-  message: z
-    .string()
-    .transform((val) => sanitizeInput(val))
-    .pipe(
-      z.string().trim().min(10, {
-        message: "Le message doit contenir au moins 10 caractères.",
-      }),
-    ),
-});
-
-/**
- * Form data type inferred from schema
- */
-export type ContactFormData = z.infer<typeof contactFormSchema>;
+// Re-export schema and type for backward compatibility
+export { contactFormSchema, type ContactFormData } from "~/lib/contact-form-schema";
 
 /**
  * Type for fetcher data returned by the route action
@@ -148,6 +118,7 @@ export function ContactForm({
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const [honeypot, setHoneypot] = React.useState("");
   const interactionTimestampRef = React.useRef<number>(0);
+  const timestampInputRef = React.useRef<HTMLInputElement>(null);
 
   const useFetcherMode = !!fetcher;
   const fetcherLoading = fetcher?.state === "submitting";
@@ -181,6 +152,11 @@ export function ContactForm({
       }
 
       interactionTimestampRef.current = Date.now();
+      // Update the hidden input value directly via DOM ref,
+      // since ref changes don't trigger re-renders.
+      if (timestampInputRef.current) {
+        timestampInputRef.current.value = String(interactionTimestampRef.current);
+      }
     },
     [],
   );
@@ -201,6 +177,9 @@ export function ContactForm({
     form.reset();
     setHoneypot("");
     interactionTimestampRef.current = 0;
+    if (timestampInputRef.current) {
+      timestampInputRef.current.value = "";
+    }
 
     // Hide success message after 5 seconds
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -326,11 +305,16 @@ export function ContactForm({
             />
           </div>
 
-          {/* Hidden timestamp for server-side time check */}
+          {/* Hidden timestamp for server-side time check.
+              Uses a DOM ref so the value is updated imperatively
+              when the user first interacts (ref changes don't re-render).
+              For no-JS/SSR, the field is left empty and the server
+              skips the time-check, allowing progressive enhancement. */}
           <input
+            ref={timestampInputRef}
             type="hidden"
             name="_timestamp"
-            value={interactionTimestampRef.current || ""}
+            defaultValue=""
           />
 
           {/* Name Field */}

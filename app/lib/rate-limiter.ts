@@ -48,11 +48,13 @@ function cleanupExpiredEntries(windowMs: number = DEFAULT_WINDOW_MS): void {
 /**
  * Start the automatic cleanup interval.
  * Only starts if not already running.
+ * Always uses DEFAULT_WINDOW_MS for cleanup consistency,
+ * regardless of per-call windowMs parameters.
  */
-function startCleanupInterval(windowMs: number = DEFAULT_WINDOW_MS): void {
+function startCleanupInterval(): void {
   if (cleanupInterval !== null) return;
   cleanupInterval = setInterval(
-    () => cleanupExpiredEntries(windowMs),
+    () => cleanupExpiredEntries(DEFAULT_WINDOW_MS),
     CLEANUP_INTERVAL_MS,
   );
   // Allow the process to exit even if the interval is still running
@@ -74,7 +76,7 @@ export function isRateLimited(
   maxRequests: number = DEFAULT_MAX_REQUESTS,
   windowMs: number = DEFAULT_WINDOW_MS,
 ): boolean {
-  startCleanupInterval(windowMs);
+  startCleanupInterval();
 
   const now = Date.now();
   const entry = store.get(ip);
