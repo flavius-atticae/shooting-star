@@ -21,7 +21,14 @@ const DEFAULT_MIN_SUBMISSION_MS = 3000;
  * @returns The sanitized string with HTML tags and angle brackets removed
  */
 export function sanitizeInput(input: string): string {
-  return input.replace(/<[^>]*>/g, "").replace(/[<>]/g, "");
+  let result = input;
+  let previous = "";
+  // Iteratively strip tags to handle nested/broken constructs like <scr<script>ipt>
+  while (result !== previous) {
+    previous = result;
+    result = result.replace(/<[^>]*>/g, "");
+  }
+  return result.replace(/[<>]/g, "");
 }
 
 /**

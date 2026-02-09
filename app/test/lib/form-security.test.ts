@@ -36,6 +36,12 @@ describe("lib/form-security", () => {
     it("should handle input with only tags", () => {
       expect(sanitizeInput("<div></div>")).toBe("");
     });
+
+    it("should handle nested/broken tag constructs", () => {
+      expect(sanitizeInput("<scr<script>ipt>alert('xss')</scr</script>ipt>")).toBe(
+        "alert('xss')"
+      );
+    });
   });
 
   describe("isHoneypotFilled", () => {
