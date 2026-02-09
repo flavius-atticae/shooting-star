@@ -331,7 +331,11 @@ describe("ContactForm Component", () => {
       );
 
       // Fill the honeypot field (bots would do this)
-      const honeypotInput = document.getElementById("website") as HTMLInputElement;
+      const honeypotInput = screen.getByRole("textbox", {
+        hidden: true,
+        name: /site web/i,
+      });
+      expect(honeypotInput).toBeInTheDocument();
       await user.type(honeypotInput, "http://spam.com");
 
       await user.click(screen.getByRole("button", { name: /envoyer/i }));
