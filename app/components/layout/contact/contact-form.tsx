@@ -130,7 +130,6 @@ export function ContactForm({
       if (interactionTimestampRef.current !== 0) return;
 
       const focusedElement = event.target;
-      if (!focusedElement) return;
 
       // Ignore submit button focus
       if (focusedElement instanceof HTMLButtonElement) return;
