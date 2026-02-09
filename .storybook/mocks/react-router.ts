@@ -157,36 +157,23 @@ export const useSearchParams = () => {
   return [new URLSearchParams(), setSearchParams] as const;
 };
 
-// Mock useFetcher for progressive enhancement forms in Storybook
-export const useFetcher = () => {
-  const [state, setState] = React.useState<'idle' | 'submitting'>('idle');
-  const [data, setData] = React.useState<any>(undefined);
+// Mock useFetcher for progressive enhancement forms in Storybook.
+// Returns a static idle fetcher — no React hooks needed so it works
+// even when React is not yet initialised (vitest browser mode).
+export const useFetcher = () => ({
+  state: 'idle' as const,
+  data: undefined as unknown,
+  Form: 'form' as unknown as React.ComponentType<React.FormHTMLAttributes<HTMLFormElement>>,
+  submit: (_formData: FormData, _options?: { method?: string; action?: string }) => {
+    console.log('📨 Storybook fetcher.submit (no-op)');
+  },
+});
 
-  const Form = React.useCallback(
-    ({ children, ...props }: React.FormHTMLAttributes<HTMLFormElement> & { children?: React.ReactNode }) => {
-      return React.createElement('form', props, children);
-    },
-    [],
-  );
-
-  const submit = React.useCallback(
-    (formData: FormData, options?: { method?: string; action?: string }) => {
-      console.log('📨 Storybook fetcher.submit:', {
-        data: Object.fromEntries(formData.entries()),
-        options,
-      });
-      setState('submitting');
-      // Simulate successful submission after a delay
-      setTimeout(() => {
-        setData({ success: true });
-        setState('idle');
-      }, 1000);
-    },
-    [],
-  );
-
-  return { state, data, Form, submit };
-};
+// Mock React Router `data` helper used in route actions.
+// In Storybook the server action never runs, so a simple passthrough is enough.
+export function data(body: unknown, init?: { status?: number }) {
+  return { ...((typeof body === 'object' && body !== null) ? body : {}), _status: init?.status };
+}
 
 // Export default for easier importing
 export default {
@@ -196,5 +183,6 @@ export default {
   useParams,
   useSearchParams,
   useFetcher,
+  data,
   StorybookRouterProvider
 };
