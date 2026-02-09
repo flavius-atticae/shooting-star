@@ -3,7 +3,11 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { cn } from "~/lib/utils";
-import { isHoneypotFilled, isSubmissionTooFast, sanitizeInput } from "~/lib/form-security";
+import {
+  isHoneypotFilled,
+  isSubmissionTooFast,
+  sanitizeInput,
+} from "~/lib/form-security";
 import {
   Form,
   FormControl,
@@ -126,8 +130,9 @@ export function ContactForm({
 
   const handleSubmit = async (data: ContactFormData) => {
     // Silent rejection for bot submissions (no interaction recorded, or too fast)
-    const tooFast = interactionTimestampRef.current === 0
-      || isSubmissionTooFast(interactionTimestampRef.current);
+    const tooFast =
+      interactionTimestampRef.current === 0 ||
+      isSubmissionTooFast(interactionTimestampRef.current);
     if (isHoneypotFilled(honeypot) || tooFast) {
       setIsSubmitted(true);
       form.reset();
@@ -176,7 +181,7 @@ export function ContactForm({
         "flex flex-col gap-6 p-8 md:p-10 lg:p-12",
         // Background - transparent to blend with parent beige background
         "bg-transparent",
-        className
+        className,
       )}
       {...props}
     >
@@ -200,7 +205,9 @@ export function ContactForm({
               tabIndex={-1}
               autoComplete="off"
               value={honeypot}
-              onChange={(e) => setHoneypot(e.target.value)}
+              onChange={(e) => {
+                setHoneypot(e.target.value);
+              }}
             />
           </div>
 
@@ -305,7 +312,7 @@ export function ContactForm({
             className={cn(
               "w-full uppercase font-semibold tracking-wide",
               "min-h-[48px] text-base",
-              "rounded-full bg-primary text-white hover:bg-primary/90"
+              "rounded-full bg-primary text-white hover:bg-primary/90",
             )}
           >
             {isLoading ? "ENVOI EN COURS..." : "ENVOYER"}
@@ -318,7 +325,7 @@ export function ContactForm({
               aria-live="polite"
               className={cn(
                 "p-4 rounded-md bg-primary/10 border border-primary/20",
-                "text-primary font-body text-sm"
+                "text-primary font-body text-sm",
               )}
             >
               Merci pour votre message ! Je vous répondrai dans les plus brefs
@@ -333,7 +340,7 @@ export function ContactForm({
               aria-live="polite"
               className={cn(
                 "p-4 rounded-md bg-destructive/10 border border-destructive/20",
-                "text-destructive font-body text-sm"
+                "text-destructive font-body text-sm",
               )}
             >
               Une erreur s'est produite. Veuillez réessayer.
