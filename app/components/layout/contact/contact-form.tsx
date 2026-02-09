@@ -129,16 +129,16 @@ export function ContactForm({
     (event: React.FocusEvent) => {
       if (interactionTimestampRef.current !== 0) return;
 
-      const target = event.target as HTMLElement | null;
-      if (!target) return;
+      const focusedElement = event.target;
+      if (!focusedElement) return;
 
       // Ignore submit button focus
-      if (target instanceof HTMLButtonElement) return;
+      if (focusedElement instanceof HTMLButtonElement) return;
 
       // Ignore honeypot field focus
       if (
-        target instanceof HTMLInputElement &&
-        target.name === "website"
+        focusedElement instanceof HTMLInputElement &&
+        focusedElement.name === "website"
       ) {
         return;
       }
