@@ -137,10 +137,7 @@ export function ContactForm({
       if (element instanceof HTMLButtonElement) return;
 
       // Ignore honeypot field interaction
-      if (
-        element instanceof HTMLInputElement &&
-        element.name === "website"
-      ) {
+      if (element instanceof HTMLInputElement && element.name === "website") {
         return;
       }
 
@@ -193,6 +190,10 @@ export function ContactForm({
 
       showSuccessAndReset();
     } catch (err) {
+      // Clear any lingering success state to avoid showing both alerts
+      setIsSubmitted(false);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
       setError(true);
       if (import.meta.env.DEV) {
         console.error("Form submission error:", err);
