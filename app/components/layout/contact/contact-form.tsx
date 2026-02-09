@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { cn } from "~/lib/utils";
+import { isHoneypotFilled, isSubmissionTooFast } from "~/lib/form-security";
 import {
   Form,
   FormControl,
@@ -94,6 +95,8 @@ export function ContactForm({
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [error, setError] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const [honeypot, setHoneypot] = React.useState("");
+  const [formTimestamp] = React.useState(() => Date.now());
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -115,6 +118,14 @@ export function ContactForm({
   }, []);
 
   const handleSubmit = async (data: ContactFormData) => {
+    // Silent rejection for bot submissions
+    if (isHoneypotFilled(honeypot) || isSubmissionTooFast(formTimestamp)) {
+      setIsSubmitted(true);
+      form.reset();
+      setHoneypot("");
+      return;
+    }
+
     try {
       setError(false);
 
@@ -158,6 +169,26 @@ export function ContactForm({
           className="space-y-6"
           noValidate
         >
+          {/* Honeypot field - invisible to humans, traps bots */}
+          <div
+            aria-hidden="true"
+            style={{ position: "absolute", left: "-9999px", opacity: 0 }}
+          >
+            <label htmlFor="website">Website</label>
+            <input
+              type="text"
+              id="website"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => setHoneypot(e.target.value)}
+            />
+          </div>
+
+          {/* Timestamp for time-based bot detection */}
+          <input type="hidden" name="_timestamp" value={formTimestamp} />
+
           {/* Name Field */}
           <FormField
             control={form.control}

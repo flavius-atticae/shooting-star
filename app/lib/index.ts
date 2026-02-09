@@ -16,6 +16,13 @@ export { prefersReducedMotion } from "~/lib/browser-support";
 // CSS Utilities
 export { cn } from "~/lib/utils";
 
+// Form Security Utilities
+export {
+  sanitizeInput,
+  isHoneypotFilled,
+  isSubmissionTooFast,
+} from "~/lib/form-security";
+
 // Performance Thresholds
 export {
   CORE_WEB_VITALS,
