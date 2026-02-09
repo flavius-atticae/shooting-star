@@ -157,23 +157,28 @@ export function ContactForm({
     };
   }, []);
 
+  // Show success message and reset form state for next submission
+  const showSuccessAndReset = React.useCallback(() => {
+    setError(false);
+    setIsSubmitted(true);
+    form.reset();
+    setHoneypot("");
+    interactionTimestampRef.current = 0;
+
+    // Hide success message after 5 seconds
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setIsSubmitted(false);
+    }, 5000);
+  }, [form]);
+
   const handleSubmit = async (data: ContactFormData) => {
     // Silent rejection for bot submissions (no interaction recorded, or too fast)
     const tooFast =
       interactionTimestampRef.current === 0 ||
       isSubmissionTooFast(interactionTimestampRef.current);
     if (isHoneypotFilled(honeypot) || tooFast) {
-      setError(false);
-      setIsSubmitted(true);
-      form.reset();
-      setHoneypot("");
-      interactionTimestampRef.current = 0;
-
-      // Hide success message after 5 seconds, same as normal success path
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setIsSubmitted(false);
-      }, 5000);
+      showSuccessAndReset();
       return;
     }
 
@@ -185,18 +190,7 @@ export function ContactForm({
         await onSubmit(data);
       }
 
-      // Show success message
-      setIsSubmitted(true);
-
-      // Reset form and interaction timestamp for next submission
-      form.reset();
-      interactionTimestampRef.current = 0;
-
-      // Hide success message after 5 seconds
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setIsSubmitted(false);
-      }, 5000);
+      showSuccessAndReset();
     } catch (err) {
       setError(true);
       if (import.meta.env.DEV) {

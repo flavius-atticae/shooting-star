@@ -26,7 +26,7 @@ export function sanitizeInput(input: string): string {
   // Iteratively strip HTML-like tags (starting with a letter or "/") to handle nested/broken constructs like <scr<script>ipt>
   while (result !== previous) {
     previous = result;
-    result = result.replace(/<[/A-Za-z][^>]*>/g, "");
+    result = result.replace(/<[\/A-Za-z][^>]*>/g, "");
   }
   return result.replace(/[<>]/g, "");
 }
