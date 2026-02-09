@@ -67,13 +67,17 @@ interface ActionData {
 
 /**
  * Minimal fetcher interface compatible with React Router's useFetcher.
- * Uses broader types to accept both the real fetcher and test mocks.
+ * Uses narrow types to satisfy both the real fetcher and test mocks.
  */
 interface FetcherLike {
   state: string;
   data?: ActionData;
-  Form: React.ComponentType<any>;
-  submit: (data: any, options?: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- React Router's Form component uses FetcherFormProps which is not exported; using Record<string, unknown> keeps compatibility
+  Form: React.ComponentType<Record<string, unknown>>;
+  submit: (
+    data: FormData | Record<string, string>,
+    options?: { method?: "get" | "post" | "put" | "patch" | "delete"; action?: string },
+  ) => void;
 }
 
 /**
@@ -218,7 +222,7 @@ export function ContactForm({
     } else if (actionData.errors) {
       // Set server-side field errors on the form
       for (const [field, messages] of Object.entries(actionData.errors)) {
-        if (messages && messages.length > 0) {
+        if (messages.length > 0) {
           form.setError(field as keyof ContactFormData, {
             type: "server",
             message: messages[0],
@@ -243,7 +247,7 @@ export function ContactForm({
       return;
     }
 
-    if (useFetcherMode && fetcher) {
+    if (fetcher) {
       // Submit via fetcher for progressive enhancement
       const formData = new FormData();
       formData.set("name", data.name);
@@ -251,11 +255,8 @@ export function ContactForm({
       formData.set("availability", data.availability || "");
       formData.set("message", data.message);
       formData.set("website", honeypot);
-      formData.set(
-        "_timestamp",
-        String(interactionTimestampRef.current),
-      );
-      fetcher.submit(formData, { method: "POST", action: "/contact" });
+      formData.set("_timestamp", String(interactionTimestampRef.current));
+      fetcher.submit(formData, { method: "post", action: "/contact" });
       return;
     }
 
@@ -297,7 +298,9 @@ export function ContactForm({
     >
       <Form {...form}>
         <FormElement
-          {...(useFetcherMode ? { method: "post" as const, action: "/contact" } : {})}
+          {...(useFetcherMode
+            ? { method: "post" as const, action: "/contact" }
+            : {})}
           onSubmit={form.handleSubmit(handleSubmit)}
           onFocusCapture={handleFirstInteraction}
           onChangeCapture={handleFirstInteraction}
