@@ -211,11 +211,16 @@ export function ContactForm({
     }
   }, [fetcher?.data, showSuccessAndReset, form]);
 
-  /** Check client-side anti-spam: honeypot filled or submission too fast */
+  /** Check client-side anti-spam: honeypot filled or submission too fast.
+   *  Only apply the time-based check when a timestamp is present (non-zero)
+   *  to match the server action behaviour and avoid rejecting legitimate
+   *  submissions where onFocusCapture/onChangeCapture didn't fire
+   *  (e.g. browser autofill + direct submit click). */
   const isSpamSubmission = React.useCallback((): boolean => {
-    const tooFast =
-      interactionTimestampRef.current === 0 ||
-      isSubmissionTooFast(interactionTimestampRef.current);
+    const hasInteractionTimestamp = interactionTimestampRef.current > 0;
+    const tooFast = hasInteractionTimestamp
+      ? isSubmissionTooFast(interactionTimestampRef.current)
+      : false;
     return isHoneypotFilled(honeypot) || tooFast;
   }, [honeypot]);
 

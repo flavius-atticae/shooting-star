@@ -34,12 +34,12 @@ let cleanupInterval: ReturnType<typeof setInterval> | null = null;
 /**
  * Remove expired entries from the store.
  * An entry is expired when the time since its first request
- * exceeds the rate limit window.
+ * exceeds the default rate limit window.
  */
-function cleanupExpiredEntries(windowMs: number = DEFAULT_WINDOW_MS): void {
+function cleanupExpiredEntries(): void {
   const now = Date.now();
   for (const [ip, entry] of store) {
-    if (now - entry.firstRequest >= windowMs) {
+    if (now - entry.firstRequest >= DEFAULT_WINDOW_MS) {
       store.delete(ip);
     }
   }
@@ -48,13 +48,11 @@ function cleanupExpiredEntries(windowMs: number = DEFAULT_WINDOW_MS): void {
 /**
  * Start the automatic cleanup interval.
  * Only starts if not already running.
- * Always uses DEFAULT_WINDOW_MS for cleanup consistency,
- * regardless of per-call windowMs parameters.
  */
 function startCleanupInterval(): void {
   if (cleanupInterval !== null) return;
   cleanupInterval = setInterval(
-    () => cleanupExpiredEntries(DEFAULT_WINDOW_MS),
+    cleanupExpiredEntries,
     CLEANUP_INTERVAL_MS,
   );
   // Allow the process to exit even if the interval is still running
@@ -66,15 +64,17 @@ function startCleanupInterval(): void {
 /**
  * Check whether an IP address has exceeded the rate limit.
  *
+ * Uses the default window (15 minutes) and max requests (3) for all
+ * callers to stay consistent with the cleanup interval. Custom values
+ * are accepted for testing only via the optional parameters.
+ *
  * @param ip - The IP address to check
  * @param maxRequests - Maximum requests allowed per window (default: 3)
- * @param windowMs - Time window in milliseconds (default: 15 minutes)
  * @returns `true` if the IP is rate limited and should be blocked
  */
 export function isRateLimited(
   ip: string,
   maxRequests: number = DEFAULT_MAX_REQUESTS,
-  windowMs: number = DEFAULT_WINDOW_MS,
 ): boolean {
   startCleanupInterval();
 
@@ -87,7 +87,7 @@ export function isRateLimited(
   }
 
   // Window has expired — reset the entry
-  if (now - entry.firstRequest >= windowMs) {
+  if (now - entry.firstRequest >= DEFAULT_WINDOW_MS) {
     store.set(ip, { count: 1, firstRequest: now });
     return false;
   }

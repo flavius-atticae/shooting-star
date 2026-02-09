@@ -63,19 +63,6 @@ describe("lib/rate-limiter", () => {
       expect(isRateLimited("10.0.0.4", 1)).toBe(true);  // 2 blocked
     });
 
-    it("should support custom windowMs", () => {
-      const baseTime = 1000000;
-      const dateSpy = vi.spyOn(Date, "now").mockReturnValue(baseTime);
-
-      const customWindow = 5000; // 5 seconds
-      isRateLimited("10.0.0.5", 1, customWindow);
-      expect(isRateLimited("10.0.0.5", 1, customWindow)).toBe(true);
-
-      // Move past the custom window
-      dateSpy.mockReturnValue(baseTime + 5000);
-      expect(isRateLimited("10.0.0.5", 1, customWindow)).toBe(false);
-    });
-
     it("should handle 'unknown' IP", () => {
       expect(isRateLimited("unknown")).toBe(false);
       isRateLimited("unknown");

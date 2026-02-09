@@ -170,9 +170,10 @@ export const useFetcher = () => ({
 });
 
 // Mock React Router `data` helper used in route actions.
-// In Storybook the server action never runs, so a simple passthrough is enough.
+// Matches the real DataWithResponseInit shape ({ data, init }) so that
+// route actions/tests behave the same in Storybook as in the app.
 export function data(body: unknown, init?: { status?: number }) {
-  return { ...((typeof body === 'object' && body !== null) ? body : {}), _status: init?.status };
+  return { data: body, init };
 }
 
 // Export default for easier importing

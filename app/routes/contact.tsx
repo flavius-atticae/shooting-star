@@ -41,11 +41,21 @@ export async function action({ request }: Route.ActionArgs) {
 
   // 3. Rate limit by IP
   //    x-forwarded-for may contain a comma-separated list; take the first
-  //    (client) IP and trim whitespace. Falls back to x-real-ip or "unknown".
+  //    (client) IP and trim whitespace. If empty, fall back to x-real-ip or "unknown".
   const forwardedFor = request.headers.get("x-forwarded-for");
-  const ip = forwardedFor
-    ? forwardedFor.split(",")[0].trim()
-    : request.headers.get("x-real-ip") || "unknown";
+  const realIpHeader = request.headers.get("x-real-ip");
+  let ip = "unknown";
+
+  if (forwardedFor) {
+    const firstForwarded = forwardedFor.split(",")[0].trim();
+    if (firstForwarded !== "") {
+      ip = firstForwarded;
+    } else if (realIpHeader && realIpHeader.trim() !== "") {
+      ip = realIpHeader.trim();
+    }
+  } else if (realIpHeader && realIpHeader.trim() !== "") {
+    ip = realIpHeader.trim();
+  }
   if (isRateLimited(ip)) {
     return data(
       {
