@@ -140,7 +140,7 @@ export function ContactForm({
   ...props
 }: ContactFormProps) {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
-  const [error, setError] = React.useState<string | false>(false);
+  const [error, setError] = React.useState<string | null>(null);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
   const [honeypot, setHoneypot] = React.useState("");
   const interactionTimestampRef = React.useRef<number>(0);
@@ -192,7 +192,7 @@ export function ContactForm({
 
   // Show success message and reset form state for next submission
   const showSuccessAndReset = React.useCallback(() => {
-    setError(false);
+    setError(null);
     setIsSubmitted(true);
     form.reset();
     setHoneypot("");
@@ -228,17 +228,22 @@ export function ContactForm({
     }
   }, [fetcher?.data, showSuccessAndReset, form]);
 
-  const handleSubmit = async (data: ContactFormData) => {
-    if (useFetcherMode && fetcher) {
-      // Client-side anti-spam checks before submitting to server
-      const tooFast =
-        interactionTimestampRef.current === 0 ||
-        isSubmissionTooFast(interactionTimestampRef.current);
-      if (isHoneypotFilled(honeypot) || tooFast) {
-        showSuccessAndReset();
-        return;
-      }
+  /** Check client-side anti-spam: honeypot filled or submission too fast */
+  const isSpamSubmission = React.useCallback((): boolean => {
+    const tooFast =
+      interactionTimestampRef.current === 0 ||
+      isSubmissionTooFast(interactionTimestampRef.current);
+    return isHoneypotFilled(honeypot) || tooFast;
+  }, [honeypot]);
 
+  const handleSubmit = async (data: ContactFormData) => {
+    // Silent rejection for bot submissions (both modes)
+    if (isSpamSubmission()) {
+      showSuccessAndReset();
+      return;
+    }
+
+    if (useFetcherMode && fetcher) {
       // Submit via fetcher for progressive enhancement
       const formData = new FormData();
       formData.set("name", data.name);
@@ -255,17 +260,8 @@ export function ContactForm({
     }
 
     // Legacy mode: onSubmit callback
-    // Silent rejection for bot submissions (no interaction recorded, or too fast)
-    const tooFast =
-      interactionTimestampRef.current === 0 ||
-      isSubmissionTooFast(interactionTimestampRef.current);
-    if (isHoneypotFilled(honeypot) || tooFast) {
-      showSuccessAndReset();
-      return;
-    }
-
     try {
-      setError(false);
+      setError(null);
 
       // Data is already sanitized by Zod transform, pass through directly
       if (onSubmit) {

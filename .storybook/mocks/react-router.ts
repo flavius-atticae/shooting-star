@@ -159,7 +159,7 @@ export const useSearchParams = () => {
 
 // Mock useFetcher for progressive enhancement forms in Storybook
 export const useFetcher = () => {
-  const [state, setState] = React.useState<'idle' | 'submitting' | 'loading'>('idle');
+  const [state, setState] = React.useState<'idle' | 'submitting'>('idle');
   const [data, setData] = React.useState<any>(undefined);
 
   const Form = React.useCallback(
