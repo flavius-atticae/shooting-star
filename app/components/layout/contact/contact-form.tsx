@@ -115,13 +115,13 @@ export function ContactForm({
 }: ContactFormProps) {
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
-  const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const [honeypot, setHoneypot] = React.useState("");
   const interactionTimestampRef = React.useRef<number>(0);
   const timestampInputRef = React.useRef<HTMLInputElement>(null);
 
   const useFetcherMode = !!fetcher;
-  const fetcherLoading = fetcher?.state === "submitting";
+  const fetcherLoading = fetcher ? fetcher.state !== "idle" : false;
   const loading = isLoading || fetcherLoading;
 
   const form = useForm<ContactFormData>({
