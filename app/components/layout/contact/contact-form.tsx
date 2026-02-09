@@ -22,19 +22,31 @@ import { Select } from "~/components/ui/select";
 import { Button } from "~/components/ui/button";
 
 /**
- * Form validation schema using Zod
+ * Form validation schema using Zod.
+ * Name and message are sanitized (HTML tags stripped) before validation
+ * to prevent bypassing min-length constraints with HTML padding.
  */
 const contactFormSchema = z.object({
-  name: z.string().trim().min(2, {
-    message: "Le nom doit contenir au moins 2 caractères.",
-  }),
+  name: z
+    .string()
+    .transform((val) => sanitizeInput(val))
+    .pipe(
+      z.string().trim().min(2, {
+        message: "Le nom doit contenir au moins 2 caractères.",
+      }),
+    ),
   email: z.string().email({
     message: "Veuillez entrer une adresse courriel valide.",
   }),
   availability: z.string().optional(),
-  message: z.string().trim().min(10, {
-    message: "Le message doit contenir au moins 10 caractères.",
-  }),
+  message: z
+    .string()
+    .transform((val) => sanitizeInput(val))
+    .pipe(
+      z.string().trim().min(10, {
+        message: "Le message doit contenir au moins 10 caractères.",
+      }),
+    ),
 });
 
 /**
@@ -112,12 +124,29 @@ export function ContactForm({
     },
   });
 
-  // Record timestamp on first user interaction with the form
-  const handleFirstInteraction = React.useCallback(() => {
-    if (interactionTimestampRef.current === 0) {
+  // Record timestamp on first meaningful user interaction with the form
+  const handleFirstInteraction = React.useCallback(
+    (event: React.FocusEvent) => {
+      if (interactionTimestampRef.current !== 0) return;
+
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
+
+      // Ignore submit button focus
+      if (target instanceof HTMLButtonElement) return;
+
+      // Ignore honeypot field focus
+      if (
+        target instanceof HTMLInputElement &&
+        target.name === "website"
+      ) {
+        return;
+      }
+
       interactionTimestampRef.current = Date.now();
-    }
-  }, []);
+    },
+    [],
+  );
 
   // Cleanup timeout on unmount
   React.useEffect(() => {
@@ -134,26 +163,26 @@ export function ContactForm({
       interactionTimestampRef.current === 0 ||
       isSubmissionTooFast(interactionTimestampRef.current);
     if (isHoneypotFilled(honeypot) || tooFast) {
+      setError(false);
       setIsSubmitted(true);
       form.reset();
       setHoneypot("");
       interactionTimestampRef.current = 0;
+
+      // Hide success message after 5 seconds, same as normal success path
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+      timeoutRef.current = setTimeout(() => {
+        setIsSubmitted(false);
+      }, 5000);
       return;
     }
 
     try {
       setError(false);
 
-      // Sanitize user inputs before submission
-      const sanitizedData: ContactFormData = {
-        name: sanitizeInput(data.name),
-        email: data.email,
-        availability: data.availability,
-        message: sanitizeInput(data.message),
-      };
-
+      // Data is already sanitized by Zod transform, pass through directly
       if (onSubmit) {
-        await onSubmit(sanitizedData);
+        await onSubmit(data);
       }
 
       // Show success message
