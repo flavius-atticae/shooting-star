@@ -4,6 +4,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { cn } from "~/lib/utils";
 import {
+  isHoneypotFilled,
+  isSubmissionTooFast,
+  sanitizeInput,
+} from "~/lib/form-security";
+import {
   Form,
   FormControl,
   FormField,
@@ -17,19 +22,31 @@ import { Select } from "~/components/ui/select";
 import { Button } from "~/components/ui/button";
 
 /**
- * Form validation schema using Zod
+ * Form validation schema using Zod.
+ * Name and message are sanitized (HTML tags stripped) before validation
+ * to prevent bypassing min-length constraints with HTML padding.
  */
 const contactFormSchema = z.object({
-  name: z.string().trim().min(2, {
-    message: "Le nom doit contenir au moins 2 caractères.",
-  }),
+  name: z
+    .string()
+    .transform((val) => sanitizeInput(val))
+    .pipe(
+      z.string().trim().min(2, {
+        message: "Le nom doit contenir au moins 2 caractères.",
+      }),
+    ),
   email: z.string().email({
     message: "Veuillez entrer une adresse courriel valide.",
   }),
   availability: z.string().optional(),
-  message: z.string().trim().min(10, {
-    message: "Le message doit contenir au moins 10 caractères.",
-  }),
+  message: z
+    .string()
+    .transform((val) => sanitizeInput(val))
+    .pipe(
+      z.string().trim().min(10, {
+        message: "Le message doit contenir au moins 10 caractères.",
+      }),
+    ),
 });
 
 /**
@@ -94,6 +111,8 @@ export function ContactForm({
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [error, setError] = React.useState(false);
   const timeoutRef = React.useRef<NodeJS.Timeout | null>(null);
+  const [honeypot, setHoneypot] = React.useState("");
+  const interactionTimestampRef = React.useRef<number>(0);
 
   const form = useForm<ContactFormData>({
     resolver: zodResolver(contactFormSchema),
@@ -105,6 +124,28 @@ export function ContactForm({
     },
   });
 
+  // Record timestamp on first meaningful user interaction with the form.
+  // Handles both focus and change events to cover autofill scenarios
+  // where fields may be populated without triggering focus.
+  const handleFirstInteraction = React.useCallback(
+    (event: React.SyntheticEvent) => {
+      if (interactionTimestampRef.current !== 0) return;
+
+      const element = event.target;
+
+      // Ignore submit button focus
+      if (element instanceof HTMLButtonElement) return;
+
+      // Ignore honeypot field interaction
+      if (element instanceof HTMLInputElement && element.name === "website") {
+        return;
+      }
+
+      interactionTimestampRef.current = Date.now();
+    },
+    [],
+  );
+
   // Cleanup timeout on unmount
   React.useEffect(() => {
     return () => {
@@ -114,26 +155,45 @@ export function ContactForm({
     };
   }, []);
 
+  // Show success message and reset form state for next submission
+  const showSuccessAndReset = React.useCallback(() => {
+    setError(false);
+    setIsSubmitted(true);
+    form.reset();
+    setHoneypot("");
+    interactionTimestampRef.current = 0;
+
+    // Hide success message after 5 seconds
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setIsSubmitted(false);
+    }, 5000);
+  }, [form]);
+
   const handleSubmit = async (data: ContactFormData) => {
+    // Silent rejection for bot submissions (no interaction recorded, or too fast)
+    const tooFast =
+      interactionTimestampRef.current === 0 ||
+      isSubmissionTooFast(interactionTimestampRef.current);
+    if (isHoneypotFilled(honeypot) || tooFast) {
+      showSuccessAndReset();
+      return;
+    }
+
     try {
       setError(false);
 
+      // Data is already sanitized by Zod transform, pass through directly
       if (onSubmit) {
         await onSubmit(data);
       }
 
-      // Show success message
-      setIsSubmitted(true);
-
-      // Reset form
-      form.reset();
-
-      // Hide success message after 5 seconds
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      timeoutRef.current = setTimeout(() => {
-        setIsSubmitted(false);
-      }, 5000);
+      showSuccessAndReset();
     } catch (err) {
+      // Clear any lingering success state to avoid showing both alerts
+      setIsSubmitted(false);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
       setError(true);
       if (import.meta.env.DEV) {
         console.error("Form submission error:", err);
@@ -148,16 +208,37 @@ export function ContactForm({
         "flex flex-col gap-6 p-8 md:p-10 lg:p-12",
         // Background - transparent to blend with parent beige background
         "bg-transparent",
-        className
+        className,
       )}
       {...props}
     >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
+          onFocusCapture={handleFirstInteraction}
+          onChangeCapture={handleFirstInteraction}
           className="space-y-6"
           noValidate
         >
+          {/* Honeypot field - invisible to humans, traps bots */}
+          <div
+            aria-hidden="true"
+            style={{ position: "absolute", left: "-9999px", opacity: 0 }}
+          >
+            <label htmlFor="website">Site web</label>
+            <input
+              type="text"
+              id="website"
+              name="website"
+              tabIndex={-1}
+              autoComplete="off"
+              value={honeypot}
+              onChange={(e) => {
+                setHoneypot(e.target.value);
+              }}
+            />
+          </div>
+
           {/* Name Field */}
           <FormField
             control={form.control}
@@ -259,7 +340,7 @@ export function ContactForm({
             className={cn(
               "w-full uppercase font-semibold tracking-wide",
               "min-h-[48px] text-base",
-              "rounded-full bg-primary text-white hover:bg-primary/90"
+              "rounded-full bg-primary text-white hover:bg-primary/90",
             )}
           >
             {isLoading ? "ENVOI EN COURS..." : "ENVOYER"}
@@ -272,7 +353,7 @@ export function ContactForm({
               aria-live="polite"
               className={cn(
                 "p-4 rounded-md bg-primary/10 border border-primary/20",
-                "text-primary font-body text-sm"
+                "text-primary font-body text-sm",
               )}
             >
               Merci pour votre message ! Je vous répondrai dans les plus brefs
@@ -287,7 +368,7 @@ export function ContactForm({
               aria-live="polite"
               className={cn(
                 "p-4 rounded-md bg-destructive/10 border border-destructive/20",
-                "text-destructive font-body text-sm"
+                "text-destructive font-body text-sm",
               )}
             >
               Une erreur s'est produite. Veuillez réessayer.
