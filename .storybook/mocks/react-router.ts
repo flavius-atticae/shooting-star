@@ -157,6 +157,25 @@ export const useSearchParams = () => {
   return [new URLSearchParams(), setSearchParams] as const;
 };
 
+// Mock useFetcher for progressive enhancement forms in Storybook.
+// Returns a static idle fetcher — no React hooks needed so it works
+// even when React is not yet initialised (vitest browser mode).
+export const useFetcher = () => ({
+  state: 'idle' as const,
+  data: undefined as unknown,
+  Form: 'form' as unknown as React.ComponentType<React.FormHTMLAttributes<HTMLFormElement>>,
+  submit: (_formData: FormData, _options?: { method?: string; action?: string }) => {
+    console.log('📨 Storybook fetcher.submit (no-op)');
+  },
+});
+
+// Mock React Router `data` helper used in route actions.
+// Matches the real DataWithResponseInit shape ({ data, init }) so that
+// route actions/tests behave the same in Storybook as in the app.
+export function data(body: unknown, init?: { status?: number }) {
+  return { data: body, init };
+}
+
 // Export default for easier importing
 export default {
   Link,
@@ -164,5 +183,7 @@ export default {
   useLocation,
   useParams,
   useSearchParams,
+  useFetcher,
+  data,
   StorybookRouterProvider
 };

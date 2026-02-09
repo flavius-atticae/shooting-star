@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useFetcher } from "react-router";
 import { cn } from "~/lib/utils";
 import { Section } from "~/components/ui/section";
 import { ContactInfo } from "./contact-info";
@@ -11,7 +12,7 @@ export interface ContactSectionProps extends Omit<
   React.HTMLAttributes<HTMLElement>,
   "onSubmit"
 > {
-  /** Callback when form is successfully submitted */
+  /** Callback when form is successfully submitted (legacy/Storybook mode) */
   onSubmit?: (data: ContactFormData) => void | Promise<void>;
   /** Whether the form is in loading state */
   isLoading?: boolean;
@@ -54,6 +55,8 @@ export function ContactSection({
   className,
   ...props
 }: ContactSectionProps) {
+  const fetcher = useFetcher();
+
   return (
     <Section
       as="section"
@@ -88,7 +91,11 @@ export function ContactSection({
           <ContactInfo />
 
           {/* Right Column - Contact Form */}
-          <ContactForm onSubmit={onSubmit} isLoading={isLoading} />
+          <ContactForm
+            onSubmit={onSubmit}
+            isLoading={isLoading}
+            fetcher={onSubmit ? undefined : fetcher}
+          />
         </div>
       </div>
     </Section>

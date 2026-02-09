@@ -23,6 +23,15 @@ export {
   isSubmissionTooFast,
 } from "~/lib/form-security";
 
+// Contact Form Schema (shared between client and server)
+export {
+  contactFormSchema,
+  type ContactFormData,
+} from "~/lib/contact-form-schema";
+
+// Rate Limiting
+export { isRateLimited, resetRateLimiter } from "~/lib/rate-limiter";
+
 // Performance Thresholds
 export {
   CORE_WEB_VITALS,
