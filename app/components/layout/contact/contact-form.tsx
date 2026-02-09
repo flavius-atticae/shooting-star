@@ -301,8 +301,7 @@ export function ContactForm({
     >
       <Form {...form}>
         <FormElement
-          method="post"
-          action="/contact"
+          {...(useFetcherMode ? { method: "post" as const, action: "/contact" } : {})}
           onSubmit={form.handleSubmit(handleSubmit)}
           onFocusCapture={handleFirstInteraction}
           onChangeCapture={handleFirstInteraction}
