@@ -23,10 +23,10 @@ const DEFAULT_MIN_SUBMISSION_MS = 3000;
 export function sanitizeInput(input: string): string {
   let result = input;
   let previous = "";
-  // Iteratively strip tags to handle nested/broken constructs like <scr<script>ipt>
+  // Iteratively strip HTML-like tags (starting with a letter or "/") to handle nested/broken constructs like <scr<script>ipt>
   while (result !== previous) {
     previous = result;
-    result = result.replace(/<[^>]*>/g, "");
+    result = result.replace(/<[/A-Za-z][^>]*>/g, "");
   }
   return result.replace(/[<>]/g, "");
 }
@@ -46,7 +46,7 @@ export function isHoneypotFilled(value: string | undefined | null): boolean {
  * Check whether a form submission happened too fast.
  * Submissions faster than `minMs` are likely from bots.
  *
- * @param timestamp - The timestamp (ms since epoch) when the form was mounted
+ * @param timestamp - The timestamp (ms since epoch) when the user first interacted with the form
  * @param minMs - Minimum allowed time in ms (defaults to 3000)
  * @returns `true` if the submission was too fast (likely a bot)
  */

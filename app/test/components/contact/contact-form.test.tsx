@@ -290,4 +290,86 @@ describe("ContactForm Component", () => {
       ).toBeInTheDocument();
     });
   });
+
+  describe("Anti-spam Security", () => {
+    it("should sanitize name and message before calling onSubmit", async () => {
+      const user = userEvent.setup();
+      const onSubmit = vi.fn();
+      render(<ContactForm onSubmit={onSubmit} />);
+
+      await user.type(
+        screen.getByLabelText(/nom/i),
+        "John <script>alert</script>"
+      );
+      await user.type(screen.getByLabelText(/email/i), "john@example.com");
+      await user.type(
+        screen.getByLabelText(/message/i),
+        "Hello <b>world</b> this is a test"
+      );
+      await user.click(screen.getByRole("button", { name: /envoyer/i }));
+
+      await waitFor(() => {
+        expect(onSubmit).toHaveBeenCalledWith(
+          expect.objectContaining({
+            name: "John alert",
+            message: "Hello world this is a test",
+          })
+        );
+      });
+    });
+
+    it("should silently reject submission when honeypot is filled", async () => {
+      const user = userEvent.setup();
+      const onSubmit = vi.fn();
+      render(<ContactForm onSubmit={onSubmit} />);
+
+      await user.type(screen.getByLabelText(/nom/i), "John Doe");
+      await user.type(screen.getByLabelText(/email/i), "john@example.com");
+      await user.type(
+        screen.getByLabelText(/message/i),
+        "This is a valid message"
+      );
+
+      // Fill the honeypot field (bots would do this)
+      const honeypotInput = document.getElementById("website") as HTMLInputElement;
+      await user.type(honeypotInput, "http://spam.com");
+
+      await user.click(screen.getByRole("button", { name: /envoyer/i }));
+
+      await waitFor(() => {
+        // Should show success (fake) but not call onSubmit
+        expect(
+          screen.getByText(/merci pour votre message/i)
+        ).toBeInTheDocument();
+        expect(onSubmit).not.toHaveBeenCalled();
+      });
+    });
+
+    it("should silently reject submission when submitted too fast", async () => {
+      // Override the default mock to simulate immediate submission
+      dateNowSpy.mockRestore();
+      const fixedTime = 1000000;
+      dateNowSpy = vi.spyOn(Date, "now").mockReturnValue(fixedTime);
+
+      const user = userEvent.setup();
+      const onSubmit = vi.fn();
+      render(<ContactForm onSubmit={onSubmit} />);
+
+      await user.type(screen.getByLabelText(/nom/i), "John Doe");
+      await user.type(screen.getByLabelText(/email/i), "john@example.com");
+      await user.type(
+        screen.getByLabelText(/message/i),
+        "This is a valid message"
+      );
+      await user.click(screen.getByRole("button", { name: /envoyer/i }));
+
+      await waitFor(() => {
+        // Should show success (fake) but not call onSubmit
+        expect(
+          screen.getByText(/merci pour votre message/i)
+        ).toBeInTheDocument();
+        expect(onSubmit).not.toHaveBeenCalled();
+      });
+    });
+  });
 });

@@ -137,6 +137,7 @@ export function ContactForm({
       setIsSubmitted(true);
       form.reset();
       setHoneypot("");
+      interactionTimestampRef.current = 0;
       return;
     }
 
@@ -158,8 +159,9 @@ export function ContactForm({
       // Show success message
       setIsSubmitted(true);
 
-      // Reset form
+      // Reset form and interaction timestamp for next submission
       form.reset();
+      interactionTimestampRef.current = 0;
 
       // Hide success message after 5 seconds
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
