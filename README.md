@@ -144,6 +144,23 @@ shooting-star/
 └── build/                 # Production build output (generated)
 ```
 
+### Environment Variables
+
+The application uses environment variables for email delivery via [Resend](https://resend.com). Copy the example file and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `RESEND_API_KEY` | API key from the Resend dashboard | `re_xxxxxxxxxx` |
+| `RESEND_FROM_EMAIL` | Sender address on the transactional subdomain | `hello@mail.paulineroussel.ca` |
+| `RESEND_FROM_NAME` | Display name for outgoing emails | `Pauline Roussel` |
+| `CONTACT_REPLY_TO` | Reply-to address (Pauline's personal inbox) | `pauline@paulineroussel.ca` |
+
+> **Why `mail.paulineroussel.ca`?** Transactional emails are sent from a dedicated subdomain to protect the reputation of the root domain (`paulineroussel.ca`). If deliverability issues arise, only the subdomain is affected.
+
 ---
 
 ## 🎨 Design System Usage
