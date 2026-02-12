@@ -4,7 +4,7 @@ import { resetRateLimiter } from "~/lib/rate-limiter";
 import { honeypot } from "~/lib/honeypot.server";
 
 /** Cached honeypot input props generated once for the test suite. */
-let honeypotFields: Record<string, string>;
+let honeypotFields: Record<string, string> | undefined;
 
 /**
  * Helper to create a mock Request with FormData and headers.
@@ -32,9 +32,10 @@ async function createFormRequest(
   for (const [key, value] of Object.entries(honeypotFields)) {
     formData.append(key, value);
   }
-  // Then add user-provided fields (can override honeypot fields for rejection tests)
+  // Then add user-provided fields — use set() so overrides (e.g. name__confirm
+  // in rejection tests) replace the honeypot defaults deterministically.
   for (const [key, value] of Object.entries(fields)) {
-    formData.append(key, value);
+    formData.set(key, value);
   }
 
   return new Request("http://localhost/contact", {

@@ -25,7 +25,8 @@ export async function action({ request }: Route.ActionArgs) {
   // 1. Honeypot + encrypted timestamp check — silent rejection
   //    Uses remix-utils Honeypot class which validates both the hidden field
   //    and the encrypted timestamp in a single call. If the honeypot fields
-  //    are missing (no-JS submission), the check is skipped automatically.
+  //    are missing (e.g., for requests not originating from our rendered form),
+  //    the check is skipped automatically.
   try {
     await honeypot.check(formData);
   } catch (error) {
