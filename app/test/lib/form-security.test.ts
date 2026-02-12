@@ -1,15 +1,11 @@
-import { describe, it, expect, vi, afterEach } from "vitest";
-import {
-  sanitizeInput,
-  isHoneypotFilled,
-  isSubmissionTooFast,
-} from "~/lib/form-security";
+import { describe, it, expect } from "vitest";
+import { sanitizeInput } from "~/lib/form-security";
 
 describe("lib/form-security", () => {
   describe("sanitizeInput", () => {
     it("should strip HTML tags from input", () => {
       expect(sanitizeInput("<script>alert('xss')</script>")).toBe(
-        "alert('xss')"
+        "alert('xss')",
       );
     });
 
@@ -40,73 +36,9 @@ describe("lib/form-security", () => {
     it("should handle nested/broken tag constructs", () => {
       // Split-tag obfuscation leaves harmless text fragments ("ipt")
       // but all tags and angle brackets are removed — no XSS risk.
-      expect(sanitizeInput("<scr<script>ipt>alert('xss')</scr</script>ipt>")).toBe(
-        "iptalert('xss')ipt"
-      );
-    });
-  });
-
-  describe("isHoneypotFilled", () => {
-    it("should return true when value is a non-empty string", () => {
-      expect(isHoneypotFilled("spam content")).toBe(true);
-    });
-
-    it("should return false when value is an empty string", () => {
-      expect(isHoneypotFilled("")).toBe(false);
-    });
-
-    it("should return false when value is undefined", () => {
-      expect(isHoneypotFilled(undefined)).toBe(false);
-    });
-
-    it("should return false when value is null", () => {
-      expect(isHoneypotFilled(null)).toBe(false);
-    });
-
-    it("should return true for whitespace-only string", () => {
-      expect(isHoneypotFilled("   ")).toBe(true);
-    });
-  });
-
-  describe("isSubmissionTooFast", () => {
-    afterEach(() => {
-      vi.restoreAllMocks();
-    });
-
-    it("should return true when submission is under 3 seconds", () => {
-      const now = Date.now();
-      vi.spyOn(Date, "now").mockReturnValue(now + 1000);
-      expect(isSubmissionTooFast(now)).toBe(true);
-    });
-
-    it("should return false when submission takes more than 3 seconds", () => {
-      const now = Date.now();
-      vi.spyOn(Date, "now").mockReturnValue(now + 5000);
-      expect(isSubmissionTooFast(now)).toBe(false);
-    });
-
-    it("should return false when exactly at threshold", () => {
-      const now = Date.now();
-      vi.spyOn(Date, "now").mockReturnValue(now + 3000);
-      expect(isSubmissionTooFast(now)).toBe(false);
-    });
-
-    it("should support custom minimum time", () => {
-      const now = Date.now();
-      vi.spyOn(Date, "now").mockReturnValue(now + 4000);
-      expect(isSubmissionTooFast(now, 5000)).toBe(true);
-    });
-
-    it("should return false with custom minimum when enough time passed", () => {
-      const now = Date.now();
-      vi.spyOn(Date, "now").mockReturnValue(now + 6000);
-      expect(isSubmissionTooFast(now, 5000)).toBe(false);
-    });
-
-    it("should return true for immediate submission (0ms elapsed)", () => {
-      const now = Date.now();
-      vi.spyOn(Date, "now").mockReturnValue(now);
-      expect(isSubmissionTooFast(now)).toBe(true);
+      expect(
+        sanitizeInput("<scr<script>ipt>alert('xss')</scr</script>ipt>"),
+      ).toBe("iptalert('xss')ipt");
     });
   });
 });

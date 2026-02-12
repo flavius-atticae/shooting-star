@@ -1,17 +1,41 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { action } from "~/routes/contact";
 import { resetRateLimiter } from "~/lib/rate-limiter";
+import { honeypot } from "~/lib/honeypot.server";
+
+/** Cached honeypot input props generated once for the test suite. */
+let honeypotFields: Record<string, string> | undefined;
 
 /**
  * Helper to create a mock Request with FormData and headers.
+ * Automatically includes honeypot fields so the anti-spam check
+ * path is exercised on every request.
  */
-function createFormRequest(
+async function createFormRequest(
   fields: Record<string, string>,
   headers: Record<string, string> = {},
-): Request {
+): Promise<Request> {
+  if (!honeypotFields) {
+    const props = await honeypot.getInputProps();
+    honeypotFields = {};
+    // Map the honeypot input props to form field entries
+    if (props.nameFieldName) {
+      honeypotFields[props.nameFieldName] = "";
+    }
+    if (props.validFromFieldName) {
+      honeypotFields[props.validFromFieldName] = props.encryptedValidFrom;
+    }
+  }
+
   const formData = new URLSearchParams();
-  for (const [key, value] of Object.entries(fields)) {
+  // Add honeypot fields first
+  for (const [key, value] of Object.entries(honeypotFields)) {
     formData.append(key, value);
+  }
+  // Then add user-provided fields — use set() so overrides (e.g. name__confirm
+  // in rejection tests) replace the honeypot defaults deterministically.
+  for (const [key, value] of Object.entries(fields)) {
+    formData.set(key, value);
   }
 
   return new Request("http://localhost/contact", {
@@ -37,29 +61,21 @@ function getActionResult(result: any): { data: any; status?: number } {
 }
 
 describe("contact route action", () => {
-  let dateSpy: ReturnType<typeof vi.spyOn>;
-
   beforeEach(() => {
     resetRateLimiter();
-    // Default: simulate 5 seconds of interaction time
-    const baseTime = 1000000;
-    dateSpy = vi.spyOn(Date, "now").mockReturnValue(baseTime + 5000);
   });
 
   afterEach(() => {
-    dateSpy.mockRestore();
     resetRateLimiter();
   });
 
   describe("happy path", () => {
     it("should return success for valid form data", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Marie Tremblay",
         email: "marie@example.com",
         availability: "morning",
         message: "Je suis intéressée par le yoga prénatal",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({
@@ -73,12 +89,10 @@ describe("contact route action", () => {
     });
 
     it("should return success without availability field", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Sophie Dubois",
         email: "sophie@example.com",
         message: "Je souhaite en savoir plus sur vos services",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({
@@ -94,12 +108,11 @@ describe("contact route action", () => {
 
   describe("honeypot rejection", () => {
     it("should silently reject when honeypot is filled", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Spam Bot",
         email: "bot@spam.com",
         message: "Buy products now!!!!",
-        website: "http://spam.com",
-        _timestamp: "1000000",
+        name__confirm: "http://spam.com",
       });
 
       const result = await action({
@@ -114,49 +127,6 @@ describe("contact route action", () => {
     });
   });
 
-  describe("timestamp check", () => {
-    it("should silently reject when submission is too fast", async () => {
-      // Override Date.now to make submission appear instant
-      dateSpy.mockReturnValue(1000000);
-
-      const request = createFormRequest({
-        name: "Speed Bot",
-        email: "fast@bot.com",
-        message: "Submitted way too quickly",
-        website: "",
-        _timestamp: "1000000",
-      });
-
-      const result = await action({
-        request,
-        params: {},
-        context: {},
-      } as any);
-
-      const { data } = getActionResult(result);
-      expect(data.success).toBe(true);
-    });
-
-    it("should allow submission when timestamp is missing (no-JS progressive enhancement)", async () => {
-      const request = createFormRequest({
-        name: "Marie Tremblay",
-        email: "marie@example.com",
-        message: "Missing timestamp field but valid form data",
-        website: "",
-      });
-
-      const result = await action({
-        request,
-        params: {},
-        context: {},
-      } as any);
-
-      const { data } = getActionResult(result);
-      // No-JS submissions don't have a timestamp — should still succeed
-      expect(data.success).toBe(true);
-    });
-  });
-
   describe("rate limiting", () => {
     it("should block after 3 submissions from the same IP", async () => {
       const makeRequest = () =>
@@ -165,8 +135,6 @@ describe("contact route action", () => {
             name: "Marie Tremblay",
             email: "marie@example.com",
             message: "Un message suffisamment long pour passer la validation",
-            website: "",
-            _timestamp: "1000000",
           },
           { "x-forwarded-for": "192.168.1.100" },
         );
@@ -174,7 +142,7 @@ describe("contact route action", () => {
       // First 3 requests should succeed
       for (let i = 0; i < 3; i++) {
         const result = await action({
-          request: makeRequest(),
+          request: await makeRequest(),
           params: {},
           context: {},
         } as any);
@@ -184,7 +152,7 @@ describe("contact route action", () => {
 
       // 4th request should be rate limited
       const result = await action({
-        request: makeRequest(),
+        request: await makeRequest(),
         params: {},
         context: {},
       } as any);
@@ -197,12 +165,10 @@ describe("contact route action", () => {
 
   describe("validation errors", () => {
     it("should return field errors for invalid name", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "A",
         email: "marie@example.com",
         message: "Un message suffisamment long pour passer",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({
@@ -219,12 +185,10 @@ describe("contact route action", () => {
     });
 
     it("should return field errors for invalid email", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Marie Tremblay",
         email: "not-an-email",
         message: "Un message suffisamment long pour passer",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({
@@ -240,12 +204,10 @@ describe("contact route action", () => {
     });
 
     it("should return field errors for short message", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Marie Tremblay",
         email: "marie@example.com",
         message: "Court",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({
@@ -261,12 +223,10 @@ describe("contact route action", () => {
     });
 
     it("should sanitize HTML from inputs before validation", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Marie <script>alert</script> Tremblay",
         email: "marie@example.com",
         message: "Un message <b>important</b> suffisamment long",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({

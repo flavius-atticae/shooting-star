@@ -6,9 +6,16 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
+import { HoneypotProvider } from "remix-utils/honeypot/react";
 
 import type { Route } from "./+types/root";
+import { honeypot } from "~/lib/honeypot.server";
 import "./app.css";
+
+export async function loader() {
+  const honeypotInputProps = await honeypot.getInputProps();
+  return { honeypotInputProps };
+}
 
 export const links: Route.LinksFunction = () => [
   {
@@ -50,8 +57,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
-  return <Outlet />;
+export default function App({ loaderData }: Route.ComponentProps) {
+  return (
+    <HoneypotProvider {...loaderData.honeypotInputProps}>
+      <Outlet />
+    </HoneypotProvider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
