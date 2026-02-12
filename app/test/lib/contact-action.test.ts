@@ -1,15 +1,38 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { action } from "~/routes/contact";
 import { resetRateLimiter } from "~/lib/rate-limiter";
+import { honeypot } from "~/lib/honeypot.server";
+
+/** Cached honeypot input props generated once for the test suite. */
+let honeypotFields: Record<string, string>;
 
 /**
  * Helper to create a mock Request with FormData and headers.
+ * Automatically includes honeypot fields so the anti-spam check
+ * path is exercised on every request.
  */
-function createFormRequest(
+async function createFormRequest(
   fields: Record<string, string>,
   headers: Record<string, string> = {},
-): Request {
+): Promise<Request> {
+  if (!honeypotFields) {
+    const props = await honeypot.getInputProps();
+    honeypotFields = {};
+    // Map the honeypot input props to form field entries
+    if (props.nameFieldName) {
+      honeypotFields[props.nameFieldName] = "";
+    }
+    if (props.validFromFieldName) {
+      honeypotFields[props.validFromFieldName] = props.encryptedValidFrom;
+    }
+  }
+
   const formData = new URLSearchParams();
+  // Add honeypot fields first
+  for (const [key, value] of Object.entries(honeypotFields)) {
+    formData.append(key, value);
+  }
+  // Then add user-provided fields (can override honeypot fields for rejection tests)
   for (const [key, value] of Object.entries(fields)) {
     formData.append(key, value);
   }
@@ -47,7 +70,7 @@ describe("contact route action", () => {
 
   describe("happy path", () => {
     it("should return success for valid form data", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Marie Tremblay",
         email: "marie@example.com",
         availability: "morning",
@@ -65,7 +88,7 @@ describe("contact route action", () => {
     });
 
     it("should return success without availability field", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Sophie Dubois",
         email: "sophie@example.com",
         message: "Je souhaite en savoir plus sur vos services",
@@ -84,7 +107,7 @@ describe("contact route action", () => {
 
   describe("honeypot rejection", () => {
     it("should silently reject when honeypot is filled", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Spam Bot",
         email: "bot@spam.com",
         message: "Buy products now!!!!",
@@ -118,7 +141,7 @@ describe("contact route action", () => {
       // First 3 requests should succeed
       for (let i = 0; i < 3; i++) {
         const result = await action({
-          request: makeRequest(),
+          request: await makeRequest(),
           params: {},
           context: {},
         } as any);
@@ -128,7 +151,7 @@ describe("contact route action", () => {
 
       // 4th request should be rate limited
       const result = await action({
-        request: makeRequest(),
+        request: await makeRequest(),
         params: {},
         context: {},
       } as any);
@@ -141,7 +164,7 @@ describe("contact route action", () => {
 
   describe("validation errors", () => {
     it("should return field errors for invalid name", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "A",
         email: "marie@example.com",
         message: "Un message suffisamment long pour passer",
@@ -161,7 +184,7 @@ describe("contact route action", () => {
     });
 
     it("should return field errors for invalid email", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Marie Tremblay",
         email: "not-an-email",
         message: "Un message suffisamment long pour passer",
@@ -180,7 +203,7 @@ describe("contact route action", () => {
     });
 
     it("should return field errors for short message", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Marie Tremblay",
         email: "marie@example.com",
         message: "Court",
@@ -199,7 +222,7 @@ describe("contact route action", () => {
     });
 
     it("should sanitize HTML from inputs before validation", async () => {
-      const request = createFormRequest({
+      const request = await createFormRequest({
         name: "Marie <script>alert</script> Tremblay",
         email: "marie@example.com",
         message: "Un message <b>important</b> suffisamment long",

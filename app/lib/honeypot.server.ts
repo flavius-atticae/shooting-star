@@ -9,15 +9,28 @@ import { Honeypot } from "remix-utils/honeypot/server";
  * - An encrypted timestamp (from__confirm) to detect submissions that
  *   happen too fast (likely automated)
  *
+ * The encryption seed MUST be set via the HONEYPOT_ENCRYPTION_SEED
+ * environment variable. It ensures encrypted timestamps remain valid
+ * across server restarts and multi-instance deployments.
+ *
  * Usage:
  * - In root loader: call `honeypot.getInputProps()` and pass to client
  * - In actions: call `honeypot.check(formData)` to validate submissions
  *
  * @see https://github.com/sergiodxa/remix-utils#form-honeypot
  */
+const encryptionSeed = process.env.HONEYPOT_ENCRYPTION_SEED;
+
+if (!encryptionSeed) {
+  throw new Error(
+    "HONEYPOT_ENCRYPTION_SEED environment variable must be set. " +
+      "Generate one with: openssl rand -hex 32",
+  );
+}
+
 export const honeypot = new Honeypot({
   randomizeNameFieldName: false,
   nameFieldName: "name__confirm",
   validFromFieldName: "from__confirm",
-  encryptionSeed: undefined,
+  encryptionSeed,
 });
