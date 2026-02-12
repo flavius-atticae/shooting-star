@@ -1,13 +1,37 @@
 import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
+import type { RenderOptions } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi } from "vitest";
+import { HoneypotProvider } from "remix-utils/honeypot/react";
 import { ContactForm } from "~/components/layout/contact";
+
+/** Static honeypot props for tests — no real encryption needed client-side. */
+const HONEYPOT_TEST_PROPS = {
+  nameFieldName: "name__confirm",
+  validFromFieldName: "from__confirm",
+  encryptedValidFrom: "fake-encrypted-value-for-tests",
+};
+
+/** Wrapper that provides the HoneypotProvider context required by HoneypotInputs. */
+function HoneypotWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <HoneypotProvider {...HONEYPOT_TEST_PROPS}>{children}</HoneypotProvider>
+  );
+}
+
+/** Render helper that automatically wraps components in HoneypotProvider. */
+function renderWithHoneypot(
+  ui: React.ReactElement,
+  options?: Omit<RenderOptions, "wrapper">,
+) {
+  return render(ui, { wrapper: HoneypotWrapper, ...options });
+}
 
 describe("ContactForm Component", () => {
   describe("Rendering", () => {
     it("should render all form fields", () => {
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       expect(screen.getByLabelText(/nom/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
@@ -19,7 +43,7 @@ describe("ContactForm Component", () => {
     });
 
     it("should render placeholders correctly", () => {
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       expect(screen.getByPlaceholderText("John Appleseed")).toBeInTheDocument();
       expect(
@@ -29,7 +53,7 @@ describe("ContactForm Component", () => {
     });
 
     it("should render all availability options", () => {
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       const select = screen.getByLabelText(/plage horaire/i);
       expect(select).toBeInTheDocument();
@@ -43,7 +67,7 @@ describe("ContactForm Component", () => {
   describe("Validation", () => {
     it("should show error when name is too short", async () => {
       const user = userEvent.setup();
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       const nameInput = screen.getByLabelText(/nom/i);
       const submitButton = screen.getByRole("button", { name: /envoyer/i });
@@ -60,7 +84,7 @@ describe("ContactForm Component", () => {
 
     it("should show error when email is invalid", async () => {
       const user = userEvent.setup();
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       const emailInput = screen.getByLabelText(/email/i);
       const submitButton = screen.getByRole("button", { name: /envoyer/i });
@@ -77,7 +101,7 @@ describe("ContactForm Component", () => {
 
     it("should show error when message is too short", async () => {
       const user = userEvent.setup();
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       const messageInput = screen.getByLabelText(/message/i);
       const submitButton = screen.getByRole("button", { name: /envoyer/i });
@@ -95,7 +119,7 @@ describe("ContactForm Component", () => {
     it("should not show errors when all fields are valid", async () => {
       const user = userEvent.setup();
       const onSubmit = vi.fn();
-      render(<ContactForm onSubmit={onSubmit} />);
+      renderWithHoneypot(<ContactForm onSubmit={onSubmit} />);
 
       const nameInput = screen.getByLabelText(/nom/i);
       const emailInput = screen.getByLabelText(/email/i);
@@ -122,7 +146,7 @@ describe("ContactForm Component", () => {
     it("should call onSubmit with form data", async () => {
       const user = userEvent.setup();
       const onSubmit = vi.fn();
-      render(<ContactForm onSubmit={onSubmit} />);
+      renderWithHoneypot(<ContactForm onSubmit={onSubmit} />);
 
       await user.type(screen.getByLabelText(/nom/i), "Jane Smith");
       await user.type(screen.getByLabelText(/email/i), "jane@example.com");
@@ -148,7 +172,7 @@ describe("ContactForm Component", () => {
 
     it("should show success message after submission", async () => {
       const user = userEvent.setup();
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       await user.type(screen.getByLabelText(/nom/i), "John Doe");
       await user.type(screen.getByLabelText(/email/i), "john@example.com");
@@ -167,7 +191,7 @@ describe("ContactForm Component", () => {
 
     it("should reset form after successful submission", async () => {
       const user = userEvent.setup();
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       const nameInput = screen.getByLabelText(/nom/i) as HTMLInputElement;
       const emailInput = screen.getByLabelText(/email/i) as HTMLInputElement;
@@ -188,7 +212,7 @@ describe("ContactForm Component", () => {
     });
 
     it("should display loading state when isLoading is true", () => {
-      render(<ContactForm isLoading={true} />);
+      renderWithHoneypot(<ContactForm isLoading={true} />);
 
       expect(
         screen.getByRole("button", { name: /envoi en cours/i }),
@@ -198,7 +222,7 @@ describe("ContactForm Component", () => {
 
   describe("Accessibility", () => {
     it("should have proper ARIA labels", () => {
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       expect(screen.getByLabelText(/nom/i)).toHaveAttribute("id");
       expect(screen.getByLabelText(/email/i)).toHaveAttribute("id");
@@ -208,7 +232,7 @@ describe("ContactForm Component", () => {
 
     it("should have role=alert for success message", async () => {
       const user = userEvent.setup();
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       await user.type(screen.getByLabelText(/nom/i), "John Doe");
       await user.type(screen.getByLabelText(/email/i), "john@example.com");
@@ -227,7 +251,7 @@ describe("ContactForm Component", () => {
 
     it("should support keyboard navigation", async () => {
       const user = userEvent.setup();
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       const nameInput = screen.getByLabelText(/nom/i);
       const emailInput = screen.getByLabelText(/email/i);
@@ -255,7 +279,7 @@ describe("ContactForm Component", () => {
 
   describe("French Content", () => {
     it("should display all labels in French", () => {
-      render(<ContactForm />);
+      renderWithHoneypot(<ContactForm />);
 
       expect(screen.getByLabelText(/nom/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
@@ -271,7 +295,7 @@ describe("ContactForm Component", () => {
     it("should sanitize name and message before calling onSubmit", async () => {
       const user = userEvent.setup();
       const onSubmit = vi.fn();
-      render(<ContactForm onSubmit={onSubmit} />);
+      renderWithHoneypot(<ContactForm onSubmit={onSubmit} />);
 
       await user.type(
         screen.getByLabelText(/nom/i),
