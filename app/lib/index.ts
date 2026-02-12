@@ -17,11 +17,7 @@ export { prefersReducedMotion } from "~/lib/browser-support";
 export { cn } from "~/lib/utils";
 
 // Form Security Utilities
-export {
-  sanitizeInput,
-  isHoneypotFilled,
-  isSubmissionTooFast,
-} from "~/lib/form-security";
+export { sanitizeInput } from "~/lib/form-security";
 
 // Contact Form Schema (shared between client and server)
 export {

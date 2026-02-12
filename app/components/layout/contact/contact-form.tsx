@@ -1,11 +1,8 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { HoneypotInputs } from "remix-utils/honeypot/react";
 import { cn } from "~/lib/utils";
-import {
-  isHoneypotFilled,
-  isSubmissionTooFast,
-} from "~/lib/form-security";
 import {
   contactFormSchema,
   type ContactFormData,
@@ -24,7 +21,10 @@ import { Select } from "~/components/ui/select";
 import { Button } from "~/components/ui/button";
 
 // Re-export schema and type for backward compatibility
-export { contactFormSchema, type ContactFormData } from "~/lib/contact-form-schema";
+export {
+  contactFormSchema,
+  type ContactFormData,
+} from "~/lib/contact-form-schema";
 
 /**
  * Type for fetcher data returned by the route action
@@ -46,7 +46,10 @@ interface FetcherLike {
   Form: React.ComponentType<Record<string, unknown>>;
   submit: (
     data: FormData | Record<string, string>,
-    options?: { method?: "get" | "post" | "put" | "patch" | "delete"; action?: string },
+    options?: {
+      method?: "get" | "post" | "put" | "patch" | "delete";
+      action?: string;
+    },
   ) => void;
 }
 
@@ -116,9 +119,7 @@ export function ContactForm({
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
-  const [honeypot, setHoneypot] = React.useState("");
-  const interactionTimestampRef = React.useRef<number>(0);
-  const timestampInputRef = React.useRef<HTMLInputElement>(null);
+  const formRef = React.useRef<HTMLFormElement>(null);
 
   const useFetcherMode = !!fetcher;
   const fetcherLoading = fetcher ? fetcher.state !== "idle" : false;
@@ -134,33 +135,6 @@ export function ContactForm({
     },
   });
 
-  // Record timestamp on first meaningful user interaction with the form.
-  // Handles both focus and change events to cover autofill scenarios
-  // where fields may be populated without triggering focus.
-  const handleFirstInteraction = React.useCallback(
-    (event: React.SyntheticEvent) => {
-      if (interactionTimestampRef.current !== 0) return;
-
-      const element = event.target;
-
-      // Ignore submit button focus
-      if (element instanceof HTMLButtonElement) return;
-
-      // Ignore honeypot field interaction
-      if (element instanceof HTMLInputElement && element.name === "website") {
-        return;
-      }
-
-      interactionTimestampRef.current = Date.now();
-      // Update the hidden input value directly via DOM ref,
-      // since ref changes don't trigger re-renders.
-      if (timestampInputRef.current) {
-        timestampInputRef.current.value = String(interactionTimestampRef.current);
-      }
-    },
-    [],
-  );
-
   // Cleanup timeout on unmount
   React.useEffect(() => {
     return () => {
@@ -175,11 +149,6 @@ export function ContactForm({
     setError(null);
     setIsSubmitted(true);
     form.reset();
-    setHoneypot("");
-    interactionTimestampRef.current = 0;
-    if (timestampInputRef.current) {
-      timestampInputRef.current.value = "";
-    }
 
     // Hide success message after 5 seconds
     if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -211,36 +180,15 @@ export function ContactForm({
     }
   }, [fetcher?.data, showSuccessAndReset, form]);
 
-  /** Check client-side anti-spam: honeypot filled or submission too fast.
-   *  Only apply the time-based check when a timestamp is present (non-zero)
-   *  to match the server action behaviour and avoid rejecting legitimate
-   *  submissions where onFocusCapture/onChangeCapture didn't fire
-   *  (e.g. browser autofill + direct submit click). */
-  const isSpamSubmission = React.useCallback((): boolean => {
-    const hasInteractionTimestamp = interactionTimestampRef.current > 0;
-    const tooFast = hasInteractionTimestamp
-      ? isSubmissionTooFast(interactionTimestampRef.current)
-      : false;
-    return isHoneypotFilled(honeypot) || tooFast;
-  }, [honeypot]);
-
   const handleSubmit = async (data: ContactFormData) => {
-    // Silent rejection for bot submissions (both modes)
-    if (isSpamSubmission()) {
-      showSuccessAndReset();
-      return;
-    }
-
-    if (fetcher) {
-      // Submit via fetcher for progressive enhancement
-      const formData = new FormData();
-      formData.set("name", data.name);
-      formData.set("email", data.email);
-      formData.set("availability", data.availability || "");
-      formData.set("message", data.message);
-      formData.set("website", honeypot);
-      formData.set("_timestamp", String(interactionTimestampRef.current));
-      fetcher.submit(formData, { method: "post", action: "/contact" });
+    if (fetcher && formRef.current) {
+      // Submit the entire form (including HoneypotInputs hidden fields)
+      // via fetcher for progressive enhancement. Anti-spam validation
+      // is handled server-side by remix-utils Honeypot.check().
+      fetcher.submit(new FormData(formRef.current), {
+        method: "post",
+        action: "/contact",
+      });
       return;
     }
 
@@ -282,45 +230,16 @@ export function ContactForm({
     >
       <Form {...form}>
         <FormElement
+          ref={formRef}
           {...(useFetcherMode
             ? { method: "post" as const, action: "/contact" }
             : {})}
           onSubmit={form.handleSubmit(handleSubmit)}
-          onFocusCapture={handleFirstInteraction}
-          onChangeCapture={handleFirstInteraction}
           className="space-y-6"
           noValidate
         >
-          {/* Honeypot field - invisible to humans, traps bots */}
-          <div
-            aria-hidden="true"
-            style={{ position: "absolute", left: "-9999px", opacity: 0 }}
-          >
-            <label htmlFor="website">Site web</label>
-            <input
-              type="text"
-              id="website"
-              name="website"
-              tabIndex={-1}
-              autoComplete="off"
-              value={honeypot}
-              onChange={(e) => {
-                setHoneypot(e.target.value);
-              }}
-            />
-          </div>
-
-          {/* Hidden timestamp for server-side time check.
-              Uses a DOM ref so the value is updated imperatively
-              when the user first interacts (ref changes don't re-render).
-              For no-JS/SSR, the field is left empty and the server
-              skips the time-check, allowing progressive enhancement. */}
-          <input
-            ref={timestampInputRef}
-            type="hidden"
-            name="_timestamp"
-            defaultValue=""
-          />
+          {/* Anti-spam honeypot fields (hidden, handled by remix-utils) */}
+          <HoneypotInputs label="Veuillez laisser ce champ vide" />
 
           {/* Name Field */}
           <FormField

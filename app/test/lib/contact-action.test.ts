@@ -37,17 +37,11 @@ function getActionResult(result: any): { data: any; status?: number } {
 }
 
 describe("contact route action", () => {
-  let dateSpy: ReturnType<typeof vi.spyOn>;
-
   beforeEach(() => {
     resetRateLimiter();
-    // Default: simulate 5 seconds of interaction time
-    const baseTime = 1000000;
-    dateSpy = vi.spyOn(Date, "now").mockReturnValue(baseTime + 5000);
   });
 
   afterEach(() => {
-    dateSpy.mockRestore();
     resetRateLimiter();
   });
 
@@ -58,8 +52,6 @@ describe("contact route action", () => {
         email: "marie@example.com",
         availability: "morning",
         message: "Je suis intéressée par le yoga prénatal",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({
@@ -77,8 +69,6 @@ describe("contact route action", () => {
         name: "Sophie Dubois",
         email: "sophie@example.com",
         message: "Je souhaite en savoir plus sur vos services",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({
@@ -98,8 +88,7 @@ describe("contact route action", () => {
         name: "Spam Bot",
         email: "bot@spam.com",
         message: "Buy products now!!!!",
-        website: "http://spam.com",
-        _timestamp: "1000000",
+        name__confirm: "http://spam.com",
       });
 
       const result = await action({
@@ -114,49 +103,6 @@ describe("contact route action", () => {
     });
   });
 
-  describe("timestamp check", () => {
-    it("should silently reject when submission is too fast", async () => {
-      // Override Date.now to make submission appear instant
-      dateSpy.mockReturnValue(1000000);
-
-      const request = createFormRequest({
-        name: "Speed Bot",
-        email: "fast@bot.com",
-        message: "Submitted way too quickly",
-        website: "",
-        _timestamp: "1000000",
-      });
-
-      const result = await action({
-        request,
-        params: {},
-        context: {},
-      } as any);
-
-      const { data } = getActionResult(result);
-      expect(data.success).toBe(true);
-    });
-
-    it("should allow submission when timestamp is missing (no-JS progressive enhancement)", async () => {
-      const request = createFormRequest({
-        name: "Marie Tremblay",
-        email: "marie@example.com",
-        message: "Missing timestamp field but valid form data",
-        website: "",
-      });
-
-      const result = await action({
-        request,
-        params: {},
-        context: {},
-      } as any);
-
-      const { data } = getActionResult(result);
-      // No-JS submissions don't have a timestamp — should still succeed
-      expect(data.success).toBe(true);
-    });
-  });
-
   describe("rate limiting", () => {
     it("should block after 3 submissions from the same IP", async () => {
       const makeRequest = () =>
@@ -165,8 +111,6 @@ describe("contact route action", () => {
             name: "Marie Tremblay",
             email: "marie@example.com",
             message: "Un message suffisamment long pour passer la validation",
-            website: "",
-            _timestamp: "1000000",
           },
           { "x-forwarded-for": "192.168.1.100" },
         );
@@ -201,8 +145,6 @@ describe("contact route action", () => {
         name: "A",
         email: "marie@example.com",
         message: "Un message suffisamment long pour passer",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({
@@ -223,8 +165,6 @@ describe("contact route action", () => {
         name: "Marie Tremblay",
         email: "not-an-email",
         message: "Un message suffisamment long pour passer",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({
@@ -244,8 +184,6 @@ describe("contact route action", () => {
         name: "Marie Tremblay",
         email: "marie@example.com",
         message: "Court",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({
@@ -265,8 +203,6 @@ describe("contact route action", () => {
         name: "Marie <script>alert</script> Tremblay",
         email: "marie@example.com",
         message: "Un message <b>important</b> suffisamment long",
-        website: "",
-        _timestamp: "1000000",
       });
 
       const result = await action({

@@ -1,45 +1,42 @@
 import type { Route } from "./+types/contact";
 import { data } from "react-router";
+import { SpamError } from "remix-utils/honeypot/server";
 import { Header } from "~/components/layout/header/header";
 import { ContactSection } from "~/components/layout/contact";
 import { contactFormSchema } from "~/lib/contact-form-schema";
 import { Footer } from "~/components/layout/footer/footer";
 import { Container } from "~/components/ui/container";
 import { Section } from "~/components/ui/section";
-import { isHoneypotFilled, isSubmissionTooFast } from "~/lib/form-security";
+import { honeypot } from "~/lib/honeypot.server";
 import { isRateLimited } from "~/lib/rate-limiter";
 
 /**
  * Server-side action for the contact form.
  *
  * Handles form submission with progressive enhancement:
- * 1. Honeypot check (silent rejection for bots)
- * 2. Time-based check (silent rejection for too-fast submissions)
- * 3. IP-based rate limiting (max 3 per 15 min)
- * 4. Zod validation (same schema as client)
- * 5. Sanitization (handled by Zod transforms)
+ * 1. Honeypot + timestamp check via remix-utils (silent rejection for bots)
+ * 2. IP-based rate limiting (max 3 per 15 min)
+ * 3. Zod validation (same schema as client)
+ * 4. Sanitization (handled by Zod transforms)
  */
 export async function action({ request }: Route.ActionArgs) {
   const formData = await request.formData();
 
-  // 1. Honeypot check — silent rejection
-  const honeypot = formData.get("website");
-  if (isHoneypotFilled(typeof honeypot === "string" ? honeypot : null)) {
-    return data({ success: true });
-  }
-
-  // 2. Timestamp check — silent rejection for too-fast submissions
-  //    Only apply when a valid timestamp is present; missing timestamps
-  //    (e.g. no-JS form submissions) are allowed through.
-  const timestampValue = formData.get("_timestamp");
-  if (timestampValue !== null && timestampValue !== "") {
-    const timestamp = Number(timestampValue);
-    if (!Number.isNaN(timestamp) && isSubmissionTooFast(timestamp)) {
+  // 1. Honeypot + encrypted timestamp check — silent rejection
+  //    Uses remix-utils Honeypot class which validates both the hidden field
+  //    and the encrypted timestamp in a single call. If the honeypot fields
+  //    are missing (no-JS submission), the check is skipped automatically.
+  try {
+    await honeypot.check(formData);
+  } catch (error) {
+    if (error instanceof SpamError) {
+      // Silent rejection — return fake success so bots don't retry
       return data({ success: true });
     }
+    throw error;
   }
 
-  // 3. Rate limit by IP
+  // 2. Rate limit by IP
   //    x-forwarded-for may contain a comma-separated list; take the first
   //    (client) IP and trim whitespace. If empty, fall back to x-real-ip or "unknown".
   const forwardedFor = request.headers.get("x-forwarded-for");
@@ -59,14 +56,13 @@ export async function action({ request }: Route.ActionArgs) {
   if (isRateLimited(ip)) {
     return data(
       {
-        error:
-          "Trop de messages envoyés. Réessayez dans quelques minutes.",
+        error: "Trop de messages envoyés. Réessayez dans quelques minutes.",
       },
       { status: 429 },
     );
   }
 
-  // 4. Server-side Zod validation (same schema as client)
+  // 3. Server-side Zod validation (same schema as client)
   const raw = {
     name: formData.get("name"),
     email: formData.get("email"),
@@ -82,8 +78,8 @@ export async function action({ request }: Route.ActionArgs) {
     );
   }
 
-  // 5. Data is already sanitized by Zod transforms
-  // 6. Send email — future implementation (next sub-task)
+  // 4. Data is already sanitized by Zod transforms
+  // 5. Send email — future implementation (next sub-task)
   // For now, return success
 
   return data({ success: true });
