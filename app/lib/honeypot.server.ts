@@ -22,15 +22,15 @@ import { Honeypot } from "remix-utils/honeypot/server";
 let encryptionSeed = process.env.HONEYPOT_ENCRYPTION_SEED;
 
 if (!encryptionSeed) {
-  if (process.env.NODE_ENV === "test") {
-    // Fallback seed for test environment to avoid crashing test runners
-    encryptionSeed = "test-honeypot-encryption-seed";
-  } else {
+  if (process.env.NODE_ENV === "production") {
     throw new Error(
       "HONEYPOT_ENCRYPTION_SEED environment variable must be set. " +
         "Generate one with: openssl rand -hex 32",
     );
   }
+  // Non-production fallback (dev, test, Storybook/Chromatic) so the module
+  // can be imported without requiring the env var to be configured.
+  encryptionSeed = "dev-honeypot-encryption-seed";
 }
 
 export const honeypot = new Honeypot({
