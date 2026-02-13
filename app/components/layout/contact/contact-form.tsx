@@ -119,6 +119,7 @@ export function ContactForm({
   const [isSubmitted, setIsSubmitted] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const timeoutRef = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+  const formRef = React.useRef<HTMLFormElement | null>(null);
 
   const useFetcherMode = !!fetcher;
   const fetcherLoading = fetcher ? fetcher.state !== "idle" : false;
@@ -181,13 +182,15 @@ export function ContactForm({
 
   const handleSubmit = async (
     data: ContactFormData,
-    event?: React.BaseSyntheticEvent,
+    _event?: React.BaseSyntheticEvent,
   ) => {
-    if (fetcher && event?.currentTarget instanceof HTMLFormElement) {
+    if (fetcher && formRef.current) {
       // Submit the entire form (including HoneypotInputs hidden fields)
       // via fetcher for progressive enhancement. Anti-spam validation
       // is handled server-side by remix-utils Honeypot.check().
-      fetcher.submit(new FormData(event.currentTarget), {
+      // NOTE: We use formRef instead of event.currentTarget because
+      // currentTarget is null after async zodResolver validation.
+      fetcher.submit(new FormData(formRef.current), {
         method: "post",
         action: "/contact",
       });
@@ -232,6 +235,7 @@ export function ContactForm({
     >
       <Form {...form}>
         <FormElement
+          ref={formRef}
           {...(useFetcherMode
             ? { method: "post" as const, action: "/contact" }
             : {})}
