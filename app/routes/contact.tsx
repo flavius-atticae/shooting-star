@@ -89,7 +89,7 @@ export async function action({ request }: Route.ActionArgs) {
     return data(
       {
         error:
-          "Une erreur est survenue lors de l'envoi. Veuillez réessayer ou nous contacter directement par téléphone.",
+          "Une erreur est survenue lors de l'envoi. Veuillez réessayer ou nous contacter par courriel à paulineroussel1@gmail.com.",
       },
       { status: 500 },
     );

@@ -3,6 +3,11 @@ import { action } from "~/routes/contact";
 import { resetRateLimiter } from "~/lib/rate-limiter";
 import { honeypot } from "~/lib/honeypot.server";
 
+// Mock the email module so tests don't require RESEND_API_KEY
+vi.mock("~/lib/email.server", () => ({
+  sendContactEmails: vi.fn().mockResolvedValue(undefined),
+}));
+
 /** Cached honeypot input props generated once for the test suite. */
 let honeypotFields: Record<string, string> | undefined;
 

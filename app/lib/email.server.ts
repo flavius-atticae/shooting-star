@@ -26,26 +26,35 @@ function getResendClient(): Resend {
 }
 
 // ---------------------------------------------------------------------------
-// Environment helpers
+// Environment helpers (cached on first access for fail-fast validation)
 // ---------------------------------------------------------------------------
 
+let _fromAddress: string | null = null;
+let _replyTo: string | null = null;
+
 function getFromAddress(): string {
-  const email = process.env.RESEND_FROM_EMAIL;
-  const name = process.env.RESEND_FROM_NAME;
+  if (!_fromAddress) {
+    const email = process.env.RESEND_FROM_EMAIL;
+    const name = process.env.RESEND_FROM_NAME;
 
-  if (!email) {
-    throw new Error("RESEND_FROM_EMAIL environment variable is not set");
+    if (!email) {
+      throw new Error("RESEND_FROM_EMAIL environment variable is not set");
+    }
+
+    _fromAddress = name ? `${name} <${email}>` : email;
   }
-
-  return name ? `${name} <${email}>` : email;
+  return _fromAddress;
 }
 
 function getReplyTo(): string {
-  const replyTo = process.env.CONTACT_REPLY_TO;
-  if (!replyTo) {
-    throw new Error("CONTACT_REPLY_TO environment variable is not set");
+  if (!_replyTo) {
+    const replyTo = process.env.CONTACT_REPLY_TO;
+    if (!replyTo) {
+      throw new Error("CONTACT_REPLY_TO environment variable is not set");
+    }
+    _replyTo = replyTo;
   }
-  return replyTo;
+  return _replyTo;
 }
 
 // ---------------------------------------------------------------------------
@@ -157,8 +166,10 @@ async function sendWithRetry<T>(fn: () => Promise<T>): Promise<T> {
     try {
       return await fn();
     } catch (retryError) {
-      // Both attempts failed — throw the original error for context
-      throw firstError;
+      // Both attempts failed — log the retry error and throw it
+      // (the retry error is more recent and likely more relevant)
+      console.error("First attempt failed:", firstError);
+      throw retryError;
     }
   }
 }
