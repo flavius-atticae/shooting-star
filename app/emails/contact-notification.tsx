@@ -30,7 +30,7 @@ export function ContactNotification({
   message,
 }: ContactNotificationProps) {
   return (
-    <Html lang="fr">
+    <Html lang="fr-CA">
       <Head />
       <Preview>Nouveau message de {name} via paulineroussel.ca</Preview>
       <Body style={bodyStyle}>

@@ -21,7 +21,7 @@
   },
 
   // Run commands after container is created
-  "postCreateCommand": "npm install && npx playwright install --with-deps chromium && npx bmad-method install && if ! command -v flyctl >/dev/null 2>&1; then curl -L https://fly.io/install.sh | sh; fi && if ! grep -q 'FLYCTL_INSTALL' /home/node/.zshrc 2>/dev/null; then echo 'export FLYCTL_INSTALL=\"$HOME/.fly\"' >> /home/node/.zshrc && echo 'export PATH=\"$FLYCTL_INSTALL/bin:$PATH\"' >> /home/node/.zshrc; fi",
+  "postCreateCommand": "npm install && npx playwright install --with-deps chromium && npx bmad-method install",
 
   // VS Code customizations
   "customizations": {

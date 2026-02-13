@@ -2,11 +2,14 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { action } from "~/routes/contact";
 import { resetRateLimiter } from "~/lib/rate-limiter";
 import { honeypot } from "~/lib/honeypot.server";
+import { sendContactEmails } from "~/lib/email.server";
 
 // Mock the email module so tests don't require RESEND_API_KEY
 vi.mock("~/lib/email.server", () => ({
   sendContactEmails: vi.fn().mockResolvedValue(undefined),
 }));
+
+const mockedSendContactEmails = vi.mocked(sendContactEmails);
 
 /** Cached honeypot input props generated once for the test suite. */
 let honeypotFields: Record<string, string> | undefined;
@@ -68,6 +71,8 @@ function getActionResult(result: any): { data: any; status?: number } {
 describe("contact route action", () => {
   beforeEach(() => {
     resetRateLimiter();
+    mockedSendContactEmails.mockClear();
+    mockedSendContactEmails.mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -91,6 +96,16 @@ describe("contact route action", () => {
 
       const { data } = getActionResult(result);
       expect(data.success).toBe(true);
+
+      // Verify sendContactEmails was called with the sanitized form data
+      expect(mockedSendContactEmails).toHaveBeenCalledTimes(1);
+      expect(mockedSendContactEmails).toHaveBeenCalledWith(
+        expect.objectContaining({
+          name: "Marie Tremblay",
+          email: "marie@example.com",
+          message: "Je suis intéressée par le yoga prénatal",
+        }),
+      );
     });
 
     it("should return success without availability field", async () => {
@@ -108,6 +123,9 @@ describe("contact route action", () => {
 
       const { data } = getActionResult(result);
       expect(data.success).toBe(true);
+
+      // Verify sendContactEmails was called
+      expect(mockedSendContactEmails).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -129,6 +147,9 @@ describe("contact route action", () => {
       const { data } = getActionResult(result);
       // Should return success (silent rejection)
       expect(data.success).toBe(true);
+
+      // Emails should NOT be sent for spam
+      expect(mockedSendContactEmails).not.toHaveBeenCalled();
     });
   });
 
@@ -243,6 +264,31 @@ describe("contact route action", () => {
       const { data } = getActionResult(result);
       // Should succeed — HTML is stripped by the Zod transform
       expect(data.success).toBe(true);
+    });
+  });
+
+  describe("email sending errors", () => {
+    it("should return 500 when sendContactEmails throws", async () => {
+      mockedSendContactEmails.mockRejectedValueOnce(
+        new Error("Resend API error"),
+      );
+
+      const request = await createFormRequest({
+        name: "Marie Tremblay",
+        email: "marie@example.com",
+        message: "Un message suffisamment long pour passer la validation",
+      });
+
+      const result = await action({
+        request,
+        params: {},
+        context: {},
+      } as any);
+
+      const { data, status } = getActionResult(result);
+      expect(status).toBe(500);
+      expect(data.error).toContain("erreur est survenue");
+      expect(mockedSendContactEmails).toHaveBeenCalledTimes(1);
     });
   });
 });

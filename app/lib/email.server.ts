@@ -1,6 +1,7 @@
 import { Resend } from "resend";
 import { ContactNotification } from "~/emails/contact-notification";
 import { ContactConfirmation } from "~/emails/contact-confirmation";
+import type { ContactFormData } from "~/lib/contact-form-schema";
 
 // ---------------------------------------------------------------------------
 // Resend client (lazy singleton)
@@ -30,7 +31,7 @@ function getResendClient(): Resend {
 // ---------------------------------------------------------------------------
 
 let _fromAddress: string | null = null;
-let _replyTo: string | null = null;
+let _contactRecipient: string | null = null;
 
 function getFromAddress(): string {
   if (!_fromAddress) {
@@ -46,27 +47,24 @@ function getFromAddress(): string {
   return _fromAddress;
 }
 
-function getReplyTo(): string {
-  if (!_replyTo) {
-    const replyTo = process.env.CONTACT_REPLY_TO;
-    if (!replyTo) {
+/**
+ * Returns the contact inbox address (Pauline's email).
+ * Used as the `to` recipient for notifications and as `replyTo` for confirmations.
+ */
+function getContactRecipient(): string {
+  if (!_contactRecipient) {
+    const recipient = process.env.CONTACT_REPLY_TO;
+    if (!recipient) {
       throw new Error("CONTACT_REPLY_TO environment variable is not set");
     }
-    _replyTo = replyTo;
+    _contactRecipient = recipient;
   }
-  return _replyTo;
+  return _contactRecipient;
 }
 
 // ---------------------------------------------------------------------------
 // Public API
 // ---------------------------------------------------------------------------
-
-interface ContactFormData {
-  name: string;
-  email: string;
-  availability?: string;
-  message: string;
-}
 
 /**
  * Send a notification email to Pauline with the contact form details.
@@ -77,12 +75,12 @@ export async function sendContactNotification(
   formData: ContactFormData,
 ): Promise<void> {
   const from = getFromAddress();
-  const replyTo = getReplyTo();
+  const contactRecipient = getContactRecipient();
 
   await sendWithRetry(() =>
     getResendClient().emails.send({
       from,
-      to: replyTo,
+      to: contactRecipient,
       replyTo: formData.email,
       subject: `Nouveau message de ${formData.name} — paulineroussel.ca`,
       react: ContactNotification({
@@ -105,13 +103,13 @@ export async function sendContactConfirmation(
   name: string,
 ): Promise<void> {
   const from = getFromAddress();
-  const replyTo = getReplyTo();
+  const contactRecipient = getContactRecipient();
 
   await sendWithRetry(() =>
     getResendClient().emails.send({
       from,
       to: email,
-      replyTo,
+      replyTo: contactRecipient,
       subject: "Merci pour votre message — Pauline Roussel",
       react: ContactConfirmation({ name }),
     }),

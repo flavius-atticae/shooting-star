@@ -27,7 +27,7 @@ interface ContactConfirmationProps {
  */
 export function ContactConfirmation({ name }: ContactConfirmationProps) {
   return (
-    <Html lang="fr">
+    <Html lang="fr-CA">
       <Head />
       <Preview>Merci pour votre message, {name}</Preview>
       <Body style={bodyStyle}>
