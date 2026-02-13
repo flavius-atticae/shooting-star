@@ -9,6 +9,7 @@ import { Container } from "~/components/ui/container";
 import { Section } from "~/components/ui/section";
 import { honeypot } from "~/lib/honeypot.server";
 import { isRateLimited } from "~/lib/rate-limiter";
+import { sendContactEmails } from "~/lib/email.server";
 
 /**
  * Server-side action for the contact form.
@@ -80,8 +81,19 @@ export async function action({ request }: Route.ActionArgs) {
   }
 
   // 4. Data is already sanitized by Zod transforms
-  // 5. Send email — future implementation (next sub-task)
-  // For now, return success
+  // 5. Send emails (notification to Pauline + confirmation to user)
+  try {
+    await sendContactEmails(result.data);
+  } catch (error) {
+    console.error("Email sending failed:", error);
+    return data(
+      {
+        error:
+          `Une erreur est survenue lors de l'envoi. Veuillez réessayer ou nous contacter par courriel à ${process.env.CONTACT_REPLY_TO ?? "paulineroussel1@gmail.com"}.`,
+      },
+      { status: 500 },
+    );
+  }
 
   return data({ success: true });
 }
