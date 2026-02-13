@@ -3,10 +3,27 @@ import { ContactNotification } from "~/emails/contact-notification";
 import { ContactConfirmation } from "~/emails/contact-confirmation";
 
 // ---------------------------------------------------------------------------
-// Resend client (singleton)
+// Resend client (lazy singleton)
 // ---------------------------------------------------------------------------
+// Initialised on first use rather than at module-evaluation time so that
+// importing this module in environments without RESEND_API_KEY (e.g.
+// Storybook / Chromatic) does not throw.
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+let _resend: Resend | null = null;
+
+function getResendClient(): Resend {
+  if (!_resend) {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      throw new Error(
+        "RESEND_API_KEY environment variable is not set. " +
+          "Provide it before sending emails.",
+      );
+    }
+    _resend = new Resend(apiKey);
+  }
+  return _resend;
+}
 
 // ---------------------------------------------------------------------------
 // Environment helpers
@@ -54,7 +71,7 @@ export async function sendContactNotification(
   const replyTo = getReplyTo();
 
   await sendWithRetry(() =>
-    resend.emails.send({
+    getResendClient().emails.send({
       from,
       to: replyTo,
       replyTo: formData.email,
@@ -82,7 +99,7 @@ export async function sendContactConfirmation(
   const replyTo = getReplyTo();
 
   await sendWithRetry(() =>
-    resend.emails.send({
+    getResendClient().emails.send({
       from,
       to: email,
       replyTo,
