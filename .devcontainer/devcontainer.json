@@ -4,7 +4,8 @@
 
   // Features to add
   "features": {
-    "ghcr.io/devcontainers/features/github-cli:1": {}
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers-extra/features/flyctl:1": {}
   },
 
   // Port forwarding
