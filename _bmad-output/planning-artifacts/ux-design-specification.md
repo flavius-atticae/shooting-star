@@ -31,363 +31,363 @@ inputDocuments:
 date: "2026-02-13"
 ---
 
-# UX Design Specification shooting-star
+# Spécification de design UX — shooting-star
 
-**Author:** Flavius
-**Date:** 2026-02-13
+**Auteur :** Flavius
+**Date :** 2026-02-13
 
 ---
 
-## Executive Summary
+## Résumé exécutif
 
-### Project Vision
+### Vision du projet
 
-Shooting-star is the professional showcase website for Pauline Roussel — doula and perinatal yoga instructor based in Saint-Lambert (South Shore of Montréal). The site does not sell a product; it _invites a relationship_. Birth accompaniment is the flagship service, and the site must build enough trust in a few minutes for the visitor to take the step of contacting Pauline.
+Shooting-star est le site vitrine professionnel de Pauline Roussel — doula et instructrice de yoga périnatal basée à Saint-Lambert (Rive-Sud de Montréal). Le site ne vend pas un produit ; il _invite à une relation_. L'accompagnement à la naissance est le service phare, et le site doit bâtir suffisamment de confiance en quelques minutes pour que la visiteuse fasse le pas de contacter Pauline.
 
-What makes this project singular: this is not a clinical site or a cold catalog. It is an extension of Pauline's presence — gentle, warm, human. The design must make visitors _feel_ her support before they have ever experienced it.
+Ce qui rend ce projet singulier : ce n'est pas un site clinique ni un catalogue froid. C'est une extension de la présence de Pauline — douce, chaleureuse, humaine. Le design doit faire _ressentir_ son soutien aux visiteuses avant même qu'elles en aient fait l'expérience.
 
-**Project type:** SSR web application (React Router v7, Tailwind v4, shadcn/ui) deployed on Fly.io (Toronto). Brownfield — the site is already live in production. Current phase: consolidation and UX refinement via the BMAD methodology.
+**Type de projet :** Application web SSR (React Router v7, Tailwind v4, shadcn/ui) déployée sur Fly.io (Toronto). Brownfield — le site est déjà en production. Phase actuelle : consolidation et raffinement UX via la méthodologie BMAD.
 
-### Target Users
+### Utilisatrices cibles
 
-| Persona                                     | Context                                           | What she seeks                                                  | How she navigates                                                                             |
-| ------------------------------------------- | ------------------------------------------------- | --------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **Camille** (expectant mother, primary B2C) | 31 y/o, 5 months pregnant, first baby, anxious    | A doula who reassures her — someone she can _trust_             | Google "doula Montréal" or Instagram link → home → doula page → testimonials → contact        |
-| **Isabelle** (postpartum mama, edge case)   | 28 y/o, 3 weeks postpartum, exhausted, a bit lost | Support, but doesn't know exactly what (postnatal yoga? doula?) | Instagram link → mobile, **one hand free** (baby in the other) → explores, hesitates, decides |
-| **Pauline** (site owner)                    | Not technical at all, phone + Instagram           | Receive contact requests without missing any, focus on her work | Receives email notifications, responds via email/phone                                        |
+| Persona                                      | Contexte                                               | Ce qu'elle cherche                                                              | Comment elle navigue                                                                       |
+| -------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Camille** (future maman, B2C principal)    | 31 ans, enceinte de 5 mois, premier bébé, anxieuse     | Une doula qui la rassure — quelqu'un en qui elle peut _avoir confiance_         | Google « doula Montréal » ou lien Instagram → accueil → page doula → témoignages → contact |
+| **Isabelle** (maman post-partum, cas limite) | 28 ans, 3 semaines post-partum, épuisée, un peu perdue | Du soutien, mais ne sait pas exactement quoi (yoga postnatal ? doula ?)         | Lien Instagram → mobile, **une main libre** (bébé dans l'autre) → explore, hésite, décide  |
+| **Pauline** (propriétaire du site)           | Pas technique du tout, téléphone + Instagram           | Recevoir les demandes de contact sans en manquer, se concentrer sur son travail | Reçoit des notifications par courriel, répond par courriel/téléphone                       |
 
-**User tech-savviness:** Moderate to low. They are not there to explore a website — they are responding to an emotional and practical need.
+**Aisance technologique des utilisatrices :** Modérée à faible. Elles ne sont pas là pour explorer un site web — elles répondent à un besoin émotionnel et pratique.
 
-**Dominant device:** Mobile, clearly. The use case "one hand holding the baby, the other scrolling" is not an edge case — it is **the** central use case.
+**Appareil dominant :** Mobile, clairement. Le cas d'usage « une main tient le bébé, l'autre fait défiler » n'est pas un cas limite — c'est **le** cas d'usage central.
 
-**Geographic focus (by priority):**
+**Zone géographique ciblée (par priorité) :**
 
-1. South Shore — Saint-Lambert, Longueuil, Brossard, Saint-Bruno, Boucherville
-2. Southwest of the island — Verdun, Le Sud-Ouest, LaSalle, Ville-Émard
-3. Montréal center — Plateau, Rosemont, Villeray, Downtown
+1. Rive-Sud — Saint-Lambert, Longueuil, Brossard, Saint-Bruno, Boucherville
+2. Sud-Ouest de l'île — Verdun, Le Sud-Ouest, LaSalle, Ville-Émard
+3. Centre de Montréal — Plateau, Rosemont, Villeray, Centre-ville
 
-### Key Design Challenges
+### Défis de design clés
 
-#### 1. The trust funnel (Camille → contact)
+#### 1. L'entonnoir de confiance (Camille → contact)
 
-The Doula page is the heart of the funnel. A pregnant woman arrives with anxiety and must leave with a feeling of _"she's the one I want."_ Testimonials are the critical trust lever, but currently they sit at the bottom of the page, after a voluminous catalog of 9 à-la-carte services. **The emotional journey must precede the rational catalog.**
+La page Doula est le cœur de l'entonnoir. Une femme enceinte arrive avec de l'anxiété et doit repartir avec le sentiment de _« c'est elle que je veux. »_ Les témoignages sont le levier de confiance critique, mais actuellement ils se trouvent en bas de la page, après un catalogue volumineux de 9 services à la carte. **Le parcours émotionnel doit précéder le catalogue rationnel.**
 
-#### 2. Service clarity vs confusion
+#### 2. Clarté des services vs confusion
 
-A potential disconnect exists between the Yoga page (organized by format: private / studio / corporate) and the PRD user journeys (organized by need: prenatal / postnatal / private). The Doula page also includes prenatal and postnatal yoga in its 9 à-la-carte services. A postpartum mama like Isabelle might not understand where to go. **The distinction between doula services (birth accompaniment) and yoga (body practice) must be crystal clear.**
+Un décalage potentiel existe entre la page Yoga (organisée par format : privé / studio / entreprise) et les parcours utilisatrices du PRD (organisés par besoin : prénatal / postnatal / privé). La page Doula inclut aussi le yoga prénatal et postnatal dans ses 9 services à la carte. Une maman en post-partum comme Isabelle pourrait ne pas comprendre où aller. **La distinction entre les services de doula (accompagnement à la naissance) et le yoga (pratique corporelle) doit être limpide.**
 
-#### 3. Mobile one-handed navigation
+#### 3. Navigation mobile à une main
 
-The PRD states: "Mobile-first design thought for one hand (baby in the other)." The 44px touch targets are technically present, but the overall experience — information density on the Doula page (9 service cards!), scroll length — deserves rethinking for this real-world context.
+Le PRD indique : « Design mobile-first pensé pour une main (bébé dans l'autre). » Les zones de touch de 44px sont techniquement présentes, mais l'expérience globale — la densité d'information sur la page Doula (9 cartes de services !), la longueur du scroll — mérite d'être repensée pour ce contexte réel.
 
-### Design Opportunities
+### Opportunités de design
 
-#### 1. Emotion before information
+#### 1. L'émotion avant l'information
 
-Pauline has beautiful testimonials ("incredible gentleness and listening"). These words could appear _in the first seconds_ of the journey, not after scrolling past 9 service cards. Imagine Camille arriving and immediately seeing another mama say "I felt supported at every step" — trust builds before she even reads the details.
+Pauline a de magnifiques témoignages (« une douceur et une écoute incroyables »). Ces mots pourraient apparaître _dans les premières secondes_ du parcours, pas après avoir scrollé 9 cartes de services. Imaginez Camille arrivant et lisant immédiatement une autre maman dire « Je me suis sentie soutenue à chaque étape » — la confiance se bâtit avant même qu'elle ne lise les détails.
 
-#### 2. Visual storytelling (awaiting real images)
+#### 2. Narration visuelle (en attente de vraies images)
 
-Mockups are ready, SVG placeholders are in place — but the site clearly awaits professional photos of Pauline. When they arrive, that's when the site will _breathe_. The design system is ready for it (Hero, About, FeatureBlock components all have image slots).
+Les maquettes sont prêtes, les placeholders SVG sont en place — mais le site attend clairement les photos professionnelles de Pauline. Quand elles arriveront, c'est là que le site va _respirer_. Le design system est prêt à les accueillir (les composants Hero, About, FeatureBlock ont tous des emplacements pour images).
 
-#### 3. CTAs that reassure rather than sell
+#### 3. Des CTA qui rassurent plutôt que de vendre
 
-"Book a discovery call" is already better than "Contact us." But the micro-copy could go further for anxious journeys: guidance like "Not sure what you need? Write to me, let's chat." would be more human and pregnancy-safe.
+« Prendre rendez-vous pour un appel découverte » est déjà mieux que « Contactez-nous. » Mais le micro-copy pourrait aller plus loin pour les parcours anxieux : des indications comme « Pas sûre de ce dont tu as besoin ? Écris-moi, on en jase. » serait plus humain et pregnancy-safe.
 
-## Core User Experience
+## Expérience utilisatrice fondamentale
 
-### Defining Experience
+### Expérience définissante
 
-The core user action for shooting-star is: **contact Pauline after developing a feeling of trust.** The contact form submission is not the experience — it is the _culmination_ of an emotional process that begins the instant the visitor lands on the site.
+L'action utilisatrice fondamentale de shooting-star est : **contacter Pauline après avoir développé un sentiment de confiance.** La soumission du formulaire de contact n'est pas l'expérience — c'est la _culmination_ d'un processus émotionnel qui commence dès l'instant où la visiteuse arrive sur le site.
 
-The defining moment of success, as the PRD states: _"The moment Camille reads the testimonials and Pauline's approach, and thinks 'she's the one I want.' The contact form is just the concretization."_
+Le moment décisif de succès, comme le PRD l'indique : _« Le moment où Camille lit les témoignages et l'approche de Pauline, et pense "c'est elle que je veux." Le formulaire de contact n'est que la concrétisation. »_
 
-Everything else — reading about services, exploring yoga offerings, understanding the approach — **serves this moment of emotional decision.**
+Tout le reste — lire les services, explorer les offres de yoga, comprendre l'approche — **sert ce moment de décision émotionnelle.**
 
-### Platform Strategy
+### Stratégie de plateforme
 
-| Aspect                      | Decision                               | Justification                                                                       |
-| --------------------------- | -------------------------------------- | ----------------------------------------------------------------------------------- |
-| **Platform**                | Responsive web, SSR (already in place) | No mobile app — target audience searches on Google/Instagram, not in an App Store   |
-| **Dominant input**          | Touch (mobile)                         | The "one-handed use case" is central — baby in the other arm                        |
-| **Network**                 | Variable 4G, Québec                    | NFR-P1: LCP < 2.5s on simulated 4G. No heavy client-side features                   |
-| **Offline**                 | Not required                           | Showcase site, no complex interactions — connectivity required for the contact form |
-| **SSR advantage**           | Indexable, fast first load             | Critical for local SEO (Phase 2) and perceived performance                          |
-| **Progressive enhancement** | Forms work without JavaScript          | Server actions already handle form submission — JS-free path exists                 |
+| Aspect                       | Décision                                     | Justification                                                                                |
+| ---------------------------- | -------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Plateforme**               | Web responsive, SSR (déjà en place)          | Pas d'appli mobile — le public cible cherche sur Google/Instagram, pas dans un App Store     |
+| **Input dominant**           | Touch (mobile)                               | Le cas d'usage « une main » est central — bébé dans l'autre bras                             |
+| **Réseau**                   | 4G variable, Québec                          | NFR-P1 : LCP < 2,5s en 4G simulé. Pas de fonctionnalités lourdes côté client                 |
+| **Hors ligne**               | Pas requis                                   | Site vitrine, pas d'interactions complexes — connexion requise pour le formulaire de contact |
+| **Avantage SSR**             | Indexable, premier chargement rapide         | Critique pour le SEO local (Phase 2) et la performance perçue                                |
+| **Amélioration progressive** | Les formulaires fonctionnent sans JavaScript | Les server actions gèrent déjà la soumission de formulaire — le chemin sans JS existe        |
 
-### Effortless Interactions
+### Interactions sans effort
 
-| Interaction                      | What must be effortless                                                   | Current state                                                               |
-| -------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------------------- |
-| **Understand what Pauline does** | Within ≤ 30 seconds from landing, without scrolling more than one screen  | ✅ Hero + 3 service cards — good, but hero has a spacing bug ("Épanouirsa") |
-| **Find the Doula page**          | One tap in the menu, no hesitation                                        | ✅ Clear "Doula" nav item                                                   |
-| **Read testimonials**            | Visible early in the funnel, not after 9 service cards                    | ⚠️ Currently at the bottom of the Doula page — friction                     |
-| **Contact Pauline**              | CTA visible at all times, form in 4 fields, submission without JavaScript | ✅ CTA present on every page + progressive enhancement                      |
-| **Distinguish Doula vs Yoga**    | Clear at a glance — know which service to go to based on need             | ⚠️ Overlap: yoga appears in doula à-la-carte services                       |
-| **Navigate on mobile**           | Touch targets 44px+, thumb-accessible menu, simple vertical scroll        | ✅ Technically ok, but density on /doula is high                            |
+| Interaction                        | Ce qui doit être sans effort                                                  | État actuel                                                                                |
+| ---------------------------------- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| **Comprendre ce que Pauline fait** | En ≤ 30 secondes depuis l'arrivée, sans scroller plus d'un écran              | ✅ Hero + 3 cartes de services — bien, mais le hero a un bug d'espacement (« Épanouirsa ») |
+| **Trouver la page Doula**          | Un tap dans le menu, sans hésitation                                          | ✅ Item « Doula » clair dans la nav                                                        |
+| **Lire les témoignages**           | Visibles tôt dans l'entonnoir, pas après 9 cartes de services                 | ⚠️ Actuellement en bas de la page Doula — friction                                         |
+| **Contacter Pauline**              | CTA visible en permanence, formulaire en 4 champs, soumission sans JavaScript | ✅ CTA présent sur chaque page + amélioration progressive                                  |
+| **Distinguer Doula vs Yoga**       | Clair d'un coup d'œil — savoir quel service choisir selon le besoin           | ⚠️ Chevauchement : le yoga apparaît dans les services doula à la carte                     |
+| **Naviguer sur mobile**            | Zones de touch 44px+, menu accessible au pouce, scroll vertical simple        | ✅ Techniquement ok, mais densité élevée sur /doula                                        |
 
-### Critical Success Moments
+### Moments critiques de succès
 
-#### Success: "She's the one"
+#### Succès : « C'est elle que je veux »
 
-When Camille reads a testimonial and sees Pauline's photo, she projects herself into the relationship. She feels understood. This moment transforms a visitor into a potential client. **This is THE moment to optimize.**
+Quand Camille lit un témoignage et voit la photo de Pauline, elle se projette dans la relation. Elle se sent comprise. Ce moment transforme une visiteuse en cliente potentielle. **C'est LE moment à optimiser.**
 
-#### Failure: "I don't know where to go"
+#### Échec : « Je ne sais pas où aller »
 
-Isabelle, 3 weeks postpartum, arrives from Instagram. She sees Doula and Yoga in the nav. She hesitates. She goes to Doula — and sees prenatal yoga in the à-la-carte services. Confusion. She closes her phone. **Wayfinding must be clear even for a tired brain.**
+Isabelle, 3 semaines post-partum, arrive depuis Instagram. Elle voit Doula et Yoga dans la nav. Elle hésite. Elle va vers Doula — et voit le yoga prénatal dans les services à la carte. Confusion. Elle ferme son téléphone. **L'orientation doit être claire même pour un cerveau fatigué.**
 
-#### Success: The form that doesn't intimidate
+#### Succès : Le formulaire qui n'intimide pas
 
-Camille taps "Book a discovery call." She lands on a simple form: name, email, a short message. No obligation to pick a specific service, no complex dropdown. She writes 2 lines and sends. **The current form is already good — the optional "availability" field is a smart choice.**
+Camille tape « Prendre rendez-vous pour un appel découverte. » Elle tombe sur un formulaire simple : nom, courriel, un court message. Pas d'obligation de choisir un service spécifique, pas de menu déroulant complexe. Elle écrit 2 lignes et envoie. **Le formulaire actuel est déjà bon — le champ optionnel « disponibilité » est un choix judicieux.**
 
-#### Failure: The infinite scroll on mobile
+#### Échec : Le scroll infini sur mobile
 
-The Doula page scrolls through 5 approach phases + 9 service cards + a CTA + testimonials + a footer. On a 375px screen, that is a lot. **A tired mama who scrolls without finding what she's looking for is a mama who gives up.**
+La page Doula défile à travers 5 phases d'approche + 9 cartes de services + un CTA + des témoignages + un pied de page. Sur un écran de 375px, c'est beaucoup. **Une maman fatiguée qui scrolle sans trouver ce qu'elle cherche est une maman qui abandonne.**
 
-### Experience Principles
+### Principes d'expérience
 
-#### 1. Trust before information
+#### 1. La confiance avant l'information
 
-Start by making visitors _feel_ before making them _understand_. Testimonials, tone, Pauline's photo — that is the first emotional contact. Service details come after.
+Commencer par faire _ressentir_ aux visiteuses avant de leur faire _comprendre_. Témoignages, ton, photo de Pauline — c'est le premier contact émotionnel. Les détails des services viennent ensuite.
 
-#### 2. Designed for one hand
+#### 2. Conçu pour une seule main
 
-Every interaction is mentally tested against the scenario: "Can I do this with my thumb, my baby in my other arm, while being exhausted?" If not, we simplify.
+Chaque interaction est mentalement testée contre le scénario : « Est-ce que je peux faire ça avec mon pouce, mon bébé dans l'autre bras, en étant épuisée ? » Si non, on simplifie.
 
-#### 3. Immediate clarity
+#### 3. Clarté immédiate
 
-Each page answers ONE question at a glance. Home: "Who is Pauline?" Doula: "How does she accompany me?" Yoga: "What are her classes?" No confusion, no overlap.
+Chaque page répond à UNE question d'un coup d'œil. Accueil : « Qui est Pauline ? » Doula : « Comment m'accompagne-t-elle ? » Yoga : « Quels sont ses cours ? » Pas de confusion, pas de chevauchement.
 
-#### 4. Contact as invitation, not as sale
+#### 4. Le contact comme invitation, pas comme vente
 
-The CTA is not "buy" or "book." It is "let's talk." Micro-copy everywhere must give permission to doubt, to question, to not know exactly what you want — and that it's ok.
+Le CTA n'est pas « acheter » ou « réserver. » C'est « parlons-nous. » Le micro-copy partout doit donner la permission de douter, de questionner, de ne pas savoir exactement ce qu'on veut — et que c'est correct.
 
-## Desired Emotional Response
+## Réponse émotionnelle souhaitée
 
-### Primary Emotional Goals
+### Objectifs émotionnels primaires
 
-Shooting-star is fundamentally an emotional design project. The site does not optimize for productivity or efficiency — it creates a space where vulnerable women feel safe enough to reach out.
+Shooting-star est fondamentalement un projet de design émotionnel. Le site n'optimise pas pour la productivité ou l'efficacité — il crée un espace où des femmes vulnérables se sentent suffisamment en sécurité pour tendre la main.
 
-| Priority | Emotional Goal | What it means in practice                                                       |
-| -------- | -------------- | ------------------------------------------------------------------------------- |
-| **1**    | **Trust**      | The visitor believes Pauline is competent, caring, and the right person for her |
-| **2**    | **Warmth**     | The site feels like a conversation with a kind friend, not a corporate brochure |
-| **3**    | **Permission** | The visitor feels it's ok to not know what she needs, to doubt, to just ask     |
-| **4**    | **Calm**       | The experience soothes rather than stimulates — a respite from anxiety          |
-| **5**    | **Belonging**  | The visitor feels seen and understood — "other mamas like me went through this" |
+| Priorité | Objectif émotionnel | Ce que ça signifie en pratique                                                                                |
+| -------- | ------------------- | ------------------------------------------------------------------------------------------------------------- |
+| **1**    | **Confiance**       | La visiteuse croit que Pauline est compétente, bienveillante, et la bonne personne pour elle                  |
+| **2**    | **Chaleur**         | Le site donne l'impression d'une conversation avec une amie bienveillante, pas d'une brochure d'entreprise    |
+| **3**    | **Permission**      | La visiteuse sent que c'est correct de ne pas savoir ce dont elle a besoin, de douter, de simplement demander |
+| **4**    | **Calme**           | L'expérience apaise plutôt qu'elle ne stimule — un répit de l'anxiété                                         |
+| **5**    | **Appartenance**    | La visiteuse se sent vue et comprise — « d'autres mamans comme moi sont passées par là »                      |
 
-**Emotions to actively avoid:** Clinical coldness, sales pressure, information overload, cognitive complexity, performance anxiety ("did I fill this form right?").
+**Émotions à éviter activement :** Froideur clinique, pression de vente, surcharge d'information, complexité cognitive, anxiété de performance (« est-ce que j'ai bien rempli ce formulaire ? »).
 
-### Emotional Journey Mapping
+### Cartographie du parcours émotionnel
 
-#### Camille's Emotional Arc (Primary Persona)
+#### Arc émotionnel de Camille (persona principal)
 
-| Stage                | Arriving emotion                                     | Desired departing emotion                                    | What to avoid                                                  |
-| -------------------- | ---------------------------------------------------- | ------------------------------------------------------------ | -------------------------------------------------------------- |
-| **Landing on home**  | Curiosity mixed with skepticism — "another website?" | _Warmth_ — "oh, this is different, it's gentle"              | Clinical coldness or information overload                      |
-| **Doula page**       | Interest — "ok, what does she actually do?"          | _Trust_ — "she understands what I'm going through"           | Confusion (too many choices) or feeling "sold to"              |
-| **Testimonials**     | Need for validation — "is it worth it?"              | _Projection_ — "these mamas are like me, this could be me"   | Doubt (generic or artificial testimonials)                     |
-| **Contact form**     | Hesitation — "am I ready to take this step?"         | _Permission_ — "it's just a conversation, not a commitment"  | Pressure (obligation to choose a service, sense of commitment) |
-| **After submission** | Small stress — "will she respond?"                   | _Reassurance_ — "my message was received, she'll contact me" | Uncertainty (no confirmation, blank page)                      |
+| Étape                     | Émotion à l'arrivée                                         | Émotion souhaitée au départ                                        | Ce qu'il faut éviter                                                |
+| ------------------------- | ----------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------- |
+| **Arrivée sur l'accueil** | Curiosité mêlée de scepticisme — « encore un site web ? »   | _Chaleur_ — « oh, c'est différent, c'est doux »                    | Froideur clinique ou surcharge d'information                        |
+| **Page Doula**            | Intérêt — « ok, qu'est-ce qu'elle fait concrètement ? »     | _Confiance_ — « elle comprend ce que je vis »                      | Confusion (trop de choix) ou impression d'être « vendue »           |
+| **Témoignages**           | Besoin de validation — « est-ce que ça en vaut la peine ? » | _Projection_ — « ces mamans sont comme moi, ça pourrait être moi » | Doute (témoignages génériques ou artificiels)                       |
+| **Formulaire de contact** | Hésitation — « suis-je prête à faire ce pas ? »             | _Permission_ — « c'est juste une conversation, pas un engagement » | Pression (obligation de choisir un service, sentiment d'engagement) |
+| **Après soumission**      | Petit stress — « va-t-elle répondre ? »                     | _Réassurance_ — « mon message a été reçu, elle va me contacter »   | Incertitude (pas de confirmation, page vide)                        |
 
-#### Isabelle's Emotional Arc (Edge Case Persona)
+#### Arc émotionnel d'Isabelle (persona cas limite)
 
-| Stage                          | Arriving emotion                                                     | Desired departing emotion                              | What to avoid                                                    |
-| ------------------------------ | -------------------------------------------------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------- |
-| **Landing (mobile, one hand)** | Fatigue + "I need help but I don't know what"                        | _Welcome_ — "here I'm not judged, I'm understood"      | Cognitive overload, obligation to understand the site to proceed |
-| **Navigation**                 | Hesitation — Doula or Yoga?                                          | _Gentle guidance_ — "ah ok, postnatal yoga is for me"  | Confusion between services, feeling of wasting time              |
-| **Contact**                    | Fatigue + doubt — "I don't even have energy to write a long message" | _Simplicity_ — "2 lines are enough, she'll understand" | Complex form, superfluous required fields                        |
+| Étape                          | Émotion à l'arrivée                                                       | Émotion souhaitée au départ                                    | Ce qu'il faut éviter                                                 |
+| ------------------------------ | ------------------------------------------------------------------------- | -------------------------------------------------------------- | -------------------------------------------------------------------- |
+| **Arrivée (mobile, une main)** | Fatigue + « j'ai besoin d'aide mais je ne sais pas quoi »                 | _Bienvenue_ — « ici on ne me juge pas, on me comprend »        | Surcharge cognitive, obligation de comprendre le site pour continuer |
+| **Navigation**                 | Hésitation — Doula ou Yoga ?                                              | _Guidance douce_ — « ah ok, le yoga postnatal c'est pour moi » | Confusion entre les services, sentiment de perdre son temps          |
+| **Contact**                    | Fatigue + doute — « je n'ai même pas l'énergie d'écrire un long message » | _Simplicité_ — « 2 lignes suffisent, elle comprendra »         | Formulaire complexe, champs obligatoires superflus                   |
 
-### Micro-Emotions
+### Micro-émotions
 
-| Micro-emotion pair          | Context                                                     | How design responds                                                                           |
-| --------------------------- | ----------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **Trust vs skepticism**     | "Is she a real professional?"                               | Authentic testimonials, Pauline's photo, listed certifications, personal (not corporate) tone |
-| **Calm vs anxiety**         | The user may arrive already anxious (pregnancy, postpartum) | Calm animations, soft colors (beige/green/mint palette), gentle reading pace                  |
-| **Belonging vs isolation**  | "Do other mamas go through this too?"                       | Testimonials that normalize doubts, inclusive language ("your unique journey")                |
-| **Competence vs confusion** | "Do I understand what I'm reading?"                         | Simple language, no medical jargon, one idea per section, clear visual hierarchy              |
-| **Permission vs pressure**  | "Is contacting her already committing?"                     | Reassuring micro-copy ("Write to me, let's chat"), no prices displayed, no "book now"         |
+| Paire de micro-émotions       | Contexte                                                               | Comment le design répond                                                                                |
+| ----------------------------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| **Confiance vs scepticisme**  | « Est-ce une vraie professionnelle ? »                                 | Témoignages authentiques, photo de Pauline, certifications listées, ton personnel (pas corporatif)      |
+| **Calme vs anxiété**          | L'utilisatrice arrive peut-être déjà anxieuse (grossesse, post-partum) | Animations calmes, couleurs douces (palette beige/vert/menthe), rythme de lecture doux                  |
+| **Appartenance vs isolement** | « D'autres mamans vivent-elles la même chose ? »                       | Témoignages qui normalisent les doutes, langage inclusif (« ton parcours unique »)                      |
+| **Compétence vs confusion**   | « Est-ce que je comprends ce que je lis ? »                            | Langage simple, pas de jargon médical, une idée par section, hiérarchie visuelle claire                 |
+| **Permission vs pression**    | « Est-ce que la contacter m'engage déjà ? »                            | Micro-copy rassurante (« Écris-moi, on en jase »), pas de prix affichés, pas de « réservez maintenant » |
 
-### Design Implications
+### Implications pour le design
 
-| Emotional target | UX translation                                                                                                                       | Implementation status                                       |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
-| **Warmth**       | Warm palette (beige `#ceaf9b`, soft pink `#ffddd3`), Ivyora Display typeface (elegant but not cold), Pauline's photos when available | Palette and typography in place ✅                          |
-| **Calm**         | Subtle animations (150-400ms), `prefers-reduced-motion` respect, no pop-ups or blinking, generous spacing                            | Pregnancy-safe patterns implemented ✅                      |
-| **Trust**        | Testimonials positioned early in the funnel, rich About page (bio + training + philosophy), personal tone                            | Content exists, but testimonial positioning needs review ⚠️ |
-| **Permission**   | Soft CTAs ("Let's talk" > "Book now"), minimal form, no price, no mandatory service selection                                        | Simple form ✅ but micro-copy to refine ⚠️                  |
-| **Clarity**      | One value proposition per page, clean H1→H2→H3 hierarchy, clear service distinction                                                  | Existing structure ✅ but doula/yoga overlap ⚠️             |
+| Cible émotionnelle | Traduction UX                                                                                                                           | État d'implémentation                                                 |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------- |
+| **Chaleur**        | Palette chaude (beige `#ceaf9b`, rose pâle `#ffddd3`), typographie Ivyora Display (élégante mais pas froide), photos de Pauline à venir | Palette et typographie en place ✅                                    |
+| **Calme**          | Animations subtiles (150-400ms), respect de `prefers-reduced-motion`, pas de pop-ups ni de clignotements, espacement généreux           | Patterns pregnancy-safe implémentés ✅                                |
+| **Confiance**      | Témoignages positionnés tôt dans l'entonnoir, page À propos riche (bio + formations + philosophie), ton personnel                       | Le contenu existe, mais le positionnement des témoignages à revoir ⚠️ |
+| **Permission**     | CTA doux (« Parlons-nous » > « Réservez maintenant »), formulaire minimal, pas de prix, pas de sélection de service obligatoire         | Formulaire simple ✅ mais micro-copy à affiner ⚠️                     |
+| **Clarté**         | Une proposition de valeur par page, hiérarchie H1→H2→H3 propre, distinction claire des services                                         | Structure existante ✅ mais chevauchement doula/yoga ⚠️               |
 
-### Emotional Design Principles
+### Principes de design émotionnel
 
-#### 1. The site must breathe
+#### 1. Le site doit respirer
 
-Generous white space, gentle reading rhythm. No text walls, no dense grids. Each section can breathe. This reflects the space Pauline creates for her clients — safe and spacious.
+Espaces blancs généreux, rythme de lecture doux. Pas de murs de texte, pas de grilles denses. Chaque section peut respirer. Cela reflète l'espace que Pauline crée pour ses clientes — sécurisant et spacieux.
 
-#### 2. Colors tell a story
+#### 2. Les couleurs racontent une histoire
 
-Green (`#618462`) = grounding, nature, health. Rose (`#af6868`) = warmth, femininity, invitation. Beige (`#ceaf9b`) = softness, earth, motherhood. Each color serves an emotional purpose, not a decorative one.
+Vert (`#618462`) = ancrage, nature, santé. Rose (`#af6868`) = chaleur, féminité, invitation. Beige (`#ceaf9b`) = douceur, terre, maternité. Chaque couleur sert un objectif émotionnel, pas décoratif.
 
-#### 3. Words matter as much as visuals
+#### 3. Les mots comptent autant que les visuels
 
-Micro-copy is an emotional tool. "Book a discovery call" → permission. "I can't wait to meet you" (already present in the form) → human warmth. Every word must be weighed with a doula's empathy.
+Le micro-copy est un outil émotionnel. « Prendre rendez-vous pour un appel découverte » → permission. « J'ai hâte de te rencontrer » (déjà présent dans le formulaire) → chaleur humaine. Chaque mot doit être pesé avec l'empathie d'une doula.
 
-#### 4. Errors must reassure, not punish
+#### 4. Les erreurs doivent rassurer, pas punir
 
-If the form fails (rate limit, invalid email), the message must be kind. Not "Error 429" — rather "You've already sent a message recently. Pauline will get back to you soon. 💛"
+Si le formulaire échoue (limite de débit, courriel invalide), le message doit être bienveillant. Pas « Erreur 429 » — plutôt « Tu as déjà envoyé un message récemment. Pauline va te répondre bientôt. 💛 »
 
-## UX Pattern Analysis & Inspiration
+## Analyse de patterns UX et inspiration
 
-### Inspiring Products Analysis
+### Analyse de produits inspirants
 
-#### 1. Doula & wellness practitioner websites (sector trends)
+#### 1. Sites web de doulas et de praticiennes bien-être (tendances du secteur)
 
-The best doula websites share striking UX characteristics:
+Les meilleurs sites de doulas partagent des caractéristiques UX frappantes :
 
-- **Face first** — The practitioner's photo is the _first visible element_. Not a logo, not a tagline — a human face. Because choosing a doula is choosing a _person_. Trust begins with the gaze.
-- **Testimonials above the fold** — The best doulas place a testimonial directly in or under the hero. Before the visitor even scrolls, she reads another mama's words.
-- **Ultra-simple linear funnel** — Home → Services → Contact. Not 15 pages. The visitor doesn't want a catalog — she wants an answer to "can you help me?"
-- **Intimate tone** — Familiar address ("tu" in French), first person, short sentences. "I accompany you" rather than "Our accompaniment services are designed to..."
+- **Le visage en premier** — La photo de la praticienne est le _premier élément visible_. Pas un logo, pas un slogan — un visage humain. Parce que choisir une doula, c'est choisir une _personne_. La confiance commence par le regard.
+- **Témoignages au-dessus de la ligne de flottaison** — Les meilleures doulas placent un témoignage directement dans ou sous le hero. Avant même que la visiteuse ne scrolle, elle lit les mots d'une autre maman.
+- **Entonnoir linéaire ultra-simple** — Accueil → Services → Contact. Pas 15 pages. La visiteuse ne veut pas un catalogue — elle veut une réponse à « peux-tu m'aider ? »
+- **Ton intime** — Tutoiement, première personne, phrases courtes. « Je t'accompagne » plutôt que « Nos services d'accompagnement sont conçus pour... »
 
-Common failures in the sector: pages overloaded with services (the risk on the current Doula page with 9 cards), inaccessible spiritual jargon, no photos or only stock photos.
+Erreurs courantes dans le secteur : pages surchargées de services (le risque sur la page Doula actuelle avec 9 cartes), jargon spirituel inaccessible, pas de photos ou uniquement des photos banque d'images.
 
-#### 2. Instagram (native platform of the target audience)
+#### 2. Instagram (plateforme native du public cible)
 
-Instagram is likely the #1 tool of Pauline's clientele — where mamas discover doulas, share recommendations, consume perinatal content.
+Instagram est probablement l'outil #1 de la clientèle de Pauline — là où les mamans découvrent les doulas, partagent des recommandations, consomment du contenu périnatal.
 
-- **Vertical scroll is natural** — Users are habituated to continuous vertical flow. No complex tabs, no lateral navigation.
-- **Image is queen** — An Instagram post without an image doesn't exist. The site must be as visual when photos arrive.
-- **Stories = ephemeral, intimate content** — The short, personal, "behind the scenes" format creates intimacy. The site can reproduce this with personal tone and short sections.
-- **The DM as conversion** — On Instagram, conversion is the direct message. The contact form must be as simple as sending a DM.
+- **Le scroll vertical est naturel** — Les utilisatrices sont habituées au flux vertical continu. Pas d'onglets complexes, pas de navigation latérale.
+- **L'image est reine** — Un post Instagram sans image n'existe pas. Le site doit être aussi visuel quand les photos arriveront.
+- **Les stories = contenu éphémère et intime** — Le format court, personnel, « behind the scenes » crée de l'intimité. Le site peut reproduire ça avec un ton personnel et des sections courtes.
+- **Le DM comme conversion** — Sur Instagram, la conversion c'est le message direct. Le formulaire de contact doit être aussi simple qu'envoyer un DM.
 
-#### 3. Pregnancy apps (BabyCenter, What to Expect, Grossesse+)
+#### 3. Applications de grossesse (BabyCenter, What to Expect, Grossesse+)
 
-These are apps Camille and Isabelle likely use daily.
+Ce sont des applications que Camille et Isabelle utilisent probablement au quotidien.
 
-- **Stage personalization** — The app adapts to the week of pregnancy. Shooting-star doesn't need accounts, but the idea of _speaking to the right moment_ is transferable: the Doula page could better guide between "during pregnancy" and "after birth."
-- **Normalization language** — "It's perfectly normal to feel this way this week." Pauline's tone already does this well.
-- **Quick reading, one info per screen** — These apps understand the user is tired. No text walls. Short cards, one topic per view.
+- **Personnalisation par étape** — L'application s'adapte à la semaine de grossesse. Shooting-star n'a pas besoin de comptes, mais l'idée de _parler au bon moment_ est transférable : la page Doula pourrait mieux guider entre « pendant la grossesse » et « après la naissance. »
+- **Langage de normalisation** — « C'est parfaitement normal de se sentir ainsi cette semaine. » Le ton de Pauline fait déjà ça bien.
+- **Lecture rapide, une info par écran** — Ces applications comprennent que l'utilisatrice est fatiguée. Pas de murs de texte. Des cartes courtes, un sujet par vue.
 
-### Transferable UX Patterns
+### Patterns UX transférables
 
-#### Navigation Patterns
+#### Patterns de navigation
 
-| Pattern                    | Source                 | Application for shooting-star                                                       |
-| -------------------------- | ---------------------- | ----------------------------------------------------------------------------------- |
-| **Face as hero anchor**    | Doula sites            | When Pauline's photos are ready, the home hero should show her face — not just text |
-| **Simple vertical scroll** | Instagram              | Keep the vertical flow simple on mobile. No tabs, no carousels for main services    |
-| **Minimal navigation**     | Wellness best practice | 5 items max in nav. Currently 5 (Doula, Yoga, Féminin, À propos, Contact) → good ✅ |
-| **Sticky floating CTA**    | Modern mobile apps     | A subtle but always-accessible "Contact" button could reduce friction on long pages |
+| Pattern                           | Source                        | Application pour shooting-star                                                                                  |
+| --------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Le visage comme ancre du hero** | Sites de doulas               | Quand les photos de Pauline seront prêtes, le hero de l'accueil devrait montrer son visage — pas juste du texte |
+| **Scroll vertical simple**        | Instagram                     | Garder le flux vertical simple sur mobile. Pas d'onglets, pas de carrousels pour les services principaux        |
+| **Navigation minimale**           | Bonne pratique bien-être      | 5 items max dans la nav. Actuellement 5 (Doula, Yoga, Féminin, À propos, Contact) → bien ✅                     |
+| **CTA flottant sticky**           | Applications mobiles modernes | Un bouton « Contact » subtil mais toujours accessible pourrait réduire la friction sur les longues pages        |
 
-#### Interaction Patterns
+#### Patterns d'interaction
 
-| Pattern                      | Source                      | Application for shooting-star                                                                                 |
-| ---------------------------- | --------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| **Testimonial in the hero**  | High-performing doula sites | A short testimonial or trust phrase visible on landing, before scroll                                         |
-| **DM-style form**            | Instagram                   | The contact form should be as simple as writing an Instagram DM — 2-3 fields, no ceremony                     |
-| **Short scannable sections** | Pregnancy apps              | Each section = one idea. If it takes more than one mobile screen to read, it's too long                       |
-| **Progressive disclosure**   | UX best practice            | On the Doula page: show the approach (5 phases) first, the 9 à-la-carte services second, "learn more" on each |
+| Pattern                            | Source                      | Application pour shooting-star                                                                                              |
+| ---------------------------------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| **Témoignage dans le hero**        | Sites de doulas performants | Un court témoignage ou phrase de confiance visible dès l'arrivée, avant le scroll                                           |
+| **Formulaire style DM**            | Instagram                   | Le formulaire de contact doit être aussi simple qu'écrire un DM Instagram — 2-3 champs, pas de cérémonie                    |
+| **Sections courtes et scannables** | Applications de grossesse   | Chaque section = une idée. Si ça prend plus d'un écran mobile à lire, c'est trop long                                       |
+| **Divulgation progressive**        | Bonne pratique UX           | Sur la page Doula : montrer l'approche (5 phases) d'abord, les 9 services à la carte ensuite, « en savoir plus » sur chacun |
 
-#### Visual Patterns
+#### Patterns visuels
 
-| Pattern                        | Source                   | Application for shooting-star                                               |
-| ------------------------------ | ------------------------ | --------------------------------------------------------------------------- |
-| **Warm & earthtone palette**   | Wellness trend 2024-2026 | Current palette (green, beige, soft pink) is exactly on trend — keep ✅     |
-| **Elegant serif for headings** | Premium wellness sites   | Ivyora Display is perfect — refined without being pretentious ✅            |
-| **Generous white space**       | Apple, Headspace         | White space = breathing room. Sections could benefit from even more air     |
-| **Rounded corners everywhere** | UI trend 2024-2026       | Design system already uses rounded corners (hero, sections) — consistent ✅ |
+| Pattern                            | Source                       | Application pour shooting-star                                                           |
+| ---------------------------------- | ---------------------------- | ---------------------------------------------------------------------------------------- |
+| **Palette chaude et tons terreux** | Tendance bien-être 2024-2026 | La palette actuelle (vert, beige, rose pâle) est exactement dans la tendance — garder ✅ |
+| **Serif élégante pour les titres** | Sites bien-être premium      | Ivyora Display est parfaite — raffinée sans être prétentieuse ✅                         |
+| **Espaces blancs généreux**        | Apple, Headspace             | L'espace blanc = de l'air. Les sections pourraient bénéficier d'encore plus d'espace     |
+| **Coins arrondis partout**         | Tendance UI 2024-2026        | Le design system utilise déjà des coins arrondis (hero, sections) — cohérent ✅          |
 
-### Anti-Patterns to Avoid
+### Anti-patterns à éviter
 
-| Anti-pattern                               | Why it's harmful                                             | Current risk for shooting-star                            |
-| ------------------------------------------ | ------------------------------------------------------------ | --------------------------------------------------------- |
-| **Flat service catalog without hierarchy** | User doesn't know where to start, scrolls aimlessly          | ⚠️ Doula page with 9 equal cards is at risk               |
-| **Newsletter pop-up on arrival**           | Interrupts first emotional contact, aggressive on mobile     | ✅ No pop-up — good choice                                |
-| **Stock "yoga" photos**                    | Visitor senses inauthenticity instantly — trust destruction  | ✅ Better to have SVG placeholders than fake stock photos |
-| **Impenetrable spiritual jargon**          | Alienates 50% of the audience who wants concrete reassurance | ✅ Current content is accessible and warm                 |
-| **Contact form with 8+ fields**            | Excessive effort for a tired or hesitant user                | ✅ Current form is minimal (4 fields) — excellent         |
-| **Prices displayed too early**             | Creates a transactional filter before trust is established   | ✅ No prices shown — relational approach                  |
+| Anti-pattern                                   | Pourquoi c'est nuisible                                                         | Risque actuel pour shooting-star                           |
+| ---------------------------------------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| **Catalogue plat de services sans hiérarchie** | L'utilisatrice ne sait pas par où commencer, scrolle sans but                   | ⚠️ La page Doula avec 9 cartes égales est à risque         |
+| **Pop-up d'infolettre à l'arrivée**            | Interrompt le premier contact émotionnel, agressif sur mobile                   | ✅ Pas de pop-up — bon choix                               |
+| **Photos « yoga » de banque d'images**         | La visiteuse sent l'inauthenticité instantanément — destruction de la confiance | ✅ Mieux vaut des placeholders SVG que de fausses photos   |
+| **Jargon spirituel impénétrable**              | Aliène 50% du public qui veut de la réassurance concrète                        | ✅ Le contenu actuel est accessible et chaleureux          |
+| **Formulaire de contact avec 8+ champs**       | Effort excessif pour une utilisatrice fatiguée ou hésitante                     | ✅ Le formulaire actuel est minimal (4 champs) — excellent |
+| **Prix affichés trop tôt**                     | Crée un filtre transactionnel avant que la confiance ne soit établie            | ✅ Pas de prix affichés — approche relationnelle           |
 
-### Design Inspiration Strategy
+### Stratégie d'inspiration design
 
-#### To Adopt
+#### À adopter
 
-- **The human face as anchor point** — as soon as Pauline's photos are available
-- **Testimonials at the start of the funnel** — not at page end, but in the first sections
-- **Progressive disclosure for services** — overview first, details on click
-- **DM-style form simplicity** — keep friction at minimum
+- **Le visage humain comme point d'ancrage** — dès que les photos de Pauline sont disponibles
+- **Témoignages au début de l'entonnoir** — pas en fin de page, mais dans les premières sections
+- **Divulgation progressive pour les services** — aperçu d'abord, détails au clic
+- **Simplicité de formulaire style DM** — garder la friction au minimum
 
-#### To Adapt
+#### À adapter
 
-- **Instagram vertical scroll** — for mobile, but with progression landmarks (visually distinct sections)
-- **Stage personalization (pregnancy apps)** — no user accounts, but clear guidance "pregnant → Doula / postpartum → Postnatal Yoga"
-- **Sticky mobile CTA** — subtle, not intrusive, consistent with Pauline's "invitation" tone
+- **Scroll vertical Instagram** — pour le mobile, mais avec des repères de progression (sections visuellement distinctes)
+- **Personnalisation par étape (applications de grossesse)** — pas de comptes utilisateurs, mais une guidance claire « enceinte → Doula / post-partum → Yoga postnatal »
+- **CTA mobile sticky** — subtil, pas intrusif, cohérent avec le ton d'« invitation » de Pauline
 
-#### To Avoid
+#### À éviter
 
-- **The flat catalog** — the 9 doula services must be hierarchized, not listed equally
-- **Stock images** — no stock photos. Honest placeholders > visual dishonesty
-- **SEO over-optimization** — no keyword stuffing; tone must remain authentic and human
+- **Le catalogue plat** — les 9 services doula doivent être hiérarchisés, pas listés à égalité
+- **Images de banque d'images** — pas de photos banque d'images. Des placeholders honnêtes > de la malhonnêteté visuelle
+- **Sur-optimisation SEO** — pas de bourrage de mots-clés ; le ton doit rester authentique et humain
 
-## Design System Foundation
+## Fondation du design system
 
-### Design System Choice
+### Choix du design system
 
-Shooting-star uses an existing, mature design system foundation: **Tailwind CSS v4 + shadcn/ui (new-york variant) + Radix UI primitives**, with a fully custom brand theme. This is a **themeable system** approach — proven components with complete visual customization.
+Shooting-star utilise une fondation de design system existante et mature : **Tailwind CSS v4 + shadcn/ui (variante new-york) + primitives Radix UI**, avec un thème de marque entièrement personnalisé. C'est une approche de **système thématisable** — des composants éprouvés avec une personnalisation visuelle complète.
 
-| Layer             | Technology                                        | Status                                                       |
-| ----------------- | ------------------------------------------------- | ------------------------------------------------------------ |
-| **Design tokens** | Tailwind CSS v4 (custom theme in `app.css`)       | ✅ 9 brand colors, 3 type families, standard breakpoints     |
-| **UI primitives** | shadcn/ui (new-york) + Radix UI                   | ✅ 10 components (Button, Card, Form, Input, Select, etc.)   |
-| **Variants**      | CVA (Class Variance Authority)                    | ✅ Button with 8 variants (default, cta, service-card, etc.) |
-| **Composition**   | 23 layout modules (Hero, Services, Contact, etc.) | ✅ Full page coverage                                        |
-| **Documentation** | Storybook 10 + Chromatic (visual regression)      | ✅ 18 story files                                            |
-| **Accessibility** | axe-core + ARIA + pregnancy-safe patterns         | ✅ Touch targets 44px+, `prefers-reduced-motion`             |
+| Couche               | Technologie                                          | Statut                                                          |
+| -------------------- | ---------------------------------------------------- | --------------------------------------------------------------- |
+| **Tokens de design** | Tailwind CSS v4 (thème personnalisé dans `app.css`)  | ✅ 9 couleurs de marque, 3 familles typo, breakpoints standards |
+| **Primitives UI**    | shadcn/ui (new-york) + Radix UI                      | ✅ 10 composants (Button, Card, Form, Input, Select, etc.)      |
+| **Variants**         | CVA (Class Variance Authority)                       | ✅ Button avec 8 variants (default, cta, service-card, etc.)    |
+| **Composition**      | 23 modules de layout (Hero, Services, Contact, etc.) | ✅ Couverture complète des pages                                |
+| **Documentation**    | Storybook 10 + Chromatic (régression visuelle)       | ✅ 18 fichiers de stories                                       |
+| **Accessibilité**    | axe-core + ARIA + patterns pregnancy-safe            | ✅ Zones de touch 44px+, `prefers-reduced-motion`               |
 
-### Rationale for Selection
+### Justification du choix
 
-The current system is the right choice for shooting-star. No foundation change needed.
+Le système actuel est le bon choix pour shooting-star. Aucun changement de fondation n'est nécessaire.
 
-| Criterion                                  | Evaluation                                                                                      |
-| ------------------------------------------ | ----------------------------------------------------------------------------------------------- |
-| **Visual consistency**                     | shadcn/ui + Tailwind provides a uniform base. Components share the same visual language ✅      |
-| **Native accessibility**                   | Radix UI primitives = accessible by default (focus management, ARIA, keyboard nav) ✅           |
-| **Performance**                            | Tailwind purges unused classes, no CSS runtime, light bundle ✅                                 |
-| **Maintainability (solo dev + AI agents)** | shadcn/ui = code copied into project, no external dependency to manage ✅                       |
-| **Customization**                          | Tailwind theme is fully custom (colors, typography, patterns) — Pauline's brand is respected ✅ |
-| **Pregnancy-safe**                         | Animation patterns, touch targets, and reduced-motion are already integrated ✅                 |
+| Critère                                   | Évaluation                                                                                                               |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| **Cohérence visuelle**                    | shadcn/ui + Tailwind fournit une base uniforme. Les composants partagent le même langage visuel ✅                       |
+| **Accessibilité native**                  | Les primitives Radix UI = accessible par défaut (gestion du focus, ARIA, navigation clavier) ✅                          |
+| **Performance**                           | Tailwind purge les classes inutilisées, pas de runtime CSS, bundle léger ✅                                              |
+| **Maintenabilité (dev solo + agents IA)** | shadcn/ui = code copié dans le projet, aucune dépendance externe à gérer ✅                                              |
+| **Personnalisation**                      | Le thème Tailwind est entièrement personnalisé (couleurs, typographie, patterns) — la marque de Pauline est respectée ✅ |
+| **Pregnancy-safe**                        | Les patterns d'animation, zones de touch et reduced-motion sont déjà intégrés ✅                                         |
 
-### Implementation Approach
+### Approche d'implémentation
 
-The strategy is **evolutionary, not revolutionary:**
+La stratégie est **évolutive, pas révolutionnaire :**
 
-1. **Current phase (consolidation)** — Audit existing components, ensure they are used to full potential (spacing, variants)
-2. **When photos arrive** — Optimize Hero, About, FeatureBlock components for real images (formats, dimensions, lazy loading)
-3. **Post-consolidation** — Add missing variants (featured testimonial, micro-copy guidelines) via Storybook stories
+1. **Phase actuelle (consolidation)** — Auditer les composants existants, s'assurer qu'ils sont utilisés à leur plein potentiel (espacement, variants)
+2. **Quand les photos arrivent** — Optimiser les composants Hero, About, FeatureBlock pour de vraies images (formats, dimensions, chargement paresseux)
+3. **Post-consolidation** — Ajouter les variants manquantes (témoignage vedette, directives de micro-copy) via les stories Storybook
 
-### Customization Strategy
+### Stratégie de personnalisation
 
-#### Tokens — Keep
+#### Tokens — Conserver
 
-- **Color palette:** 9 colors, each serving a clear emotional purpose (green=grounding, rose=warmth, beige=softness)
-- **Typography:** Ivyora Display (headings), Barlow (body), Moontime (decorative accents)
-- **No new tokens needed** — the existing system is complete
+- **Palette de couleurs :** 9 couleurs, chacune servant un objectif émotionnel clair (vert=ancrage, rose=chaleur, beige=douceur)
+- **Typographie :** Ivyora Display (titres), Barlow (corps), Moontime (accents décoratifs)
+- **Pas de nouveaux tokens nécessaires** — le système existant est complet
 
-#### Components — Refine
+#### Composants — Affiner
 
-| Aspect                      | Approach                                                                                | Priority      |
-| --------------------------- | --------------------------------------------------------------------------------------- | ------------- |
-| **Spacing presets**         | Audit usage — favor `spacious` default for breathing room                               | Refinement ⚠️ |
-| **TestimonialCard**         | Add a "featured" variant — larger, Ivyora Display quote, positionable in first sections | Evolution 🆕  |
-| **CTA micro-copy**          | Document guidelines in Storybook — which text for which context                         | Evolution 🆕  |
-| **Form feedback**           | Integrate pregnancy-safe error/success messages as design system tokens                 | Evolution 🆕  |
-| **Animations (Issue #186)** | Add subtle scroll, hover, and transition effects within the pregnancy-safe framework    | Evolution 🆕  |
+| Aspect                       | Approche                                                                                                               | Priorité      |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ------------- |
+| **Préréglages d'espacement** | Auditer l'usage — favoriser le défaut `spacious` pour de l'espace de respiration                                       | Affinement ⚠️ |
+| **TestimonialCard**          | Ajouter une variante « featured » — plus grande, citation en Ivyora Display, positionnable dans les premières sections | Évolution 🆕  |
+| **Micro-copy des CTA**       | Documenter les directives dans Storybook — quel texte pour quel contexte                                               | Évolution 🆕  |
+| **Feedback de formulaire**   | Intégrer des messages d'erreur/succès pregnancy-safe comme tokens du design system                                     | Évolution 🆕  |
+| **Animations (Issue #186)**  | Ajouter des effets subtils de scroll, hover et transition dans le cadre pregnancy-safe                                 | Évolution 🆕  |
 
-#### Components — No Changes Needed
+#### Composants — Aucun changement nécessaire
 
-- **10 UI primitives** — complete, well-implemented
-- **23 layout modules** — cover all current and planned pages
-- **No new primitive components required**
+- **10 primitives UI** — complets, bien implémentés
+- **23 modules de layout** — couvrent toutes les pages actuelles et prévues
+- **Aucun nouveau composant primitif requis**
 
 ## 2. Core User Experience
 
