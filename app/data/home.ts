@@ -1,7 +1,7 @@
-import type { ServiceItem } from "~/components/layout/services/service-card";
+import type { ServiceContentItem } from "~/lib/content";
 
 // Configuration des services pour la landing page
-export const servicesData: ServiceItem[] = [
+export const servicesData: ServiceContentItem[] = [
   {
     id: "doula",
     title: "Doula",

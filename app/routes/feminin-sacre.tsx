@@ -1,10 +1,17 @@
 import type { Route } from "./+types/feminin-sacre";
+import { useLoaderData } from "react-router";
 import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { EventList } from "~/components/layout/event-list";
 import { DefaultCallToAction } from "~/components/layout/call-to-action";
 import { Footer } from "~/components/layout/footer/footer";
-import { eventsData, introText } from "~/data/feminin-sacre";
+import { getFemininSacreContent } from "~/lib/content.server";
+
+export function loader() {
+  return {
+    femininSacreContent: getFemininSacreContent(),
+  };
+}
 
 export function meta(_args: Route.MetaArgs) {
   return [
@@ -25,6 +32,9 @@ export function meta(_args: Route.MetaArgs) {
 }
 
 export default function FemininSacre() {
+  const { femininSacreContent } = useLoaderData<typeof loader>();
+  const { events, introText } = femininSacreContent;
+
   return (
     <>
       {/* Header - Navigation principale */}
@@ -42,7 +52,7 @@ export default function FemininSacre() {
         <EventList
           title="Tous les événements"
           introText={introText}
-          events={eventsData}
+          events={events}
           containerSize="xl"
         />
 

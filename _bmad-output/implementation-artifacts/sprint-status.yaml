@@ -41,7 +41,7 @@ story_location: /workspaces/shooting-star/_bmad-output/implementation-artifacts
 
 development_status:
   epic-1: in-progress
-  1-1-create-content-abstraction-layer: ready-for-dev
+  1-1-create-content-abstraction-layer: review
   1-2-normalize-file-naming-conventions: backlog
   1-3-establish-test-conventions-documentation: backlog
   epic-1-retrospective: optional
@@ -83,4 +83,17 @@ development_status:
   epic-7: backlog
   7-1-ci-cd-pipeline-test-enforcement: backlog
   7-2-agent-ready-story-implementation-conventions: backlog
+  7-3-review-and-define-project-testing-policy: backlog
   epic-7-retrospective: optional
+
+retrospective_follow_ups:
+  - id: retro-2026-02-14-testing-policy
+    status: open
+    source_story: 1-1-create-content-abstraction-layer
+    summary: >-
+      Review and redefine the project-wide testing policy. Current sprint accepts
+      Chromatic visual regression limits for Story 1.1, but a complete testing
+      strategy refresh is required.
+    discuss_in_retro: true
+    send_to_backlog: true
+    backlog_item: 7-3-review-and-define-project-testing-policy

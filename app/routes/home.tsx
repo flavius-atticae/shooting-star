@@ -1,11 +1,18 @@
 import type { Route } from "./+types/home";
+import { useLoaderData } from "react-router";
 import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { CallToAction } from "~/components/layout/call-to-action";
 import { Services } from "~/components/layout/services";
 import { About } from "~/components/layout/about";
 import { Footer } from "~/components/layout/footer/footer";
-import { servicesData } from "~/data/home";
+import { getHomeContent } from "~/lib/content.server";
+
+export function loader() {
+  return {
+    homeContent: getHomeContent(),
+  };
+}
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -26,6 +33,8 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export default function Home() {
+  const { homeContent } = useLoaderData<typeof loader>();
+
   return (
     <>
       {/* Header - Navigation principale */}
@@ -49,7 +58,7 @@ export default function Home() {
         />
 
         {/* Services Section - Doula, Yoga, Féminin */}
-        <Services services={servicesData} containerSize="xl" />
+        <Services services={homeContent.services} containerSize="xl" />
 
         {/* About Section - Présentation + Méthode (overlaps Footer on tablet+) */}
         <About spacing="none" containerSize="xl" overlapNext="sm" />
