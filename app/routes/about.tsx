@@ -7,7 +7,7 @@ import { Footer } from "~/components/layout/footer/footer";
 import { About } from "~/components/layout/about";
 import { getAboutContent } from "~/lib/content.server";
 
-export async function loader() {
+export function loader() {
   return {
     aboutContent: getAboutContent(),
   };
@@ -91,7 +91,10 @@ function AboutContentWithSections() {
         </h2>
 
         {/* Content - Four subsections */}
-        <div className="space-y-8 sm:space-y-10" aria-labelledby="about-heading">
+        <div
+          className="space-y-8 sm:space-y-10"
+          aria-labelledby="about-heading"
+        >
           {/* Qui suis-je? */}
           <article className="space-y-4" aria-labelledby="qui-suis-je-title">
             <h3
@@ -144,10 +147,7 @@ function AboutContentWithSections() {
           </article>
 
           {/* Ce qui m'inspire */}
-          <article
-            className="space-y-4"
-            aria-labelledby="ce-qui-inspire-title"
-          >
+          <article className="space-y-4" aria-labelledby="ce-qui-inspire-title">
             <h3
               id="ce-qui-inspire-title"
               className="font-heading font-medium text-2xl sm:text-3xl lg:text-4xl text-secondary leading-tight"

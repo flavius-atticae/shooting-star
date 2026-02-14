@@ -150,9 +150,9 @@ Claude Opus 4.6
 1. Created `app/lib/content.server.ts` with 6 exported interfaces and 6 accessor functions.
 2. Interfaces mirror the shape already consumed by route components.
 3. Functions delegate directly to `app/data/*` modules — no data duplication.
-4. `getCallToActionContent()` returns a spread copy (new object) to prevent accidental mutation.
+4. `getCallToActionContent()` is exposed from a shared non-server content module and re-used by `content.server`.
 5. `getYogaContent()` returns empty object as forward-compatibility contract.
-6. Migrated all 5 consumer files from direct `~/data/*` imports to `~/lib/content.server` accessors.
+6. Migrated all 5 consumer files from direct `~/data/*` imports to content accessor functions (`~/lib/content.server` for routes and `~/lib/content` for shared UI-safe CTA access).
 7. Validation aligned with current project policy (Chromatic visual checks + typecheck).
 
 ### Completion Notes List
@@ -167,6 +167,7 @@ Claude Opus 4.6
 ### File List
 
 - app/lib/content.server.ts (new)
+- app/lib/content.ts (new)
 - app/routes/home.tsx (modified)
 - app/routes/doula.tsx (modified)
 - app/routes/about.tsx (modified)

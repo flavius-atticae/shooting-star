@@ -5,12 +5,11 @@ import { Hero } from "~/components/layout/hero/Hero";
 import { Footer } from "~/components/layout/footer/footer";
 import { ApproachSection } from "~/components/layout/approach-section";
 import { Services } from "~/components/layout/services";
-import type { ServiceItem } from "~/components/layout/services";
 import { CallToAction } from "~/components/layout/call-to-action";
 import { TestimonialsCarousel } from "~/components/layout/testimonials-carousel";
 import { getDoulaContent } from "~/lib/content.server";
 
-export async function loader() {
+export function loader() {
   return {
     doulaContent: getDoulaContent(),
   };
@@ -55,11 +54,7 @@ export default function DoulaPage() {
         <ApproachSection items={approachItems} spacing="spacious" />
 
         {/* Services - À la carte */}
-        <Services
-          title="À la carte"
-          services={services as ServiceItem[]}
-          spacing="normal"
-        />
+        <Services title="À la carte" services={services} spacing="normal" />
 
         {/* CallToAction - Réservez un appel découverte */}
         <CallToAction

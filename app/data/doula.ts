@@ -1,9 +1,9 @@
-import type { ServiceItem } from "~/components/layout/services";
+import type { ServiceContentItem } from "~/lib/content";
 import type { ApproachItem } from "~/components/layout/approach-section";
 import type { Testimonial } from "~/components/layout/testimonials-carousel";
 
 // Configuration des services pour la page doula - "À la carte"
-export const doulaServices: ServiceItem[] = [
+export const doulaServices: ServiceContentItem[] = [
   {
     id: "preparation-naissance",
     title: "Préparation à la naissance",

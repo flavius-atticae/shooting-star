@@ -7,7 +7,7 @@ import { DefaultCallToAction } from "~/components/layout/call-to-action";
 import { Footer } from "~/components/layout/footer/footer";
 import { getFemininSacreContent } from "~/lib/content.server";
 
-export async function loader() {
+export function loader() {
   return {
     femininSacreContent: getFemininSacreContent(),
   };

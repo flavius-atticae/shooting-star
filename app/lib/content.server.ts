@@ -13,7 +13,10 @@ import { servicesData } from "~/data/home";
 import { doulaServices, doulaTestimonials, approachItems } from "~/data/doula";
 import { inspirationItems } from "~/data/about";
 import { eventsData, introText } from "~/data/feminin-sacre";
-import { defaultCtaContent } from "~/data/call-to-action";
+import {
+  getCallToActionContent as getSharedCallToActionContent,
+  type CallToActionContent,
+} from "~/lib/content";
 
 // ============================================================================
 // Content interfaces
@@ -32,9 +35,7 @@ export interface DoulaContent {
 }
 
 /** Content returned by {@link getYogaContent}. */
-export interface YogaContent {
-  /* Forward-compatibility placeholder – no data-layer content yet. */
-}
+export type YogaContent = Record<string, never>;
 
 /** Content returned by {@link getAboutContent}. */
 export interface AboutContent {
@@ -45,14 +46,6 @@ export interface AboutContent {
 export interface FemininSacreContent {
   events: typeof eventsData;
   introText: typeof introText;
-}
-
-/** Content returned by {@link getCallToActionContent}. */
-export interface CallToActionContent {
-  title: typeof defaultCtaContent.title;
-  subtitle: typeof defaultCtaContent.subtitle;
-  buttonText: typeof defaultCtaContent.buttonText;
-  buttonHref?: typeof defaultCtaContent.buttonHref;
 }
 
 // ============================================================================
@@ -90,5 +83,5 @@ export function getFemininSacreContent(): FemininSacreContent {
 
 /** Returns the shared default call-to-action content. */
 export function getCallToActionContent(): CallToActionContent {
-  return { ...defaultCtaContent };
+  return getSharedCallToActionContent();
 }
