@@ -6,6 +6,10 @@
  */
 
 import React from 'react';
+import { servicesData } from '~/data/home';
+import { doulaServices, doulaTestimonials, approachItems } from '~/data/doula';
+import { inspirationItems } from '~/data/about';
+import { eventsData, introText } from '~/data/feminin-sacre';
 
 // Types matching React Router v7 API
 export interface LinkProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -157,6 +161,30 @@ export const useSearchParams = () => {
   return [new URLSearchParams(), setSearchParams] as const;
 };
 
+export const useLoaderData = <T = unknown>(): T => {
+  console.log('📦 useLoaderData called in Storybook');
+
+  const mockLoaderData = {
+    homeContent: {
+      services: servicesData,
+    },
+    doulaContent: {
+      services: doulaServices,
+      testimonials: doulaTestimonials,
+      approachItems,
+    },
+    aboutContent: {
+      inspirationItems,
+    },
+    femininSacreContent: {
+      events: eventsData,
+      introText,
+    },
+  };
+
+  return mockLoaderData as T;
+};
+
 // Mock useFetcher for progressive enhancement forms in Storybook.
 // Returns a static idle fetcher — no React hooks needed so it works
 // even when React is not yet initialised (vitest browser mode).
@@ -183,6 +211,7 @@ export default {
   useLocation,
   useParams,
   useSearchParams,
+  useLoaderData,
   useFetcher,
   data,
   StorybookRouterProvider
