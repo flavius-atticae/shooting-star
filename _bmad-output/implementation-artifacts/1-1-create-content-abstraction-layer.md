@@ -1,6 +1,6 @@
 # Story 1.1: Create content abstraction layer
 
-Status: review
+Status: done
 
 ## Story
 
@@ -122,7 +122,7 @@ so that routes are decoupled from the data layer and a future CMS migration requ
 ## Story completion status
 
 - Story context generated with implementation guardrails, explicit file targets, and anti-regression boundaries.
-- Sprint tracking target status for this story: `ready-for-dev`.
+- Sprint tracking target status for this story: `done`.
 - Completion note: Ultimate context engine analysis completed - comprehensive developer guide created.
 
 ## Dev Agent Record
@@ -179,3 +179,4 @@ Claude Opus 4.6
 ## Change Log
 
 - 2026-02-14: Created content abstraction layer (`app/lib/content.server.ts`) with typed interfaces and accessor functions. Migrated all direct `~/data/*` imports in 5 consumer files. Validation aligned to current Chromatic-first policy and typecheck.
+- 2026-02-14: Story merged to `main`; status updated to `done` in implementation artifacts.
