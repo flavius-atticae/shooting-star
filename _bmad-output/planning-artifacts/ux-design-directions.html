@@ -1,0 +1,2955 @@
+<!doctype html>
+<html lang="fr-CA">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shooting-Star — Design Directions</title>
+    <style>
+      /* ===== BRAND TOKENS ===== */
+      :root {
+        --primary: #618462;
+        --accent: #af6868;
+        --secondary: #517982;
+        --neutral: #5e4530;
+        --warm: #ceaf9b;
+        --soft: #ffddd3;
+        --cool: #dae6ea;
+        --menthe: #d4e8d4;
+        --white: #ffffff;
+        --gris: #f5f4f2;
+        --primary-light: #618462cc;
+        --accent-light: #af686833;
+        --font-heading: "Georgia", "Times New Roman", serif;
+        --font-body: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+        --font-accent: "Georgia", cursive, serif;
+      }
+
+      /* ===== RESET ===== */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+      }
+      body {
+        font-family: var(--font-body);
+        color: var(--neutral);
+        background: var(--white);
+        line-height: 1.6;
+      }
+      img {
+        max-width: 100%;
+        display: block;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      /* ===== NAVIGATION BAR ===== */
+      .nav-bar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: var(--white);
+        border-bottom: 1px solid var(--gris);
+        padding: 12px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+      }
+      .nav-bar h1 {
+        font-family: var(--font-heading);
+        font-size: 1.1rem;
+        color: var(--primary);
+        font-weight: 400;
+      }
+      .nav-tabs {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+      .nav-tab {
+        padding: 8px 16px;
+        border-radius: 999px;
+        border: 1.5px solid var(--gris);
+        font-size: 0.85rem;
+        font-weight: 600;
+        cursor: pointer;
+        background: var(--white);
+        color: var(--neutral);
+        transition: all 0.2s;
+      }
+      .nav-tab:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+      .nav-tab.active {
+        background: var(--primary);
+        color: var(--white);
+        border-color: var(--primary);
+      }
+
+      /* ===== DIRECTION SECTION ===== */
+      .direction {
+        display: none;
+      }
+      .direction.active {
+        display: block;
+      }
+
+      .direction-header {
+        padding: 48px 24px 32px;
+        text-align: center;
+        background: var(--gris);
+        border-bottom: 1px solid #e8e6e3;
+      }
+      .direction-header h2 {
+        font-family: var(--font-heading);
+        font-size: 2rem;
+        font-weight: 400;
+        color: var(--primary);
+        margin-bottom: 8px;
+      }
+      .direction-header .subtitle {
+        font-size: 1rem;
+        color: var(--neutral);
+        max-width: 600px;
+        margin: 0 auto 24px;
+        opacity: 0.8;
+      }
+      .direction-header .badges {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .badge {
+        padding: 4px 12px;
+        border-radius: 999px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .badge-green {
+        background: var(--menthe);
+        color: var(--primary);
+      }
+      .badge-rose {
+        background: var(--soft);
+        color: var(--accent);
+      }
+      .badge-blue {
+        background: var(--cool);
+        color: var(--secondary);
+      }
+      .badge-warm {
+        background: var(--warm);
+        color: var(--neutral);
+      }
+
+      /* ===== PHONE MOCKUP ===== */
+      .mockup-row {
+        display: flex;
+        gap: 32px;
+        padding: 48px 24px;
+        justify-content: center;
+        flex-wrap: wrap;
+        max-width: 1400px;
+        margin: 0 auto;
+      }
+      .mockup-col {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        flex: 0 0 auto;
+      }
+      .mockup-label {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: var(--secondary);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+      .phone-frame {
+        width: 375px;
+        height: 812px;
+        border: 3px solid #333;
+        border-radius: 40px;
+        overflow: hidden;
+        background: var(--white);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        position: relative;
+      }
+      .phone-frame .phone-notch {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px;
+        height: 28px;
+        background: #333;
+        border-radius: 0 0 20px 20px;
+        z-index: 10;
+      }
+      .phone-screen {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scroll-behavior: smooth;
+      }
+      .phone-screen::-webkit-scrollbar {
+        width: 3px;
+      }
+      .phone-screen::-webkit-scrollbar-thumb {
+        background: var(--warm);
+        border-radius: 3px;
+      }
+
+      /* ===== DESKTOP MOCKUP ===== */
+      .desktop-frame {
+        width: 100%;
+        max-width: 1100px;
+        border: 2px solid #ddd;
+        border-radius: 12px;
+        overflow: hidden;
+        background: var(--white);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
+      }
+      .desktop-bar {
+        height: 32px;
+        background: #f0f0f0;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        gap: 6px;
+      }
+      .desktop-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+      .desktop-dot.r {
+        background: #ff5f56;
+      }
+      .desktop-dot.y {
+        background: #ffbd2e;
+      }
+      .desktop-dot.g {
+        background: #27c93f;
+      }
+      .desktop-screen {
+        width: 100%;
+        max-height: 700px;
+        overflow-y: auto;
+        overflow-x: hidden;
+      }
+      .desktop-screen::-webkit-scrollbar {
+        width: 4px;
+      }
+      .desktop-screen::-webkit-scrollbar-thumb {
+        background: var(--warm);
+        border-radius: 4px;
+      }
+
+      /* ===== SHARED MOCKUP COMPONENTS ===== */
+      .mock-nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 20px;
+        background: var(--white);
+        border-bottom: 1px solid var(--gris);
+      }
+      .mock-nav .logo {
+        font-family: var(--font-heading);
+        font-size: 1rem;
+        color: var(--primary);
+        font-weight: 400;
+      }
+      .mock-nav .menu-icon {
+        width: 24px;
+        height: 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .mock-nav .menu-icon span {
+        width: 100%;
+        height: 2px;
+        background: var(--neutral);
+        border-radius: 2px;
+      }
+
+      .mock-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 28px;
+        border-radius: 999px;
+        font-weight: 600;
+        font-size: 0.9rem;
+        cursor: pointer;
+        border: none;
+        min-height: 48px;
+        transition: all 0.2s;
+      }
+      .mock-btn-primary {
+        background: var(--primary);
+        color: var(--white);
+      }
+      .mock-btn-accent {
+        background: var(--accent);
+        color: var(--white);
+      }
+      .mock-btn-outline {
+        background: transparent;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+      }
+      .mock-btn-white {
+        background: var(--white);
+        color: var(--primary);
+      }
+
+      .mock-card {
+        background: var(--primary);
+        color: var(--white);
+        border-radius: 16px;
+        padding: 28px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .mock-card h3 {
+        font-family: var(--font-heading);
+        font-size: 1.5rem;
+        font-weight: 400;
+      }
+      .mock-card p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        opacity: 0.9;
+      }
+
+      .mock-testimonial {
+        background: var(--gris);
+        border-radius: 16px;
+        padding: 28px;
+        text-align: center;
+      }
+      .mock-testimonial .author {
+        font-family: var(--font-heading);
+        font-size: 1.8rem;
+        color: var(--primary);
+        font-weight: 400;
+        margin-bottom: 8px;
+      }
+      .mock-testimonial blockquote {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: var(--neutral);
+        font-style: italic;
+        margin-bottom: 8px;
+      }
+      .mock-testimonial .context {
+        font-size: 0.8rem;
+        color: var(--neutral);
+        opacity: 0.6;
+      }
+
+      .mock-section-title {
+        font-family: var(--font-heading);
+        font-size: 1.6rem;
+        color: var(--neutral);
+        font-weight: 400;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .mock-cta-banner {
+        background: var(--gris);
+        border-radius: 16px;
+        padding: 32px 20px;
+        text-align: center;
+        margin: 0 16px;
+      }
+      .mock-cta-banner h2 {
+        font-family: var(--font-heading);
+        font-size: 1.4rem;
+        color: var(--accent);
+        font-weight: 400;
+        margin-bottom: 6px;
+      }
+      .mock-cta-banner p {
+        font-size: 0.9rem;
+        color: var(--neutral);
+        margin-bottom: 16px;
+      }
+
+      /* Photo placeholder */
+      .photo-placeholder {
+        background: linear-gradient(135deg, var(--warm) 0%, var(--soft) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--neutral);
+        font-size: 0.8rem;
+        opacity: 0.6;
+        font-style: italic;
+      }
+      .photo-circle {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        margin: 0 auto;
+      }
+
+      /* ===== COMPARISON TABLE ===== */
+      .comparison-section {
+        padding: 48px 24px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .comparison-section h2 {
+        font-family: var(--font-heading);
+        font-size: 1.6rem;
+        color: var(--primary);
+        text-align: center;
+        margin-bottom: 32px;
+      }
+      .comparison-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+      .comparison-table th {
+        text-align: left;
+        padding: 12px 16px;
+        background: var(--gris);
+        font-weight: 600;
+        color: var(--neutral);
+        border-bottom: 2px solid var(--warm);
+      }
+      .comparison-table td {
+        padding: 12px 16px;
+        border-bottom: 1px solid var(--gris);
+        vertical-align: top;
+      }
+      .comparison-table tr:hover td {
+        background: #fafaf8;
+      }
+      .check {
+        color: var(--primary);
+        font-weight: bold;
+      }
+      .star {
+        color: var(--accent);
+        font-weight: bold;
+      }
+
+      /* ===== RATIONALE CARDS ===== */
+      .rationale-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 24px;
+        padding: 0 24px 48px;
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+      .rationale-card {
+        border: 1px solid var(--gris);
+        border-radius: 12px;
+        padding: 24px;
+        background: var(--white);
+      }
+      .rationale-card h3 {
+        font-family: var(--font-heading);
+        font-size: 1.1rem;
+        color: var(--primary);
+        margin-bottom: 8px;
+      }
+      .rationale-card p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+      .rationale-card .tag {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+      /* ===== FOOTER ===== */
+      .page-footer {
+        background: var(--neutral);
+        color: var(--white);
+        padding: 32px 24px;
+        text-align: center;
+        font-size: 0.85rem;
+        opacity: 0.8;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 768px) {
+        .nav-bar {
+          flex-direction: column;
+          gap: 12px;
+        }
+        .mockup-row {
+          flex-direction: column;
+          align-items: center;
+        }
+        .phone-frame {
+          width: 320px;
+          height: 693px;
+        }
+        .desktop-frame {
+          margin: 0 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="nav-bar">
+      <h1>✦ Shooting-Star — Design Directions</h1>
+      <div class="nav-tabs">
+        <button class="nav-tab active" onclick="showDirection('a')">
+          A · Confiance d'abord
+        </button>
+        <button class="nav-tab" onclick="showDirection('b')">
+          B · Parcours guidé
+        </button>
+        <button class="nav-tab" onclick="showDirection('c')">
+          C · Face-à-face
+        </button>
+        <button class="nav-tab" onclick="showDirection('d')">
+          D · Respiration
+        </button>
+        <button class="nav-tab" onclick="showDirection('compare')">
+          ⚖ Comparaison
+        </button>
+      </div>
+    </nav>
+
+    <!-- ===================================================================== -->
+    <!-- DIRECTION A: CONFIANCE D'ABORD                                        -->
+    <!-- ===================================================================== -->
+    <section id="dir-a" class="direction active">
+      <div class="direction-header">
+        <h2>Direction A — Confiance d'abord</h2>
+        <p class="subtitle">
+          Un témoignage ancré dans le hero. La voix d'une autre maman est le
+          premier contact, avant même de comprendre les services. La confiance
+          se construit dès la première seconde.
+        </p>
+        <div class="badges">
+          <span class="badge badge-rose">Témoignage dans le hero</span>
+          <span class="badge badge-green">Progressive disclosure Doula</span>
+          <span class="badge badge-blue">CTA récurrent non-intrusif</span>
+        </div>
+      </div>
+
+      <div class="mockup-row">
+        <!-- Mobile -->
+        <div class="mockup-col">
+          <span class="mockup-label">Mobile — Home</span>
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <!-- Nav -->
+              <div class="mock-nav">
+                <span class="logo">✦ Shooting Star</span>
+                <div class="menu-icon">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+              <!-- Hero with testimonial anchor -->
+              <div
+                style="
+                  background: var(--gris);
+                  padding: 48px 24px 40px;
+                  text-align: center;
+                  border-radius: 0 0 16px 16px;
+                "
+              >
+                <h1
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 2.4rem;
+                    color: var(--primary);
+                    font-weight: 400;
+                    line-height: 1.15;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Épanouir<br />sa féminité
+                </h1>
+                <p
+                  style="
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 1.5px;
+                    color: var(--primary);
+                    margin-bottom: 24px;
+                  "
+                >
+                  Avec Pauline Roussel
+                </p>
+                <!-- TESTIMONIAL ANCHOR — the key difference -->
+                <div
+                  style="
+                    background: var(--white);
+                    border-radius: 12px;
+                    padding: 16px 20px;
+                    margin: 0 8px;
+                    text-align: center;
+                    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+                  "
+                >
+                  <p
+                    style="
+                      font-style: italic;
+                      font-size: 0.85rem;
+                      line-height: 1.5;
+                      color: var(--neutral);
+                      margin-bottom: 8px;
+                    "
+                  >
+                    « Pauline m'a accompagnée avec une douceur incroyable. Je me
+                    suis sentie comprise et en sécurité. »
+                  </p>
+                  <span
+                    style="
+                      font-size: 0.75rem;
+                      color: var(--primary);
+                      font-weight: 600;
+                    "
+                    >— Marie-Ève, maman de Léo</span
+                  >
+                </div>
+              </div>
+
+              <!-- CTA band -->
+              <div style="padding: 24px 20px">
+                <div class="mock-cta-banner" style="margin: 0">
+                  <h2 style="font-size: 1.2rem">Prête à être accompagnée ?</h2>
+                  <p style="font-size: 0.85rem">
+                    Un premier échange, sans engagement.
+                  </p>
+                  <button class="mock-btn mock-btn-accent">Parlons-nous</button>
+                </div>
+              </div>
+
+              <!-- 3 Service cards -->
+              <div style="padding: 0 20px 32px">
+                <h2 class="mock-section-title" style="font-size: 1.3rem">
+                  Mes services
+                </h2>
+                <div style="display: flex; flex-direction: column; gap: 16px">
+                  <div class="mock-card">
+                    <h3>Doula</h3>
+                    <p>
+                      Accompagnement personnalisé pour la grossesse, la
+                      naissance et le post-partum.
+                    </p>
+                    <button
+                      class="mock-btn mock-btn-white"
+                      style="
+                        align-self: flex-start;
+                        padding: 8px 20px;
+                        min-height: 44px;
+                        font-size: 0.85rem;
+                      "
+                    >
+                      Découvrir →
+                    </button>
+                  </div>
+                  <div class="mock-card">
+                    <h3>Yoga périnatal</h3>
+                    <p>Des cours adaptés à chaque étape de ta maternité.</p>
+                    <button
+                      class="mock-btn mock-btn-white"
+                      style="
+                        align-self: flex-start;
+                        padding: 8px 20px;
+                        min-height: 44px;
+                        font-size: 0.85rem;
+                      "
+                    >
+                      Découvrir →
+                    </button>
+                  </div>
+                  <div class="mock-card">
+                    <h3>Féminin sacré</h3>
+                    <p>
+                      Rituels et cercles pour honorer ta puissance féminine.
+                    </p>
+                    <button
+                      class="mock-btn mock-btn-white"
+                      style="
+                        align-self: flex-start;
+                        padding: 8px 20px;
+                        min-height: 44px;
+                        font-size: 0.85rem;
+                      "
+                    >
+                      Découvrir →
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- About snippet -->
+              <div
+                style="
+                  background: var(--warm);
+                  padding: 32px 24px;
+                  text-align: center;
+                "
+              >
+                <div
+                  class="photo-placeholder photo-circle"
+                  style="margin-bottom: 16px"
+                >
+                  Photo de Pauline
+                </div>
+                <h2
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 1.3rem;
+                    color: var(--neutral);
+                    font-weight: 400;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Pauline Roussel
+                </h2>
+                <p
+                  style="
+                    font-size: 0.9rem;
+                    color: var(--neutral);
+                    line-height: 1.5;
+                  "
+                >
+                  Doula et enseignante de yoga périnatal à Saint-Lambert.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Doula -->
+        <div class="mockup-col">
+          <span class="mockup-label"
+            >Mobile — Doula (progressive disclosure)</span
+          >
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="mock-nav">
+                <span class="logo">✦ Shooting Star</span>
+                <div class="menu-icon">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+              <!-- Hero -->
+              <div
+                style="
+                  background: var(--gris);
+                  padding: 48px 24px 32px;
+                  text-align: center;
+                  border-radius: 0 0 16px 16px;
+                "
+              >
+                <h1
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 2rem;
+                    color: var(--primary);
+                    font-weight: 400;
+                    line-height: 1.2;
+                  "
+                >
+                  Accompagnement<br />de doula
+                </h1>
+                <p
+                  style="
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 1.5px;
+                    color: var(--primary);
+                    margin-top: 8px;
+                  "
+                >
+                  Avec Pauline Roussel
+                </p>
+              </div>
+
+              <!-- TESTIMONIAL EARLY — right after hero -->
+              <div style="padding: 24px 20px">
+                <div class="mock-testimonial">
+                  <div class="author">Sophie</div>
+                  <blockquote>
+                    « Grâce à Pauline, j'ai vécu mon accouchement exactement
+                    comme je le souhaitais. Sa présence était rassurante et
+                    bienveillante. »
+                  </blockquote>
+                  <div class="context">Accompagnement complet — 2024</div>
+                </div>
+              </div>
+
+              <!-- Approach — simplified -->
+              <div style="padding: 0 20px 24px">
+                <h2
+                  class="mock-section-title"
+                  style="font-size: 1.2rem; color: var(--secondary)"
+                >
+                  Mon approche
+                </h2>
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 12px;
+                  "
+                >
+                  <div style="text-align: center">
+                    <h3
+                      style="
+                        font-family: var(--font-heading);
+                        font-size: 1.1rem;
+                        color: var(--secondary);
+                        font-weight: 400;
+                      "
+                    >
+                      Écouter
+                    </h3>
+                    <p style="font-size: 0.85rem; max-width: 300px">
+                      Comprendre tes besoins, tes peurs et tes souhaits.
+                    </p>
+                  </div>
+                  <div
+                    style="width: 1px; height: 24px; background: var(--cool)"
+                  ></div>
+                  <div style="text-align: center">
+                    <h3
+                      style="
+                        font-family: var(--font-heading);
+                        font-size: 1.1rem;
+                        color: var(--secondary);
+                        font-weight: 400;
+                      "
+                    >
+                      Accompagner
+                    </h3>
+                    <p style="font-size: 0.85rem; max-width: 300px">
+                      Être là, à chaque étape, avec douceur et confiance.
+                    </p>
+                  </div>
+                  <div
+                    style="width: 1px; height: 16px; background: var(--cool)"
+                  ></div>
+                  <div style="text-align: center">
+                    <h3
+                      style="
+                        font-family: var(--font-heading);
+                        font-size: 1.1rem;
+                        color: var(--secondary);
+                        font-weight: 400;
+                      "
+                    >
+                      Soutenir
+                    </h3>
+                    <p style="font-size: 0.85rem; max-width: 300px">
+                      Post-partum, allaitement, retour à soi.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- PROGRESSIVE DISCLOSURE — Services as expandable -->
+              <div style="padding: 0 20px 24px">
+                <h2 class="mock-section-title" style="font-size: 1.2rem">
+                  Services à la carte
+                </h2>
+                <!-- Collapsed service items -->
+                <div style="display: flex; flex-direction: column; gap: 8px">
+                  <div
+                    style="
+                      background: var(--primary);
+                      color: var(--white);
+                      border-radius: 12px;
+                      padding: 16px 20px;
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                    "
+                  >
+                    <span
+                      style="font-family: var(--font-heading); font-size: 1rem"
+                      >Préparation à la naissance</span
+                    >
+                    <span style="font-size: 1.2rem">+</span>
+                  </div>
+                  <div
+                    style="
+                      background: var(--primary);
+                      color: var(--white);
+                      border-radius: 12px;
+                      padding: 16px 20px;
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                    "
+                  >
+                    <span
+                      style="font-family: var(--font-heading); font-size: 1rem"
+                      >Post-partum immédiat</span
+                    >
+                    <span style="font-size: 1.2rem">+</span>
+                  </div>
+                  <div
+                    style="
+                      background: var(--primary);
+                      color: var(--white);
+                      border-radius: 12px;
+                      padding: 16px 20px;
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                    "
+                  >
+                    <span
+                      style="font-family: var(--font-heading); font-size: 1rem"
+                      >Yoga prénatal</span
+                    >
+                    <span style="font-size: 1.2rem">+</span>
+                  </div>
+                  <div
+                    style="
+                      background: var(--primary);
+                      color: var(--white);
+                      border-radius: 12px;
+                      padding: 16px 20px;
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                    "
+                  >
+                    <span
+                      style="font-family: var(--font-heading); font-size: 1rem"
+                      >Mama Blessing</span
+                    >
+                    <span style="font-size: 1.2rem">+</span>
+                  </div>
+                  <p
+                    style="
+                      text-align: center;
+                      font-size: 0.8rem;
+                      color: var(--secondary);
+                      margin-top: 4px;
+                    "
+                  >
+                    + 5 autres services
+                  </p>
+                </div>
+              </div>
+
+              <!-- CTA -->
+              <div style="padding: 0 20px 32px">
+                <div class="mock-cta-banner" style="margin: 0">
+                  <h2 style="font-size: 1.1rem">
+                    Prête à vivre ta maternité en toute sérénité ?
+                  </h2>
+                  <p style="font-size: 0.85rem">Écris-moi, on jase.</p>
+                  <button class="mock-btn mock-btn-accent">Parlons-nous</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Direction A Rationale -->
+      <div class="rationale-grid">
+        <div class="rationale-card">
+          <h3>Pourquoi un témoignage dans le hero ?</h3>
+          <p>
+            Les meilleurs sites de doulas placent la voix d'une autre maman
+            avant tout contenu de services. Cela transforme le premier contact :
+            la visiteuse lit les mots d'une personne comme elle, pas un
+            argumentaire.
+          </p>
+          <span
+            class="tag"
+            style="background: var(--soft); color: var(--accent)"
+            >Confiance immédiate</span
+          >
+        </div>
+        <div class="rationale-card">
+          <h3>Progressive disclosure pour les services</h3>
+          <p>
+            Les 9 services doula passent de cartes déployées (9 × scroll) à des
+            items accordéon. L'overview est rapide, les détails sont à un tap.
+            Réduit la densité de 70% sur mobile.
+          </p>
+          <span
+            class="tag"
+            style="background: var(--menthe); color: var(--primary)"
+            >Densité réduite</span
+          >
+        </div>
+        <div class="rationale-card">
+          <h3>CTA récurrent, pas sticky</h3>
+          <p>
+            Un CTA « Parlons-nous » apparaît après le hero et après les services
+            — aux moments de décision naturels. Pas de bouton collant qui
+            obstrue le contenu.
+          </p>
+          <span
+            class="tag"
+            style="background: var(--cool); color: var(--secondary)"
+            >Invitation, pas intrusion</span
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- DIRECTION B: PARCOURS GUIDÉ                                           -->
+    <!-- ===================================================================== -->
+    <section id="dir-b" class="direction">
+      <div class="direction-header">
+        <h2>Direction B — Parcours guidé</h2>
+        <p class="subtitle">
+          Navigation par besoin, pas par service. La visiteuse est guidée par sa
+          situation (« Je suis enceinte » / « J'ai accouché ») plutôt que par la
+          structure organisationnelle.
+        </p>
+        <div class="badges">
+          <span class="badge badge-green">Navigation par besoin</span>
+          <span class="badge badge-rose">Wayfinding émotionnel</span>
+          <span class="badge badge-warm">Checkpoints de réorientation</span>
+        </div>
+      </div>
+
+      <div class="mockup-row">
+        <!-- Mobile Home -->
+        <div class="mockup-col">
+          <span class="mockup-label">Mobile — Home (wayfinding)</span>
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="mock-nav">
+                <span class="logo">✦ Shooting Star</span>
+                <div class="menu-icon">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+              <!-- Hero -->
+              <div
+                style="
+                  background: var(--gris);
+                  padding: 48px 24px 40px;
+                  text-align: center;
+                  border-radius: 0 0 16px 16px;
+                "
+              >
+                <h1
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 2.4rem;
+                    color: var(--primary);
+                    font-weight: 400;
+                    line-height: 1.15;
+                    margin-bottom: 12px;
+                  "
+                >
+                  Épanouir<br />sa féminité
+                </h1>
+                <p
+                  style="
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 1.5px;
+                    color: var(--primary);
+                  "
+                >
+                  Avec Pauline Roussel
+                </p>
+              </div>
+
+              <!-- WAYFINDING — "Where are you in your journey?" -->
+              <div style="padding: 32px 20px">
+                <h2
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 1.2rem;
+                    color: var(--neutral);
+                    text-align: center;
+                    font-weight: 400;
+                    margin-bottom: 20px;
+                  "
+                >
+                  Où en es-tu dans ton parcours ?
+                </h2>
+                <div style="display: flex; flex-direction: column; gap: 12px">
+                  <!-- Option 1: Pregnant -->
+                  <div
+                    style="
+                      background: var(--soft);
+                      border-radius: 16px;
+                      padding: 20px;
+                      display: flex;
+                      align-items: center;
+                      gap: 16px;
+                      cursor: pointer;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 50%;
+                        background: var(--accent);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: var(--white);
+                        font-size: 1.4rem;
+                        flex-shrink: 0;
+                      "
+                    >
+                      ◠
+                    </div>
+                    <div>
+                      <h3
+                        style="
+                          font-family: var(--font-heading);
+                          font-size: 1.05rem;
+                          color: var(--neutral);
+                          font-weight: 400;
+                        "
+                      >
+                        Je suis enceinte
+                      </h3>
+                      <p
+                        style="
+                          font-size: 0.8rem;
+                          color: var(--neutral);
+                          opacity: 0.7;
+                        "
+                      >
+                        Doula, yoga prénatal, préparation
+                      </p>
+                    </div>
+                    <span
+                      style="
+                        margin-left: auto;
+                        color: var(--accent);
+                        font-size: 1.2rem;
+                      "
+                      >→</span
+                    >
+                  </div>
+                  <!-- Option 2: Postpartum -->
+                  <div
+                    style="
+                      background: var(--menthe);
+                      border-radius: 16px;
+                      padding: 20px;
+                      display: flex;
+                      align-items: center;
+                      gap: 16px;
+                      cursor: pointer;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 50%;
+                        background: var(--primary);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: var(--white);
+                        font-size: 1.4rem;
+                        flex-shrink: 0;
+                      "
+                    >
+                      ♡
+                    </div>
+                    <div>
+                      <h3
+                        style="
+                          font-family: var(--font-heading);
+                          font-size: 1.05rem;
+                          color: var(--neutral);
+                          font-weight: 400;
+                        "
+                      >
+                        J'ai accouché
+                      </h3>
+                      <p
+                        style="
+                          font-size: 0.8rem;
+                          color: var(--neutral);
+                          opacity: 0.7;
+                        "
+                      >
+                        Yoga postnatal, soutien post-partum
+                      </p>
+                    </div>
+                    <span
+                      style="
+                        margin-left: auto;
+                        color: var(--primary);
+                        font-size: 1.2rem;
+                      "
+                      >→</span
+                    >
+                  </div>
+                  <!-- Option 3: Curious -->
+                  <div
+                    style="
+                      background: var(--cool);
+                      border-radius: 16px;
+                      padding: 20px;
+                      display: flex;
+                      align-items: center;
+                      gap: 16px;
+                      cursor: pointer;
+                    "
+                  >
+                    <div
+                      style="
+                        width: 48px;
+                        height: 48px;
+                        border-radius: 50%;
+                        background: var(--secondary);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        color: var(--white);
+                        font-size: 1.4rem;
+                        flex-shrink: 0;
+                      "
+                    >
+                      ✦
+                    </div>
+                    <div>
+                      <h3
+                        style="
+                          font-family: var(--font-heading);
+                          font-size: 1.05rem;
+                          color: var(--neutral);
+                          font-weight: 400;
+                        "
+                      >
+                        Je veux explorer
+                      </h3>
+                      <p
+                        style="
+                          font-size: 0.8rem;
+                          color: var(--neutral);
+                          opacity: 0.7;
+                        "
+                      >
+                        Féminin sacré, mama blessing, cercles
+                      </p>
+                    </div>
+                    <span
+                      style="
+                        margin-left: auto;
+                        color: var(--secondary);
+                        font-size: 1.2rem;
+                      "
+                      >→</span
+                    >
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testimonial -->
+              <div style="padding: 0 20px 24px">
+                <div class="mock-testimonial">
+                  <div class="author">Marie-Ève</div>
+                  <blockquote>
+                    « Je ne savais pas ce dont j'avais besoin, mais Pauline m'a
+                    guidée avec tellement de douceur. »
+                  </blockquote>
+                  <div class="context">Doula + yoga prénatal — 2024</div>
+                </div>
+              </div>
+
+              <!-- About -->
+              <div
+                style="
+                  background: var(--warm);
+                  padding: 32px 24px;
+                  text-align: center;
+                "
+              >
+                <div
+                  class="photo-placeholder photo-circle"
+                  style="margin-bottom: 16px"
+                >
+                  Photo de Pauline
+                </div>
+                <h2
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 1.3rem;
+                    color: var(--neutral);
+                    font-weight: 400;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Pauline Roussel
+                </h2>
+                <p
+                  style="
+                    font-size: 0.9rem;
+                    color: var(--neutral);
+                    line-height: 1.5;
+                  "
+                >
+                  Doula et enseignante de yoga périnatal à Saint-Lambert.
+                </p>
+                <button
+                  class="mock-btn mock-btn-outline"
+                  style="
+                    margin-top: 16px;
+                    border-color: var(--neutral);
+                    color: var(--neutral);
+                  "
+                >
+                  Me connaître →
+                </button>
+              </div>
+
+              <!-- CTA -->
+              <div style="padding: 32px 20px">
+                <div class="mock-cta-banner" style="margin: 0">
+                  <h2 style="font-size: 1.1rem">
+                    Tu ne sais pas par où commencer ?
+                  </h2>
+                  <p style="font-size: 0.85rem">
+                    C'est parfait. Écris-moi et on en jase.
+                  </p>
+                  <button class="mock-btn mock-btn-accent">Parlons-nous</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Doula (guided) -->
+        <div class="mockup-col">
+          <span class="mockup-label">Mobile — Doula (parcours guidé)</span>
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="mock-nav">
+                <span class="logo">✦ Shooting Star</span>
+                <div class="menu-icon">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+              <div
+                style="
+                  background: var(--gris);
+                  padding: 48px 24px 32px;
+                  text-align: center;
+                  border-radius: 0 0 16px 16px;
+                "
+              >
+                <h1
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 2rem;
+                    color: var(--primary);
+                    font-weight: 400;
+                    line-height: 1.2;
+                  "
+                >
+                  Accompagnement<br />de doula
+                </h1>
+              </div>
+
+              <!-- Checkpoint: Where are you? -->
+              <div style="padding: 24px 20px">
+                <div style="display: flex; gap: 8px">
+                  <button
+                    class="mock-btn"
+                    style="
+                      flex: 1;
+                      background: var(--primary);
+                      color: var(--white);
+                      padding: 10px;
+                      min-height: 44px;
+                      font-size: 0.85rem;
+                      border-radius: 12px;
+                    "
+                  >
+                    Pendant la grossesse
+                  </button>
+                  <button
+                    class="mock-btn"
+                    style="
+                      flex: 1;
+                      background: var(--gris);
+                      color: var(--neutral);
+                      padding: 10px;
+                      min-height: 44px;
+                      font-size: 0.85rem;
+                      border-radius: 12px;
+                      border: 1px solid #e0ddd8;
+                    "
+                  >
+                    Après la naissance
+                  </button>
+                </div>
+              </div>
+
+              <!-- Filtered services for "pregnant" -->
+              <div style="padding: 0 20px 24px">
+                <div style="display: flex; flex-direction: column; gap: 12px">
+                  <div class="mock-card" style="padding: 20px">
+                    <h3 style="font-size: 1.2rem">Accompagnement complet</h3>
+                    <p style="font-size: 0.85rem">
+                      Prénatal + naissance + post-partum. L'expérience la plus
+                      complète.
+                    </p>
+                    <button
+                      class="mock-btn mock-btn-white"
+                      style="
+                        align-self: flex-start;
+                        padding: 8px 16px;
+                        min-height: 44px;
+                        font-size: 0.8rem;
+                        margin-top: 4px;
+                      "
+                    >
+                      En savoir plus →
+                    </button>
+                  </div>
+                  <div class="mock-card" style="padding: 20px">
+                    <h3 style="font-size: 1.2rem">
+                      Préparation à la naissance
+                    </h3>
+                    <p style="font-size: 0.85rem">
+                      Rencontres personnalisées pour te préparer en confiance.
+                    </p>
+                    <button
+                      class="mock-btn mock-btn-white"
+                      style="
+                        align-self: flex-start;
+                        padding: 8px 16px;
+                        min-height: 44px;
+                        font-size: 0.8rem;
+                        margin-top: 4px;
+                      "
+                    >
+                      En savoir plus →
+                    </button>
+                  </div>
+                  <div class="mock-card" style="padding: 20px">
+                    <h3 style="font-size: 1.2rem">Yoga prénatal</h3>
+                    <p style="font-size: 0.85rem">
+                      Mouvement adapté pour toi et bébé.
+                    </p>
+                    <button
+                      class="mock-btn mock-btn-white"
+                      style="
+                        align-self: flex-start;
+                        padding: 8px 16px;
+                        min-height: 44px;
+                        font-size: 0.8rem;
+                        margin-top: 4px;
+                      "
+                    >
+                      En savoir plus →
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testimonial -->
+              <div style="padding: 0 20px 24px">
+                <div class="mock-testimonial">
+                  <div class="author">Camille</div>
+                  <blockquote>
+                    « Sa présence pendant l'accouchement a tout changé. »
+                  </blockquote>
+                  <div class="context">Accompagnement complet — 2024</div>
+                </div>
+              </div>
+
+              <!-- CTA -->
+              <div style="padding: 0 20px 32px">
+                <div class="mock-cta-banner" style="margin: 0">
+                  <h2 style="font-size: 1.1rem">Prête à être accompagnée ?</h2>
+                  <p style="font-size: 0.85rem">
+                    Écris-moi, c'est juste une conversation.
+                  </p>
+                  <button class="mock-btn mock-btn-accent">Parlons-nous</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rationale-grid">
+        <div class="rationale-card">
+          <h3>Navigation par besoin, pas par service</h3>
+          <p>
+            Isabelle (post-partum) ne sait pas si elle veut « Doula » ou « Yoga
+            ». Cette direction lui dit : « Dis-moi où tu en es, je te guide. »
+            L'architecture est identique, mais le wayfinding est émotionnel.
+          </p>
+          <span
+            class="tag"
+            style="background: var(--menthe); color: var(--primary)"
+            >Résout la confusion Doula/Yoga</span
+          >
+        </div>
+        <div class="rationale-card">
+          <h3>Filtrage Grossesse / Post-partum</h3>
+          <p>
+            Sur la page Doula, un toggle « Pendant la grossesse / Après la
+            naissance » filtre les 9 services en groupes de 3-4. La visiteuse
+            voit seulement ce qui la concerne. Inspiré des apps de grossesse
+            (personnalisation par étape).
+          </p>
+          <span
+            class="tag"
+            style="background: var(--soft); color: var(--accent)"
+            >Personnalisation légère</span
+          >
+        </div>
+        <div class="rationale-card">
+          <h3>Le CTA « Je ne sais pas »</h3>
+          <p>
+            « Tu ne sais pas par où commencer ? C'est parfait. » Ce message
+            donne explicitement la permission de ne pas savoir — exactement le
+            principe émotionnel #3 (Permission).
+          </p>
+          <span
+            class="tag"
+            style="background: var(--cool); color: var(--secondary)"
+            >Permission explicite</span
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- DIRECTION C: FACE-À-FACE                                             -->
+    <!-- ===================================================================== -->
+    <section id="dir-c" class="direction">
+      <div class="direction-header">
+        <h2>Direction C — Face-à-face</h2>
+        <p class="subtitle">
+          Le visage de Pauline est le premier élément visible. Comme sur
+          Instagram, la connexion commence par une personne, pas par un titre.
+          Ultra-visuel, minimaliste, intime.
+        </p>
+        <div class="badges">
+          <span class="badge badge-warm">Photo-forward</span>
+          <span class="badge badge-rose">Instagram-native</span>
+          <span class="badge badge-green">Ultra-minimal</span>
+        </div>
+      </div>
+
+      <div class="mockup-row">
+        <!-- Mobile -->
+        <div class="mockup-col">
+          <span class="mockup-label">Mobile — Home (photo-first)</span>
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="mock-nav">
+                <span class="logo">✦ Shooting Star</span>
+                <div class="menu-icon">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+              <!-- PHOTO-FIRST HERO -->
+              <div
+                style="
+                  position: relative;
+                  background: var(--gris);
+                  border-radius: 0 0 16px 16px;
+                  overflow: hidden;
+                "
+              >
+                <div
+                  class="photo-placeholder"
+                  style="width: 100%; height: 380px; border-radius: 0"
+                >
+                  Photo de Pauline — portrait souriant, regard chaleureux
+                </div>
+                <!-- Text overlay at bottom -->
+                <div
+                  style="
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    background: linear-gradient(
+                      transparent,
+                      rgba(94, 69, 48, 0.7)
+                    );
+                    padding: 40px 24px 24px;
+                  "
+                >
+                  <h1
+                    style="
+                      font-family: var(--font-heading);
+                      font-size: 2rem;
+                      color: var(--white);
+                      font-weight: 400;
+                      line-height: 1.15;
+                      margin-bottom: 4px;
+                    "
+                  >
+                    Pauline Roussel
+                  </h1>
+                  <p
+                    style="
+                      font-size: 0.85rem;
+                      color: var(--white);
+                      opacity: 0.9;
+                    "
+                  >
+                    Doula · Yoga périnatal · Saint-Lambert
+                  </p>
+                </div>
+              </div>
+
+              <!-- Personal intro — intimate tone -->
+              <div style="padding: 32px 24px; text-align: center">
+                <p
+                  style="
+                    font-family: var(--font-accent);
+                    font-size: 1.6rem;
+                    color: var(--accent);
+                    margin-bottom: 12px;
+                  "
+                >
+                  Bienvenue
+                </p>
+                <p
+                  style="
+                    font-size: 0.95rem;
+                    line-height: 1.7;
+                    color: var(--neutral);
+                    max-width: 300px;
+                    margin: 0 auto;
+                  "
+                >
+                  Je t'accompagne avec douceur dans cette aventure unique qu'est
+                  la maternité. Chaque parcours est différent, et c'est ce qui
+                  le rend beau.
+                </p>
+              </div>
+
+              <!-- Testimonial -->
+              <div style="padding: 0 20px 24px">
+                <div class="mock-testimonial">
+                  <div class="author">Marie-Ève</div>
+                  <blockquote>
+                    « Pauline m'a accompagnée avec une douceur incroyable. »
+                  </blockquote>
+                  <div class="context">Doula — 2024</div>
+                </div>
+              </div>
+
+              <!-- Services — minimal list -->
+              <div style="padding: 0 20px 32px">
+                <div
+                  style="
+                    display: flex;
+                    flex-direction: column;
+                    gap: 1px;
+                    background: var(--gris);
+                    border-radius: 16px;
+                    overflow: hidden;
+                  "
+                >
+                  <a
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      padding: 20px 24px;
+                      background: var(--white);
+                      cursor: pointer;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: var(--font-heading);
+                        font-size: 1.1rem;
+                        color: var(--neutral);
+                      "
+                      >Accompagnement de doula</span
+                    >
+                    <span style="color: var(--primary)">→</span>
+                  </a>
+                  <a
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      padding: 20px 24px;
+                      background: var(--white);
+                      cursor: pointer;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: var(--font-heading);
+                        font-size: 1.1rem;
+                        color: var(--neutral);
+                      "
+                      >Yoga périnatal</span
+                    >
+                    <span style="color: var(--primary)">→</span>
+                  </a>
+                  <a
+                    style="
+                      display: flex;
+                      justify-content: space-between;
+                      align-items: center;
+                      padding: 20px 24px;
+                      background: var(--white);
+                      cursor: pointer;
+                    "
+                  >
+                    <span
+                      style="
+                        font-family: var(--font-heading);
+                        font-size: 1.1rem;
+                        color: var(--neutral);
+                      "
+                      >Féminin sacré</span
+                    >
+                    <span style="color: var(--primary)">→</span>
+                  </a>
+                </div>
+              </div>
+
+              <!-- CTA — DM style -->
+              <div style="padding: 0 20px 32px">
+                <div
+                  style="
+                    background: var(--primary);
+                    border-radius: 16px;
+                    padding: 28px;
+                    text-align: center;
+                  "
+                >
+                  <p
+                    style="
+                      color: var(--white);
+                      font-size: 0.95rem;
+                      margin-bottom: 16px;
+                    "
+                  >
+                    Envie de jaser ?
+                  </p>
+                  <button
+                    class="mock-btn"
+                    style="
+                      background: var(--white);
+                      color: var(--primary);
+                      width: 100%;
+                    "
+                  >
+                    Écris-moi 💌
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile Contact (DM-style) -->
+        <div class="mockup-col">
+          <span class="mockup-label">Mobile — Contact (style DM)</span>
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="mock-nav">
+                <span class="logo">✦ Shooting Star</span>
+                <div class="menu-icon">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+              <div style="padding: 24px 20px">
+                <!-- Pauline mini-profile -->
+                <div
+                  style="
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+                    margin-bottom: 32px;
+                  "
+                >
+                  <div
+                    class="photo-placeholder"
+                    style="
+                      width: 56px;
+                      height: 56px;
+                      border-radius: 50%;
+                      flex-shrink: 0;
+                      font-size: 0.6rem;
+                    "
+                  >
+                    Photo
+                  </div>
+                  <div>
+                    <h2
+                      style="
+                        font-family: var(--font-heading);
+                        font-size: 1.1rem;
+                        color: var(--neutral);
+                        font-weight: 400;
+                      "
+                    >
+                      Pauline Roussel
+                    </h2>
+                    <p style="font-size: 0.8rem; color: var(--primary)">
+                      Répond habituellement sous 48h
+                    </p>
+                  </div>
+                </div>
+
+                <!-- Message bubble from Pauline -->
+                <div
+                  style="
+                    background: var(--gris);
+                    border-radius: 16px 16px 16px 4px;
+                    padding: 16px 20px;
+                    margin-bottom: 24px;
+                    max-width: 85%;
+                  "
+                >
+                  <p
+                    style="
+                      font-size: 0.9rem;
+                      line-height: 1.5;
+                      color: var(--neutral);
+                    "
+                  >
+                    Salut ! 👋 Je suis contente que tu sois là. Que tu saches
+                    exactement ce que tu cherches ou pas du tout, écris-moi — on
+                    va en jaser ensemble. 💛
+                  </p>
+                </div>
+
+                <!-- Form styled as message input -->
+                <div style="display: flex; flex-direction: column; gap: 16px">
+                  <div>
+                    <label
+                      style="
+                        font-size: 0.8rem;
+                        font-weight: 600;
+                        color: var(--neutral);
+                        display: block;
+                        margin-bottom: 6px;
+                      "
+                      >Ton prénom</label
+                    >
+                    <input
+                      type="text"
+                      placeholder="Ex : Camille"
+                      style="
+                        width: 100%;
+                        padding: 14px 16px;
+                        border: 1.5px solid var(--gris);
+                        border-radius: 12px;
+                        font-size: 0.95rem;
+                        background: var(--white);
+                        font-family: var(--font-body);
+                        outline: none;
+                      "
+                    />
+                  </div>
+                  <div>
+                    <label
+                      style="
+                        font-size: 0.8rem;
+                        font-weight: 600;
+                        color: var(--neutral);
+                        display: block;
+                        margin-bottom: 6px;
+                      "
+                      >Ton courriel</label
+                    >
+                    <input
+                      type="email"
+                      placeholder="camille@example.com"
+                      style="
+                        width: 100%;
+                        padding: 14px 16px;
+                        border: 1.5px solid var(--gris);
+                        border-radius: 12px;
+                        font-size: 0.95rem;
+                        background: var(--white);
+                        font-family: var(--font-body);
+                        outline: none;
+                      "
+                    />
+                  </div>
+                  <div>
+                    <label
+                      style="
+                        font-size: 0.8rem;
+                        font-weight: 600;
+                        color: var(--neutral);
+                        display: block;
+                        margin-bottom: 6px;
+                      "
+                      >Ton message</label
+                    >
+                    <textarea
+                      placeholder="Dis-moi ce qui t'amène..."
+                      rows="4"
+                      style="
+                        width: 100%;
+                        padding: 14px 16px;
+                        border: 1.5px solid var(--gris);
+                        border-radius: 12px;
+                        font-size: 0.95rem;
+                        background: var(--white);
+                        font-family: var(--font-body);
+                        resize: vertical;
+                        outline: none;
+                      "
+                    ></textarea>
+                  </div>
+                  <button class="mock-btn mock-btn-accent" style="width: 100%">
+                    Envoyer 💌
+                  </button>
+                  <p
+                    style="
+                      text-align: center;
+                      font-size: 0.75rem;
+                      color: var(--neutral);
+                      opacity: 0.5;
+                    "
+                  >
+                    Pas de spam, promis. Juste Pauline qui te répond.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rationale-grid">
+        <div class="rationale-card">
+          <h3>Le visage comme ancre émotionnelle</h3>
+          <p>
+            Les doulas les plus réussies sur Instagram placent leur visage en
+            premier. Le site doit fonctionner comme un prolongement de cette
+            présence. Quand les photos de Pauline seront disponibles, cette
+            direction maximise leur impact.
+          </p>
+          <span
+            class="tag"
+            style="background: var(--warm); color: var(--neutral)"
+            >Dépend des photos</span
+          >
+        </div>
+        <div class="rationale-card">
+          <h3>Services en liste, pas en grille</h3>
+          <p>
+            Au lieu de 3 cartes vertes, une liste épurée avec des flèches. Plus
+            Instagram, plus rapide à scanner, moins de « decision fatigue ».
+            Chaque service est à un tap.
+          </p>
+          <span
+            class="tag"
+            style="background: var(--soft); color: var(--accent)"
+            >Ultra-scannable</span
+          >
+        </div>
+        <div class="rationale-card">
+          <h3>Formulaire de contact = DM</h3>
+          <p>
+            La page contact ressemble à une conversation Messenger/Instagram.
+            Pauline « parle » d'abord (bulle de message), puis la visiteuse
+            répond. Casse la barrière du formulaire froid.
+          </p>
+          <span
+            class="tag"
+            style="background: var(--menthe); color: var(--primary)"
+            >Conversion naturelle</span
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- DIRECTION D: RESPIRATION                                              -->
+    <!-- ===================================================================== -->
+    <section id="dir-d" class="direction">
+      <div class="direction-header">
+        <h2>Direction D — Respiration</h2>
+        <p class="subtitle">
+          Maximum de blanc, minimum de contenu par écran. Chaque scroll est un
+          souffle. Le site respire comme on respire en yoga — lentement, avec
+          intention.
+        </p>
+        <div class="badges">
+          <span class="badge badge-green">White space maximal</span>
+          <span class="badge badge-blue">Un message par écran</span>
+          <span class="badge badge-warm">Rythme de lecture doux</span>
+        </div>
+      </div>
+
+      <div class="mockup-row">
+        <!-- Mobile -->
+        <div class="mockup-col">
+          <span class="mockup-label">Mobile — Home (respiration)</span>
+          <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-screen">
+              <div class="mock-nav">
+                <span class="logo">✦ Shooting Star</span>
+                <div class="menu-icon">
+                  <span></span><span></span><span></span>
+                </div>
+              </div>
+              <!-- Hero — spacious -->
+              <div
+                style="
+                  background: var(--gris);
+                  padding: 80px 32px 72px;
+                  text-align: center;
+                  border-radius: 0 0 16px 16px;
+                "
+              >
+                <h1
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 2.6rem;
+                    color: var(--primary);
+                    font-weight: 300;
+                    line-height: 1.1;
+                    margin-bottom: 16px;
+                    letter-spacing: -0.5px;
+                  "
+                >
+                  Épanouir<br />sa féminité
+                </h1>
+                <p
+                  style="
+                    font-size: 0.8rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 2px;
+                    color: var(--primary);
+                  "
+                >
+                  Avec Pauline Roussel
+                </p>
+              </div>
+
+              <!-- Spacer -->
+              <div style="height: 64px"></div>
+
+              <!-- One message: tagline -->
+              <div style="padding: 0 32px; text-align: center">
+                <p
+                  style="
+                    font-family: var(--font-accent);
+                    font-size: 1.8rem;
+                    color: var(--accent);
+                    margin-bottom: 12px;
+                    line-height: 1.3;
+                  "
+                >
+                  Doula & Yoga
+                </p>
+                <p
+                  style="
+                    font-size: 1rem;
+                    line-height: 1.7;
+                    color: var(--neutral);
+                  "
+                >
+                  Accompagnement personnalisé pour la grossesse, la naissance et
+                  l'après.
+                </p>
+              </div>
+
+              <!-- Big spacer -->
+              <div style="height: 80px"></div>
+
+              <!-- One service per "screen" -->
+              <div style="padding: 0 20px">
+                <div class="mock-card" style="padding: 36px 28px">
+                  <h3 style="font-size: 1.6rem; font-weight: 300">Doula</h3>
+                  <p>
+                    Accompagnement personnalisé pour ta grossesse, ton
+                    accouchement et ton post-partum.
+                  </p>
+                  <button
+                    class="mock-btn mock-btn-white"
+                    style="
+                      align-self: flex-start;
+                      padding: 10px 24px;
+                      min-height: 48px;
+                      margin-top: 8px;
+                    "
+                  >
+                    Découvrir →
+                  </button>
+                </div>
+              </div>
+
+              <div style="height: 48px"></div>
+
+              <div style="padding: 0 20px">
+                <div class="mock-card" style="padding: 36px 28px">
+                  <h3 style="font-size: 1.6rem; font-weight: 300">
+                    Yoga périnatal
+                  </h3>
+                  <p>
+                    Des cours adaptés à chaque étape de ta maternité, en
+                    douceur.
+                  </p>
+                  <button
+                    class="mock-btn mock-btn-white"
+                    style="
+                      align-self: flex-start;
+                      padding: 10px 24px;
+                      min-height: 48px;
+                      margin-top: 8px;
+                    "
+                  >
+                    Découvrir →
+                  </button>
+                </div>
+              </div>
+
+              <div style="height: 48px"></div>
+
+              <div style="padding: 0 20px">
+                <div class="mock-card" style="padding: 36px 28px">
+                  <h3 style="font-size: 1.6rem; font-weight: 300">
+                    Féminin sacré
+                  </h3>
+                  <p>Rituels et cercles pour honorer ta puissance féminine.</p>
+                  <button
+                    class="mock-btn mock-btn-white"
+                    style="
+                      align-self: flex-start;
+                      padding: 10px 24px;
+                      min-height: 48px;
+                      margin-top: 8px;
+                    "
+                  >
+                    Découvrir →
+                  </button>
+                </div>
+              </div>
+
+              <!-- Big spacer -->
+              <div style="height: 80px"></div>
+
+              <!-- Testimonial — centered, breathing -->
+              <div style="padding: 0 32px; text-align: center">
+                <p
+                  style="
+                    font-family: var(--font-accent);
+                    font-size: 2rem;
+                    color: var(--primary);
+                    margin-bottom: 16px;
+                  "
+                >
+                  Marie-Ève
+                </p>
+                <blockquote
+                  style="
+                    font-size: 1rem;
+                    line-height: 1.7;
+                    color: var(--neutral);
+                    font-style: italic;
+                    margin-bottom: 12px;
+                  "
+                >
+                  « Pauline m'a accompagnée avec une douceur incroyable. Je me
+                  suis sentie comprise et en sécurité. »
+                </blockquote>
+                <span style="font-size: 0.8rem; color: var(--secondary)"
+                  >Accompagnement complet — 2024</span
+                >
+              </div>
+
+              <div style="height: 80px"></div>
+
+              <!-- CTA — single centered -->
+              <div style="padding: 0 32px; text-align: center">
+                <h2
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 1.4rem;
+                    color: var(--accent);
+                    font-weight: 400;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Parlons-nous
+                </h2>
+                <p
+                  style="
+                    font-size: 0.9rem;
+                    color: var(--neutral);
+                    margin-bottom: 20px;
+                  "
+                >
+                  Un premier échange, sans engagement.
+                </p>
+                <button
+                  class="mock-btn mock-btn-accent"
+                  style="width: 100%; max-width: 280px"
+                >
+                  Écrire à Pauline
+                </button>
+              </div>
+
+              <div style="height: 64px"></div>
+
+              <!-- About -->
+              <div
+                style="
+                  background: var(--warm);
+                  padding: 48px 32px;
+                  text-align: center;
+                "
+              >
+                <div
+                  class="photo-placeholder photo-circle"
+                  style="margin-bottom: 20px"
+                >
+                  Photo de Pauline
+                </div>
+                <h2
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 1.4rem;
+                    color: var(--neutral);
+                    font-weight: 400;
+                    margin-bottom: 12px;
+                  "
+                >
+                  Pauline Roussel
+                </h2>
+                <p
+                  style="
+                    font-size: 0.95rem;
+                    color: var(--neutral);
+                    line-height: 1.7;
+                  "
+                >
+                  Doula certifiée et enseignante de yoga périnatal. Basée à
+                  Saint-Lambert, sur la Rive-Sud de Montréal.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desktop -->
+        <div
+          class="mockup-col"
+          style="flex: 1; min-width: 600px; max-width: 1100px"
+        >
+          <span class="mockup-label">Desktop — Home (respiration)</span>
+          <div class="desktop-frame">
+            <div class="desktop-bar">
+              <div class="desktop-dot r"></div>
+              <div class="desktop-dot y"></div>
+              <div class="desktop-dot g"></div>
+            </div>
+            <div class="desktop-screen">
+              <!-- Desktop Nav -->
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  padding: 20px 48px;
+                  border-bottom: 1px solid var(--gris);
+                "
+              >
+                <span
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 1.1rem;
+                    color: var(--primary);
+                  "
+                  >✦ Shooting Star</span
+                >
+                <div
+                  style="
+                    display: flex;
+                    gap: 32px;
+                    font-size: 0.9rem;
+                    color: var(--neutral);
+                  "
+                >
+                  <span>Doula</span><span>Yoga</span><span>Féminin sacré</span
+                  ><span>À propos</span>
+                  <button
+                    class="mock-btn mock-btn-accent"
+                    style="
+                      padding: 8px 24px;
+                      min-height: 40px;
+                      font-size: 0.85rem;
+                    "
+                  >
+                    Contact
+                  </button>
+                </div>
+              </div>
+              <!-- Hero — huge breathing room -->
+              <div
+                style="
+                  background: var(--gris);
+                  padding: 96px 48px 88px;
+                  text-align: center;
+                  border-radius: 0 0 24px 24px;
+                "
+              >
+                <h1
+                  style="
+                    font-family: var(--font-heading);
+                    font-size: 3.5rem;
+                    color: var(--primary);
+                    font-weight: 300;
+                    line-height: 1.1;
+                    margin-bottom: 16px;
+                    letter-spacing: -1px;
+                  "
+                >
+                  Épanouir sa féminité
+                </h1>
+                <p
+                  style="
+                    font-size: 0.85rem;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    letter-spacing: 2.5px;
+                    color: var(--primary);
+                  "
+                >
+                  Avec Pauline Roussel — Doula & Yoga Périnatal
+                </p>
+              </div>
+
+              <!-- Big spacer -->
+              <div style="height: 96px"></div>
+
+              <!-- 3 cards with big gaps -->
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  gap: 32px;
+                  padding: 0 48px;
+                "
+              >
+                <div class="mock-card" style="padding: 36px 28px">
+                  <h3 style="font-size: 1.5rem; font-weight: 300">Doula</h3>
+                  <p>
+                    Accompagnement personnalisé pour ta grossesse, ton
+                    accouchement et ton post-partum.
+                  </p>
+                  <button
+                    class="mock-btn mock-btn-white"
+                    style="
+                      align-self: flex-start;
+                      padding: 10px 20px;
+                      min-height: 44px;
+                      margin-top: 12px;
+                      font-size: 0.85rem;
+                    "
+                  >
+                    Découvrir →
+                  </button>
+                </div>
+                <div class="mock-card" style="padding: 36px 28px">
+                  <h3 style="font-size: 1.5rem; font-weight: 300">
+                    Yoga périnatal
+                  </h3>
+                  <p>Des cours adaptés à chaque étape de ta maternité.</p>
+                  <button
+                    class="mock-btn mock-btn-white"
+                    style="
+                      align-self: flex-start;
+                      padding: 10px 20px;
+                      min-height: 44px;
+                      margin-top: 12px;
+                      font-size: 0.85rem;
+                    "
+                  >
+                    Découvrir →
+                  </button>
+                </div>
+                <div class="mock-card" style="padding: 36px 28px">
+                  <h3 style="font-size: 1.5rem; font-weight: 300">
+                    Féminin sacré
+                  </h3>
+                  <p>Rituels et cercles pour honorer ta puissance féminine.</p>
+                  <button
+                    class="mock-btn mock-btn-white"
+                    style="
+                      align-self: flex-start;
+                      padding: 10px 20px;
+                      min-height: 44px;
+                      margin-top: 12px;
+                      font-size: 0.85rem;
+                    "
+                  >
+                    Découvrir →
+                  </button>
+                </div>
+              </div>
+
+              <!-- Big spacer -->
+              <div style="height: 96px"></div>
+
+              <!-- Testimonial — centered, breathing -->
+              <div style="text-align: center; padding: 0 96px">
+                <p
+                  style="
+                    font-family: var(--font-accent);
+                    font-size: 2.5rem;
+                    color: var(--primary);
+                    margin-bottom: 16px;
+                  "
+                >
+                  Marie-Ève
+                </p>
+                <blockquote
+                  style="
+                    font-size: 1.1rem;
+                    line-height: 1.8;
+                    color: var(--neutral);
+                    font-style: italic;
+                    margin-bottom: 12px;
+                    max-width: 600px;
+                    margin-left: auto;
+                    margin-right: auto;
+                  "
+                >
+                  « Pauline m'a accompagnée avec une douceur incroyable. Je me
+                  suis sentie comprise et en sécurité. »
+                </blockquote>
+                <span style="font-size: 0.85rem; color: var(--secondary)"
+                  >Accompagnement complet — 2024</span
+                >
+              </div>
+
+              <div style="height: 96px"></div>
+
+              <!-- CTA -->
+              <div style="text-align: center; padding: 0 48px">
+                <div class="mock-cta-banner" style="padding: 48px; margin: 0">
+                  <h2 style="font-size: 1.6rem">Parlons-nous</h2>
+                  <p>
+                    Un premier échange, sans engagement. C'est juste une
+                    conversation.
+                  </p>
+                  <button
+                    class="mock-btn mock-btn-accent"
+                    style="margin-top: 8px"
+                  >
+                    Écrire à Pauline
+                  </button>
+                </div>
+              </div>
+
+              <div style="height: 64px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="rationale-grid">
+        <div class="rationale-card">
+          <h3>Le blanc est un outil émotionnel</h3>
+          <p>
+            Chaque espace vide dit : « Ici, on ne te presse pas. » C'est l'exact
+            équivalent visuel de ce que Pauline fait avec ses clientes — créer
+            un espace sécuritaire. Le blanc est le principe émotionnel #1 poussé
+            à son maximum.
+          </p>
+          <span
+            class="tag"
+            style="background: var(--gris); color: var(--neutral)"
+            >Principe #1 maximisé</span
+          >
+        </div>
+        <div class="rationale-card">
+          <h3>Un message par écran</h3>
+          <p>
+            Sur mobile, chaque section occupe un viewport. Le scroll est rythmé
+            : Hero → Message → Service 1 → Service 2 → Service 3 → Témoignage →
+            CTA. Comme une respiration de yoga : inspire, expire.
+          </p>
+          <span
+            class="tag"
+            style="background: var(--menthe); color: var(--primary)"
+            >Lecture sans effort</span
+          >
+        </div>
+        <div class="rationale-card">
+          <h3>Ivyora Display Light</h3>
+          <p>
+            Les grands titres utilisent le poids Light (300) au lieu de Regular.
+            Plus élégant, plus aérien. Ça change toute l'atmosphère — le site
+            devient premium sans effort.
+          </p>
+          <span
+            class="tag"
+            style="background: var(--cool); color: var(--secondary)"
+            >Élégance subtile</span
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- COMPARISON                                                            -->
+    <!-- ===================================================================== -->
+    <section id="dir-compare" class="direction">
+      <div class="direction-header">
+        <h2>Comparaison des directions</h2>
+        <p class="subtitle">
+          Chaque direction résout les mêmes enjeux UX identifiés aux étapes
+          précédentes, mais avec des approches différentes. Voici la
+          comparaison.
+        </p>
+      </div>
+
+      <div class="comparison-section">
+        <h2>Enjeux UX vs Directions</h2>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Enjeu UX identifié</th>
+              <th>A · Confiance d'abord</th>
+              <th>B · Parcours guidé</th>
+              <th>C · Face-à-face</th>
+              <th>D · Respiration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Témoignages trop bas dans le funnel</strong></td>
+              <td><span class="star">★</span> Témoignage dans le hero</td>
+              <td><span class="check">✓</span> Après le wayfinding</td>
+              <td><span class="check">✓</span> Après l'intro personnelle</td>
+              <td>
+                <span class="check">✓</span> Section dédiée avec respiration
+              </td>
+            </tr>
+            <tr>
+              <td><strong>9 cartes doula = densité excessive</strong></td>
+              <td><span class="star">★</span> Accordéon progressif</td>
+              <td>
+                <span class="star">★</span> Filtrage grossesse/post-partum
+              </td>
+              <td><span class="check">✓</span> Liste minimaliste</td>
+              <td><span class="check">✓</span> Un service par écran</td>
+            </tr>
+            <tr>
+              <td><strong>Confusion Doula vs Yoga</strong></td>
+              <td><span class="check">✓</span> Structure service actuelle</td>
+              <td>
+                <span class="star">★</span> « Où en es-tu ? » résout le problème
+              </td>
+              <td><span class="check">✓</span> Liste simple, liens clairs</td>
+              <td><span class="check">✓</span> Séparation par espace</td>
+            </tr>
+            <tr>
+              <td><strong>Navigation one-hand (Isabelle)</strong></td>
+              <td><span class="check">✓</span> Scroll + accordéon</td>
+              <td><span class="star">★</span> Wayfinding par besoin</td>
+              <td><span class="check">✓</span> Liste à taper</td>
+              <td><span class="star">★</span> Scroll pur, pas de tap requis</td>
+            </tr>
+            <tr>
+              <td><strong>CTA toujours accessible</strong></td>
+              <td><span class="star">★</span> CTA récurrents</td>
+              <td><span class="check">✓</span> CTA « je ne sais pas »</td>
+              <td><span class="check">✓</span> CTA bottom + DM style</td>
+              <td><span class="check">✓</span> CTA centré après témoignage</td>
+            </tr>
+            <tr>
+              <td><strong>Connexion humaine immédiate</strong></td>
+              <td><span class="check">✓</span> Via témoignage</td>
+              <td><span class="check">✓</span> Via empathie wayfinding</td>
+              <td><span class="star">★</span> Photos de Pauline en premier</td>
+              <td>
+                <span class="check">✓</span> Via Moontime et ton personnel
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div
+          style="
+            margin-top: 32px;
+            padding: 24px;
+            background: var(--gris);
+            border-radius: 12px;
+          "
+        >
+          <p style="font-weight: 600; margin-bottom: 8px">Légende :</p>
+          <p>
+            <span class="star">★</span> = Cette direction excelle sur cet enjeu
+            (meilleure approche)
+          </p>
+          <p><span class="check">✓</span> = L'enjeu est correctement adressé</p>
+        </div>
+      </div>
+
+      <div class="comparison-section">
+        <h2>Matrice de décision</h2>
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Critère</th>
+              <th>A · Confiance</th>
+              <th>B · Guidé</th>
+              <th>C · Face</th>
+              <th>D · Respire</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <strong>Impact immédiat</strong><br /><span
+                  style="font-size: 0.8rem; opacity: 0.7"
+                  >Peut être implémenté maintenant</span
+                >
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★★
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★☆
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★☆☆
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★★
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Dépendance photos</strong><br /><span
+                  style="font-size: 0.8rem; opacity: 0.7"
+                  >Fonctionne sans photos de Pauline</span
+                >
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★★
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★★
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★☆☆
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★☆
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Effort de développement</strong><br /><span
+                  style="font-size: 0.8rem; opacity: 0.7"
+                  >Proximité avec le code existant</span
+                >
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★★
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★☆
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★☆
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★★
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Résolution confusion Doula/Yoga</strong></td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★☆
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★★
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★☆
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★☆☆
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>Emotional impact</strong><br /><span
+                  style="font-size: 0.8rem; opacity: 0.7"
+                  >Soutient les 4 principes émotionnels</span
+                >
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★★
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★☆
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★★
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  color: var(--primary);
+                  font-weight: bold;
+                "
+              >
+                ★★★
+              </td>
+            </tr>
+            <tr style="background: var(--gris); font-weight: bold">
+              <td><strong>Score total</strong></td>
+              <td style="text-align: center; color: var(--primary)">14/15</td>
+              <td style="text-align: center; color: var(--secondary)">12/15</td>
+              <td style="text-align: center; color: var(--neutral)">9/15</td>
+              <td style="text-align: center; color: var(--primary)">12/15</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div
+        class="comparison-section"
+        style="text-align: center; padding-bottom: 64px"
+      >
+        <h2>Recommandation</h2>
+        <div
+          style="
+            background: var(--menthe);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 700px;
+            margin: 0 auto;
+          "
+        >
+          <h3
+            style="
+              font-family: var(--font-heading);
+              font-size: 1.3rem;
+              color: var(--primary);
+              margin-bottom: 12px;
+            "
+          >
+            Direction A (base) + éléments de B et D
+          </h3>
+          <p style="font-size: 0.95rem; line-height: 1.6">
+            <strong>Base A :</strong> Témoignage dans le hero + progressive
+            disclosure pour les services doula + CTA récurrents<br />
+            <strong>+ de B :</strong> Le CTA « Tu ne sais pas par où commencer ?
+            C'est parfait. » + le filtrage grossesse/post-partum sur la page
+            Doula<br />
+            <strong>+ de D :</strong> L'espacement généreux (4xl entre sections)
+            + Ivyora Display Light pour les display titles<br />
+            <strong>Phase 2 (photos) :</strong> Intégrer les éléments de C
+            (photo-first hero, profil mini sur contact)
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="page-footer">
+      Shooting-Star — Design Directions — UX Design Specification — Février 2026
+    </div>
+
+    <!-- ===== SCRIPT ===== -->
+    <script>
+      function showDirection(id) {
+        // Hide all
+        document
+          .querySelectorAll(".direction")
+          .forEach((d) => d.classList.remove("active"));
+        document
+          .querySelectorAll(".nav-tab")
+          .forEach((t) => t.classList.remove("active"));
+
+        // Show selected
+        document.getElementById("dir-" + id).classList.add("active");
+
+        // Activate tab
+        const tabs = document.querySelectorAll(".nav-tab");
+        const tabMap = { a: 0, b: 1, c: 2, d: 3, compare: 4 };
+        tabs[tabMap[id]].classList.add("active");
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>
