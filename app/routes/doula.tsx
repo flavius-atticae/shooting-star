@@ -1,12 +1,20 @@
 import type { Route } from "./+types/doula";
+import { useLoaderData } from "react-router";
 import { Header } from "~/components/layout/header/header";
 import { Hero } from "~/components/layout/hero/Hero";
 import { Footer } from "~/components/layout/footer/footer";
 import { ApproachSection } from "~/components/layout/approach-section";
 import { Services } from "~/components/layout/services";
+import type { ServiceItem } from "~/components/layout/services";
 import { CallToAction } from "~/components/layout/call-to-action";
 import { TestimonialsCarousel } from "~/components/layout/testimonials-carousel";
 import { getDoulaContent } from "~/lib/content.server";
+
+export async function loader() {
+  return {
+    doulaContent: getDoulaContent(),
+  };
+}
 
 export function meta(_args: Route.MetaArgs) {
   return [
@@ -27,7 +35,8 @@ export function meta(_args: Route.MetaArgs) {
 }
 
 export default function DoulaPage() {
-  const { services, testimonials, approachItems } = getDoulaContent();
+  const { doulaContent } = useLoaderData<typeof loader>();
+  const { services, testimonials, approachItems } = doulaContent;
 
   return (
     <>
@@ -48,7 +57,7 @@ export default function DoulaPage() {
         {/* Services - À la carte */}
         <Services
           title="À la carte"
-          services={services}
+          services={services as ServiceItem[]}
           spacing="normal"
         />
 
