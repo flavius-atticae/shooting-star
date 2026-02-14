@@ -4,7 +4,7 @@ import { Hero } from "~/components/layout/hero/Hero";
 import { DefaultCallToAction } from "~/components/layout/call-to-action";
 import { Footer } from "~/components/layout/footer/footer";
 import { About } from "~/components/layout/about";
-import { inspirationItems } from "~/data/about";
+import { getAboutContent } from "~/lib/content.server";
 
 export function meta(_args: Route.MetaArgs) {
   return [
@@ -25,6 +25,8 @@ export function meta(_args: Route.MetaArgs) {
 }
 
 export default function AboutPage() {
+  const { inspirationItems } = getAboutContent();
+
   return (
     <>
       {/* Header - Navigation principale */}

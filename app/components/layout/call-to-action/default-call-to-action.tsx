@@ -1,5 +1,5 @@
 import { CallToAction } from "./call-to-action";
-import { defaultCtaContent } from "~/data/call-to-action";
+import { getCallToActionContent } from "~/lib/content.server";
 import type { CallToActionProps } from "./call-to-action";
 
 /**
@@ -12,5 +12,5 @@ import type { CallToActionProps } from "./call-to-action";
 export function DefaultCallToAction(
   props: Omit<CallToActionProps, "title" | "subtitle" | "buttonText" | "buttonHref">
 ) {
-  return <CallToAction {...defaultCtaContent} {...props} />;
+  return <CallToAction {...getCallToActionContent()} {...props} />;
 }

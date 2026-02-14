@@ -6,11 +6,7 @@ import { ApproachSection } from "~/components/layout/approach-section";
 import { Services } from "~/components/layout/services";
 import { CallToAction } from "~/components/layout/call-to-action";
 import { TestimonialsCarousel } from "~/components/layout/testimonials-carousel";
-import {
-  doulaServices,
-  doulaTestimonials,
-  approachItems,
-} from "~/data/doula";
+import { getDoulaContent } from "~/lib/content.server";
 
 export function meta(_args: Route.MetaArgs) {
   return [
@@ -31,6 +27,8 @@ export function meta(_args: Route.MetaArgs) {
 }
 
 export default function DoulaPage() {
+  const { services, testimonials, approachItems } = getDoulaContent();
+
   return (
     <>
       {/* Header - Navigation principale */}
@@ -50,7 +48,7 @@ export default function DoulaPage() {
         {/* Services - À la carte */}
         <Services
           title="À la carte"
-          services={doulaServices}
+          services={services}
           spacing="normal"
         />
 
@@ -65,7 +63,7 @@ export default function DoulaPage() {
 
         {/* TestimonialsCarousel - Témoignages */}
         <TestimonialsCarousel
-          testimonials={doulaTestimonials}
+          testimonials={testimonials}
           showNavigation
           showPagination
           showTitle={false}

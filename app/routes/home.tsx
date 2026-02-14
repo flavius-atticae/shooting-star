@@ -5,7 +5,7 @@ import { CallToAction } from "~/components/layout/call-to-action";
 import { Services } from "~/components/layout/services";
 import { About } from "~/components/layout/about";
 import { Footer } from "~/components/layout/footer/footer";
-import { servicesData } from "~/data/home";
+import { getHomeContent } from "~/lib/content.server";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -49,7 +49,7 @@ export default function Home() {
         />
 
         {/* Services Section - Doula, Yoga, Féminin */}
-        <Services services={servicesData} containerSize="xl" />
+        <Services services={getHomeContent().services} containerSize="xl" />
 
         {/* About Section - Présentation + Méthode (overlaps Footer on tablet+) */}
         <About spacing="none" containerSize="xl" overlapNext="sm" />
