@@ -355,3 +355,231 @@ Cette évaluation identifie 6 enjeux (3 critiques, 3 majeurs/mineurs) à travers
 
 **Assessor:** Winston (Architect / PM-SM validation mode)
 **Assessment Date:** 2026-02-15
+
+---
+
+## Re-Assessment Run (2026-02-15)
+
+### PRD Analysis
+
+#### Functional Requirements Extracted
+
+FR1: Une visiteuse peut identifier les 3 catégories de services principales depuis la page d'accueil en ≤ 2 interactions.
+FR2: Une visiteuse peut consulter la page doula avec les 9 services et les 3 phases d'accompagnement.
+FR3: Une visiteuse peut consulter les offres de yoga prénatal, postnatal et privé sur une page dédiée.
+FR4: Une visiteuse peut consulter les événements et ateliers du féminin sacré avec leurs informations essentielles.
+FR5: Une visiteuse peut consulter au minimum 3 témoignages clients visibles sur les pages services.
+FR6: Une visiteuse peut accéder à toutes les pages principales via une navigation persistante.
+FR7: Une visiteuse peut utiliser la navigation mobile d'une seule main avec des cibles tactiles de 44x44px minimum.
+FR8: Une visiteuse peut accéder à la page contact depuis chaque page principale via au moins un appel à l'action visible.
+FR9: Une visiteuse peut consulter la page À propos incluant biographie, formation et philosophie d'accompagnement.
+FR10: Une visiteuse peut soumettre un formulaire avec nom, courriel et message lorsque les champs requis sont valides.
+FR11: Une visiteuse peut ajouter ses disponibilités de manière optionnelle dans le formulaire.
+FR12: Une visiteuse peut recevoir une confirmation de réception dans un délai maximal de 5 minutes après soumission valide.
+FR13: Pauline peut recevoir une notification contenant les détails de la demande dans un délai maximal de 5 minutes.
+FR14: Le système peut rejeter automatiquement les soumissions de spam détectées sur le formulaire de contact.
+FR15: Le système peut limiter les soumissions à 3 tentatives par fenêtre de 15 minutes et par origine réseau.
+FR16: Le système peut valider et assainir 100% des entrées utilisateur avant traitement.
+FR17: Une visiteuse peut voir des animations d'entrée au scroll avec une durée comprise entre 150ms et 400ms sur les sections clés.
+FR18: Une visiteuse peut voir un changement visuel sur les boutons dans les états survol, focus et activation.
+FR19: Une visiteuse peut voir un changement visuel sur les cartes interactives au survol ou au focus.
+FR20: Une visiteuse peut bénéficier de transitions de page d'une durée comprise entre 150ms et 300ms sans blocage de navigation.
+FR21: Le système peut réduire ou désactiver les animations lorsque la préférence utilisateur de réduction de mouvement est active.
+FR22: Le site peut exposer sur chaque page publique un titre, une description et des métadonnées de partage social renseignées.
+FR23: Le site peut publier des données structurées de service local pour les moteurs de recherche.
+FR24: Le site peut publier des fichiers d'indexation et de directives d'exploration pour les moteurs de recherche.
+FR25: Le site peut rester indexable sans exécution JavaScript côté client.
+FR26: Le système peut exposer un signal de santé exploitable par la supervision opérationnelle.
+FR27: Flavius peut déclencher un déploiement production automatisé avec vérifications préalables et stratégie de retour arrière documentée.
+FR28: Le système peut remonter les erreurs serveur et client vers un service centralisé de monitoring en phase 2.
+FR29: Un agent IA peut consulter les artefacts BMAD requis (PRD, architecture, epics/stories) avec des droits de lecture explicites.
+FR30: Un agent IA peut implémenter une story en respectant les conventions de code et de test documentées.
+FR31: Le processus qualité peut bloquer l'intégration de changements lorsque les tests obligatoires échouent.
+FR32: Un agent IA peut implémenter une story complète avec au plus 2 demandes de clarification sur les artefacts fournis.
+FR33: Un nouveau contributeur (humain ou IA) peut démarrer le projet et expliquer l'architecture en ≤ 60 minutes à partir de la documentation.
+FR34: Le projet peut appliquer une pyramide de test documentée couvrant unit, integration, component, end-to-end et visual regression.
+FR35: Le processus qualité peut exécuter des vérifications visuelles en CI sans dépendance obligatoire à un outil fournisseur unique.
+FR36: Le processus qualité peut empêcher le merge lorsque les checks obligatoires de stratégie de test échouent.
+FR37: Flavius peut approuver et mettre à jour les baselines visuelles via un flux traçable en pull request.
+FR38: Le système peut produire des rapports exploitables sur la stabilité des tests (flakiness, durée, faux positifs) à chaque release.
+
+Total FRs: 38
+
+#### Non-Functional Requirements Extracted
+
+NFR-P1: LCP < 2.5s sur la page d'accueil mobile en réseau 4G simulé (p75).
+NFR-P2: INP < 200ms sur les interactions principales (navigation, CTA, formulaire) en p75.
+NFR-P3: CLS < 0.1 sur toutes les pages publiques.
+NFR-P4: TTFB ≤ 800ms pour 95% des requêtes depuis le Québec sur pages publiques.
+NFR-P5: 100% des images de contenu livrées en format optimisé et dimensionnées au viewport.
+NFR-P6: 100% des routes non critiques chargées à la demande et bundle initial JS ≤ 250KB gzip (home).
+NFR-S1: 100% des connexions web sont chiffrées avec HTTPS en production.
+NFR-S2: 0 conservation applicative des messages de contact sur le serveur applicatif.
+NFR-S3: 100% des entrées utilisateur sont validées et assainies avant traitement.
+NFR-S4: Les protections anti-spam maintiennent un taux d'abus < 2% des soumissions mensuelles.
+NFR-S5: 0 cookie non essentiel actif sans consentement explicite.
+NFR-S6: Politique de confidentialité publiée, versionnée et revue au minimum 1 fois par an.
+NFR-S7: Responsable des renseignements personnels nommé avec coordonnées validées tous les 90 jours sur le site.
+NFR-A1: 0 violation critique WCAG 2.1 AA sur pages clés (home, accompagnement, contact, à propos).
+NFR-A2: 100% des textes et composants interactifs respectent les ratios de contraste AA.
+NFR-A3: 100% des cibles tactiles interactives font au minimum 44×44px sur mobile.
+NFR-A4: 100% des parcours critiques sont réalisables au clavier avec focus visible.
+NFR-A5: 100% des animations non essentielles sont réduites ou désactivées avec préférence active.
+NFR-A6: Attribut `lang="fr-CA"` présent sur 100% des pages publiques.
+NFR-F1: Disponibilité mensuelle ≥ 99.0% sur les pages publiques.
+NFR-F2: En cas d'échec d'envoi de confirmation, alerte générée en ≤ 5 minutes et procédure de reprise déclenchée.
+NFR-F3: Déploiement production avec interruption perçue ≤ 60 secondes pour 95% des releases.
+NFR-F4: Endpoint `/health` répond en < 500ms pour 95% des checks et retourne un statut exploitable.
+NFR-T1: Taux de flakiness ≤ 2% sur les suites critiques pendant 3 sprints consécutifs.
+NFR-T2: Temps médian de feedback des checks obligatoires sur PR ≤ 12 minutes.
+NFR-T3: ≤ 5% des échecs visuels sur PR sont classés comme faux positifs après triage mensuel.
+NFR-T4: 100% des exécutions visuelles critiques utilisent un environnement de rendu déterministe.
+
+Total NFRs: 27
+
+#### Additional Requirements
+
+- Contraintes explicites de conformité (GDPR, PIPEDA, Loi 25) intégrées au périmètre produit.
+- Contraintes techniques brownfield: stack verrouillée (React Router v7 SSR, Tailwind v4, shadcn/ui, Vite), sans refonte de fondation.
+- Exigences de gouvernance de test Epic 2 (FR34-FR38, NFR-T1..T4) documentées et liées aux quality gates.
+
+#### PRD Completeness Assessment
+
+PRD jugé complet et mesurable pour validation de couverture: FR1-FR38 et NFR structurés, avec critères opérationnels exploitables pour l'assessment d'implémentation.
+
+### Epic Coverage Validation
+
+#### Epic FR Coverage Extracted
+
+- FR1-FR9: Epic 2
+- FR10-FR16: Epic 3
+- FR17-FR21: Epic 4
+- FR22-FR25: Epic 5
+- FR26-FR28: Epic 6
+- FR29-FR30, FR33: Epic 1
+- FR31-FR32: Epic 7
+- FR34-FR38: Epic 8
+
+Total FRs in epics: 38
+
+#### FR Coverage Analysis
+
+| FR Number | Epic Coverage | Status    |
+| --------- | ------------- | --------- |
+| FR1       | Epic 2        | ✓ Covered |
+| FR2       | Epic 2        | ✓ Covered |
+| FR3       | Epic 2        | ✓ Covered |
+| FR4       | Epic 2        | ✓ Covered |
+| FR5       | Epic 2        | ✓ Covered |
+| FR6       | Epic 2        | ✓ Covered |
+| FR7       | Epic 2        | ✓ Covered |
+| FR8       | Epic 2        | ✓ Covered |
+| FR9       | Epic 2        | ✓ Covered |
+| FR10      | Epic 3        | ✓ Covered |
+| FR11      | Epic 3        | ✓ Covered |
+| FR12      | Epic 3        | ✓ Covered |
+| FR13      | Epic 3        | ✓ Covered |
+| FR14      | Epic 3        | ✓ Covered |
+| FR15      | Epic 3        | ✓ Covered |
+| FR16      | Epic 3        | ✓ Covered |
+| FR17      | Epic 4        | ✓ Covered |
+| FR18      | Epic 4        | ✓ Covered |
+| FR19      | Epic 4        | ✓ Covered |
+| FR20      | Epic 4        | ✓ Covered |
+| FR21      | Epic 4        | ✓ Covered |
+| FR22      | Epic 5        | ✓ Covered |
+| FR23      | Epic 5        | ✓ Covered |
+| FR24      | Epic 5        | ✓ Covered |
+| FR25      | Epic 5        | ✓ Covered |
+| FR26      | Epic 6        | ✓ Covered |
+| FR27      | Epic 6        | ✓ Covered |
+| FR28      | Epic 6        | ✓ Covered |
+| FR29      | Epic 1        | ✓ Covered |
+| FR30      | Epic 1        | ✓ Covered |
+| FR31      | Epic 7        | ✓ Covered |
+| FR32      | Epic 7        | ✓ Covered |
+| FR33      | Epic 1        | ✓ Covered |
+| FR34      | Epic 8        | ✓ Covered |
+| FR35      | Epic 8        | ✓ Covered |
+| FR36      | Epic 8        | ✓ Covered |
+| FR37      | Epic 8        | ✓ Covered |
+| FR38      | Epic 8        | ✓ Covered |
+
+#### Missing Requirements
+
+Aucun FR manquant détecté pour la baseline PRD actuelle.
+
+#### Coverage Statistics
+
+- Total PRD FRs: 38
+- FRs covered in epics: 38
+- Coverage percentage: 100%
+
+### UX Alignment Assessment
+
+#### UX Document Status
+
+Found (`_bmad-output/planning-artifacts/ux-design-specification.md`).
+
+#### Alignment Issues
+
+- **Minor:** certaines recommandations UX (focus trap MobileMenu, `aria-current`, variant testimonial featured, spacing `breathe`) sont formulées comme améliorations et ne sont pas encore systématiquement reflétées en stories dédiées hors Epic 8.
+- **Minor:** certains éléments roadmap UX (ex. `ServiceFilter` en Phase 3) sont optionnels/futurs et doivent rester explicitement hors périmètre Phase 1 pour éviter les dérives.
+
+#### Warnings
+
+- Aucun écart critique PRD↔UX↔Architecture bloquant relevé.
+- La cohérence émotionnelle et accessibility-first est globalement alignée entre UX et architecture.
+
+### Epic Quality Review
+
+#### Best-Practices Compliance Checklist
+
+- [x] Epic delivers user value
+- [x] Epic can function independently
+- [x] Stories appropriately sized
+- [x] No forward dependencies
+- [x] Database tables created when needed (N/A for this story set)
+- [x] Clear acceptance criteria
+- [x] Traceability to FRs maintained
+
+#### Findings by Severity
+
+##### 🔴 Critical Violations
+
+Aucune violation critique détectée.
+
+##### 🟠 Major Issues
+
+Aucun enjeu majeur détecté.
+
+##### 🟡 Minor Concerns
+
+- Quelques stories combinent gouvernance documentaire et enforcement CI dans le même item; acceptable mais à surveiller pour garder des unités de livraison petites.
+
+#### Epic Quality Conclusion
+
+La structure Epic/Stories respecte les standards create-epics-and-stories pour ce cycle, avec une traçabilité FR complète et des critères testables.
+
+## Summary and Recommendations
+
+### Overall Readiness Status
+
+READY
+
+### Critical Issues Requiring Immediate Action
+
+Aucun blocage critique identifié pour démarrer l'implémentation.
+
+### Recommended Next Steps
+
+1. Implémenter Story 8.1 en priorisant la documentation de la pyramide de tests dans `docs/development-guide.md` et la règle de mapping niveau de test dans le template PR.
+2. Ajouter explicitement la référence FR34/NFR-T1/NFR-T2 dans la checklist PR et les artefacts de gouvernance pour renforcer la traçabilité opérationnelle.
+3. Valider en revue que toute duplication inter-niveaux est justifiée dans les notes de PR avec un format standard (raison, risque couvert, horizon de suppression).
+
+### Final Note
+
+Cette réévaluation a identifié 2 points mineurs (alignement UX roadmap vs périmètre Phase 1 et vigilance sur granularité de certaines stories) sur 2 catégories, sans enjeu bloquant. Les artefacts sont alignés et prêts pour l'implémentation de la story 8.1.
+
+**Assessor:** Winston (Architect / PM-SM validation mode)
+**Assessment Date:** 2026-02-15

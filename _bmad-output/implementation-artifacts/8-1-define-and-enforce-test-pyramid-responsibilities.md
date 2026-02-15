@@ -103,4 +103,4 @@ GPT-5.3-Codex
 
 ### File List
 
-- _bmad-output/implementation-artifacts/8-1-define-and-enforce-test-pyramid-responsibilities.md (new)
+- \_bmad-output/implementation-artifacts/8-1-define-and-enforce-test-pyramid-responsibilities.md (new)
