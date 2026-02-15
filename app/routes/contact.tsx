@@ -8,7 +8,7 @@ import { Footer } from "~/components/layout/footer/footer";
 import { Container } from "~/components/ui/container";
 import { Section } from "~/components/ui/section";
 import { honeypot } from "~/lib/honeypot.server";
-import { isRateLimited } from "~/lib/rate-limiter";
+import { isRateLimited } from "~/lib/rate-limiter.server";
 import { sendContactEmails } from "~/lib/email.server";
 
 /**
@@ -88,8 +88,7 @@ export async function action({ request }: Route.ActionArgs) {
     console.error("Email sending failed:", error);
     return data(
       {
-        error:
-          `Une erreur est survenue lors de l'envoi. Veuillez réessayer ou nous contacter par courriel à ${process.env.CONTACT_REPLY_TO ?? "paulineroussel1@gmail.com"}.`,
+        error: `Une erreur est survenue lors de l'envoi. Veuillez réessayer ou nous contacter par courriel à ${process.env.CONTACT_REPLY_TO ?? "paulineroussel1@gmail.com"}.`,
       },
       { status: 500 },
     );

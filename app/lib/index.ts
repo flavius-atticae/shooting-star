@@ -25,8 +25,8 @@ export {
   type ContactFormData,
 } from "~/lib/contact-form-schema";
 
-// Rate Limiting
-export { isRateLimited, resetRateLimiter } from "~/lib/rate-limiter";
+// Rate Limiting — import directly from ~/lib/rate-limiter.server
+// (server-only module, not re-exported to prevent client bundle leakage)
 
 // Performance Thresholds
 export {

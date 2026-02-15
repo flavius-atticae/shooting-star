@@ -1,7 +1,7 @@
 import type { Route } from "./+types/about";
 import { useLoaderData } from "react-router";
 import { Header } from "~/components/layout/header/header";
-import { Hero } from "~/components/layout/hero/Hero";
+import { Hero } from "~/components/layout/hero/hero";
 import { DefaultCallToAction } from "~/components/layout/call-to-action";
 import { Footer } from "~/components/layout/footer/footer";
 import { About } from "~/components/layout/about";
