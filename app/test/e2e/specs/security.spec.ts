@@ -102,7 +102,7 @@ test.describe("Quebec Privacy Law Compliance", () => {
     // Check for privacy notice or consent mechanisms
     // Note: This would be expanded as privacy features are implemented
     const privacyElements = page.locator(
-      '[data-privacy], [id*="privacy"], [class*="privacy"]'
+      '[data-privacy], [id*="privacy"], [class*="privacy"]',
     );
     const privacyCount = await privacyElements.count();
 
@@ -137,7 +137,7 @@ test.describe("Quebec Privacy Law Compliance", () => {
       (hostname) =>
         !hostname.includes("cdn") &&
         !hostname.includes("font") &&
-        !hostname.includes("analytics")
+        !hostname.includes("analytics"),
     );
 
     console.log(`External requests: ${externalRequests.length}`);
@@ -213,7 +213,7 @@ test.describe("Authentication and Session Security", () => {
     }
 
     console.log(
-      `Checked ${Object.keys(localStorageItems).length} localStorage items`
+      `Checked ${Object.keys(localStorageItems).length} localStorage items`,
     );
   });
 });
@@ -238,10 +238,26 @@ test.describe("Input Validation and Sanitization", () => {
       "../../etc/passwd", // Path traversal attempt
     ];
 
-    for (const testCard of testHealthCards) {
+    const validCards = testHealthCards.slice(0, 1);
+    const invalidCards = testHealthCards.slice(1);
+
+    for (const testCard of validCards) {
       await helpers.validateQuebecFormats({
         healthCardNumber: testCard,
       });
+    }
+
+    for (const testCard of invalidCards) {
+      let hasValidationError = false;
+      try {
+        await helpers.validateQuebecFormats({
+          healthCardNumber: testCard,
+        });
+      } catch {
+        hasValidationError = true;
+      }
+
+      expect(hasValidationError).toBe(true);
     }
 
     console.log("✓ Health card validation security tested");
@@ -271,7 +287,7 @@ test.describe("Input Validation and Sanitization", () => {
 
         // Verify input is properly handled (sanitized or rejected)
         console.log(
-          `Input test: ${maliciousInput.substring(0, 20)}... -> ${value.substring(0, 20)}...`
+          `Input test: ${maliciousInput.substring(0, 20)}... -> ${value.substring(0, 20)}...`,
         );
       }
     }
@@ -298,7 +314,7 @@ test.describe("Content Security Policy", () => {
       console.log("✓ CSP header present");
     } else {
       console.warn(
-        "Content Security Policy not found - should be implemented for health data"
+        "Content Security Policy not found - should be implemented for health data",
       );
     }
   });

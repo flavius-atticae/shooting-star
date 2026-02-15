@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
 import type { Page, Locator } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
 import { TIMEOUTS, ACCESSIBILITY } from "./constants";
 import * as nodeCrypto from "crypto";
 /**
@@ -18,14 +19,26 @@ export class PregnancySafeHelpers {
 
   constructor(private page: Page) {
     // Use crypto.randomUUID() for secure session ID generation, with secure fallback for compatibility
-    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    if (
+      typeof crypto !== "undefined" &&
+      typeof crypto.randomUUID === "function"
+    ) {
       this.sessionId = crypto.randomUUID();
-    } else if (typeof window !== "undefined" && window.crypto && typeof window.crypto.getRandomValues === "function") {
+    } else if (
+      typeof window !== "undefined" &&
+      window.crypto &&
+      typeof window.crypto.getRandomValues === "function"
+    ) {
       // Browser fallback: use getRandomValues
       const array = new Uint32Array(4);
       window.crypto.getRandomValues(array);
-      this.sessionId = Array.from(array).map(num => num.toString(16)).join("-");
-    } else if (typeof nodeCrypto !== "undefined" && typeof nodeCrypto.randomBytes === "function") {
+      this.sessionId = Array.from(array)
+        .map((num) => num.toString(16))
+        .join("-");
+    } else if (
+      typeof nodeCrypto !== "undefined" &&
+      typeof nodeCrypto.randomBytes === "function"
+    ) {
       // Node.js fallback: use crypto.randomBytes
       this.sessionId = nodeCrypto.randomBytes(16).toString("hex");
     } else {
@@ -43,7 +56,7 @@ export class PregnancySafeHelpers {
       const sessionInfo = `[${this.sessionId}]`;
       console.log(
         `${timestamp} ${sessionInfo} [${level.toUpperCase()}] ${message}`,
-        data || ""
+        data || "",
       );
     }
   }
@@ -95,7 +108,7 @@ export class PregnancySafeHelpers {
       const minSize = ACCESSIBILITY.MINIMUM_TOUCH_TARGET;
       if (boundingBox.width < minSize || boundingBox.height < minSize) {
         console.warn(
-          `Touch target smaller than ${minSize}px: ${boundingBox.width}x${boundingBox.height}`
+          `Touch target smaller than ${minSize}px: ${boundingBox.width}x${boundingBox.height}`,
         );
       }
     }
@@ -113,7 +126,7 @@ export class PregnancySafeHelpers {
    * Fill form with pregnancy-safe patterns (auto-save, validation)
    */
   async fillFormSafely(
-    inputs: Array<{ locator: Locator; value: string; label?: string }>
+    inputs: Array<{ locator: Locator; value: string; label?: string }>,
   ) {
     for (const input of inputs) {
       await expect(input.locator).toBeVisible();
@@ -133,34 +146,8 @@ export class PregnancySafeHelpers {
    * Check accessibility compliance for pregnancy users using axe-core
    */
   async checkPregnancyAccessibility() {
-    // Inject axe-core for comprehensive accessibility testing
-    await this.page.addScriptTag({
-      url: "https://unpkg.com/axe-core@4.10.2/axe.min.js",
-    });
-
-    // Run axe-core accessibility scan
-    const results = await this.page.evaluate(() => {
-      return new Promise((resolve) => {
-        // @ts-ignore - axe is loaded dynamically
-        window.axe.run(
-          {
-            // Pregnancy-specific accessibility rules
-            rules: {
-              "motion-sensitive": { enabled: true },
-              "color-contrast": { enabled: true },
-              "focus-order": { enabled: true },
-              "touch-target": { enabled: true },
-            },
-          },
-          (err: any, results: any) => {
-            if (err) {
-              console.error("Axe accessibility test error:", err);
-            }
-            resolve(results);
-          }
-        );
-      });
-    });
+    // Run axe-core accessibility scan via local dependency for deterministic CI
+    const results = await new AxeBuilder({ page: this.page }).analyze();
 
     // Check for reduced motion compliance
     const reducedMotionElements = await this.page
@@ -168,7 +155,7 @@ export class PregnancySafeHelpers {
       .count();
     if (reducedMotionElements > 0) {
       console.warn(
-        `Found ${reducedMotionElements} potentially problematic animated elements`
+        `Found ${reducedMotionElements} potentially problematic animated elements`,
       );
     }
 
@@ -217,6 +204,12 @@ export class PregnancySafeHelpers {
       expect(quebecPhonePattern.test(data.phoneNumber)).toBe(true);
     }
 
+    if (data.healthCardNumber) {
+      // Quebec health card test fixture format: AAAA12345678
+      const quebecHealthCardPattern = /^[A-Z]{4}\d{8}$/i;
+      expect(quebecHealthCardPattern.test(data.healthCardNumber)).toBe(true);
+    }
+
     console.log("✓ Quebec format validation completed");
   }
 
@@ -228,68 +221,93 @@ export class PregnancySafeHelpers {
     fid: number;
     cls: number;
   }> {
-    const metrics = await this.page.evaluate(() => {
-      return new Promise<{ lcp: number; fid: number; cls: number }>(
-        (resolve) => {
-          let lcp = 0;
-          let fid = 0;
-          let cls = 0;
+    const collectMetrics = async () => {
+      await this.page.waitForLoadState("domcontentloaded", {
+        timeout: TIMEOUTS.NAVIGATION,
+      });
 
-          // Measure LCP using PerformanceObserver for accuracy
-          const lcpObserver = new PerformanceObserver((list) => {
-            const entries = list.getEntries();
-            const lastEntry = entries[entries.length - 1] as any;
-            lcp = lastEntry?.startTime || 0;
-          });
+      return this.page.evaluate(() => {
+        return new Promise<{ lcp: number; fid: number; cls: number }>(
+          (resolve) => {
+            let lcp = 0;
+            let fid = 0;
+            let cls = 0;
 
-          // Measure FID using PerformanceObserver
-          const fidObserver = new PerformanceObserver((list) => {
-            const entries = list.getEntries();
-            entries.forEach((entry: any) => {
-              fid = entry.processingStart - entry.startTime;
+            // Measure LCP using PerformanceObserver for accuracy
+            const lcpObserver = new PerformanceObserver((list) => {
+              const entries = list.getEntries();
+              const lastEntry = entries[entries.length - 1] as any;
+              lcp = lastEntry?.startTime || 0;
             });
-          });
 
-          // Measure CLS using PerformanceObserver
-          const clsObserver = new PerformanceObserver((list) => {
-            list.getEntries().forEach((entry: any) => {
-              if (!entry.hadRecentInput) {
-                cls += entry.value;
-              }
+            // Measure FID using PerformanceObserver
+            const fidObserver = new PerformanceObserver((list) => {
+              const entries = list.getEntries();
+              entries.forEach((entry: any) => {
+                fid = entry.processingStart - entry.startTime;
+              });
             });
-          });
 
-          try {
-            lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
-            fidObserver.observe({ entryTypes: ["first-input"] });
-            clsObserver.observe({ entryTypes: ["layout-shift"] });
-
-            // Wait for measurements and resolve
-            setTimeout(() => {
-              lcpObserver.disconnect();
-              fidObserver.disconnect();
-              clsObserver.disconnect();
-              resolve({ lcp, fid, cls });
-            }, 2000); // Wait 2 seconds for measurements
-          } catch (error) {
-            // Fallback to basic timing if PerformanceObserver not supported
-            const navigationTiming = performance.getEntriesByType(
-              "navigation"
-            )[0] as PerformanceNavigationTiming;
-            resolve({
-              lcp: navigationTiming
-                ? navigationTiming.loadEventEnd - navigationTiming.fetchStart
-                : 0,
-              fid: 0,
-              cls: 0,
+            // Measure CLS using PerformanceObserver
+            const clsObserver = new PerformanceObserver((list) => {
+              list.getEntries().forEach((entry: any) => {
+                if (!entry.hadRecentInput) {
+                  cls += entry.value;
+                }
+              });
             });
-          }
-        }
-      );
-    });
+
+            try {
+              lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
+              fidObserver.observe({ entryTypes: ["first-input"] });
+              clsObserver.observe({ entryTypes: ["layout-shift"] });
+
+              // Wait for measurements and resolve
+              setTimeout(() => {
+                lcpObserver.disconnect();
+                fidObserver.disconnect();
+                clsObserver.disconnect();
+                resolve({ lcp, fid, cls });
+              }, 2000); // Wait 2 seconds for measurements
+            } catch (error) {
+              // Fallback to basic timing if PerformanceObserver not supported
+              const navigationTiming = performance.getEntriesByType(
+                "navigation",
+              )[0] as PerformanceNavigationTiming;
+              resolve({
+                lcp: navigationTiming
+                  ? navigationTiming.loadEventEnd - navigationTiming.fetchStart
+                  : 0,
+                fid: 0,
+                cls: 0,
+              });
+            }
+          },
+        );
+      });
+    };
+
+    let metrics;
+    try {
+      metrics = await collectMetrics();
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      const isNavigationRace =
+        message.includes("Execution context was destroyed") ||
+        message.includes("Cannot find context with specified id");
+
+      if (!isNavigationRace) {
+        throw error;
+      }
+
+      await this.page.waitForLoadState("load", {
+        timeout: TIMEOUTS.NAVIGATION,
+      });
+      metrics = await collectMetrics();
+    }
 
     console.log(
-      `Performance metrics - LCP: ${metrics.lcp}ms, FID: ${metrics.fid}ms, CLS: ${metrics.cls}`
+      `Performance metrics - LCP: ${metrics.lcp}ms, FID: ${metrics.fid}ms, CLS: ${metrics.cls}`,
     );
     return metrics;
   }
@@ -299,7 +317,7 @@ export class PregnancySafeHelpers {
    */
   async simulatePregnancyInteraction(
     delay: "fatigue" | "morning_sickness" | "normal" | "brain_fog" = "normal",
-    context: string = "User interaction"
+    context: string = "User interaction",
   ) {
     const delays = {
       fatigue: 2000,
@@ -332,7 +350,7 @@ export class PregnancySafeHelpers {
   async handleError(
     error: Error,
     context: string,
-    recoveryAction?: () => Promise<void>
+    recoveryAction?: () => Promise<void>,
   ): Promise<void> {
     this.log("error", `Error in ${context}`, {
       message: error.message,
@@ -360,10 +378,10 @@ export class PregnancySafeHelpers {
         this.log(
           "error",
           `Error recovery failed for ${context}`,
-          recoveryError
+          recoveryError,
         );
         throw new Error(
-          `Original error in ${context}: ${error.message}. Recovery also failed: ${recoveryError}`
+          `Original error in ${context}: ${error.message}. Recovery also failed: ${recoveryError}`,
         );
       }
     } else {
@@ -431,7 +449,7 @@ const debugEnabled = process.env.PREGNANCY_SAFE_DEBUG === "true";
 if (debugEnabled) {
   console.log("\n🤰 Pregnancy-Safe Testing Utilities Loaded");
   console.log(
-    `   Environment: ${isDevelopment ? "Development" : isCI ? "CI" : "Production"}`
+    `   Environment: ${isDevelopment ? "Development" : isCI ? "CI" : "Production"}`,
   );
   console.log(`   Debug mode: ${debugEnabled}`);
   console.log(`   Session: ${new Date().toISOString()}`);
