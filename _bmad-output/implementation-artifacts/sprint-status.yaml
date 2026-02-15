@@ -86,7 +86,7 @@ development_status:
   epic-7-retrospective: optional
 
   epic-8: in-progress
-  8-1-define-and-enforce-test-pyramid-responsibilities: ready-for-dev
+  8-1-define-and-enforce-test-pyramid-responsibilities: review
   8-2-implement-tool-agnostic-visual-checks-in-ci: backlog
   8-3-enforce-blocking-merge-gates-for-test-strategy: backlog
   8-4-govern-visual-baseline-updates-via-traceable-pr-flow: backlog

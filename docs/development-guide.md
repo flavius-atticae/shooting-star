@@ -148,18 +148,81 @@ main (protected)
 
 ## Testing Strategy
 
-### Test Pyramid
+### Test Pyramid Responsibilities (Canonical)
+
+Each test must have one primary pyramid level. Scope must not overlap by default.
+
+### Operational Convention (Kent-aligned)
+
+For implementation and PR review, use three primary functional levels:
+
+- `component-unit`: combines isolated logic and local component behavior.
+- `integration`: validates route/module composition and framework contracts.
+- `e2e`: validates browser-level critical journeys.
+
+`visual` remains a required baseline-governance lane (Storybook/Chromatic) and must be explicitly tracked in PRs when changed.
+
+| Level            | Primary risk covered                                          | In-scope                                                                                                              | Out-of-scope                                                                                         | Owner                          | Expected artifact                                                 | Good fit example                                                                    | Anti-pattern example                                                |
+| ---------------- | ------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------ | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| `component-unit` | Local UI and isolated logic regressions                       | Deterministic utility logic, hooks, server-safe validators, component behavior, accessibility semantics, event wiring | Full route orchestration, cross-route browser journeys, visual baseline governance                   | Feature author                 | `app/test/lib/**/*.test.ts` + `app/test/components/**/*.test.tsx` | Validate form validator branch and corresponding component error rendering behavior | Re-asserting full multi-page submission flow already covered by e2e |
+| `integration`    | Contract breakage between route modules and framework context | React Router SSR route rendering, loader/action composition, route-level data wiring                                  | Pixel layout, cross-browser behavior, exhaustive edge-branch checks better handled in component-unit | Feature author                 | `app/test/integration/**/*-route.test.tsx`                        | Validate route-level rendering and fallback state wiring for a route                | Duplicating browser navigation assertions across multiple pages     |
+| `e2e`            | Real-user journey and browser-runtime integration risk        | Critical paths across routes, browser APIs, navigation, form submission flow, CI smoke for production-like behavior   | Internal branch-by-branch logic already validated lower in stack, visual baseline ownership          | QA + feature author            | `app/test/e2e/specs/**/*.spec.ts`                                 | Validate contact journey from page load to successful submission and error recovery | Asserting every internal utility branch via browser steps           |
+| `visual`         | Unintended visual drift and design regression                 | Stable UI snapshots and deterministic visual baselines for key states/components                                      | Functional logic coverage, business-rule branching, route contract validation                        | Design system + feature author | Storybook/Chromatic visual baselines and review artifacts         | Snapshot baseline for key component states (default/error/disabled)                 | Using visual diffs as proof that form validation logic is correct   |
+
+### Anti-Overlap Governance
+
+- One assertion = one primary level.
+- Do not duplicate assertions across levels unless an exception is documented.
+- Allowed overlap example: E2E validates journey completion while component-unit validates validator edge branches.
+- Prohibited duplication example: same validation branch asserted in component-unit, integration, and e2e with identical expected outcome.
+
+### Exception Protocol (Required for Intentional Overlap)
+
+If overlap is intentional, add a short exception entry in the PR description:
+
+```text
+Test overlap exception:
+- assertion: <what is duplicated>
+- primary level: <component-unit|integration|e2e|visual>
+- secondary level: <component-unit|integration|e2e|visual>
+- reason: <risk that cannot be covered well by only one level>
+- risk if removed: <what could fail undetected>
+- review date: <DD/MM/YYYY>
+```
+
+### PR Enforcement Checklist (Test-Level Mapping)
+
+For each new or changed test in a PR, include this checklist in the PR body:
+
+- [ ] Every functional test file is mapped to exactly one primary level (`component-unit`, `integration`, `e2e`).
+- [ ] Each mapping includes a one-line rationale tied to the level's primary risk.
+- [ ] Any changed Storybook/Chromatic baseline is explicitly marked as `visual` evidence in the PR.
+- [ ] Any intentional overlap follows the required exception protocol.
+- [ ] No prohibited duplication is introduced.
+- [ ] Mapping is consistent with required CI checks and branch protection intent (`vitest-tests` and `playwright-tests`).
+
+### FR34 Accountability and NFR Linkage
+
+| Requirement                                                | Auditable signal                                                                                       | Evidence source                                      | Accountability owner                |
+| ---------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------- | ----------------------------------- |
+| FR34: explicit non-overlapping test-level responsibilities | 100% of PR test additions mapped to a single level with rationale                                      | PR checklist + changed test file paths               | PR author + reviewer                |
+| NFR-T1: reduce flakiness                                   | Duplicate cross-level assertions trend downward and flaky retries do not increase for protected checks | CI history for `vitest-tests` and `playwright-tests` | Engineering owner for test quality  |
+| NFR-T2: fast feedback                                      | Median PR check duration remains within team target while preserving level coverage boundaries         | GitHub Actions run durations                         | Engineering owner for delivery flow |
+
+### Test Pyramid (Visual Overview)
 
 ```
-        ╱╲
-       ╱E2E╲          Playwright (5 spec files)
-      ╱──────╲         Cross-browser, mobile, a11y, performance
-     ╱ Stories ╲       Storybook play functions (18 story files)
-    ╱───────────╲      Visual regression, interaction tests
-   ╱ Integration ╲    Vitest (4 integration files)
-  ╱────────────────╲   Route rendering, navigation
- ╱    Unit Tests    ╲  Vitest (15+ unit files)
-╱────────────────────╲ Components, hooks, utilities, server logic
+    ╱╲
+   ╱E2E╲          Playwright critical journeys
+  ╱──────╲
+     ╱ Visual ╲       Storybook/Chromatic visual baselines
+    ╱──────────╲
+   ╱Component-  ╲     Local component behavior + isolated logic
+  ╱  Unit        ╲
+  ╱──────────────╲
+ ╱ Integration    ╲   Route composition and SSR contracts
+╱──────────────────╲
+  Functional base  Component-unit + integration foundations
 ```
 
 ### Test Helpers
