@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { action } from "~/routes/contact";
-import { resetRateLimiter } from "~/lib/rate-limiter";
+import { resetRateLimiter } from "~/lib/rate-limiter.server";
 import { honeypot } from "~/lib/honeypot.server";
 import { sendContactEmails } from "~/lib/email.server";
 

@@ -1,7 +1,7 @@
 import type { Route } from "./+types/doula";
 import { useLoaderData } from "react-router";
 import { Header } from "~/components/layout/header/header";
-import { Hero } from "~/components/layout/hero/Hero";
+import { Hero } from "~/components/layout/hero/hero";
 import { Footer } from "~/components/layout/footer/footer";
 import { ApproachSection } from "~/components/layout/approach-section";
 import { Services } from "~/components/layout/services";

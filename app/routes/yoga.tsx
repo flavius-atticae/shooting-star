@@ -1,6 +1,6 @@
 import type { Route } from "./+types/yoga";
 import { Header } from "~/components/layout/header/header";
-import { Hero } from "~/components/layout/hero/Hero";
+import { Hero } from "~/components/layout/hero/hero";
 import { Footer } from "~/components/layout/footer/footer";
 import { FeatureBlock } from "~/components/layout/feature-block";
 import { DefaultCallToAction } from "~/components/layout/call-to-action";

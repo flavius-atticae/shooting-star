@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { isRateLimited, resetRateLimiter } from "~/lib/rate-limiter";
+import { isRateLimited, resetRateLimiter } from "~/lib/rate-limiter.server";
 
 describe("lib/rate-limiter", () => {
   beforeEach(() => {
@@ -27,7 +27,7 @@ describe("lib/rate-limiter", () => {
       expect(isRateLimited("10.0.0.2")).toBe(false); // 1
       expect(isRateLimited("10.0.0.2")).toBe(false); // 2
       expect(isRateLimited("10.0.0.2")).toBe(false); // 3
-      expect(isRateLimited("10.0.0.2")).toBe(true);  // 4 — blocked
+      expect(isRateLimited("10.0.0.2")).toBe(true); // 4 — blocked
     });
 
     it("should track IPs independently", () => {
@@ -60,7 +60,7 @@ describe("lib/rate-limiter", () => {
 
     it("should support custom maxRequests", () => {
       expect(isRateLimited("10.0.0.4", 1)).toBe(false); // 1 allowed
-      expect(isRateLimited("10.0.0.4", 1)).toBe(true);  // 2 blocked
+      expect(isRateLimited("10.0.0.4", 1)).toBe(true); // 2 blocked
     });
 
     it("should handle 'unknown' IP", () => {
