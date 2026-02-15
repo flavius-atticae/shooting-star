@@ -34,11 +34,11 @@ so that given any source file path, the corresponding test file path is determin
 
 ### Review Follow-ups (AI)
 
-- [x] [AI-Review][HIGH] Align `rate-limiter` mapping with server-only naming (`app/lib/rate-limiter.server.ts`) in conventions examples and inventory [app/test/patterns/test-conventions.md:33]
-- [x] [AI-Review][HIGH] Implement real `healthCardNumber` validation or remove the unsupported assertion path in e2e helper/spec usage [app/test/e2e/helpers/pregnancy-safe.ts:218]
-- [x] [AI-Review][MEDIUM] Replace external `axe-core` CDN injection with local dependency usage for deterministic CI [app/test/e2e/helpers/pregnancy-safe.ts:149]
-- [x] [AI-Review][MEDIUM] Replace unsupported axe rule keys (`motion-sensitive`, `focus-order`, `touch-target`) with valid rules/tags or documented checks [app/test/e2e/helpers/pregnancy-safe.ts:161]
-- [x] [AI-Review][MEDIUM] Strengthen placeholder e2e assertions with feature-level checks instead of structure-only visibility assertions [app/test/e2e/specs/persona-journeys.spec.ts:33]
+- [x] [AI-Review] (HIGH) Align `rate-limiter` mapping with server-only naming (`app/lib/rate-limiter.server.ts`) in conventions examples and inventory [app/test/patterns/test-conventions.md:33]
+- [x] [AI-Review] (HIGH) Implement real `healthCardNumber` validation or remove the unsupported assertion path in e2e helper/spec usage [app/test/e2e/helpers/pregnancy-safe.ts:218]
+- [x] [AI-Review] (MEDIUM) Replace external `axe-core` CDN injection with local dependency usage for deterministic CI [app/test/e2e/helpers/pregnancy-safe.ts:149]
+- [x] [AI-Review] (MEDIUM) Replace unsupported axe rule keys (`motion-sensitive`, `focus-order`, `touch-target`) with valid rules/tags or documented checks [app/test/e2e/helpers/pregnancy-safe.ts:161]
+- [x] [AI-Review] (MEDIUM) Strengthen placeholder e2e assertions with feature-level checks instead of structure-only visibility assertions [app/test/e2e/specs/persona-journeys.spec.ts:33]
 
 ## Dev Notes
 
