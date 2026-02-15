@@ -107,7 +107,7 @@ describe("EventList Component - Pregnancy-Safe Testing", () => {
       render(<EventList events={mockEvents} />);
 
       // EventList wraps content in a Section component
-      const section = screen.getByRole("heading").closest("section");
+      const section = screen.getByRole("heading", { level: 2 }).closest("section");
       expect(section).toBeInTheDocument();
     });
 

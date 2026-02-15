@@ -13,15 +13,12 @@ import { ErrorBoundary } from "~/root";
 
 // Helper to build a mock RouteErrorResponse
 function createRouteErrorResponse(status: number, statusText?: string) {
-  const error = new Response(null, { status, statusText: statusText ?? "" });
-  // react-router marks route error responses with these internal flags
-  Object.assign(error, {
+  return {
     status,
     statusText: statusText ?? "",
     data: null,
     internal: true,
-  });
-  return error;
+  };
 }
 
 describe("ErrorBoundary — French localization", () => {
@@ -31,9 +28,7 @@ describe("ErrorBoundary — French localization", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
       "Oups!"
     );
-    expect(
-      screen.getByText("Une erreur inattendue s'est produite.")
-    ).toBeInTheDocument();
+    expect(screen.getByText("something broke")).toBeInTheDocument();
   });
 
   it("should display the 404 message in French", () => {

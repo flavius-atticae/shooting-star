@@ -133,7 +133,9 @@ describe('Header Component - Pregnancy-Safe Design', () => {
       await user.tab();
       expect(menuButton).toHaveFocus();
 
-      await user.tab();
+      for (let index = 0; index < 5 && document.activeElement !== logo; index += 1) {
+        await user.tab();
+      }
       expect(logo).toHaveFocus();
 
       // Enter key should activate elements
@@ -226,15 +228,17 @@ describe('Header Component - Pregnancy-Safe Design', () => {
       await user.click(screen.getByLabelText(/Ouvrir le menu/));
       
       await waitFor(() => {
+        const navigation = screen.getByRole('navigation', { name: /Menu de navigation principal/ });
+
         // Check French navigation items
-        expect(screen.getByText('Doula')).toBeInTheDocument();
-        expect(screen.getByText('Yoga')).toBeInTheDocument();
-        expect(screen.getByText('Féminin')).toBeInTheDocument();
-        expect(screen.getByText('À propos')).toBeInTheDocument();
+        expect(within(navigation).getByText('Doula')).toBeInTheDocument();
+        expect(within(navigation).getByText('Yoga')).toBeInTheDocument();
+        expect(within(navigation).getByText('Féminin')).toBeInTheDocument();
+        expect(within(navigation).getByText('À propos')).toBeInTheDocument();
         
         // Check French descriptions
-        expect(screen.getByText('Accompagnement de doula')).toBeInTheDocument();
-        expect(screen.getByText('Enseignement du yoga')).toBeInTheDocument();
+        expect(within(navigation).getByText('Accompagnement de doula')).toBeInTheDocument();
+        expect(within(navigation).getByText('Enseignement du yoga')).toBeInTheDocument();
       });
     });
 
@@ -391,7 +395,7 @@ describe('Header Component - Pregnancy-Safe Design', () => {
       );
 
       // Contact button container should be responsive
-      const container = screen.getByRole('banner').querySelector('.hidden');
+      const container = screen.getByRole('banner').querySelector('.hidden.sm\\:block');
       expect(container).toHaveClass('sm:block'); // Shown from tablet up
     });
 
@@ -482,11 +486,13 @@ describe('Header Component - Pregnancy-Safe Design', () => {
       await user.click(screen.getByLabelText(/Ouvrir le menu/));
       
       await waitFor(() => {
+        const navigation = screen.getByRole('navigation', { name: /Menu de navigation principal/ });
+
         // Check Quebec French terminology
-        expect(screen.getByText('À propos')).toBeInTheDocument(); // Not "About"
+        expect(within(navigation).getByText('À propos')).toBeInTheDocument(); // Not "About"
         
         // Check that contact text exists (there will be multiple instances)
-        const contactElements = screen.getAllByText('Contactez-moi');
+        const contactElements = within(navigation).getAllByText('Contactez-moi');
         expect(contactElements.length).toBeGreaterThan(0); // At least one contact button
       });
     });

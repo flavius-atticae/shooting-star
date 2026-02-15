@@ -1,8 +1,9 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { describe, it, expect } from 'vitest';
-import { createMemoryRouter, RouterProvider } from 'react-router';
-import type { RouteObject } from 'react-router';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
+import { BrowserRouter } from 'react-router';
+import * as ReactRouter from 'react-router';
+import { getAboutContent } from '~/lib/content.server';
 
 /**
  * Integration tests for /a-propos route (About page)
@@ -21,24 +22,26 @@ import type { RouteObject } from 'react-router';
 import AboutPage from '../../routes/about';
 
 describe('About Route Integration Tests', () => {
-  
-  const createTestRouter = () => {
-    const routes: RouteObject[] = [
-      {
-        path: '/a-propos',
-        element: <AboutPage />,
-      },
-    ];
+  const renderAboutPage = () =>
+    render(
+      <BrowserRouter>
+        <AboutPage />
+      </BrowserRouter>
+    );
 
-    return createMemoryRouter(routes, {
-      initialEntries: ['/a-propos'],
-    });
-  };
+  beforeEach(() => {
+    vi.spyOn(ReactRouter, 'useLoaderData').mockReturnValue({
+      aboutContent: getAboutContent(),
+    } as never);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   describe('Route Rendering', () => {
     it('should render the about page without errors', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Verify main content area exists
       const mainContent = screen.getByRole('main');
@@ -46,8 +49,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should render Hero section with correct French title', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Check for main title
       const title = screen.getByRole('heading', { level: 1 });
@@ -55,16 +57,14 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should render Hero section with correct French subtitle', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Check for subtitle
       expect(screen.getByText('DOULA ET PROFESSEURE DE YOGA')).toBeInTheDocument();
     });
 
     it('should render About section with 4 subsections', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Verify section title
       expect(screen.getByRole('heading', { level: 2, name: /À propos de moi/i })).toBeInTheDocument();
@@ -77,8 +77,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should render Mes inspirations section with 3 cards', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Verify section title
       expect(screen.getByRole('heading', { level: 2, name: /Mes inspirations/i })).toBeInTheDocument();
@@ -90,8 +89,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should render CallToAction section', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Check for CTA heading
       const ctaHeading = screen.getByRole('heading', { level: 2, name: /douceur et bienveillance/i });
@@ -104,8 +102,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should render Footer component', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Footer should contain contentinfo landmark
       const footer = screen.getByRole('contentinfo');
@@ -115,8 +112,7 @@ describe('About Route Integration Tests', () => {
 
   describe('Accessibility Compliance', () => {
     it('should have proper semantic HTML structure', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Check for main landmark
       expect(screen.getByRole('main')).toBeInTheDocument();
@@ -128,8 +124,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should have accessible region labels in French', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Main content should be properly labeled
       const main = screen.getByRole('main');
@@ -138,8 +133,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should have proper heading hierarchy', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Check h1 (Hero)
       const h1 = screen.getByRole('heading', { level: 1 });
@@ -155,8 +149,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should support keyboard navigation', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Verify the page renders without interactive elements blocking keyboard nav
       const main = screen.getByRole('main');
@@ -164,8 +157,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should have sections with French lang attribute', () => {
-      const router = createTestRouter();
-      const { container } = render(<RouterProvider router={router} />);
+      const { container } = renderAboutPage();
 
       // Verify sections have lang="fr"
       const frenchElements = container.querySelectorAll('[lang="fr"]');
@@ -175,11 +167,10 @@ describe('About Route Integration Tests', () => {
 
   describe('French Language Support', () => {
     it('should display all text content in French', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Verify French title
-      expect(screen.getByText('Pauline Roussel')).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: 'Pauline Roussel' })).toBeInTheDocument();
       
       // Verify French subtitle
       expect(screen.getByText('DOULA ET PROFESSEURE DE YOGA')).toBeInTheDocument();
@@ -188,31 +179,29 @@ describe('About Route Integration Tests', () => {
       expect(screen.getByText(/Qui suis-je/i)).toBeInTheDocument();
       expect(screen.getByText(/Mon parcours/i)).toBeInTheDocument();
       expect(screen.getByText(/Ce qui m'inspire/i)).toBeInTheDocument();
-      expect(screen.getByText(/Ma méthode/i)).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 3, name: /Ma méthode/i })).toBeInTheDocument();
 
       // Verify French Inspiration titles
-      expect(screen.getByText(/Holistique/i)).toBeInTheDocument();
-      expect(screen.getByText(/Bienveillante/i)).toBeInTheDocument();
-      expect(screen.getByText(/Engagée/i)).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 3, name: /Holistique/i })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 3, name: /Bienveillante/i })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 3, name: /Engagée/i })).toBeInTheDocument();
 
       // Verify French CTA text
       expect(screen.getByText(/douceur et bienveillance/i)).toBeInTheDocument();
     });
 
     it('should have French descriptions in About subsections', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Verify French descriptions are present
-      expect(screen.getByText(/Curieuse et ouverte/i)).toBeInTheDocument();
+      expect(screen.getByText(/Curieuse et ouverte, j'aime apprendre encore et encore/i)).toBeInTheDocument();
       expect(screen.getByText(/Danseuse classique/i)).toBeInTheDocument();
       expect(screen.getByText(/puissance et la résilience des femmes/i)).toBeInTheDocument();
       expect(screen.getByText(/Holistique et personnalisée/i)).toBeInTheDocument();
     });
 
     it('should have French descriptions in Inspiration cards', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Verify inspiration card descriptions
       expect(screen.getByText(/corps, mental, émotions et énergie/i)).toBeInTheDocument();
@@ -223,8 +212,7 @@ describe('About Route Integration Tests', () => {
 
   describe('Page Structure', () => {
     it('should have Hero section as first element in main', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       const main = screen.getByRole('main');
       const heroRegion = screen.getByRole('region', { name: 'Section principale d\'accueil' });
@@ -234,8 +222,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should have Footer after main content', () => {
-      const router = createTestRouter();
-      const { container } = render(<RouterProvider router={router} />);
+      const { container } = renderAboutPage();
 
       // Get both main and footer
       const main = screen.getByRole('main');
@@ -252,8 +239,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should have About section with white background', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // About component uses Section with background="white" for the About page
       // Verify the about content exists
@@ -263,13 +249,11 @@ describe('About Route Integration Tests', () => {
 
   describe('Responsive Design', () => {
     it('should render without layout errors on mobile viewport', () => {
-      const router = createTestRouter();
-      
       // Simulate mobile viewport
       global.innerWidth = 375;
       global.innerHeight = 667;
-      
-      render(<RouterProvider router={router} />);
+
+      renderAboutPage();
 
       // Page should still render all key elements
       expect(screen.getByRole('main')).toBeInTheDocument();
@@ -278,13 +262,11 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should render without layout errors on tablet viewport', () => {
-      const router = createTestRouter();
-      
       // Simulate tablet viewport
       global.innerWidth = 768;
       global.innerHeight = 1024;
-      
-      render(<RouterProvider router={router} />);
+
+      renderAboutPage();
 
       // Page should still render all key elements
       expect(screen.getByRole('main')).toBeInTheDocument();
@@ -293,13 +275,11 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should render without layout errors on desktop viewport', () => {
-      const router = createTestRouter();
-      
       // Simulate desktop viewport
       global.innerWidth = 1920;
       global.innerHeight = 1080;
-      
-      render(<RouterProvider router={router} />);
+
+      renderAboutPage();
 
       // Page should still render all key elements
       expect(screen.getByRole('main')).toBeInTheDocument();
@@ -310,8 +290,7 @@ describe('About Route Integration Tests', () => {
 
   describe('About Section Content', () => {
     it('should render all 4 subsections with correct content', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Qui suis-je?
       expect(screen.getByText(/Curieuse et ouverte, j'aime apprendre/i)).toBeInTheDocument();
@@ -328,19 +307,17 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should have photo placeholder with caption', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Check for photo caption text
-      expect(screen.getByText('Pauline Roussel')).toBeInTheDocument();
+      expect(document.getElementById('pauline-photo-caption')).toHaveTextContent('Pauline Roussel');
       expect(screen.getByText('Doula et professeure de yoga')).toBeInTheDocument();
     });
   });
 
   describe('Inspirations Section', () => {
     it('should render all 3 inspiration cards in correct order', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Verify all three cards are present
       expect(screen.getByRole('heading', { name: /Holistique/i })).toBeInTheDocument();
@@ -349,8 +326,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should have inspiration cards with descriptions', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Verify descriptions
       expect(screen.getByText(/Ma méthode considère la Femme dans sa globalité/i)).toBeInTheDocument();
@@ -361,8 +337,7 @@ describe('About Route Integration Tests', () => {
 
   describe('CallToAction Integration', () => {
     it('should have proper CTA button with href', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       const ctaButton = screen.getByRole('link', { name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i });
       
@@ -373,8 +348,7 @@ describe('About Route Integration Tests', () => {
     });
 
     it('should have CTA subtitle text', () => {
-      const router = createTestRouter();
-      render(<RouterProvider router={router} />);
+      renderAboutPage();
 
       // Verify CTA subtitle is present
       expect(screen.getByText(/Curieuse et ouverte, je me nourris de chaque femme croisée/i)).toBeInTheDocument();

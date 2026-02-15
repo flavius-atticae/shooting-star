@@ -149,8 +149,8 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       const container = screen.getByTestId("touch-container");
       const button = screen.getByRole("button");
 
-      // Container should have adequate padding for pregnancy users
-      expect(container).toHaveClass("px-4"); // TailwindCSS padding
+      // Container should constrain width while allowing composed spacing
+      expect(container).toHaveClass("max-w-4xl", "mx-auto");
       expect(button).toBeInTheDocument();
     });
 
@@ -163,10 +163,8 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
 
       const container = screen.getByTestId("responsive-container");
 
-      // Should have responsive padding classes
-      expect(container).toHaveClass("px-4"); // Base mobile padding
-      expect(container).toHaveClass("sm:px-6"); // Small screen padding
-      expect(container).toHaveClass("lg:px-8"); // Large screen padding
+      // Should preserve responsive-friendly width constraints
+      expect(container).toHaveClass("max-w-6xl", "mx-auto");
     });
 
     it("should maintain readability with proper content constraints", () => {

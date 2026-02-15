@@ -11,11 +11,13 @@ configure({
 });
 
 // Mock IntersectionObserver for components that use it
-const mockIntersectionObserver = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-}));
+const mockIntersectionObserver = vi.fn(function () {
+  return {
+    disconnect: vi.fn(),
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+  };
+});
 
 Object.defineProperty(window, "IntersectionObserver", {
   writable: true,
@@ -30,11 +32,13 @@ Object.defineProperty(global, "IntersectionObserver", {
 });
 
 // Mock ResizeObserver for responsive components
-const mockResizeObserver = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-}));
+const mockResizeObserver = vi.fn(function () {
+  return {
+    disconnect: vi.fn(),
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+  };
+});
 
 Object.defineProperty(window, "ResizeObserver", {
   writable: true,

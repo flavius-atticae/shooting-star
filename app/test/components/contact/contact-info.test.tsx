@@ -38,7 +38,7 @@ describe("ContactInfo Component", () => {
       expect(emailLink).toBeInTheDocument();
       expect(emailLink).toHaveAttribute(
         "href",
-        "mailto:pauline.roussel@gmail.com"
+        "mailto:pauline@paulineroussel.ca"
       );
     });
 

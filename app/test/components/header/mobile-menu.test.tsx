@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, within } from "@testing-library/react";
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router";
@@ -81,7 +81,9 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         </TestWrapper>
       );
 
-      const menuContent = screen.getByRole("navigation").parentElement;
+      const menuContent = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
 
       // Should position below header
       expect(menuContent).toHaveClass(
@@ -125,8 +127,8 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       const expectedLinks = [
         { text: "Doula", href: "/doula" },
         { text: "Yoga", href: "/yoga" },
-        { text: "Féminin", href: "/feminin" },
-        { text: "À propos", href: "/about" },
+        { text: "Féminin", href: "/feminin-sacre" },
+        { text: "À propos", href: "/a-propos" },
       ];
 
       expectedLinks.forEach((link) => {
@@ -164,12 +166,14 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
     });
 
     it("should have comfortable spacing between navigation items", () => {
-      const navItems = screen.getAllByRole("listitem");
+      const navList = screen.getByRole("list");
+      const navLinks = within(navList).getAllByRole("link");
 
-      // Check spacing between adjacent items
-      if (navItems.length > 1) {
-        PregnancySafeTestUtils.validateSpacing(navItems[0], navItems[1]);
-      }
+      // Vertical spacing is managed by the list and touch-safe link padding
+      expect(navList).toHaveClass("space-y-1");
+      navLinks.forEach((link) => {
+        expect(link).toHaveClass("py-3");
+      });
     });
 
     it("should handle imprecise clicks from swollen fingers", async () => {
@@ -259,7 +263,9 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         </TestWrapper>
       );
 
-      const navigation = screen.getByRole("navigation");
+      const navigation = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
       expect(navigation).toHaveAttribute(
         "aria-label",
         "Menu de navigation principal"
@@ -421,8 +427,10 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
     });
 
     it("should use pregnancy-safe colors and styling", () => {
-      const navigation = screen.getByRole("navigation");
-      const menuContainer = navigation.parentElement;
+      const navigation = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
+      const menuContainer = navigation;
 
       // White background for calm feeling
       expect(menuContainer).toHaveClass("bg-white");
@@ -436,8 +444,10 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
     });
 
     it("should have gentle slide-in animation", () => {
-      const navigation = screen.getByRole("navigation");
-      const menuContainer = navigation.parentElement;
+      const navigation = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
+      const menuContainer = navigation;
 
       // Gentle slide-in animation (≤ 200ms for pregnancy)
       expect(menuContainer).toHaveClass(
@@ -461,7 +471,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
     });
 
     it("should have high contrast for pregnancy fatigue", () => {
-      const navLinks = screen.getAllByRole("link");
+      const navLinks = within(screen.getByRole("list")).getAllByRole("link");
 
       navLinks.forEach((link) => {
         // Should use high contrast text colors
@@ -478,7 +488,9 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         </TestWrapper>
       );
 
-      const menuContainer = screen.getByRole("navigation").parentElement;
+      const menuContainer = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
       expect(menuContainer).toHaveClass("lg:hidden");
     });
 
@@ -489,7 +501,9 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         </TestWrapper>
       );
 
-      const menuContainer = screen.getByRole("navigation").parentElement;
+      const menuContainer = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
       const backdrop = document.querySelector(".bg-neutral\\/20");
 
       // Both should adapt to responsive header heights
@@ -505,8 +519,10 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       );
 
       const scrollContainer = screen
-        .getByRole("navigation")
-        .parentElement?.querySelector(".max-h-\\[calc\\(100vh-3\\.5rem\\)\\]");
+        .getByRole("navigation", {
+          name: /Menu de navigation principal/i,
+        })
+        .querySelector(".max-h-\\[calc\\(100vh-3\\.5rem\\)\\]");
       expect(scrollContainer).toHaveClass(
         "max-h-[calc(100vh-3.5rem)]",
         "overflow-y-auto"
@@ -552,7 +568,9 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         </TestWrapper>
       );
 
-      const menuContainer = screen.getByRole("navigation").parentElement;
+      const menuContainer = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
 
       // 200ms duration is safe for pregnancy (no nausea)
       expect(menuContainer).toHaveClass("duration-200");
@@ -565,7 +583,9 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         </TestWrapper>
       );
 
-      const menuContainer = screen.getByRole("navigation").parentElement;
+      const menuContainer = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
       const classes = menuContainer?.className || "";
 
       // No bounce, pulse, or spin animations
@@ -582,7 +602,9 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         </TestWrapper>
       );
 
-      const menuContainer = screen.getByRole("navigation").parentElement;
+      const menuContainer = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
 
       // Gentle slide from top
       expect(menuContainer).toHaveClass("slide-in-from-top-2");
@@ -644,7 +666,11 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       );
 
       // Should render null and not pollute DOM
-      expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
+      expect(
+        screen.queryByRole("navigation", {
+          name: /Menu de navigation principal/i,
+        })
+      ).not.toBeInTheDocument();
       expect(
         document.querySelector(".bg-neutral\\/20")
       ).not.toBeInTheDocument();

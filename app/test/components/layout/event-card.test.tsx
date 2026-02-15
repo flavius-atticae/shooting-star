@@ -27,9 +27,8 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
       const article = screen.getByRole("article");
       expect(article).toBeInTheDocument();
       
-      // Should have fallback background color - image container is nested in the middle section
-      const imageBoxSection = article.querySelectorAll("div")[1]; // Image box with horizontal lines
-      const imageContainer = imageBoxSection.querySelector(".bg-cool");
+      // Should have fallback background color
+      const imageContainer = article.querySelector(".bg-cool");
       expect(imageContainer).toHaveClass("bg-cool");
     });
 
@@ -167,9 +166,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
       render(<EventCard {...mockEvent} detailsHref="#" />);
 
       const article = screen.getByRole("article");
-      // Image container is nested inside the middle section
-      const imageBoxSection = article.querySelectorAll("div")[1];
-      const imageContainer = imageBoxSection.querySelector(".mx-4");
+      const imageContainer = article.querySelector(".mx-4");
       
       expect(imageContainer).toHaveClass("rounded-xl");
     });
@@ -220,9 +217,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
       render(<EventCard {...mockEvent} detailsHref="#" />);
 
       const article = screen.getByRole("article");
-      // Image container is nested inside the middle section
-      const imageBoxSection = article.querySelectorAll("div")[1];
-      const imageContainer = imageBoxSection.querySelector(".mx-4");
+      const imageContainer = article.querySelector(".mx-4");
       
       expect(imageContainer).toHaveClass("w-48", "h-48", "md:w-56", "md:h-56");
     });
