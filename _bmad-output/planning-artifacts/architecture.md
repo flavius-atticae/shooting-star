@@ -40,7 +40,7 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 
 **Functional Requirements:**
 
-33 functional requirements organized into 8 categories:
+38 functional requirements organized into 9 categories:
 
 | Category                                 | FRs       | Status                         |
 | ---------------------------------------- | --------- | ------------------------------ |
@@ -52,17 +52,19 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 | SEO & Discoverability                    | FR22–FR25 | Phase 2 📋                     |
 | Monitoring & Operations                  | FR26–FR28 | Partial (health ✅, Sentry ❌) |
 | BMAD Development Workflow                | FR29–FR33 | In progress                    |
+| Test Strategy Modernization              | FR34–FR38 | To operationalize 🔨           |
 
-The core user-facing functionality (service pages, navigation, contact form) is already implemented and stable. The primary new work is visual polish (Issue #186) and SEO foundations (Phase 2).
+The core user-facing functionality (service pages, navigation, contact form) is already implemented and stable. The primary new work is visual polish (Issue #186), test strategy modernization (FR34–FR38), and SEO foundations (Phase 2).
 
 **Non-Functional Requirements:**
 
-23 NFRs across 4 categories:
+27 NFRs across 5 categories:
 
 - **Performance (6 NFRs):** LCP < 2.5s, INP < 200ms, CLS < 0.1, TTFB ≤ 800ms, optimized images, initial JS bundle ≤ 250KB gzip
 - **Security & Compliance (7 NFRs):** HTTPS, zero data persistence, input sanitization, anti-spam < 2% abuse, no non-essential cookies without consent, privacy policy, designated privacy officer
 - **Accessibility (6 NFRs):** WCAG 2.1 AA zero critical violations, AA contrast ratios, 44×44px touch targets, keyboard navigable with visible focus, reduced motion support, `lang="fr-CA"`
 - **Reliability (4 NFRs):** ≥ 99.0% monthly uptime, email failure alerts ≤ 5min, deploy interruption ≤ 60s, health endpoint < 500ms
+- **Test Platform Quality (4 NFRs):** flakiness ≤ 2%, PR feedback median ≤ 12 min, visual false positives ≤ 5%, deterministic visual rendering for critical checks
 
 **Scale & Complexity:**
 
@@ -258,6 +260,22 @@ Test:   app/test/integration/doula.test.tsx (integration)
 **Rationale:** Java-style mirror structure. No ambiguity for agents: given a source file path, the test file path is deterministic.
 
 **Affects:** All new test files, agent implementation instructions
+
+#### 4a. Test Strategy Modernization and Governance (FR34–FR38)
+
+**Decision:** Formalize test-strategy architecture as a first-class capability, with deterministic visual execution, vendor decoupling, blocking gates, baseline governance, and release telemetry.
+
+**Implementation details:**
+
+- Deterministic visual rendering in CI for critical checks (pinned runtime/container, fonts, viewport, timezone, locale)
+- Vendor decoupling via a CI-level adapter boundary (workflow orchestration independent from visual provider)
+- Branch-protection aligned required checks for test-strategy gates (merge blocked on failure)
+- Baseline governance through PR-only updates with explicit approver ownership and audit trail
+- Release telemetry artifact including flakiness, median mandatory-check duration, and visual false-positive ratio
+
+**Rationale:** FR34–FR38 and NFR-T1..NFR-T4 require operational governance, not only test implementation. This decision makes quality signals reproducible, auditable, and sustainable over time.
+
+**Affects:** `.github/workflows/*`, branch protection configuration, test strategy documentation, visual baseline review process, release-quality reporting
 
 ### Decision 5: Content Abstraction — Thin Service Layer
 
@@ -730,16 +748,17 @@ shooting-star/
 
 ### FR-to-Structure Mapping
 
-| FR Category                  | Primary Files                                              | New Files (🆕)                                                        |
-| ---------------------------- | ---------------------------------------------------------- | --------------------------------------------------------------------- |
-| FR1–FR5 Service Presentation | `routes/{about,yoga,doula,feminin-sacre}.tsx`, `data/*.ts` | `data/yoga.ts`, `data/contact.ts`, `lib/content.server.ts`            |
-| FR6–FR9 Navigation           | `components/layout/{header,navigation,footer}.tsx`         | —                                                                     |
-| FR10–FR13 Contact            | `routes/contact.tsx`, `lib/email.server.ts`, `emails/*`    | —                                                                     |
-| FR14–FR16 Security           | `lib/{form-security,honeypot.server,rate-limiter}.ts`      | —                                                                     |
-| FR17–FR21 Animations         | `hooks/use-browser-support.ts`                             | `hooks/use-pregnancy-safe-animation.ts`, `lib/animation-constants.ts` |
-| FR22–FR25 SEO                | —                                                          | `lib/seo.ts`, `routes/sitemap[.]xml.tsx`, `routes/robots[.]txt.tsx`   |
-| FR26–FR28 Monitoring         | `routes/health.tsx`                                        | `lib/sentry.server.ts`                                                |
-| FR29–FR33 BMAD               | `_bmad/`, `_bmad-output/`                                  | —                                                                     |
+| FR Category                  | Primary Files                                              | New Files (🆕)                                                         |
+| ---------------------------- | ---------------------------------------------------------- | ---------------------------------------------------------------------- |
+| FR1–FR5 Service Presentation | `routes/{about,yoga,doula,feminin-sacre}.tsx`, `data/*.ts` | `data/yoga.ts`, `data/contact.ts`, `lib/content.server.ts`             |
+| FR6–FR9 Navigation           | `components/layout/{header,navigation,footer}.tsx`         | —                                                                      |
+| FR10–FR13 Contact            | `routes/contact.tsx`, `lib/email.server.ts`, `emails/*`    | —                                                                      |
+| FR14–FR16 Security           | `lib/{form-security,honeypot.server,rate-limiter}.ts`      | —                                                                      |
+| FR17–FR21 Animations         | `hooks/use-browser-support.ts`                             | `hooks/use-pregnancy-safe-animation.ts`, `lib/animation-constants.ts`  |
+| FR22–FR25 SEO                | —                                                          | `lib/seo.ts`, `routes/sitemap[.]xml.tsx`, `routes/robots[.]txt.tsx`    |
+| FR26–FR28 Monitoring         | `routes/health.tsx`                                        | `lib/sentry.server.ts`                                                 |
+| FR29–FR33 BMAD               | `_bmad/`, `_bmad-output/`                                  | —                                                                      |
+| FR34–FR38 Test Strategy      | `.github/workflows/*`, branch protections, QA artifacts    | Test-strategy docs, release stability reports, baseline governance log |
 
 ### External Integration Points
 
@@ -767,20 +786,21 @@ The project tree (Step 6) fully supports all architectural decisions. Client/ser
 
 ### Requirements Coverage Validation ✅
 
-**Functional Requirements Coverage (33/33):**
+**Functional Requirements Coverage (38/38):**
 
-| Category                | FRs       | Architectural Support                                | Status  |
-| ----------------------- | --------- | ---------------------------------------------------- | ------- |
-| Service Presentation    | FR1–FR5   | Routes + data + content.server.ts                    | ✅ Full |
-| Discovery & Navigation  | FR6–FR9   | Layout components (header, navigation, footer)       | ✅ Full |
-| Contact                 | FR10–FR13 | Action route + email.server + retry + Sentry alerts  | ✅ Full |
-| Protection & Security   | FR14–FR16 | Honeypot + rate limiter + sanitization               | ✅ Full |
-| Animations              | FR17–FR21 | 4 primitives + usePregnancySafeAnimation + constants | ✅ Full |
-| SEO & Discoverability   | FR22–FR25 | seo.ts builders + sitemap.xml + robots.txt routes    | ✅ Full |
-| Monitoring & Operations | FR26–FR28 | Health endpoint + Sentry server-only                 | ✅ Full |
-| BMAD Workflow           | FR29–FR33 | This document + \_bmad framework                     | ✅ Full |
+| Category                | FRs       | Architectural Support                                 | Status  |
+| ----------------------- | --------- | ----------------------------------------------------- | ------- |
+| Service Presentation    | FR1–FR5   | Routes + data + content.server.ts                     | ✅ Full |
+| Discovery & Navigation  | FR6–FR9   | Layout components (header, navigation, footer)        | ✅ Full |
+| Contact                 | FR10–FR13 | Action route + email.server + retry + Sentry alerts   | ✅ Full |
+| Protection & Security   | FR14–FR16 | Honeypot + rate limiter + sanitization                | ✅ Full |
+| Animations              | FR17–FR21 | 4 primitives + usePregnancySafeAnimation + constants  | ✅ Full |
+| SEO & Discoverability   | FR22–FR25 | seo.ts builders + sitemap.xml + robots.txt routes     | ✅ Full |
+| Monitoring & Operations | FR26–FR28 | Health endpoint + Sentry server-only                  | ✅ Full |
+| BMAD Workflow           | FR29–FR33 | This document + \_bmad framework                      | ✅ Full |
+| Test Strategy           | FR34–FR38 | Deterministic visual CI + gate governance + telemetry | ✅ Full |
 
-**Non-Functional Requirements Coverage (23/23):**
+**Non-Functional Requirements Coverage (27/27):**
 
 | Category              | Count | Architectural Support                                                              | Status  |
 | --------------------- | ----- | ---------------------------------------------------------------------------------- | ------- |
@@ -788,6 +808,7 @@ The project tree (Step 6) fully supports all architectural decisions. Client/ser
 | Security & Compliance | 7     | Zero data persistence + .server.ts isolation + honeypot + no non-essential cookies | ✅ Full |
 | Accessibility         | 6     | WCAG 2.1 AA pattern category + 44px touch targets + reduced motion + lang="fr-CA"  | ✅ Full |
 | Reliability           | 4     | Sentry alerts (≤5min) + email retry + health endpoint (<500ms) + rolling deploy    | ✅ Full |
+| Test Platform         | 4     | Flakiness/latency/false-positive telemetry + deterministic visual execution        | ✅ Full |
 
 ### Implementation Readiness Validation ✅
 
@@ -827,7 +848,7 @@ All 11 potential conflict zones are addressed with explicit conventions. Naming 
 
 **✅ Requirements Analysis**
 
-- [x] Project context thoroughly analyzed (33 FRs, 23 NFRs)
+- [x] Project context thoroughly analyzed (38 FRs, 27 NFRs)
 - [x] Scale and complexity assessed (medium — 33 components, 7 routes)
 - [x] Technical constraints identified (stack locked, brownfield, Fly.io)
 - [x] Cross-cutting concerns mapped (6 concerns: pregnancy-safe UX, compliance, a11y, SEO, BMAD, content evolution)

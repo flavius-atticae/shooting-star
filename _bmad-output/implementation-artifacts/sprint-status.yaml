@@ -86,6 +86,14 @@ development_status:
   7-3-review-and-define-project-testing-policy: backlog
   epic-7-retrospective: optional
 
+  epic-8: backlog
+  8-1-define-and-enforce-test-pyramid-responsibilities: backlog
+  8-2-implement-tool-agnostic-visual-checks-in-ci: backlog
+  8-3-enforce-blocking-merge-gates-for-test-strategy: backlog
+  8-4-govern-visual-baseline-updates-via-traceable-pr-flow: backlog
+  8-5-publish-release-level-test-stability-reporting: backlog
+  epic-8-retrospective: optional
+
 retrospective_follow_ups:
   - id: retro-2026-02-14-testing-policy
     status: open
