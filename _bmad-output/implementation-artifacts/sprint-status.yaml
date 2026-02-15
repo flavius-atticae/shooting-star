@@ -43,7 +43,7 @@ development_status:
   epic-1: in-progress
   1-1-create-content-abstraction-layer: done
   1-2-normalize-file-naming-conventions: done
-  1-3-establish-test-conventions-documentation: backlog
+  1-3-establish-test-conventions-documentation: done
   epic-1-retrospective: optional
 
   epic-2: backlog
