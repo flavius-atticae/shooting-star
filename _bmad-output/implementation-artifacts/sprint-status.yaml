@@ -1,4 +1,4 @@
-# generated: 2026-02-14
+# generated: 2026-02-15
 # project: shooting-star
 # project_key: NOKEY
 # tracking_system: file-system
@@ -33,7 +33,7 @@
 # - SM typically creates next story after previous one is 'done' to incorporate learnings
 # - Dev moves story to 'review', then runs code-review (fresh context, different LLM recommended)
 
-generated: 2026-02-14
+generated: 2026-02-15
 project: shooting-star
 project_key: NOKEY
 tracking_system: file-system
@@ -83,25 +83,12 @@ development_status:
   epic-7: backlog
   7-1-ci-cd-pipeline-test-enforcement: backlog
   7-2-agent-ready-story-implementation-conventions: backlog
-  7-3-review-and-define-project-testing-policy: backlog
   epic-7-retrospective: optional
 
-  epic-8: backlog
-  8-1-define-and-enforce-test-pyramid-responsibilities: backlog
+  epic-8: in-progress
+  8-1-define-and-enforce-test-pyramid-responsibilities: ready-for-dev
   8-2-implement-tool-agnostic-visual-checks-in-ci: backlog
   8-3-enforce-blocking-merge-gates-for-test-strategy: backlog
   8-4-govern-visual-baseline-updates-via-traceable-pr-flow: backlog
   8-5-publish-release-level-test-stability-reporting: backlog
   epic-8-retrospective: optional
-
-retrospective_follow_ups:
-  - id: retro-2026-02-14-testing-policy
-    status: open
-    source_story: 1-1-create-content-abstraction-layer
-    summary: >-
-      Review and redefine the project-wide testing policy. Current sprint accepts
-      Chromatic visual regression limits for Story 1.1, but a complete testing
-      strategy refresh is required.
-    discuss_in_retro: true
-    send_to_backlog: true
-    backlog_item: 7-3-review-and-define-project-testing-policy
