@@ -34,12 +34,16 @@ classification:
   domain: wellness_professional_services
   complexity: medium
   projectContext: brownfield
-lastEdited: "2026-02-13"
+lastEdited: "2026-02-15"
 editHistory:
   - date: "2026-02-13"
     changes: "Full revision guided by validation report: measurable FR/NFR, leakage cleanup, traceability and completeness improvements"
   - date: "2026-02-13"
     changes: "Traceability hardening and final FR wording cleanup for full guided revision"
+  - date: "2026-02-15"
+    changes: "Added Phase 1 Epic 2 for test strategy modernization, with measurable quality metrics, FR/NFR additions, and CI quality gate alignment"
+  - date: "2026-02-15"
+    changes: "Added consolidated traceability matrix and LLM Spec Pack appendix for Epic 2 requirements"
 ---
 
 # Product Requirements Document - shooting-star
@@ -102,6 +106,9 @@ editHistory:
 | Accessibilité                    | WCAG 2.1 AA                                                           | axe-core automatisé + tests manuels |
 | LCP mobile                       | < 2.5s                                                                | Lighthouse CI                       |
 | Codebase rationalisé             | -10% de duplication sur composants critiques et 0 code mort identifié | Audit LOC + revue technique         |
+| Flaky tests                      | Taux de flakiness ≤ 2% sur les suites critiques pendant 3 sprints     | Historique CI (reruns/runs totaux) |
+| Feedback CI sur PR               | Temps médian ≤ 12 minutes pour checks obligatoires                    | Durée workflow CI sur PR            |
+| Faux positifs visuels            | ≤ 5% des échecs visuels classés comme bruit                           | Triage visuel mensuel               |
 
 ## Product Scope
 
@@ -222,8 +229,10 @@ editHistory:
 3. **Architecture** → L'agent Architecte (Winston) valide que le changement s'intègre proprement dans la stack existante, pas de complexité ajoutée inutile
 4. **Implémentation** → L'agent Dev (Amelia) implémente la story en suivant les specs exactes, avec les tests unitaires
 5. **QA** → L'agent QA (Quinn) vérifie la couverture de test, les régressions, l'accessibilité
-6. **Review** → Flavius review la PR, vérifie le code, merge
-7. **Déploiement** → CI/CD pousse en staging puis production via Fly.io
+6. **Quality Gates** → Les checks obligatoires (tests critiques, régression visuelle, règles de merge) passent avec un signal fiable
+7. **Review** → Flavius review la PR, vérifie le code, merge
+8. **Maintenance des baselines** → Les snapshots visuels approuvés sont mis à jour via un flux explicite en PR
+9. **Déploiement** → CI/CD pousse en staging puis production via Fly.io
 
 **Climax :** L'agent Dev produit du code qui passe les tests du premier coup, respecte les conventions du projet, et ne génère pas de dette technique.
 
@@ -245,6 +254,19 @@ editHistory:
 | **Pauline (admin)**                | Notifications email fiables, emails clairs et complets, pas d'interface admin (pour l'instant)        |
 | **Flavius + Agent IA (dev BMAD)**  | Artefacts BMAD comme source de vérité, CI/CD comme filet de sécurité, docs synchronisées avec le code |
 
+## Traceability Matrix
+
+| Journey / Objective                         | Epic | FR Coverage           | NFR Coverage                  | Test Signal                                          | Owner   | Status |
+| ------------------------------------------- | ---- | --------------------- | ----------------------------- | ---------------------------------------------------- | ------- | ------ |
+| Conversion B2C doula (Camille, Isabelle)   | 1    | FR1-FR13, FR22-FR25   | NFR-P1-P6, NFR-A1-A6          | E2E contact/navigation, a11y checks, Lighthouse CI   | Flavius | Active |
+| Fiabilité opérationnelle (Pauline)          | 1    | FR14-FR16, FR26-FR28  | NFR-F1-F4, NFR-S1-S7          | Health checks, email flow tests, abuse protection    | Flavius | Active |
+| Delivery BMAD (Flavius + Agents IA)         | 1    | FR29-FR33             | NFR-T2 (feedback CI), NFR-F3  | PR checks pass/fail, implementation readiness checks | Flavius | Active |
+| Stratégie de test modernisée (Epic 2)       | 2    | FR34-FR38             | NFR-T1-T4                     | Visual regression, flakiness trend, merge gates      | Flavius | Active |
+
+**Legend:**
+- **Epic 1:** Consolidation technique
+- **Epic 2:** Modernisation de la stratégie de test
+
 ## Web App Specific Requirements
 
 ### Project-Type Overview
@@ -255,7 +277,7 @@ Shooting-star est un site vitrine SSR (Server-Side Rendered) construit avec Reac
 
 - **Approche :** Mobile-first — le design mobile est la référence, le desktop est l'adaptation
 - **Breakpoints :** Suivent les breakpoints Tailwind standard (sm: 640px, md: 768px, lg: 1024px, xl: 1280px)
-- **Viewports testés :** 375px (mobile), 768px (tablette), 1280px (desktop), 1536px (xlarge) — déjà couverts par Chromatic
+- **Viewports testés :** 375px (mobile), 768px (tablette), 1280px (desktop), 1536px (xlarge) — déjà couverts par les tests de régression visuelle
 - **Touch targets :** Minimum 44×44px sur mobile — déjà implémenté
 
 ### Browser Support
@@ -335,11 +357,21 @@ Les critères mesurables d'accessibilité sont définis dans la section [Non-Fun
 
 **Core User Journeys supportés :** Camille, Isabelle, Pauline, Flavius + Agent IA
 
+**Epic 1 — Consolidation technique :** Rationalisation du code, fiabilisation des flux critiques et réduction de la dette technique.
+
+**Epic 2 — Modernisation de la stratégie de test (Phase 1) :**
+
+- Définir une pyramide de test explicite (unit/integration/component/e2e/visual) sans duplication d'assertions
+- Remplacer la dépendance à un outil visuel unique par une stratégie de régression visuelle soutenable en CI
+- Stabiliser la CI de test avec des gates explicites et une gouvernance des baselines
+- Maintenir des boucles de feedback rapides sur PR tout en limitant le bruit de faux positifs
+
 **Must-Have :**
 
 - Documentation BMAD complète (PRD, Architecture, Epics/Stories) comme source de vérité
 - Rationalisation du codebase (~22k LOC → identifier et éliminer le superflu)
 - Renforcement des tests (flux critiques couverts, build qui casse si régression)
+- Mise en place de l'Epic 2 de stratégie de test (pyramide, visual regression sans dépendance fournisseur unique, quality gates CI)
 - **Issue #186 — Effets graphiques subtils :** Animations au scroll, micro-interactions boutons/cartes, transitions de page, support `prefers-reduced-motion`, pas d'impact LCP/CLS
 
 ### Phase 2 — SEO, Contenu & Monitoring
@@ -370,11 +402,12 @@ Les critères mesurables d'accessibilité sont définis dans la section [Non-Fun
 
 | Risque                                              | Impact               | Mitigation                                                             |
 | --------------------------------------------------- | -------------------- | ---------------------------------------------------------------------- |
-| **Technique — Régression silencieuse**              | Moyen                | Tests CI/CD + Chromatic visual regression                              |
+| **Technique — Régression silencieuse**              | Moyen                | Tests CI/CD + régression visuelle en environnement déterministe        |
 | **Technique — Over-engineering**                    | Moyen                | Stack proportionnée, pas d'ajout de complexité inutile                 |
 | **Market — SEO inexistant**                         | Élevé                | Phase 2 dédiée au SEO local, requêtes hyper-locales moins compétitives |
 | **Ressource — Dev solo**                            | Moyen                | BMAD + agents IA pour multiplier la capacité, phases indépendantes     |
 | **Business — Pauline ne peut pas modifier le site** | Faible (court terme) | Flavius gère, CMS en Phase 3 si nécessaire                             |
+| **Qualité — Bruit de régression visuelle**          | Moyen                | Environnement CI déterministe, gouvernance baseline et triage mensuel  |
 
 ## Functional Requirements
 
@@ -435,6 +468,14 @@ Les critères mesurables d'accessibilité sont définis dans la section [Non-Fun
 - **FR32:** Un agent IA peut implémenter une story complète avec au plus 2 demandes de clarification sur les artefacts fournis.
 - **FR33:** Un nouveau contributeur (humain ou IA) peut démarrer le projet et expliquer l'architecture en ≤ 60 minutes à partir de la documentation.
 
+### Stratégie de Test & Quality Gates (Epic 2)
+
+- **FR34:** Le projet peut appliquer une pyramide de test documentée couvrant unit, integration, component, end-to-end et visual regression.
+- **FR35:** Le processus qualité peut exécuter des vérifications visuelles en CI sans dépendance obligatoire à un outil fournisseur unique.
+- **FR36:** Le processus qualité peut empêcher le merge lorsque les checks obligatoires de stratégie de test échouent.
+- **FR37:** Flavius peut approuver et mettre à jour les baselines visuelles via un flux traçable en pull request.
+- **FR38:** Le système peut produire des rapports exploitables sur la stabilité des tests (flakiness, durée, faux positifs) à chaque release.
+
 ## Non-Functional Requirements
 
 ### Performance
@@ -479,3 +520,130 @@ Les critères mesurables d'accessibilité sont définis dans la section [Non-Fun
 | **NFR-F2** | En cas d'échec d'envoi de confirmation, alerte générée en ≤ 5 minutes et procédure de reprise déclenchée | Journal d'erreurs + alerte opérationnelle |
 | **NFR-F3** | Déploiement production avec interruption perçue ≤ 60 secondes pour 95% des releases                      | Rapport de déploiement mensuel            |
 | **NFR-F4** | Endpoint `/health` répond en < 500ms pour 95% des checks et retourne un statut exploitable               | Supervision HTTP continue                 |
+
+### Qualité de la Plateforme de Test
+
+| NFR        | Cible                                                                                    | Mesure                               |
+| ---------- | ---------------------------------------------------------------------------------------- | ------------------------------------ |
+| **NFR-T1** | Taux de flakiness ≤ 2% sur les suites critiques pendant 3 sprints consécutifs           | Historique CI et analyse des reruns  |
+| **NFR-T2** | Temps médian de feedback des checks obligatoires sur PR ≤ 12 minutes                    | Mesure automatisée des workflows CI  |
+| **NFR-T3** | ≤ 5% des échecs visuels sur PR sont classés comme faux positifs après triage mensuel    | Journal de triage des régressions    |
+| **NFR-T4** | 100% des exécutions visuelles critiques utilisent un environnement de rendu déterministe | Configuration CI auditée par release |
+
+## Appendix - LLM Spec Pack
+
+### Scope
+
+Ce pack formalise les exigences critiques de l'Epic 2 pour faciliter l'exécution agentique (planification, implémentation, QA) avec un format stable.
+
+### Requirement Specs
+
+#### FR34
+
+- `id`: FR34
+- `intent`: Appliquer une pyramide de test documentée couvrant unit, integration, component, end-to-end et visual regression.
+- `acceptance`:
+  - La documentation de stratégie de test couvre les 5 niveaux.
+  - Chaque niveau a une responsabilité explicite et non redondante.
+- `telemetry`:
+  - Couverture des niveaux de test par release.
+  - Taux d'échecs par niveau.
+- `risk`: Sur-couverture redondante ou angles morts entre niveaux.
+- `dependencies`: FR31, FR36, NFR-T1, NFR-T2
+
+#### FR35
+
+- `id`: FR35
+- `intent`: Exécuter des vérifications visuelles en CI sans dépendance obligatoire à un fournisseur unique.
+- `acceptance`:
+  - La CI exécute les checks visuels sur les parcours critiques.
+  - Le workflow reste opérable en cas de changement d'outil visuel.
+- `telemetry`:
+  - Taux d'échecs visuels par PR.
+  - Volume de faux positifs visuels.
+- `risk`: Couplage excessif à un outil ou bruit élevé de régression visuelle.
+- `dependencies`: NFR-T3, NFR-T4
+
+#### FR36
+
+- `id`: FR36
+- `intent`: Empêcher le merge si les quality gates de stratégie de test échouent.
+- `acceptance`:
+  - Les checks requis sont bloquants en PR.
+  - Les règles de merge sont appliquées systématiquement.
+- `telemetry`:
+  - Taux de blocage PR par type de gate.
+  - Délai moyen de résolution des échecs.
+- `risk`: Contournement des gates ou règles incohérentes entre workflows.
+- `dependencies`: FR31, NFR-T2
+
+#### FR37
+
+- `id`: FR37
+- `intent`: Mettre à jour et approuver les baselines visuelles via un flux PR traçable.
+- `acceptance`:
+  - Toute mise à jour de baseline est liée à une PR.
+  - L'approbation est explicite avant merge.
+- `telemetry`:
+  - Nombre de mises à jour baseline par sprint.
+  - Temps médian de revue baseline.
+- `risk`: Drift de baseline non contrôlé ou approbation implicite.
+- `dependencies`: FR35, FR36, NFR-T3
+
+#### FR38
+
+- `id`: FR38
+- `intent`: Produire des rapports exploitables sur la stabilité des tests à chaque release.
+- `acceptance`:
+  - Rapport release incluant flakiness, durée, faux positifs.
+  - Les métriques sont comparables release à release.
+- `telemetry`:
+  - Flakiness trend.
+  - Durée médiane des checks obligatoires.
+  - Ratio faux positifs visuels.
+- `risk`: Données incomplètes ou non comparables dans le temps.
+- `dependencies`: NFR-T1, NFR-T2, NFR-T3
+
+#### NFR-T1
+
+- `id`: NFR-T1
+- `intent`: Maintenir un taux de flakiness ≤ 2% sur suites critiques pendant 3 sprints.
+- `acceptance`:
+  - Seuil ≤ 2% respecté sur fenêtre glissante 3 sprints.
+- `telemetry`:
+  - Reruns / runs totaux (suites critiques).
+- `risk`: Instabilité chronique des pipelines de test.
+- `dependencies`: FR34, FR38
+
+#### NFR-T2
+
+- `id`: NFR-T2
+- `intent`: Garder un temps médian de feedback des checks obligatoires ≤ 12 minutes sur PR.
+- `acceptance`:
+  - Médiane ≤ 12 minutes sur période mensuelle.
+- `telemetry`:
+  - Durée des workflows obligatoires par PR.
+- `risk`: Boucle feedback trop lente, baisse de productivité.
+- `dependencies`: FR36, FR38
+
+#### NFR-T3
+
+- `id`: NFR-T3
+- `intent`: Maintenir ≤ 5% de faux positifs visuels après triage mensuel.
+- `acceptance`:
+  - Ratio faux positifs ≤ 5% par cycle de triage.
+- `telemetry`:
+  - Journal de triage des régressions visuelles.
+- `risk`: Perte de confiance dans les checks visuels.
+- `dependencies`: FR35, FR37, FR38
+
+#### NFR-T4
+
+- `id`: NFR-T4
+- `intent`: Garantir un environnement de rendu déterministe pour 100% des exécutions visuelles critiques.
+- `acceptance`:
+  - Tous les jobs visuels critiques exécutent un environnement verrouillé et reproductible.
+- `telemetry`:
+  - Audit de configuration CI par release.
+- `risk`: Faux écarts causés par dérive d'environnement.
+- `dependencies`: FR35

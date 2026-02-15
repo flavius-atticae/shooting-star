@@ -55,6 +55,11 @@ This document provides the complete epic and story breakdown for shooting-star, 
 - **FR31:** The quality process can block integration of changes when mandatory tests fail.
 - **FR32:** An AI agent can implement a complete story with at most 2 clarification requests on provided artifacts.
 - **FR33:** A new contributor (human or AI) can start the project and explain the architecture in ≤ 60 minutes from documentation.
+- **FR34:** The project can apply a documented test pyramid covering unit, integration, component, end-to-end, and visual regression levels.
+- **FR35:** The quality process can run visual checks in CI without mandatory dependence on a single vendor tool.
+- **FR36:** The quality process can block merge when mandatory test-strategy checks fail.
+- **FR37:** Flavius can approve and update visual baselines through a traceable pull-request flow.
+- **FR38:** The system can produce actionable release stability reports for flakiness, durations, and false positives.
 
 ### NonFunctional Requirements
 
@@ -92,6 +97,13 @@ This document provides the complete epic and story breakdown for shooting-star, 
 - **NFR-F2:** On email send failure, alert generated in ≤ 5 minutes and recovery procedure triggered
 - **NFR-F3:** Production deployment with perceived interruption ≤ 60 seconds for 95% of releases
 - **NFR-F4:** `/health` endpoint responds in < 500ms for 95% of checks and returns an exploitable status
+
+**Test Platform Quality:**
+
+- **NFR-T1:** Flakiness rate ≤ 2% on critical suites during 3 consecutive sprints
+- **NFR-T2:** Median PR feedback time for mandatory checks ≤ 12 minutes
+- **NFR-T3:** ≤ 5% of PR visual failures classified as false positives after monthly triage
+- **NFR-T4:** 100% of critical visual executions use a deterministic rendering environment
 
 ### Additional Requirements
 
@@ -214,6 +226,11 @@ FR30: Epic 1 - AI agent implements story following conventions
 FR31: Epic 7 - Quality process blocks integration on test failure
 FR32: Epic 7 - AI agent implements story with ≤ 2 clarification requests
 FR33: Epic 1 - New contributor starts project in ≤ 60 minutes
+FR34: Epic 8 - Document and enforce non-overlapping test pyramid responsibilities
+FR35: Epic 8 - Run tool-agnostic visual checks in CI
+FR36: Epic 8 - Enforce blocking merge gates for test-strategy checks
+FR37: Epic 8 - Approve and update visual baselines through traceable PR flow
+FR38: Epic 8 - Publish release-level stability reporting (flakiness/duration/false positives)
 
 ## Epic List
 
@@ -258,6 +275,12 @@ The technical team is alerted on issues (server errors, email failures) and can 
 The build breaks if something regresses. An AI agent can implement a complete story with ≤ 2 clarification requests. The BMAD workflow is the source of truth.
 **FRs covered:** FR31, FR32
 **Additional:** Architecture Decision 4 — test conventions, CI/CD pipeline, Chromatic visual regression
+
+### Epic 8: Test Strategy Modernization and Governance
+
+The project enforces a complete and maintainable test strategy across unit, integration, component, e2e, and visual levels with deterministic CI, traceable baseline governance, and release stability reporting.
+**FRs covered:** FR34, FR35, FR36, FR37, FR38
+**Additional:** NFR-T1, NFR-T2, NFR-T3, NFR-T4; CI required checks and branch protections; vendor-decoupled visual checks
 
 ## Epic 1: Content Foundation and Code Conventions
 
@@ -800,3 +823,105 @@ So that I can implement a complete story with ≤ 2 clarification requests on pr
 **Then** the code follows all 11 implementation patterns from the Architecture document
 **And** the code passes all 7 enforcement guidelines
 **And** the code avoids all 8 documented anti-patterns
+
+## Epic 8: Test Strategy Modernization and Governance
+
+The project enforces a complete and maintainable test strategy across unit, integration, component, e2e, and visual levels with deterministic CI, traceable baseline governance, and release stability reporting.
+
+### Story 8.1: Define and enforce test pyramid responsibilities
+
+As Flavius (developer),
+I want a documented and enforced test pyramid with non-overlapping responsibilities,
+So that each test level validates distinct risks without duplication or coverage gaps.
+
+**Acceptance Criteria:**
+
+**Given** the project test strategy documentation is updated
+**When** test levels are defined
+**Then** unit, integration, component, e2e, and visual levels each have explicit scope, ownership, and out-of-scope rules
+**And** overlap examples and anti-overlap rules are included for each level
+**And** the strategy is linked from onboarding and implementation guidelines
+
+**Given** a PR adds or updates tests
+**When** the review checklist is executed
+**Then** each added test is mapped to one pyramid level with explicit rationale
+**And** no duplicate assertion is required across multiple levels unless explicitly justified
+**And** FR34 is satisfied with measurable test-level accountability
+
+### Story 8.2: Implement tool-agnostic visual checks in CI
+
+As Flavius (developer),
+I want CI visual checks that remain operable with more than one provider strategy,
+So that visual regression quality does not depend on a single vendor lock-in.
+
+**Acceptance Criteria:**
+
+**Given** visual checks run in pull requests
+**When** CI executes visual validation
+**Then** the workflow uses an abstraction boundary (adapter/script interface) separating CI orchestration from vendor implementation
+**And** at least one fallback execution path is documented and runnable
+**And** critical visual scenarios are covered on every PR
+
+**Given** visual checks are audited
+**When** architecture and workflow docs are reviewed
+**Then** deterministic rendering prerequisites are explicitly listed (fonts, viewport, timezone, OS/runtime pinning)
+**And** FR35 and NFR-T4 are satisfied
+
+### Story 8.3: Enforce blocking merge gates for test strategy
+
+As Flavius (developer),
+I want mandatory test-strategy checks to block merge on failure,
+So that regressions cannot be merged silently.
+
+**Acceptance Criteria:**
+
+**Given** a pull request targets `main`
+**When** required checks run
+**Then** merge is blocked when mandatory checks fail (test pyramid checks + visual gate + type/lint/test checks)
+**And** required checks are aligned with branch protection rules
+**And** failure semantics and ownership are documented
+
+**Given** a check fails
+**When** the developer inspects CI output
+**Then** failing gate name, reason, and remediation path are visible
+**And** median feedback time tracking is captured for NFR-T2
+**And** FR36 is satisfied
+
+### Story 8.4: Govern visual baseline updates via traceable PR flow
+
+As Flavius (developer),
+I want baseline changes approved and audited through pull requests,
+So that baseline drift is controlled and every update is traceable.
+
+**Acceptance Criteria:**
+
+**Given** visual baseline files are modified
+**When** a PR is opened
+**Then** baseline updates are isolated, reviewable, and linked to UI change rationale
+**And** an explicit approval step is required before merge
+**And** approver identity and decision are preserved in PR history
+
+**Given** monthly visual triage is performed
+**When** outcomes are recorded
+**Then** false positives and accepted baseline updates are logged with reason codes
+**And** NFR-T3 is measurable from recorded data
+**And** FR37 is satisfied
+
+### Story 8.5: Publish release-level test stability reporting
+
+As Flavius (developer),
+I want release reports on test stability,
+So that quality trends are visible and actionable sprint over sprint.
+
+**Acceptance Criteria:**
+
+**Given** a release candidate is finalized
+**When** quality reporting is generated
+**Then** the report includes flakiness rate, median mandatory-check duration, and visual false-positive ratio
+**And** metrics are comparable across releases with consistent definitions
+**And** the report is stored in a traceable project artifact location
+
+**Given** the report is reviewed
+**When** thresholds are evaluated
+**Then** breaches against NFR-T1, NFR-T2, or NFR-T3 trigger explicit follow-up actions
+**And** FR38 is satisfied
