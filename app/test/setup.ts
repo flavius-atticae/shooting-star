@@ -11,38 +11,42 @@ configure({
 });
 
 // Mock IntersectionObserver for components that use it
-const mockIntersectionObserver = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-}));
+const mockIntersectionObserver = vi.fn(function () {
+  return {
+    disconnect: vi.fn(),
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+  };
+});
 
-Object.defineProperty(window, 'IntersectionObserver', {
+Object.defineProperty(window, "IntersectionObserver", {
   writable: true,
   configurable: true,
   value: mockIntersectionObserver,
 });
 
-Object.defineProperty(global, 'IntersectionObserver', {
+Object.defineProperty(global, "IntersectionObserver", {
   writable: true,
   configurable: true,
   value: mockIntersectionObserver,
 });
 
 // Mock ResizeObserver for responsive components
-const mockResizeObserver = vi.fn(() => ({
-  disconnect: vi.fn(),
-  observe: vi.fn(),
-  unobserve: vi.fn(),
-}));
+const mockResizeObserver = vi.fn(function () {
+  return {
+    disconnect: vi.fn(),
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+  };
+});
 
-Object.defineProperty(window, 'ResizeObserver', {
+Object.defineProperty(window, "ResizeObserver", {
   writable: true,
   configurable: true,
   value: mockResizeObserver,
 });
 
-Object.defineProperty(global, 'ResizeObserver', {
+Object.defineProperty(global, "ResizeObserver", {
   writable: true,
   configurable: true,
   value: mockResizeObserver,
@@ -68,28 +72,32 @@ Object.defineProperty(navigator, "languages", {
 // Mock Intl for consistent date/currency formatting in tests
 global.Intl = {
   ...global.Intl,
-  DateTimeFormat: vi.fn().mockImplementation((locale, options) => ({
-    format: vi.fn((date: Date) => {
-      // Quebec format: DD/MM/YYYY
-      if (locale?.includes("fr")) {
-        return date.toLocaleDateString("fr-CA");
-      }
-      return date.toLocaleDateString("en-CA");
-    }),
-    formatToParts: vi.fn(),
-    resolvedOptions: vi.fn(() => options),
-  })),
-  NumberFormat: vi.fn().mockImplementation((locale, options) => ({
-    format: vi.fn((number: number) => {
-      // CAD currency formatting
-      if (options?.style === "currency") {
-        return `${number.toFixed(2)} $ CAD`;
-      }
-      return number.toLocaleString(locale);
-    }),
-    formatToParts: vi.fn(),
-    resolvedOptions: vi.fn(() => options),
-  })),
+  DateTimeFormat: vi.fn().mockImplementation(function (locale, options) {
+    return {
+      format: vi.fn((date: Date) => {
+        // Quebec format: DD/MM/YYYY
+        if (locale?.includes("fr")) {
+          return date.toLocaleDateString("fr-CA");
+        }
+        return date.toLocaleDateString("en-CA");
+      }),
+      formatToParts: vi.fn(),
+      resolvedOptions: vi.fn(() => options),
+    };
+  }),
+  NumberFormat: vi.fn().mockImplementation(function (locale, options) {
+    return {
+      format: vi.fn((number: number) => {
+        // CAD currency formatting
+        if (options?.style === "currency") {
+          return `${number.toFixed(2)} $ CAD`;
+        }
+        return number.toLocaleString(locale);
+      }),
+      formatToParts: vi.fn(),
+      resolvedOptions: vi.fn(() => options),
+    };
+  }),
 } as any;
 
 // Mock window.matchMedia for responsive/dark mode testing

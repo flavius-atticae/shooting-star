@@ -1,5 +1,11 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  waitFor,
+  within,
+} from "@testing-library/react";
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router";
@@ -45,13 +51,13 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={false} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(
         screen.queryByRole("navigation", {
           name: /Menu de navigation principal/,
-        })
+        }),
       ).not.toBeInTheDocument();
     });
 
@@ -59,7 +65,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       // Check main navigation
@@ -78,10 +84,12 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      const menuContent = screen.getByRole("navigation").parentElement;
+      const menuContent = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
 
       // Should position below header
       expect(menuContent).toHaveClass(
@@ -89,7 +97,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         "inset-x-0",
         "top-14",
         "sm:top-16",
-        "z-50"
+        "z-50",
       );
       expect(menuContent).toHaveClass("lg:hidden"); // Hidden on desktop
     });
@@ -100,7 +108,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
     });
 
@@ -125,8 +133,8 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       const expectedLinks = [
         { text: "Doula", href: "/doula" },
         { text: "Yoga", href: "/yoga" },
-        { text: "Féminin", href: "/feminin" },
-        { text: "À propos", href: "/about" },
+        { text: "Féminin", href: "/feminin-sacre" },
+        { text: "À propos", href: "/a-propos" },
       ];
 
       expectedLinks.forEach((link) => {
@@ -148,7 +156,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
     });
 
@@ -164,12 +172,14 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
     });
 
     it("should have comfortable spacing between navigation items", () => {
-      const navItems = screen.getAllByRole("listitem");
+      const navList = screen.getByRole("list");
+      const navLinks = within(navList).getAllByRole("link");
 
-      // Check spacing between adjacent items
-      if (navItems.length > 1) {
-        PregnancySafeTestUtils.validateSpacing(navItems[0], navItems[1]);
-      }
+      // Vertical spacing is managed by the list and touch-safe link padding
+      expect(navList).toHaveClass("space-y-1");
+      navLinks.forEach((link) => {
+        expect(link).toHaveClass("py-3");
+      });
     });
 
     it("should handle imprecise clicks from swollen fingers", async () => {
@@ -179,7 +189,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       for (let i = 0; i < 3; i++) {
         await PregnancySafeTestUtils.simulateSwollenFingerClick(
           firstNavLink,
-          user
+          user,
         );
       }
 
@@ -193,7 +203,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       // Simulate delayed/interrupted interaction pattern
       await PregnancySafeTestUtils.simulatePregnancyBrainInteraction(
         contactButton,
-        user
+        user,
       );
 
       expect(contactButton).toBeInTheDocument();
@@ -205,7 +215,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       // Simulate Escape key press
@@ -218,20 +228,20 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       const { unmount } = render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       // Should add event listener when open
       expect(document.addEventListener).toHaveBeenCalledWith(
         "keydown",
-        expect.any(Function)
+        expect.any(Function),
       );
 
       // Should clean up on unmount
       unmount();
       expect(document.removeEventListener).toHaveBeenCalledWith(
         "keydown",
-        expect.any(Function)
+        expect.any(Function),
       );
     });
 
@@ -239,7 +249,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const navLinks = screen.getAllByRole("link");
@@ -256,13 +266,15 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      const navigation = screen.getByRole("navigation");
+      const navigation = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
       expect(navigation).toHaveAttribute(
         "aria-label",
-        "Menu de navigation principal"
+        "Menu de navigation principal",
       );
 
       const navList = screen.getByRole("list");
@@ -273,13 +285,13 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const doulaLink = screen.getByText("Doula").closest("a");
       expect(doulaLink).toHaveAttribute(
         "aria-describedby",
-        "menu-item-doula-desc"
+        "menu-item-doula-desc",
       );
 
       const doulaDesc = screen.getByText("Accompagnement de doula");
@@ -292,7 +304,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       // Should set body overflow to hidden
@@ -303,7 +315,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       const { rerender } = render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(document.body.style.overflow).toBe("hidden");
@@ -312,7 +324,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       rerender(
         <TestWrapper>
           <MobileMenu isOpen={false} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       // Should restore scroll
@@ -323,7 +335,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       const { unmount } = render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(document.body.style.overflow).toBe("hidden");
@@ -340,7 +352,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const backdrop = document.querySelector(".bg-neutral\\/20");
@@ -357,7 +369,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const backdrop = document.querySelector(".bg-neutral\\/20");
@@ -369,7 +381,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         "bottom-0",
         "bg-neutral/20",
         "z-40",
-        "lg:hidden"
+        "lg:hidden",
       );
       expect(backdrop).toHaveAttribute("aria-hidden", "true");
     });
@@ -380,7 +392,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
     });
 
@@ -416,13 +428,15 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
     });
 
     it("should use pregnancy-safe colors and styling", () => {
-      const navigation = screen.getByRole("navigation");
-      const menuContainer = navigation.parentElement;
+      const navigation = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
+      const menuContainer = navigation;
 
       // White background for calm feeling
       expect(menuContainer).toHaveClass("bg-white");
@@ -431,19 +445,21 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       expect(menuContainer).toHaveClass(
         "border-b",
         "border-gris/30",
-        "shadow-xl"
+        "shadow-xl",
       );
     });
 
     it("should have gentle slide-in animation", () => {
-      const navigation = screen.getByRole("navigation");
-      const menuContainer = navigation.parentElement;
+      const navigation = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
+      const menuContainer = navigation;
 
       // Gentle slide-in animation (≤ 200ms for pregnancy)
       expect(menuContainer).toHaveClass(
         "animate-in",
         "slide-in-from-top-2",
-        "duration-200"
+        "duration-200",
       );
     });
 
@@ -456,12 +472,12 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
 
       // Validate colors are pregnancy-safe
       PregnancySafeTestUtils.validatePregnancySafeColor(
-        PREGNANCY_SAFE_COLORS.primary
+        PREGNANCY_SAFE_COLORS.primary,
       );
     });
 
     it("should have high contrast for pregnancy fatigue", () => {
-      const navLinks = screen.getAllByRole("link");
+      const navLinks = within(screen.getByRole("list")).getAllByRole("link");
 
       navLinks.forEach((link) => {
         // Should use high contrast text colors
@@ -475,10 +491,12 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      const menuContainer = screen.getByRole("navigation").parentElement;
+      const menuContainer = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
       expect(menuContainer).toHaveClass("lg:hidden");
     });
 
@@ -486,10 +504,12 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      const menuContainer = screen.getByRole("navigation").parentElement;
+      const menuContainer = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
       const backdrop = document.querySelector(".bg-neutral\\/20");
 
       // Both should adapt to responsive header heights
@@ -501,15 +521,17 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const scrollContainer = screen
-        .getByRole("navigation")
-        .parentElement?.querySelector(".max-h-\\[calc\\(100vh-3\\.5rem\\)\\]");
+        .getByRole("navigation", {
+          name: /Menu de navigation principal/i,
+        })
+        .querySelector(".max-h-\\[calc\\(100vh-3\\.5rem\\)\\]");
       expect(scrollContainer).toHaveClass(
         "max-h-[calc(100vh-3.5rem)]",
-        "overflow-y-auto"
+        "overflow-y-auto",
       );
     });
   });
@@ -519,12 +541,12 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       expect(screen.getByText("Pauline Roussel")).toBeInTheDocument();
       expect(
-        screen.getByText("Yoga prénatal • Accompagnement à la naissance")
+        screen.getByText("Yoga prénatal • Accompagnement à la naissance"),
       ).toBeInTheDocument();
       expect(screen.getByText("Québec, Canada")).toBeInTheDocument();
     });
@@ -533,7 +555,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       const paulineText = screen.getByText("Pauline Roussel");
@@ -549,10 +571,12 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      const menuContainer = screen.getByRole("navigation").parentElement;
+      const menuContainer = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
 
       // 200ms duration is safe for pregnancy (no nausea)
       expect(menuContainer).toHaveClass("duration-200");
@@ -562,10 +586,12 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      const menuContainer = screen.getByRole("navigation").parentElement;
+      const menuContainer = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
       const classes = menuContainer?.className || "";
 
       // No bounce, pulse, or spin animations
@@ -579,10 +605,12 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
-      const menuContainer = screen.getByRole("navigation").parentElement;
+      const menuContainer = screen.getByRole("navigation", {
+        name: /Menu de navigation principal/i,
+      });
 
       // Gentle slide from top
       expect(menuContainer).toHaveClass("slide-in-from-top-2");
@@ -594,7 +622,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       const { rerender } = render(
         <TestWrapper>
           <MobileMenu isOpen={false} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       // Rapidly toggle multiple times
@@ -602,13 +630,13 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         rerender(
           <TestWrapper>
             <MobileMenu isOpen={true} onClose={mockOnClose} />
-          </TestWrapper>
+          </TestWrapper>,
         );
 
         rerender(
           <TestWrapper>
             <MobileMenu isOpen={false} onClose={mockOnClose} />
-          </TestWrapper>
+          </TestWrapper>,
         );
       }
 
@@ -622,7 +650,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         render(
           <TestWrapper>
             <MobileMenu isOpen={true} onClose={undefined as any} />
-          </TestWrapper>
+          </TestWrapper>,
         );
       }).not.toThrow();
     });
@@ -640,13 +668,17 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       render(
         <TestWrapper>
           <MobileMenu isOpen={false} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       // Should render null and not pollute DOM
-      expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
       expect(
-        document.querySelector(".bg-neutral\\/20")
+        screen.queryByRole("navigation", {
+          name: /Menu de navigation principal/i,
+        }),
+      ).not.toBeInTheDocument();
+      expect(
+        document.querySelector(".bg-neutral\\/20"),
       ).not.toBeInTheDocument();
     });
 
@@ -654,7 +686,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       const { unmount } = render(
         <TestWrapper>
           <MobileMenu isOpen={true} onClose={mockOnClose} />
-        </TestWrapper>
+        </TestWrapper>,
       );
 
       // Should clean up on unmount
@@ -662,7 +694,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
 
       expect(document.removeEventListener).toHaveBeenCalledWith(
         "keydown",
-        expect.any(Function)
+        expect.any(Function),
       );
       expect(document.body.style.overflow).toBe("unset");
     });
@@ -672,7 +704,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
         const { unmount } = render(
           <TestWrapper>
             <MobileMenu isOpen={true} onClose={mockOnClose} />
-          </TestWrapper>
+          </TestWrapper>,
         );
 
         unmount();

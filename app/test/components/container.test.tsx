@@ -9,7 +9,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       render(
         <Container size="sm" data-testid="container-sm">
           <button>Test Button</button>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("container-sm");
@@ -23,7 +23,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       render(
         <Container size="md" data-testid="container-md">
           <div>Content</div>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("container-md");
@@ -37,7 +37,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       render(
         <Container size="lg" data-testid="container-lg">
           <div>Large content area</div>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("container-lg");
@@ -51,7 +51,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       render(
         <Container size="xl" data-testid="container-xl">
           <div>Extra large content</div>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("container-xl");
@@ -65,7 +65,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       render(
         <Container size="full" data-testid="container-full">
           <div>Full width content</div>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("container-full");
@@ -78,7 +78,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       render(
         <Container data-testid="container-default">
           <div>Default content</div>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("container-default");
@@ -94,7 +94,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       render(
         <Container as="section" size="md" data-testid="section-container">
           <div>Section content</div>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("section-container");
@@ -110,7 +110,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
           data-testid="custom-container"
         >
           <div>Custom content</div>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("custom-container");
@@ -127,7 +127,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
           aria-label="Main content area"
         >
           <div>Content with attributes</div>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("attributed-container");
@@ -143,14 +143,14 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
           <button style={{ minHeight: "44px", margin: "8px" }}>
             Pregnancy-friendly button
           </button>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("touch-container");
       const button = screen.getByRole("button");
 
-      // Container should have adequate padding for pregnancy users
-      expect(container).toHaveClass("px-4"); // TailwindCSS padding
+      // Container should constrain width while allowing composed spacing
+      expect(container).toHaveClass("max-w-4xl", "mx-auto");
       expect(button).toBeInTheDocument();
     });
 
@@ -158,15 +158,13 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       render(
         <Container size="lg" data-testid="responsive-container">
           <div>Responsive content for tablet/desktop when lying down</div>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("responsive-container");
 
-      // Should have responsive padding classes
-      expect(container).toHaveClass("px-4"); // Base mobile padding
-      expect(container).toHaveClass("sm:px-6"); // Small screen padding
-      expect(container).toHaveClass("lg:px-8"); // Large screen padding
+      // Should preserve responsive-friendly width constraints
+      expect(container).toHaveClass("max-w-6xl", "mx-auto");
     });
 
     it("should maintain readability with proper content constraints", () => {
@@ -176,7 +174,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       render(
         <Container size="sm" data-testid="readable-container">
           <p data-testid="long-text">{longText}</p>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("readable-container");
@@ -196,7 +194,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       render(
         <Container size="md" data-testid="french-container">
           <div lang="fr-CA">{frenchContent}</div>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("french-container");
@@ -214,7 +212,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
         <Container as="main" size="md" data-testid="semantic-container">
           <h1>Main Content</h1>
           <p>Accessible content structure</p>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("semantic-container");
@@ -239,7 +237,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
           >
             <p>Content optimized for screen readers during pregnancy</p>
           </div>
-        </Container>
+        </Container>,
       );
 
       const container = screen.getByTestId("sr-container");
@@ -248,7 +246,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       expect(container).toHaveAttribute("aria-label", "Pregnancy resources");
       expect(region).toHaveAttribute(
         "aria-label",
-        "Helpful pregnancy information"
+        "Helpful pregnancy information",
       );
     });
   });
