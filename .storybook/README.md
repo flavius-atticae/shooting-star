@@ -1,8 +1,8 @@
 # Storybook Configuration - Shooting Star
 
-## Phase 1 Implementation Complete ✅
+## Governance and Scope
 
-This Storybook configuration is optimized for developing **pregnancy-safe** components in the Shooting Star project by Pauline Roussel.
+This Storybook configuration is optimized for developing **pregnancy-safe** components in the Shooting Star project while keeping visual testing scope intentionally compact.
 
 ### 🚀 Quick Start
 
@@ -32,11 +32,11 @@ stories/
 │   └── Pregnancy-Safe-Guidelines.mdx # Specialized UX guidelines
 
 app/components/
-├── ui/
-│   ├── container.stories.tsx         # Container Stories
-│   └── background.stories.tsx        # Background Stories
-└── layout/
-    └── responsive-grid.stories.tsx   # AdaptiveGrid Stories
+├── contact/                          # Contact stories
+└── layout/                           # Header / CTA / Footer / Event stories
+
+app/routes/
+└── home/                             # Homepage smoke story
 ```
 
 ## 🔧 Configuration
@@ -195,10 +195,27 @@ Each story automatically validates:
 
 ## 🔄 Development Workflow
 
+### Storybook Scope Rules (Required)
+
+Only maintain stories that are part of the repository's core Storybook set:
+
+- Header variants
+- CTA variants
+- Footer variants
+- Contact component variants
+- Event card/list variants
+- Homepage smoke coverage
+
+If a new story is added outside this set, the PR must include:
+
+1. Why existing stories cannot cover the same risk
+2. Expected impact on visual baseline count
+3. Confirmation that `npm run test:stories` passes
+
 ### Adding a New Story
 
 1. **Create the file** `component.stories.tsx` alongside the component
-2. **Follow the template** from existing stories
+2. **Confirm it belongs to the core Storybook set** (or provide explicit PR rationale)
 3. **Include MDX documentation** if needed
 4. **Validate accessibility** with a11y addon
 5. **Test pregnancy-safe** according to guidelines
@@ -252,6 +269,8 @@ npm run build-storybook
 - **Visual regression**: Visual change detection
 - **Performance**: Bundle size monitoring
 
+Note: Chromatic runs on `main` branch pushes to control quota usage while preserving baseline governance.
+
 ## 📚 Resources
 
 ### Internal Documentation
@@ -265,4 +284,4 @@ npm run build-storybook
 
 ---
 
-**This Phase 1 configuration provides a solid foundation for developing the entire Shooting Star design system with a pregnancy-safe focus as the priority.** 🤱✨
+**This governed configuration keeps Storybook focused on high-value baselines for ongoing reliability and maintainability.** 🤱✨
