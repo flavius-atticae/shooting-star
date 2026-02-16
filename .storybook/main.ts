@@ -8,9 +8,10 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const config: StorybookConfig = {
   stories: [
     "../stories/**/*.mdx",
-    "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     "../app/components/**/*.stories.@(js|jsx|mjs|ts|tsx)",
-    "../app/routes/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    // Phase 1 rationalization: keep only minimal route smoke stories
+    "../app/routes/home.stories.tsx",
+    "../app/routes/contact.stories.tsx",
   ],
   addons: [
     "@chromatic-com/storybook",
