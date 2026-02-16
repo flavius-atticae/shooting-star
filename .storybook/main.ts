@@ -8,7 +8,17 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const config: StorybookConfig = {
   stories: [
     "../stories/**/*.mdx",
-    "../app/components/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    // Phase 2 rationalization: keep core component stories only
+    "../app/components/layout/header/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../app/components/layout/hero/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../app/components/layout/call-to-action/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../app/components/layout/services/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../app/components/layout/about/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../app/components/layout/feature-block/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../app/components/layout/footer/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../app/components/layout/contact/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../app/components/layout/event-card/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../app/components/layout/event-list/**/*.stories.@(js|jsx|mjs|ts|tsx)",
     // Phase 1 rationalization: keep only minimal route smoke stories
     "../app/routes/home.stories.tsx",
     "../app/routes/contact.stories.tsx",
