@@ -26,7 +26,7 @@ describe("ErrorBoundary — French localization", () => {
     render(<ErrorBoundary error={new Error("something broke")} params={{}} />);
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Oups!"
+      "Oups!",
     );
     expect(screen.getByText("something broke")).toBeInTheDocument();
   });
@@ -38,7 +38,7 @@ describe("ErrorBoundary — French localization", () => {
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("404");
     expect(
-      screen.getByText("La page demandée est introuvable.")
+      screen.getByText("La page demandée est introuvable."),
     ).toBeInTheDocument();
   });
 
@@ -48,7 +48,7 @@ describe("ErrorBoundary — French localization", () => {
     render(<ErrorBoundary error={error} params={{}} />);
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Erreur"
+      "Erreur",
     );
     expect(screen.getByText("Internal Server Error")).toBeInTheDocument();
   });
@@ -58,10 +58,10 @@ describe("ErrorBoundary — French localization", () => {
 
     expect(screen.queryByText(/Oops!/i)).not.toBeInTheDocument();
     expect(
-      screen.queryByText("An unexpected error occurred.")
+      screen.queryByText("An unexpected error occurred."),
     ).not.toBeInTheDocument();
     expect(
-      screen.queryByText("The requested page could not be found.")
+      screen.queryByText("The requested page could not be found."),
     ).not.toBeInTheDocument();
   });
 });

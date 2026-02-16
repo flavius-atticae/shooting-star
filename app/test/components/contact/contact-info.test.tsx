@@ -9,7 +9,7 @@ describe("ContactInfo Component", () => {
       render(<ContactInfo />);
 
       expect(
-        screen.getByRole("heading", { name: /écris-moi/i })
+        screen.getByRole("heading", { name: /écris-moi/i }),
       ).toBeInTheDocument();
     });
 
@@ -17,7 +17,7 @@ describe("ContactInfo Component", () => {
       render(<ContactInfo />);
 
       expect(
-        screen.getByText(/contacte-moi pour échanger sur ton parcours/i)
+        screen.getByText(/contacte-moi pour échanger sur ton parcours/i),
       ).toBeInTheDocument();
     });
 
@@ -25,7 +25,7 @@ describe("ContactInfo Component", () => {
       render(<ContactInfo />);
 
       expect(
-        screen.getByText(/grande région de montréal/i)
+        screen.getByText(/grande région de montréal/i),
       ).toBeInTheDocument();
     });
 
@@ -38,7 +38,7 @@ describe("ContactInfo Component", () => {
       expect(emailLink).toBeInTheDocument();
       expect(emailLink).toHaveAttribute(
         "href",
-        "mailto:pauline@paulineroussel.ca"
+        "mailto:pauline@paulineroussel.ca",
       );
     });
 
@@ -46,7 +46,7 @@ describe("ContactInfo Component", () => {
       render(<ContactInfo />);
 
       expect(
-        screen.getByText(/j'ai hâte de faire ta rencontre/i)
+        screen.getByText(/j'ai hâte de faire ta rencontre/i),
       ).toBeInTheDocument();
     });
   });
@@ -75,7 +75,7 @@ describe("ContactInfo Component", () => {
         name: /envoyer un courriel à pauline roussel/i,
       });
       expect(emailLink).toHaveAccessibleName(
-        "Envoyer un courriel à Pauline Roussel"
+        "Envoyer un courriel à Pauline Roussel",
       );
     });
 
@@ -93,13 +93,13 @@ describe("ContactInfo Component", () => {
 
       expect(screen.getByText(/écris-moi/i)).toBeInTheDocument();
       expect(
-        screen.getByText(/contacte-moi pour échanger/i)
+        screen.getByText(/contacte-moi pour échanger/i),
       ).toBeInTheDocument();
       expect(
-        screen.getByText(/grande région de montréal/i)
+        screen.getByText(/grande région de montréal/i),
       ).toBeInTheDocument();
       expect(
-        screen.getByText(/j'ai hâte de faire ta rencontre/i)
+        screen.getByText(/j'ai hâte de faire ta rencontre/i),
       ).toBeInTheDocument();
     });
   });
@@ -130,7 +130,7 @@ describe("ContactInfo Component", () => {
 
     it("should pass through additional HTML attributes", () => {
       const { container } = render(
-        <ContactInfo data-testid="contact-info-test" />
+        <ContactInfo data-testid="contact-info-test" />,
       );
 
       const element = container.firstChild as HTMLElement;

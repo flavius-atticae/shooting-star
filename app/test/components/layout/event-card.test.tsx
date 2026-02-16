@@ -17,8 +17,12 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
       render(<EventCard {...mockEvent} detailsHref="#" />);
 
       expect(screen.getByText(mockEvent.title)).toBeInTheDocument();
-      expect(screen.getByText(`${mockEvent.date} - ${mockEvent.time}`)).toBeInTheDocument();
-      expect(screen.getByRole("link", { name: /détails/i })).toBeInTheDocument();
+      expect(
+        screen.getByText(`${mockEvent.date} - ${mockEvent.time}`),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("link", { name: /détails/i }),
+      ).toBeInTheDocument();
     });
 
     it("should render with placeholder when no image provided", () => {
@@ -26,7 +30,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
 
       const article = screen.getByRole("article");
       expect(article).toBeInTheDocument();
-      
+
       // Should have fallback background color
       const imageContainer = article.querySelector(".bg-cool");
       expect(imageContainer).toHaveClass("bg-cool");
@@ -39,7 +43,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
           imageUrl="/images/events/test.jpg"
           imageAlt="Test event"
           detailsHref="#"
-        />
+        />,
       );
 
       const image = screen.getByRole("img");
@@ -53,7 +57,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
           {...mockEvent}
           imageUrl="/images/events/test.jpg"
           detailsHref="#"
-        />
+        />,
       );
 
       const image = screen.getByRole("img");
@@ -67,7 +71,10 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
 
       const article = screen.getByRole("article");
       expect(article).toBeInTheDocument();
-      expect(article).toHaveAttribute("aria-labelledby", `event-title-${mockEvent.id}`);
+      expect(article).toHaveAttribute(
+        "aria-labelledby",
+        `event-title-${mockEvent.id}`,
+      );
     });
 
     it("should have proper heading with id for aria-labelledby", () => {
@@ -81,7 +88,9 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
     it("should have semantic time element with dateTime attribute", () => {
       render(<EventCard {...mockEvent} detailsHref="#" />);
 
-      const timeElement = screen.getByText(`${mockEvent.date} - ${mockEvent.time}`);
+      const timeElement = screen.getByText(
+        `${mockEvent.date} - ${mockEvent.time}`,
+      );
       expect(timeElement.tagName).toBe("TIME");
       expect(timeElement).toHaveAttribute("dateTime", "2025-06-07T13:00");
     });
@@ -89,7 +98,9 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
     it("should have descriptive aria-label for details button", () => {
       render(<EventCard {...mockEvent} detailsHref="#" />);
 
-      const button = screen.getByRole("link", { name: `Voir les détails de ${mockEvent.title}` });
+      const button = screen.getByRole("link", {
+        name: `Voir les détails de ${mockEvent.title}`,
+      });
       expect(button).toBeInTheDocument();
     });
 
@@ -106,7 +117,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
           {...mockEvent}
           imageUrl="/images/events/test.jpg"
           detailsHref="#"
-        />
+        />,
       );
 
       const image = screen.getByRole("img");
@@ -167,7 +178,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
 
       const article = screen.getByRole("article");
       const imageContainer = article.querySelector(".mx-4");
-      
+
       expect(imageContainer).toHaveClass("rounded-xl");
     });
 
@@ -197,7 +208,9 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
     it("should display DÉTAILS button in French", () => {
       render(<EventCard {...mockEvent} detailsHref="#" />);
 
-      expect(screen.getByRole("link", { name: /détails/i })).toHaveTextContent("DÉTAILS");
+      expect(screen.getByRole("link", { name: /détails/i })).toHaveTextContent(
+        "DÉTAILS",
+      );
     });
   });
 
@@ -207,7 +220,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
 
       const article = screen.getByRole("article");
       expect(article).toHaveClass("flex", "flex-col");
-      
+
       // Top info section should stack on mobile, horizontal on larger screens
       const topInfoSection = article.querySelectorAll("div")[0];
       expect(topInfoSection).toHaveClass("md:flex-row");
@@ -218,7 +231,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
 
       const article = screen.getByRole("article");
       const imageContainer = article.querySelector(".mx-4");
-      
+
       expect(imageContainer).toHaveClass("w-48", "h-48", "md:w-56", "md:h-56");
     });
   });
@@ -230,7 +243,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
           {...mockEvent}
           detailsHref="#"
           className="custom-event-card"
-        />
+        />,
       );
 
       const article = screen.getByRole("article");
@@ -244,7 +257,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
           detailsHref="#"
           data-testid="custom-event"
           role="article"
-        />
+        />,
       );
 
       const article = screen.getByTestId("custom-event");
