@@ -82,6 +82,8 @@ The project includes a Dev Container configuration for consistent development en
 | `test`            | `vitest run`                                 | Run unit tests (single run)                   |
 | `test:watch`      | `vitest`                                     | Run unit tests in watch mode                  |
 | `test:ui`         | `vitest --ui`                                | Run tests with Vitest UI                      |
+| `test:stories`    | `vitest run --config vitest.storybook.config.ts --maxWorkers=1` | Run Storybook interaction tests               |
+| `test:stories:watch` | `vitest --config vitest.storybook.config.ts --maxWorkers=1` | Run Storybook interaction tests in watch mode |
 | `test:e2e`        | `playwright test`                            | Run E2E tests                                 |
 | `test:e2e:ui`     | `playwright test --ui`                       | Run E2E tests with Playwright UI              |
 | `test:e2e:headed` | `playwright test --headed`                   | Run E2E tests in headed browser               |
@@ -238,6 +240,9 @@ For each new or changed test in a PR, include this checklist in the PR body:
 # Unit & Component tests (Vitest with browser mode)
 npm run test
 
+# Storybook interaction tests (reduced governance scope)
+npm run test:stories
+
 # Watch mode during development
 npm run test:watch
 
@@ -248,6 +253,39 @@ npm run test:e2e  # Terminal 2
 # All tests
 npm run test:all
 ```
+
+## Storybook Governance
+
+Storybook in this repository is intentionally limited to a compact, high-value scope.
+
+### Scope Policy (Core Set)
+
+- Keep only core visual baselines and a small set of interaction stories.
+- Preferred story locations:
+  - `app/components/layout/header/*.stories.tsx`
+  - `app/components/layout/cta*.stories.tsx`
+  - `app/components/layout/footer*.stories.tsx`
+  - `app/components/contact/*.stories.tsx`
+  - `app/components/layout/event-card*.stories.tsx`
+  - `app/components/layout/event-list*.stories.tsx`
+  - One route smoke story for homepage shell coverage.
+- New stories outside this scope require explicit rationale in the PR body.
+
+### CI and Baseline Policy
+
+- `test:stories` must pass for every PR that touches stories or Storybook config.
+- Chromatic is executed on `main` pushes to control snapshot cost.
+- Prefer deterministic stories (fixed props/data, no time/random side effects).
+
+### PR Requirements for Storybook Changes
+
+When a PR touches `*.stories.*` or `.storybook/*`, include:
+
+- Scope impact: why this story is required and whether it expands the core set.
+- Baseline impact: expected visual snapshot additions/removals.
+- Validation evidence: `npm run test:stories` result.
+
+Use the repository PR template checklist to keep these requirements enforceable.
 
 ## Code Quality
 
