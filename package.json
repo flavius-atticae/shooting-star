@@ -74,7 +74,7 @@
     "jest-axe": "^10.0.0",
     "jsdom": "^26.1.0",
     "playwright": "^1.57.0",
-    "storybook": "^10.1.10",
+    "storybook": "^10.2.13",
     "tailwindcss": "^4.1.4",
     "tw-animate-css": "^1.3.7",
     "typescript": "^5.8.3",
