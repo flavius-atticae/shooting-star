@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { BrowserRouter } from "react-router";
 import * as ReactRouter from "react-router";
+import { BrowserRouter } from "react-router";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getAboutContent } from "~/lib/content.server";
 
 /**
@@ -139,7 +139,6 @@ describe("About Route Integration Tests", () => {
       // Main content should be properly labeled
       const main = screen.getByRole("main");
       expect(main).toHaveAttribute("id", "main-content");
-      expect(main).toHaveAttribute("role", "main");
     });
 
     it("should have proper heading hierarchy", () => {

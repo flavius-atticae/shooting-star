@@ -11,41 +11,41 @@ configure({
 });
 
 // Mock IntersectionObserver for components that use it
-const mockIntersectionObserver = vi.fn(() => ({
-    disconnect: vi.fn(),
-    observe: vi.fn(),
-    unobserve: vi.fn(),
-  }));
+class MockIntersectionObserver {
+  disconnect = vi.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
+}
 
 Object.defineProperty(window, "IntersectionObserver", {
   writable: true,
   configurable: true,
-  value: mockIntersectionObserver,
+  value: MockIntersectionObserver,
 });
 
 Object.defineProperty(global, "IntersectionObserver", {
   writable: true,
   configurable: true,
-  value: mockIntersectionObserver,
+  value: MockIntersectionObserver,
 });
 
-// Mock ResizeObserver for responsive components
-const mockResizeObserver = vi.fn(() => ({
-    disconnect: vi.fn(),
-    observe: vi.fn(),
-    unobserve: vi.fn(),
-  }));
+// Mock ResizeObserver for responsive components (e.g. embla-carousel calls `new ResizeObserver()`)
+class MockResizeObserver {
+  disconnect = vi.fn();
+  observe = vi.fn();
+  unobserve = vi.fn();
+}
 
 Object.defineProperty(window, "ResizeObserver", {
   writable: true,
   configurable: true,
-  value: mockResizeObserver,
+  value: MockResizeObserver,
 });
 
 Object.defineProperty(global, "ResizeObserver", {
   writable: true,
   configurable: true,
-  value: mockResizeObserver,
+  value: MockResizeObserver,
 });
 
 // Mock window.scrollTo for components that control scroll behavior
@@ -66,11 +66,13 @@ Object.defineProperty(navigator, "languages", {
 });
 
 // Mock Intl for consistent date/currency formatting in tests
+// Must use regular functions (not arrow functions) since Intl constructors are called with `new`
 global.Intl = {
   ...global.Intl,
-  DateTimeFormat: vi.fn().mockImplementation((locale, options) => ({
+  DateTimeFormat: vi
+    .fn()
+    .mockImplementation((locale: string, options: Intl.DateTimeFormatOptions) => ({
       format: vi.fn((date: Date) => {
-        // Quebec format: DD/MM/YYYY
         if (locale?.includes("fr")) {
           return date.toLocaleDateString("fr-CA");
         }
@@ -79,17 +81,16 @@ global.Intl = {
       formatToParts: vi.fn(),
       resolvedOptions: vi.fn(() => options),
     })),
-  NumberFormat: vi.fn().mockImplementation((locale, options) => ({
-      format: vi.fn((number: number) => {
-        // CAD currency formatting
-        if (options?.style === "currency") {
-          return `${number.toFixed(2)} $ CAD`;
-        }
-        return number.toLocaleString(locale);
-      }),
-      formatToParts: vi.fn(),
-      resolvedOptions: vi.fn(() => options),
-    })),
+  NumberFormat: vi.fn().mockImplementation((locale: string, options: Intl.NumberFormatOptions) => ({
+    format: vi.fn((number: number) => {
+      if (options?.style === "currency") {
+        return `${number.toFixed(2)} $ CAD`;
+      }
+      return number.toLocaleString(locale);
+    }),
+    formatToParts: vi.fn(),
+    resolvedOptions: vi.fn(() => options),
+  })),
 } as any;
 
 // Mock window.matchMedia for responsive/dark mode testing

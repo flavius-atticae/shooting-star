@@ -1,8 +1,8 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { action } from "~/routes/contact";
-import { resetRateLimiter } from "~/lib/rate-limiter.server";
-import { honeypot } from "~/lib/honeypot.server";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { sendContactEmails } from "~/lib/email.server";
+import { honeypot } from "~/lib/honeypot.server";
+import { resetRateLimiter } from "~/lib/rate-limiter.server";
+import { action } from "~/routes/contact";
 
 // Mock the email module so tests don't require RESEND_API_KEY
 vi.mock("~/lib/email.server", () => ({
@@ -93,7 +93,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
-      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
+        // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data } = getActionResult(result);
@@ -121,7 +121,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
-      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
+        // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data } = getActionResult(result);
@@ -145,7 +145,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
-      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
+        // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data } = getActionResult(result);
@@ -175,7 +175,7 @@ describe("contact route action", () => {
           request: await makeRequest(),
           params: {},
           context: {},
-        // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
+          // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
         } as any);
         const { data } = getActionResult(result);
         expect(data.success).toBe(true);
@@ -186,7 +186,7 @@ describe("contact route action", () => {
         request: await makeRequest(),
         params: {},
         context: {},
-      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
+        // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data, status } = getActionResult(result);
@@ -207,7 +207,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
-      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
+        // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data, status } = getActionResult(result);
@@ -228,7 +228,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
-      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
+        // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data, status } = getActionResult(result);
@@ -248,7 +248,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
-      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
+        // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data, status } = getActionResult(result);
@@ -268,7 +268,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
-      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
+        // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data } = getActionResult(result);
@@ -291,7 +291,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
-      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
+        // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data, status } = getActionResult(result);

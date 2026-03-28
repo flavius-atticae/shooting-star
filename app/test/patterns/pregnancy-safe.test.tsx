@@ -1,7 +1,7 @@
-import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
+import React from "react";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 /**
  * Pregnancy-Safe Testing Patterns Library
@@ -199,11 +199,14 @@ class PregnancySafeTestUtils {
     const style2 = window.getComputedStyle(element2);
 
     // Get spacing values - check both inline and computed styles
-    const marginRight1 = parseInt(element1.style.marginRight, 10) || parseInt(style1.marginRight, 10) || 0;
-    const marginLeft2 = parseInt(element2.style.marginLeft, 10) || parseInt(style2.marginLeft, 10) || 0;
+    const marginRight1 =
+      parseInt(element1.style.marginRight, 10) || parseInt(style1.marginRight, 10) || 0;
+    const marginLeft2 =
+      parseInt(element2.style.marginLeft, 10) || parseInt(style2.marginLeft, 10) || 0;
     const marginBottom1 =
       parseInt(element1.style.marginBottom, 10) || parseInt(style1.marginBottom, 10) || 0;
-    const marginTop2 = parseInt(element2.style.marginTop, 10) || parseInt(style2.marginTop, 10) || 0;
+    const marginTop2 =
+      parseInt(element2.style.marginTop, 10) || parseInt(style2.marginTop, 10) || 0;
 
     // Calculate actual spacing (horizontal or vertical)
     const horizontalSpacing = marginRight1 + marginLeft2;
@@ -581,13 +584,25 @@ describe("Pregnancy-Safe Testing Patterns", () => {
     it("should validate minimum touch targets for swollen fingers", () => {
       render(
         <div data-testid="touch-targets">
-          <button type="button" style={{ width: "44px", height: "44px" }} data-testid="minimum-button">
+          <button
+            type="button"
+            style={{ width: "44px", height: "44px" }}
+            data-testid="minimum-button"
+          >
             Minimum
           </button>
-          <button type="button" style={{ width: "48px", height: "48px" }} data-testid="recommended-button">
+          <button
+            type="button"
+            style={{ width: "48px", height: "48px" }}
+            data-testid="recommended-button"
+          >
             Recommended
           </button>
-          <button type="button" style={{ width: "32px", height: "32px" }} data-testid="too-small-button">
+          <button
+            type="button"
+            style={{ width: "32px", height: "32px" }}
+            data-testid="too-small-button"
+          >
             Too Small
           </button>
         </div>,
@@ -612,8 +627,12 @@ describe("Pregnancy-Safe Testing Patterns", () => {
     it("should validate spacing between interactive elements", () => {
       render(
         <div data-testid="spaced-elements">
-          <button type="button" style={{ marginRight: "16px" }}>Button 1</button>
-          <button type="button" style={{ marginRight: "4px" }}>Button 2</button>
+          <button type="button" style={{ marginRight: "16px" }}>
+            Button 1
+          </button>
+          <button type="button" style={{ marginRight: "4px" }}>
+            Button 2
+          </button>
           <button type="button">Button 3</button>
         </div>,
       );
@@ -1061,10 +1080,10 @@ const SharedViewportUtils = {
 // Export test utilities for use in other test files
 // biome-ignore lint/suspicious/noExportsInTest: utilities shared with other test files (header.test, mobile-menu.test)
 export {
-  PregnancySafeTestUtils,
   PREGNANCY_CONSTANTS,
   PREGNANCY_SAFE_COLORS,
   PREGNANCY_UNSAFE_COLORS,
+  PregnancySafeTestUtils,
   SharedViewportUtils,
 };
 

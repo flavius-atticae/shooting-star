@@ -1,8 +1,8 @@
-import { expect } from "@playwright/test";
-import type { Page, Locator } from "@playwright/test";
-import AxeBuilder from "@axe-core/playwright";
-import { TIMEOUTS, ACCESSIBILITY } from "./constants";
 import * as nodeCrypto from "node:crypto";
+import AxeBuilder from "@axe-core/playwright";
+import type { Locator, Page } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { ACCESSIBILITY, TIMEOUTS } from "./constants";
 /**
  * Pregnancy-Safe Testing Utilities
  *
@@ -231,7 +231,7 @@ export class PregnancySafeHelpers {
           const fidObserver = new PerformanceObserver((list) => {
             const entries = list.getEntries();
             // biome-ignore lint/suspicious/noExplicitAny: PerformanceEntry subtype not in TS lib
-          entries.forEach((entry: any) => {
+            entries.forEach((entry: any) => {
               fid = entry.processingStart - entry.startTime;
             });
           });
@@ -239,7 +239,7 @@ export class PregnancySafeHelpers {
           // Measure CLS using PerformanceObserver
           const clsObserver = new PerformanceObserver((list) => {
             // biome-ignore lint/suspicious/noExplicitAny: PerformanceEntry subtype not in TS lib
-          list.getEntries().forEach((entry: any) => {
+            list.getEntries().forEach((entry: any) => {
               if (!entry.hadRecentInput) {
                 cls += entry.value;
               }

@@ -1,14 +1,11 @@
-import type React from "react";
-import { render, screen, fireEvent, waitFor, within } from "@testing-library/react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type React from "react";
 import { BrowserRouter } from "react-router";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Header } from "~/components/layout/header/header";
-import {
-  PregnancySafeTestUtils,
-  PREGNANCY_SAFE_COLORS,
-} from "../patterns/pregnancy-safe.test";
+import { PREGNANCY_SAFE_COLORS, PregnancySafeTestUtils } from "../patterns/pregnancy-safe.test";
 
 // Mock ResizeObserver for jsdom environment
 global.ResizeObserver = vi.fn().mockImplementation(() => ({

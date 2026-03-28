@@ -156,7 +156,10 @@ export const CustomContent: Story = {
         <p className="font-sans text-lg text-primary max-w-md">
           Rejoignez notre communauté de futures mamans pour des séances de yoga en groupe.
         </p>
-        <button type="button" className="mt-4 px-6 py-3 bg-primary text-white rounded-lg font-sans font-bold uppercase text-sm">
+        <button
+          type="button"
+          className="mt-4 px-6 py-3 bg-primary text-white rounded-lg font-sans font-bold uppercase text-sm"
+        >
           Découvrir
         </button>
       </div>

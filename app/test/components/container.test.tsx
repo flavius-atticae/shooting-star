@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { Container } from "~/components/ui";
 
 describe("Container Component - Pregnancy-Safe Testing", () => {
@@ -135,7 +135,9 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
     it("should provide adequate spacing for touch targets", () => {
       render(
         <Container size="md" data-testid="touch-container">
-          <button type="button" style={{ minHeight: "44px", margin: "8px" }}>Pregnancy-friendly button</button>
+          <button type="button" style={{ minHeight: "44px", margin: "8px" }}>
+            Pregnancy-friendly button
+          </button>
         </Container>,
       );
 

@@ -1,5 +1,5 @@
-import { Link } from "react-router";
 import { useEffect } from "react";
+import { Link } from "react-router";
 import { cn } from "~/lib/utils";
 
 export interface MobileMenuProps {
@@ -77,6 +77,7 @@ export function MobileMenu({ isOpen, onClose, className }: MobileMenuProps) {
 
       {/* Menu content */}
       <div
+        data-testid="mobile-menu-container"
         className={cn(
           // Positioning - responsive to header height
           "fixed inset-x-0 top-14 sm:top-16 z-50", // 56px mobile, 64px tablet/desktop

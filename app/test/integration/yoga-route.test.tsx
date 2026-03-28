@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
-import { createMemoryRouter, RouterProvider } from "react-router";
 import type { RouteObject } from "react-router";
+import { createMemoryRouter, RouterProvider } from "react-router";
+import { describe, expect, it } from "vitest";
 
 /**
  * Integration tests for /yoga route
@@ -123,7 +123,6 @@ describe("Yoga Route Integration Tests", () => {
       // Main content should be properly labeled
       const main = screen.getByRole("main");
       expect(main).toHaveAttribute("id", "main-content");
-      expect(main).toHaveAttribute("role", "main");
     });
 
     it("should have proper heading hierarchy", () => {
