@@ -55,7 +55,10 @@ app/
   test/         # All tests (unit, integration, E2E)
 .github/
   workflows/    # CI/CD (pr-checks, main-monitoring, deploy-fly)
-  instructions/ # Agent-specific instruction files
+  instructions/ # Scoped agent instructions (auto-injected by Copilot)
+    components.instructions.md  → applyTo: app/components/**
+    routes.instructions.md      → applyTo: app/routes/**
+    tests.instructions.md       → applyTo: app/test/**
 ```
 
 ---
@@ -112,6 +115,31 @@ npm run test          # Vitest unit + integration
 ```
 
 E2E tests run on `main` only (via `main-monitoring.yml`).
+
+---
+
+## Architecture quick-reference
+
+Detailed rules are in `.github/instructions/` and are auto-injected by Copilot when you edit those directories. Key points:
+
+**Components** (`app/components/`) — see `components.instructions.md`
+- `cn()` from `~/lib/utils` for every className — no template literals, no concatenation
+- Props interface: named export, `ComponentNameProps`, extends `React.ComponentProps<"x">` (primitives) or `Omit<React.HTMLAttributes<HTMLElement>, "children">` (sections)
+- `forwardRef` + `displayName` for UI primitives only
+- Navigation links → `~/config/navigation`, social links → `~/config/social`
+- Animations → `useReducedMotion` from `~/hooks/use-reduced-motion` + `motion-safe:` Tailwind modifier
+
+**Routes** (`app/routes/`) — see `routes.instructions.md`
+- Order: imports → `loader` → `action` → `meta` → `export default`
+- Loader returns plain object; typed via `useLoaderData<typeof loader>()`
+- Data always via `~/lib/content.server` — never import from `~/data/*` directly
+- `<main id="main-content">`, `<Header />`, `<Footer />` in every page
+
+**Tests** (`app/test/`) — see `tests.instructions.md`
+- Unit: Vitest + `@testing-library/react`, `getByRole` first, `userEvent` for interactions
+- No CSS class assertions — assert ARIA roles and semantic state
+- A11y: `checkAccessibility` from `~/test/utils` for unit tests; `AxeBuilder` in `accessibility.spec.ts` for E2E
+- Browser API mocks use **class syntax** in `setup.ts` (arrow functions break with Biome)
 
 ---
 
