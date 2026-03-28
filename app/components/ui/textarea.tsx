@@ -56,12 +56,12 @@ export const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
           // Resize behavior
           "resize-y",
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 
 Textarea.displayName = "Textarea";

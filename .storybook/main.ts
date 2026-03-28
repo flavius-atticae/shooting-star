@@ -35,8 +35,7 @@ const config: StorybookConfig = {
     reactDocgen: "react-docgen-typescript",
     reactDocgenTypescriptOptions: {
       shouldExtractLiteralValuesFromEnum: true,
-      propFilter: (prop) =>
-        prop.parent ? !/node_modules/.test(prop.parent.fileName) : true,
+      propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
     },
   },
   docs: {
@@ -56,15 +55,9 @@ const config: StorybookConfig = {
       // Define environment variables to avoid "Dynamic access of import.meta.env" errors
       // when running tests in Storybook UI (browser mode)
       define: {
-        "import.meta.env.DEV": JSON.stringify(
-          process.env.NODE_ENV !== "production",
-        ),
-        "import.meta.env.PROD": JSON.stringify(
-          process.env.NODE_ENV === "production",
-        ),
-        "import.meta.env.MODE": JSON.stringify(
-          process.env.NODE_ENV || "development",
-        ),
+        "import.meta.env.DEV": JSON.stringify(process.env.NODE_ENV !== "production"),
+        "import.meta.env.PROD": JSON.stringify(process.env.NODE_ENV === "production"),
+        "import.meta.env.MODE": JSON.stringify(process.env.NODE_ENV || "development"),
       },
     });
   },

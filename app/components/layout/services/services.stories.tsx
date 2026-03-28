@@ -143,8 +143,7 @@ export const SpaciousSpacing: Story = {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story:
-          "Espacement généreux pour les placements importants sur la page.",
+        story: "Espacement généreux pour les placements importants sur la page.",
       },
     },
   },

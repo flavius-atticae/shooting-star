@@ -201,8 +201,7 @@ export const SpaciousSpacing: Story = {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story:
-          "Espacement généreux pour les placements importants sur la page.",
+        story: "Espacement généreux pour les placements importants sur la page.",
       },
     },
   },
@@ -332,19 +331,19 @@ export const SemanticHeadings: Story = {
 
     // Verify specific approach titles
     await expect(
-      canvas.getByRole("heading", { level: 3, name: /Pendant la grossesse/i })
+      canvas.getByRole("heading", { level: 3, name: /Pendant la grossesse/i }),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByRole("heading", { level: 3, name: /Mama Blessing/i })
+      canvas.getByRole("heading", { level: 3, name: /Mama Blessing/i }),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByRole("heading", { level: 3, name: /L'accouchement/i })
+      canvas.getByRole("heading", { level: 3, name: /L'accouchement/i }),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByRole("heading", { level: 3, name: /4e trimestre/i })
+      canvas.getByRole("heading", { level: 3, name: /4e trimestre/i }),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByRole("heading", { level: 3, name: /Sur mesure/i })
+      canvas.getByRole("heading", { level: 3, name: /Sur mesure/i }),
     ).toBeInTheDocument();
   },
 };
@@ -374,15 +373,10 @@ export const ApproachItemsStructure: Story = {
 
     // Verify first item structure
     const firstArticle = articles[0];
-    await expect(firstArticle).toHaveAttribute(
-      "aria-labelledby",
-      "approach-pregnancy-title"
-    );
+    await expect(firstArticle).toHaveAttribute("aria-labelledby", "approach-pregnancy-title");
 
     // Verify title exists with correct ID
-    const firstTitle = canvasElement.querySelector(
-      "#approach-pregnancy-title"
-    );
+    const firstTitle = canvasElement.querySelector("#approach-pregnancy-title");
     await expect(firstTitle).toBeInTheDocument();
     await expect(firstTitle?.tagName).toBe("H3");
 
@@ -408,8 +402,7 @@ export const ResponsiveLayout: Story = {
     },
     docs: {
       description: {
-        story:
-          "Test du layout responsive sur mobile, tablette et desktop pour Chromatic.",
+        story: "Test du layout responsive sur mobile, tablette et desktop pour Chromatic.",
       },
     },
   },

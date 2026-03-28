@@ -23,9 +23,7 @@ const preview: Preview = {
     docs: {
       extractComponentDescription: (_component: any, { notes }: any) => {
         if (notes) {
-          return typeof notes === "string"
-            ? notes
-            : notes.markdown || notes.text;
+          return typeof notes === "string" ? notes : notes.markdown || notes.text;
         }
         return null;
       },
@@ -157,14 +155,7 @@ const preview: Preview = {
           "Foundation",
           ["1. Container", "2. Adaptive Grid", "3. Background"],
           "Layout",
-          [
-            "1. Header",
-            "2. Hero",
-            "3. Call To Action",
-            "4. Services",
-            "5. About",
-            "6. Footer",
-          ],
+          ["1. Header", "2. Hero", "3. Call To Action", "4. Services", "5. About", "6. Footer"],
           "Design System",
           ["Colors", "Typography", "Spacing"],
           "Components",

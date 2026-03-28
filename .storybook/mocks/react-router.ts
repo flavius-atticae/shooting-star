@@ -72,50 +72,34 @@ export const StorybookRouterProvider: React.FC<{
     key: Math.random().toString(36).substring(2),
   });
 
-  const navigate = React.useCallback(
-    (to: string | number, options?: NavigateOptions) => {
-      if (typeof to === "string") {
-        console.log("🧭 Storybook Navigation:", { to, options });
-        setLocation({
-          pathname: to,
-          search: "",
-          hash: "",
-          state: options?.state || null,
-          key: Math.random().toString(36).substring(2),
-        });
-      } else {
-        console.log("🧭 Storybook Back/Forward:", to);
-      }
-    },
-    [],
-  );
+  const navigate = React.useCallback((to: string | number, options?: NavigateOptions) => {
+    if (typeof to === "string") {
+      console.log("🧭 Storybook Navigation:", { to, options });
+      setLocation({
+        pathname: to,
+        search: "",
+        hash: "",
+        state: options?.state || null,
+        key: Math.random().toString(36).substring(2),
+      });
+    } else {
+      console.log("🧭 Storybook Back/Forward:", to);
+    }
+  }, []);
 
   const navigationValue = React.useMemo(() => ({ navigate }), [navigate]);
 
   return React.createElement(
     LocationContext.Provider,
     { value: location },
-    React.createElement(
-      NavigationContext.Provider,
-      { value: navigationValue },
-      children,
-    ),
+    React.createElement(NavigationContext.Provider, { value: navigationValue }, children),
   );
 };
 
 // Mock Link component that matches React Router v7 API
 export const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(
   (
-    {
-      to,
-      children,
-      onClick,
-      replace,
-      state,
-      reloadDocument,
-      preventScrollReset,
-      ...props
-    },
+    { to, children, onClick, replace, state, reloadDocument, preventScrollReset, ...props },
     ref,
   ) => {
     const navigationContext = React.useContext(NavigationContext);
@@ -162,15 +146,12 @@ export const useNavigate = () => {
 
   if (!context) {
     // Return a fallback function if no context is available
-    return React.useCallback(
-      (to: string | number, options?: NavigateOptions) => {
-        console.warn("🧭 useNavigate called outside router context:", {
-          to,
-          options,
-        });
-      },
-      [],
-    );
+    return React.useCallback((to: string | number, options?: NavigateOptions) => {
+      console.warn("🧭 useNavigate called outside router context:", {
+        to,
+        options,
+      });
+    }, []);
   }
 
   return context.navigate;
@@ -218,13 +199,8 @@ export const useLoaderData = <T = unknown>(): T => {
 export const useFetcher = () => ({
   state: "idle" as const,
   data: undefined as unknown,
-  Form: "form" as unknown as React.ComponentType<
-    React.FormHTMLAttributes<HTMLFormElement>
-  >,
-  submit: (
-    _formData: FormData,
-    _options?: { method?: string; action?: string },
-  ) => {
+  Form: "form" as unknown as React.ComponentType<React.FormHTMLAttributes<HTMLFormElement>>,
+  submit: (_formData: FormData, _options?: { method?: string; action?: string }) => {
     console.log("📨 Storybook fetcher.submit (no-op)");
   },
 });

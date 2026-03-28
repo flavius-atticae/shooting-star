@@ -24,3 +24,4 @@ playwright-results.json
 
 *storybook.log
 storybook-static
+lint_output.txt

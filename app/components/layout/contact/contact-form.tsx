@@ -3,10 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HoneypotInputs } from "remix-utils/honeypot/react";
 import { cn } from "~/lib/utils";
-import {
-  contactFormSchema,
-  type ContactFormData,
-} from "~/lib/contact-form-schema";
+import { contactFormSchema, type ContactFormData } from "~/lib/contact-form-schema";
 import {
   Form,
   FormControl,
@@ -66,10 +63,7 @@ const AVAILABILITY_OPTIONS = [
 /**
  * Props for the ContactForm component
  */
-export interface ContactFormProps extends Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  "onSubmit"
-> {
+export interface ContactFormProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSubmit"> {
   /** Callback when form is successfully submitted (legacy/Storybook mode) */
   onSubmit?: (data: ContactFormData) => void | Promise<void>;
   /** Whether the form is in loading state */
@@ -180,10 +174,7 @@ export function ContactForm({
     }
   }, [fetcher?.data, showSuccessAndReset, form]);
 
-  const handleSubmit = async (
-    data: ContactFormData,
-    _event?: React.BaseSyntheticEvent,
-  ) => {
+  const handleSubmit = async (data: ContactFormData, _event?: React.BaseSyntheticEvent) => {
     if (fetcher && formRef.current) {
       // Submit the entire form (including HoneypotInputs hidden fields)
       // via fetcher for progressive enhancement. Anti-spam validation
@@ -236,9 +227,7 @@ export function ContactForm({
       <Form {...form}>
         <FormElement
           ref={formRef}
-          {...(useFetcherMode
-            ? { method: "post" as const, action: "/contact" }
-            : {})}
+          {...(useFetcherMode ? { method: "post" as const, action: "/contact" } : {})}
           onSubmit={form.handleSubmit(handleSubmit)}
           className="space-y-6"
           noValidate
@@ -363,8 +352,7 @@ export function ContactForm({
                 "text-primary font-body text-sm",
               )}
             >
-              Merci pour votre message ! Je vous répondrai dans les plus brefs
-              délais.
+              Merci pour votre message ! Je vous répondrai dans les plus brefs délais.
             </div>
           )}
 

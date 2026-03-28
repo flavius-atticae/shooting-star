@@ -1,6 +1,6 @@
-import { beforeAll } from 'vitest';
-import { setProjectAnnotations } from '@storybook/react-vite';
-import * as previewAnnotations from './preview';
+import { beforeAll } from "vitest";
+import { setProjectAnnotations } from "@storybook/react-vite";
+import * as previewAnnotations from "./preview";
 
 // Apply Storybook project annotations for testing
 // More info at: https://storybook.js.org/docs/writing-tests/integrations/vitest-addon

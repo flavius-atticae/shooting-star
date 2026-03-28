@@ -29,13 +29,9 @@ export default function YogaPage() {
       {/* Header - Navigation principale */}
       <Header />
 
-      <main id="main-content" role="main">
+      <main id="main-content">
         {/* Hero Section - Enseignement du yoga */}
-        <Hero
-          variant="default"
-          title={"Enseignement\ndu yoga"}
-          subtitle="AVEC PAULINE ROUSSEL"
-        />
+        <Hero variant="default" title={"Enseignement\ndu yoga"} subtitle="AVEC PAULINE ROUSSEL" />
 
         {/* Feature Blocks - Cours de yoga */}
         {/* Cours privés */}

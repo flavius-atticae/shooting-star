@@ -88,8 +88,7 @@ export const SpaciousSpacing: Story = {
     },
     docs: {
       description: {
-        story:
-          "Espacement généreux pour les placements importants sur la page.",
+        story: "Espacement généreux pour les placements importants sur la page.",
       },
     },
   },
@@ -111,8 +110,7 @@ export const OverlapFooter: Story = {
     },
     docs: {
       description: {
-        story:
-          "Effet de chevauchement où About flotte au-dessus du Footer (tablet+ uniquement).",
+        story: "Effet de chevauchement où About flotte au-dessus du Footer (tablet+ uniquement).",
       },
     },
   },
@@ -123,9 +121,7 @@ export const OverlapFooter: Story = {
           <Story />
         </div>
         <div className="bg-primary text-white p-8 md:pt-24">
-          <p className="text-center opacity-70">
-            ↑ Footer area (notice the overlap on tablet+)
-          </p>
+          <p className="text-center opacity-70">↑ Footer area (notice the overlap on tablet+)</p>
         </div>
       </div>
     ),
@@ -279,14 +275,12 @@ export const SemanticHeadings: Story = {
     await expect(h3Headings.length).toBe(3);
 
     // Verify method item titles
+    await expect(canvas.getByRole("heading", { level: 3, name: /Écoute/i })).toBeInTheDocument();
     await expect(
-      canvas.getByRole("heading", { level: 3, name: /Écoute/i })
+      canvas.getByRole("heading", { level: 3, name: /Bienveillance/i }),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByRole("heading", { level: 3, name: /Bienveillance/i })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByRole("heading", { level: 3, name: /Adaptation/i })
+      canvas.getByRole("heading", { level: 3, name: /Adaptation/i }),
     ).toBeInTheDocument();
   },
 };
@@ -345,9 +339,7 @@ export const ImagePlaceholderAccessibility: Story = {
 
     // Verify caption text is present
     await expect(canvas.getByText("Pauline Roussel")).toBeInTheDocument();
-    await expect(
-      canvas.getByText("Doula et professeure de yoga")
-    ).toBeInTheDocument();
+    await expect(canvas.getByText("Doula et professeure de yoga")).toBeInTheDocument();
 
     // Verify screen reader description exists
     const srDescription = canvasElement.querySelector(".sr-only");

@@ -1,21 +1,11 @@
-import React from "react";
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  within,
-} from "@testing-library/react";
-import { describe, it, expect, beforeEach, vi } from "vitest";
+import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import type React from "react";
 import { BrowserRouter } from "react-router";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { Header } from "~/components/layout/header/header";
-import {
-  PregnancySafeTestUtils,
-  PREGNANCY_CONSTANTS,
-  PREGNANCY_SAFE_COLORS,
-} from "../patterns/pregnancy-safe.test";
+import { PREGNANCY_SAFE_COLORS, PregnancySafeTestUtils } from "../patterns/pregnancy-safe.test";
 
 // Mock ResizeObserver for jsdom environment
 global.ResizeObserver = vi.fn().mockImplementation(() => ({
@@ -85,9 +75,7 @@ describe("Header Component - Pregnancy-Safe Design", () => {
         </TestWrapper>,
       );
 
-      const logo = screen.getByLabelText(
-        /Pauline Roussel - Retour à l'accueil/,
-      );
+      const logo = screen.getByLabelText(/Pauline Roussel - Retour à l'accueil/);
       expect(logo).toBeInTheDocument();
       expect(logo).toHaveTextContent("Pauline Roussel");
     });
@@ -101,9 +89,7 @@ describe("Header Component - Pregnancy-Safe Design", () => {
         </TestWrapper>,
       );
 
-      const logo = screen.getByLabelText(
-        /Pauline Roussel - Retour à l'accueil/,
-      );
+      const logo = screen.getByLabelText(/Pauline Roussel - Retour à l'accueil/);
       const menuButton = screen.getByLabelText(/Ouvrir le menu/);
 
       // Validate minimum touch target sizes for swollen fingers
@@ -118,9 +104,7 @@ describe("Header Component - Pregnancy-Safe Design", () => {
         </TestWrapper>,
       );
 
-      const logo = screen.getByLabelText(
-        /Pauline Roussel - Retour à l'accueil/,
-      );
+      const logo = screen.getByLabelText(/Pauline Roussel - Retour à l'accueil/);
 
       // Simulate multiple imprecise clicks
       for (let i = 0; i < 3; i++) {
@@ -138,20 +122,14 @@ describe("Header Component - Pregnancy-Safe Design", () => {
         </TestWrapper>,
       );
 
-      const logo = screen.getByLabelText(
-        /Pauline Roussel - Retour à l'accueil/,
-      );
+      const logo = screen.getByLabelText(/Pauline Roussel - Retour à l'accueil/);
       const menuButton = screen.getByLabelText(/Ouvrir le menu/);
 
       // Tab navigation should work smoothly
       await user.tab();
       expect(menuButton).toHaveFocus();
 
-      for (
-        let index = 0;
-        index < 5 && document.activeElement !== logo;
-        index += 1
-      ) {
+      for (let index = 0; index < 5 && document.activeElement !== logo; index += 1) {
         await user.tab();
       }
       expect(logo).toHaveFocus();
@@ -273,12 +251,8 @@ describe("Header Component - Pregnancy-Safe Design", () => {
         expect(within(navigation).getByText("À propos")).toBeInTheDocument();
 
         // Check French descriptions
-        expect(
-          within(navigation).getByText("Accompagnement de doula"),
-        ).toBeInTheDocument();
-        expect(
-          within(navigation).getByText("Enseignement du yoga"),
-        ).toBeInTheDocument();
+        expect(within(navigation).getByText("Accompagnement de doula")).toBeInTheDocument();
+        expect(within(navigation).getByText("Enseignement du yoga")).toBeInTheDocument();
       });
     });
 
@@ -326,9 +300,7 @@ describe("Header Component - Pregnancy-Safe Design", () => {
       );
 
       const header = screen.getByRole("banner");
-      const logo = screen.getByLabelText(
-        /Pauline Roussel - Retour à l'accueil/,
-      );
+      const logo = screen.getByLabelText(/Pauline Roussel - Retour à l'accueil/);
       const menuButton = screen.getByLabelText(/Ouvrir le menu/);
 
       expect(header).toBeInTheDocument();
@@ -400,9 +372,7 @@ describe("Header Component - Pregnancy-Safe Design", () => {
       expect(header).toHaveClass("bg-primary");
 
       // Validate color is pregnancy-safe
-      PregnancySafeTestUtils.validatePregnancySafeColor(
-        PREGNANCY_SAFE_COLORS.primary,
-      );
+      PregnancySafeTestUtils.validatePregnancySafeColor(PREGNANCY_SAFE_COLORS.primary);
     });
 
     it("should have high contrast for pregnancy fatigue", () => {
@@ -425,12 +395,8 @@ describe("Header Component - Pregnancy-Safe Design", () => {
       );
 
       // Validate that no anxiety-inducing reds are used
-      PregnancySafeTestUtils.validatePregnancySafeColor(
-        PREGNANCY_SAFE_COLORS.primary,
-      );
-      PregnancySafeTestUtils.validatePregnancySafeColor(
-        PREGNANCY_SAFE_COLORS.menthe,
-      );
+      PregnancySafeTestUtils.validatePregnancySafeColor(PREGNANCY_SAFE_COLORS.primary);
+      PregnancySafeTestUtils.validatePregnancySafeColor(PREGNANCY_SAFE_COLORS.menthe);
     });
   });
 
@@ -456,9 +422,7 @@ describe("Header Component - Pregnancy-Safe Design", () => {
       );
 
       // Contact button container should be responsive
-      const container = screen
-        .getByRole("banner")
-        .querySelector(".hidden.sm\\:block");
+      const container = screen.getByRole("banner").querySelector(".hidden.sm\\:block");
       expect(container).toHaveClass("sm:block"); // Shown from tablet up
     });
 
@@ -469,9 +433,7 @@ describe("Header Component - Pregnancy-Safe Design", () => {
         </TestWrapper>,
       );
 
-      const logo = screen.getByLabelText(
-        /Pauline Roussel - Retour à l'accueil/,
-      );
+      const logo = screen.getByLabelText(/Pauline Roussel - Retour à l'accueil/);
 
       // Check responsive text sizing
       expect(logo).toHaveClass("text-2xl", "sm:text-3xl", "lg:text-4xl");
@@ -487,9 +449,7 @@ describe("Header Component - Pregnancy-Safe Design", () => {
         </TestWrapper>,
       );
 
-      const logo = screen.getByLabelText(
-        /Pauline Roussel - Retour à l'accueil/,
-      );
+      const logo = screen.getByLabelText(/Pauline Roussel - Retour à l'accueil/);
 
       // Check for gentle hover animations
       expect(logo).toHaveClass("hover:scale-[1.02]", "active:scale-[0.98]");
@@ -538,9 +498,7 @@ describe("Header Component - Pregnancy-Safe Design", () => {
       expect(screen.getByText("Pauline Roussel")).toBeInTheDocument();
 
       // ARIA labels should be in French
-      expect(
-        screen.getByLabelText(/Pauline Roussel - Retour à l'accueil/),
-      ).toBeInTheDocument();
+      expect(screen.getByLabelText(/Pauline Roussel - Retour à l'accueil/)).toBeInTheDocument();
       expect(screen.getByLabelText(/Ouvrir le menu/)).toBeInTheDocument();
     });
 
@@ -563,8 +521,7 @@ describe("Header Component - Pregnancy-Safe Design", () => {
         expect(within(navigation).getByText("À propos")).toBeInTheDocument(); // Not "About"
 
         // Check that contact text exists (there will be multiple instances)
-        const contactElements =
-          within(navigation).getAllByText("Contactez-moi");
+        const contactElements = within(navigation).getAllByText("Contactez-moi");
         expect(contactElements.length).toBeGreaterThan(0); // At least one contact button
       });
     });
@@ -596,15 +553,10 @@ describe("Header Component - Pregnancy-Safe Design", () => {
         </TestWrapper>,
       );
 
-      const logo = screen.getByLabelText(
-        /Pauline Roussel - Retour à l'accueil/,
-      );
+      const logo = screen.getByLabelText(/Pauline Roussel - Retour à l'accueil/);
 
       // Simulate pregnancy brain interaction pattern
-      await PregnancySafeTestUtils.simulatePregnancyBrainInteraction(
-        logo,
-        user,
-      );
+      await PregnancySafeTestUtils.simulatePregnancyBrainInteraction(logo, user);
 
       // Component should handle delayed interactions gracefully
       expect(logo).toBeInTheDocument();
@@ -617,7 +569,7 @@ describe("Header Component - Pregnancy-Safe Design", () => {
         </TestWrapper>,
       );
 
-      let menuButton = screen.getByLabelText(/Ouvrir le menu/);
+      const menuButton = screen.getByLabelText(/Ouvrir le menu/);
 
       // Open menu
       await user.click(menuButton);

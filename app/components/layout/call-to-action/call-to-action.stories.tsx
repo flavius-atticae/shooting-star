@@ -119,8 +119,7 @@ export const SpaciousSpacing: Story = {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story:
-          "Espacement généreux pour les placements importants sur la page.",
+        story: "Espacement généreux pour les placements importants sur la page.",
       },
     },
   },
@@ -141,8 +140,7 @@ export const NoInset: Story = {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story:
-          "Sans inset, la section occupe toute la largeur sans l'effet carte flottante.",
+        story: "Sans inset, la section occupe toute la largeur sans l'effet carte flottante.",
       },
     },
   },
@@ -163,8 +161,7 @@ export const ExternalLink: Story = {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story:
-          "Lien externe avec `target='_blank'` et `rel='noopener noreferrer'` automatique.",
+        story: "Lien externe avec `target='_blank'` et `rel='noopener noreferrer'` automatique.",
       },
     },
   },

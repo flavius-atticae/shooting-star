@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { Container } from "~/components/ui/container";
 import { Section } from "~/components/ui/section";
 import { EventCard, type EventCardProps } from "~/components/layout/event-card";
@@ -57,12 +57,7 @@ export function EventList({
   ...props
 }: EventListProps & Omit<React.HTMLAttributes<HTMLElement>, "children">) {
   return (
-    <Section
-      background="white"
-      spacing="normal"
-      className={className}
-      {...props}
-    >
+    <Section background="white" spacing="normal" className={className} {...props}>
       <Container size={containerSize} className="px-4 sm:px-6 lg:px-8">
         {/* Section Title */}
         <h2 className="font-heading font-medium text-4xl md:text-5xl lg:text-6xl text-primary mb-6 text-center lg:text-left">

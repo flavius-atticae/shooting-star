@@ -5,7 +5,7 @@ import AboutPage from "./about";
 
 /**
  * About Page - Complete Storybook Tests
- * 
+ *
  * This story provides comprehensive testing for the About page with:
  * - Complete page composition with all sections
  * - Hero section with "Pauline Roussel" title
@@ -16,7 +16,7 @@ import AboutPage from "./about";
  * - Accessibility validation (WCAG 2.1 AA)
  * - Keyboard navigation tests
  * - Integration tests validating all sections
- * 
+ *
  * Technical details:
  * - Uses existing Header, Hero, About, CallToAction, Footer components
  * - Reuses About component from home page with custom props
@@ -75,7 +75,7 @@ type Story = StoryObj<typeof meta>;
 
 /**
  * Default About Page - Complete page with all sections
- * 
+ *
  * Visual regression testing across all breakpoints (375 → 1536px)
  */
 export const Default: Story = {
@@ -88,7 +88,7 @@ export const Default: Story = {
 
 /**
  * Mobile Viewport - Focused mobile rendering test
- * 
+ *
  * Tests responsive behavior on mobile devices (375px width).
  * All sections should stack vertically.
  */
@@ -110,7 +110,7 @@ export const MobileViewport: Story = {
 
 /**
  * Tablet Viewport - Tablet rendering test
- * 
+ *
  * Tests responsive behavior on tablet devices (768px width).
  */
 export const TabletViewport: Story = {
@@ -131,7 +131,7 @@ export const TabletViewport: Story = {
 
 /**
  * Desktop Viewport - Desktop rendering test
- * 
+ *
  * Tests responsive behavior on desktop (1920px width).
  * This is the primary design target.
  */
@@ -158,7 +158,7 @@ export const DesktopViewport: Story = {
 
 /**
  * Full Page Integration Test - Validates all sections
- * 
+ *
  * Tests the complete page composition and all critical elements:
  * - Hero section with correct title
  * - About section with 4 subsections
@@ -183,57 +183,77 @@ export const FullPageIntegration: Story = {
     await expect(within(heroRegion).getByText(/DOULA ET PROFESSEURE DE YOGA/i)).toBeInTheDocument();
 
     // Verify About section with 4 subsections
-    await expect(canvas.getByRole("heading", {
-      level: 2,
-      name: /À propos de moi/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 2,
+        name: /À propos de moi/i,
+      }),
+    ).toBeInTheDocument();
 
-    await expect(canvas.getByRole("heading", {
-      level: 3,
-      name: /Qui suis-je/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 3,
+        name: /Qui suis-je/i,
+      }),
+    ).toBeInTheDocument();
 
-    await expect(canvas.getByRole("heading", {
-      level: 3,
-      name: /Mon parcours/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 3,
+        name: /Mon parcours/i,
+      }),
+    ).toBeInTheDocument();
 
-    await expect(canvas.getByRole("heading", {
-      level: 3,
-      name: /Ce qui m'inspire/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 3,
+        name: /Ce qui m'inspire/i,
+      }),
+    ).toBeInTheDocument();
 
-    await expect(canvas.getByRole("heading", {
-      level: 3,
-      name: /Ma méthode/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 3,
+        name: /Ma méthode/i,
+      }),
+    ).toBeInTheDocument();
 
     // Verify Mes inspirations section
-    await expect(canvas.getByRole("heading", {
-      level: 2,
-      name: /Mes inspirations/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 2,
+        name: /Mes inspirations/i,
+      }),
+    ).toBeInTheDocument();
 
-    await expect(canvas.getByRole("heading", {
-      level: 3,
-      name: /Holistique/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 3,
+        name: /Holistique/i,
+      }),
+    ).toBeInTheDocument();
 
-    await expect(canvas.getByRole("heading", {
-      level: 3,
-      name: /Bienveillante/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 3,
+        name: /Bienveillante/i,
+      }),
+    ).toBeInTheDocument();
 
-    await expect(canvas.getByRole("heading", {
-      level: 3,
-      name: /Engagée/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 3,
+        name: /Engagée/i,
+      }),
+    ).toBeInTheDocument();
 
     // Verify CallToAction section
-    await expect(canvas.getByRole("heading", {
-      level: 2,
-      name: /douceur et bienveillance/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        level: 2,
+        name: /douceur et bienveillance/i,
+      }),
+    ).toBeInTheDocument();
 
     const ctaButton = canvas.getByRole("link", {
       name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i,
@@ -248,7 +268,7 @@ export const FullPageIntegration: Story = {
 
 /**
  * Accessibility Structure Validation - WCAG 2.1 AA
- * 
+ *
  * Validates semantic HTML structure and accessibility:
  * - Proper landmark regions
  * - Correct heading hierarchy
@@ -297,7 +317,7 @@ export const AccessibilityStructure: Story = {
 
 /**
  * French Content Validation
- * 
+ *
  * Ensures all text content is properly displayed in French (fr-CA).
  */
 export const FrenchContent: Story = {
@@ -325,14 +345,18 @@ export const FrenchContent: Story = {
     await expect(canvas.getByRole("heading", { name: /Engagée/i })).toBeInTheDocument();
 
     // Verify French CTA content
-    await expect(canvas.getByRole("heading", { name: /douceur et bienveillance/i })).toBeInTheDocument();
-    await expect(canvas.getByRole("link", { name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", { name: /douceur et bienveillance/i }),
+    ).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("link", { name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i }),
+    ).toBeInTheDocument();
   },
 };
 
 /**
  * Page Structure Validation
- * 
+ *
  * Validates that the page has the correct structure:
  * - Header at top
  * - Hero as first element in main
@@ -361,14 +385,18 @@ export const PageStructure: Story = {
     await expect(main).toContainElement(heroRegion);
 
     // Verify About section exists
-    await expect(canvas.getByRole("heading", {
-      name: /À propos de moi/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        name: /À propos de moi/i,
+      }),
+    ).toBeInTheDocument();
 
     // Verify Inspirations section exists
-    await expect(canvas.getByRole("heading", {
-      name: /Mes inspirations/i,
-    })).toBeInTheDocument();
+    await expect(
+      canvas.getByRole("heading", {
+        name: /Mes inspirations/i,
+      }),
+    ).toBeInTheDocument();
 
     // Verify Footer exists
     const footer = canvas.getByRole("contentinfo");
@@ -378,7 +406,7 @@ export const PageStructure: Story = {
 
 /**
  * About Section Content Validation
- * 
+ *
  * Validates the About section with 4 subsections contains expected French content.
  */
 export const AboutSectionContent: Story = {
@@ -402,7 +430,7 @@ export const AboutSectionContent: Story = {
 
 /**
  * Inspirations Cards Validation
- * 
+ *
  * Validates the 3 inspiration cards content and styling.
  */
 export const InspirationsCards: Story = {
@@ -426,7 +454,7 @@ export const InspirationsCards: Story = {
 
 /**
  * CallToAction Integration Test
- * 
+ *
  * Validates the CallToAction section integration:
  * - Correct title and subtitle
  * - Button with correct text and href
@@ -445,7 +473,9 @@ export const CallToActionSection: Story = {
     await expect(ctaTitle).toBeInTheDocument();
 
     // Verify CTA subtitle/description
-    await expect(canvas.getByText(/Curieuse et ouverte, je me nourris de chaque femme croisée/i)).toBeInTheDocument();
+    await expect(
+      canvas.getByText(/Curieuse et ouverte, je me nourris de chaque femme croisée/i),
+    ).toBeInTheDocument();
 
     // Verify CTA button
     const ctaButton = canvas.getByRole("link", {

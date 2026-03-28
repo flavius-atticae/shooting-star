@@ -51,10 +51,7 @@ function cleanupExpiredEntries(): void {
  */
 function startCleanupInterval(): void {
   if (cleanupInterval !== null) return;
-  cleanupInterval = setInterval(
-    cleanupExpiredEntries,
-    CLEANUP_INTERVAL_MS,
-  );
+  cleanupInterval = setInterval(cleanupExpiredEntries, CLEANUP_INTERVAL_MS);
   // Allow the process to exit even if the interval is still running
   if (typeof cleanupInterval === "object" && "unref" in cleanupInterval) {
     cleanupInterval.unref();
@@ -72,10 +69,7 @@ function startCleanupInterval(): void {
  * @param maxRequests - Maximum requests allowed per window (default: 3)
  * @returns `true` if the IP is rate limited and should be blocked
  */
-export function isRateLimited(
-  ip: string,
-  maxRequests: number = DEFAULT_MAX_REQUESTS,
-): boolean {
+export function isRateLimited(ip: string, maxRequests: number = DEFAULT_MAX_REQUESTS): boolean {
   startCleanupInterval();
 
   const now = Date.now();

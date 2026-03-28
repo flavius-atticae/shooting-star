@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { ContactInfo } from "~/components/layout/contact";
@@ -8,25 +7,19 @@ describe("ContactInfo Component", () => {
     it("should render the title", () => {
       render(<ContactInfo />);
 
-      expect(
-        screen.getByRole("heading", { name: /écris-moi/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /écris-moi/i })).toBeInTheDocument();
     });
 
     it("should render the introduction text", () => {
       render(<ContactInfo />);
 
-      expect(
-        screen.getByText(/contacte-moi pour échanger sur ton parcours/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/contacte-moi pour échanger sur ton parcours/i)).toBeInTheDocument();
     });
 
     it("should render the location", () => {
       render(<ContactInfo />);
 
-      expect(
-        screen.getByText(/grande région de montréal/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/grande région de montréal/i)).toBeInTheDocument();
     });
 
     it("should render the email as a clickable link", () => {
@@ -36,18 +29,13 @@ describe("ContactInfo Component", () => {
         name: /envoyer un courriel à pauline roussel/i,
       });
       expect(emailLink).toBeInTheDocument();
-      expect(emailLink).toHaveAttribute(
-        "href",
-        "mailto:pauline@paulineroussel.ca",
-      );
+      expect(emailLink).toHaveAttribute("href", "mailto:pauline@paulineroussel.ca");
     });
 
     it("should render the personal message", () => {
       render(<ContactInfo />);
 
-      expect(
-        screen.getByText(/j'ai hâte de faire ta rencontre/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/j'ai hâte de faire ta rencontre/i)).toBeInTheDocument();
     });
   });
 
@@ -74,9 +62,7 @@ describe("ContactInfo Component", () => {
       const emailLink = screen.getByRole("link", {
         name: /envoyer un courriel à pauline roussel/i,
       });
-      expect(emailLink).toHaveAccessibleName(
-        "Envoyer un courriel à Pauline Roussel",
-      );
+      expect(emailLink).toHaveAccessibleName("Envoyer un courriel à Pauline Roussel");
     });
 
     it("should hide icon from screen readers", () => {
@@ -92,15 +78,9 @@ describe("ContactInfo Component", () => {
       render(<ContactInfo />);
 
       expect(screen.getByText(/écris-moi/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/contacte-moi pour échanger/i),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/grande région de montréal/i),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/j'ai hâte de faire ta rencontre/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/contacte-moi pour échanger/i)).toBeInTheDocument();
+      expect(screen.getByText(/grande région de montréal/i)).toBeInTheDocument();
+      expect(screen.getByText(/j'ai hâte de faire ta rencontre/i)).toBeInTheDocument();
     });
   });
 
@@ -129,9 +109,7 @@ describe("ContactInfo Component", () => {
     });
 
     it("should pass through additional HTML attributes", () => {
-      const { container } = render(
-        <ContactInfo data-testid="contact-info-test" />,
-      );
+      const { container } = render(<ContactInfo data-testid="contact-info-test" />);
 
       const element = container.firstChild as HTMLElement;
       expect(element).toHaveAttribute("data-testid", "contact-info-test");

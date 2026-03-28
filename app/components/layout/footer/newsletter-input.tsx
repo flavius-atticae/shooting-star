@@ -95,11 +95,7 @@ export function NewsletterInput({
   const isFormDisabled = isLoading || isValidating;
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={cn("w-full", className)}
-      noValidate
-    >
+    <form onSubmit={handleSubmit} className={cn("w-full", className)} noValidate>
       <div className="relative">
         {/* Email Input */}
         <input
@@ -126,7 +122,7 @@ export function NewsletterInput({
             // Disabled state
             "disabled:opacity-50 disabled:cursor-not-allowed",
             // Transitions
-            "transition-all duration-200"
+            "transition-all duration-200",
           )}
         />
 
@@ -153,7 +149,7 @@ export function NewsletterInput({
             // Disabled state
             "disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-primary",
             // Transitions
-            "transition-all duration-200"
+            "transition-all duration-200",
           )}
         >
           {isFormDisabled ? (
@@ -190,11 +186,7 @@ export function NewsletterInput({
 
       {/* Error Message */}
       {error && (
-        <p
-          id="newsletter-error"
-          role="alert"
-          className="mt-2 text-sm text-white/90 font-body"
-        >
+        <p id="newsletter-error" role="alert" className="mt-2 text-sm text-white/90 font-body">
           {error}
         </p>
       )}

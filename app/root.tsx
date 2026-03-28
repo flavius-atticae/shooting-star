@@ -73,9 +73,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   if (isRouteErrorResponse(error)) {
     message = error.status === 404 ? "404" : "Erreur";
     details =
-      error.status === 404
-        ? "La page demandée est introuvable."
-        : error.statusText || details;
+      error.status === 404 ? "La page demandée est introuvable." : error.statusText || details;
   } else if (import.meta.env.DEV && error && error instanceof Error) {
     details = error.message;
     stack = error.stack;

@@ -8,10 +8,8 @@ import { Button } from "~/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { TestimonialCard, type Testimonial } from "./testimonial-card";
 
-export interface TestimonialsCarouselProps extends Omit<
-  React.HTMLAttributes<HTMLElement>,
-  "children"
-> {
+export interface TestimonialsCarouselProps
+  extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   title?: string;
   testimonials: Testimonial[];
   autoPlay?: boolean;
@@ -154,7 +152,7 @@ export function TestimonialsCarousel({
     (index: number) => {
       if (emblaApi) emblaApi.scrollTo(index);
     },
-    [emblaApi]
+    [emblaApi],
   );
 
   // Keyboard navigation - scoped to carousel container
@@ -220,18 +218,19 @@ export function TestimonialsCarousel({
           </div>
         ) : (
           // Carousel for multiple testimonials
-          <div
+          <section
             ref={carouselContainerRef}
             className="relative"
-            role="region"
             aria-label="Carrousel de témoignages"
             aria-roledescription="carousel"
+            // biome-ignore lint/a11y/noNoninteractiveTabindex: carousel requires keyboard focus for accessibility
             tabIndex={0}
           >
             {/* Carousel viewport */}
             <div className="overflow-hidden" ref={emblaRef}>
               <div className="flex -ml-4 sm:-ml-6">
                 {testimonials.map((testimonial, index) => (
+                  // biome-ignore lint/a11y/useSemanticElements: role="group" for carousel slides has no direct semantic HTML equivalent
                   <div
                     key={testimonial.id}
                     className={cn(
@@ -240,7 +239,7 @@ export function TestimonialsCarousel({
                       "min-w-0", // Reset min-width
                       "w-[85%]", // Mobile: 1 slide with peek (85% width)
                       "sm:w-[70%]", // Tablet: 1 slide centered with more peek
-                      "lg:w-[60%]" // Desktop: 1 slide centered with side peeks
+                      "lg:w-[60%]", // Desktop: 1 slide centered with side peeks
                     )}
                     role="group"
                     aria-roledescription="slide"
@@ -263,7 +262,7 @@ export function TestimonialsCarousel({
                   aria-label="Témoignage précédent"
                   className={cn(
                     "rounded-full border-primary text-primary hover:bg-primary hover:text-white",
-                    !canScrollPrev && "opacity-50 cursor-not-allowed"
+                    !canScrollPrev && "opacity-50 cursor-not-allowed",
                   )}
                 >
                   <ChevronLeft className="size-6" />
@@ -276,7 +275,7 @@ export function TestimonialsCarousel({
                   aria-label="Témoignage suivant"
                   className={cn(
                     "rounded-full border-primary text-primary hover:bg-primary hover:text-white",
-                    !canScrollNext && "opacity-50 cursor-not-allowed"
+                    !canScrollNext && "opacity-50 cursor-not-allowed",
                   )}
                 >
                   <ChevronRight className="size-6" />
@@ -291,14 +290,14 @@ export function TestimonialsCarousel({
                 role="tablist"
                 aria-label="Pagination des témoignages"
               >
-                {scrollSnaps.map((_, index) => (
+                {scrollSnaps.map((snap, index) => (
                   <button
-                    key={index}
+                    key={`snap-${snap}`}
                     type="button"
                     onClick={() => scrollTo(index)}
                     className={cn(
                       "size-12 flex items-center justify-center rounded-full transition-all",
-                      "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                      "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
                     )}
                     aria-label={`Aller au témoignage ${index + 1}`}
                     aria-current={index === selectedIndex ? "true" : undefined}
@@ -310,14 +309,14 @@ export function TestimonialsCarousel({
                         "size-3 rounded-full transition-all",
                         index === selectedIndex
                           ? "bg-primary w-8"
-                          : "bg-primary/30 hover:bg-primary/50"
+                          : "bg-primary/30 hover:bg-primary/50",
                       )}
                     />
                   </button>
                 ))}
               </div>
             )}
-          </div>
+          </section>
         )}
       </Container>
     </Section>

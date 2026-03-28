@@ -13,13 +13,13 @@ export interface AnimatedElementProps {
 
 /**
  * Pregnancy-safe animation hook that respects user preferences
- * 
+ *
  * Features:
  * - Respects `prefers-reduced-motion: reduce`
  * - Gentle easing functions (no jarring movements)
  * - 800ms duration for comfortable viewing
  * - Optional delays for staggered animations
- * 
+ *
  * Accessibility:
  * - Automatically disabled if user prefers reduced motion
  * - Uses transform-based animations for performance
@@ -27,7 +27,7 @@ export interface AnimatedElementProps {
  */
 export const usePregnancySafeAnimation = (
   animation: AnimatedElementProps["animation"] = "fade-in",
-  delay: number = 0
+  delay: number = 0,
 ) => {
   const [isVisible, setIsVisible] = React.useState(false);
   const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
@@ -35,8 +35,8 @@ export const usePregnancySafeAnimation = (
   // Check for reduced motion preference
   React.useEffect(() => {
     // SSR safety check
-    if (typeof window === 'undefined') return;
-    
+    if (typeof window === "undefined") return;
+
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     setPrefersReducedMotion(mediaQuery.matches);
 
@@ -65,52 +65,36 @@ export const usePregnancySafeAnimation = (
     }
 
     const baseClasses = "transition-all duration-[800ms] ease-out";
-    
+
     switch (animation) {
       case "fade-up":
-        return cn(
-          baseClasses,
-          isVisible
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-4"
-        );
-      
+        return cn(baseClasses, isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4");
+
       case "scale-in":
-        return cn(
-          baseClasses,
-          isVisible
-            ? "opacity-100 scale-100"
-            : "opacity-0 scale-95"
-        );
-      
-      case "fade-in":
+        return cn(baseClasses, isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95");
+
       default:
-        return cn(
-          baseClasses,
-          isVisible
-            ? "opacity-100"
-            : "opacity-0"
-        );
+        return cn(baseClasses, isVisible ? "opacity-100" : "opacity-0");
     }
   };
 
   return {
     isVisible,
     prefersReducedMotion,
-    animationClasses: getAnimationClasses()
+    animationClasses: getAnimationClasses(),
   };
 };
 
 /**
  * Animated wrapper component for pregnancy-safe animations
- * 
+ *
  * Usage:
  * ```tsx
  * <AnimatedElement animation="fade-up" delay={200}>
  *   <h1>Content to animate</h1>
  * </AnimatedElement>
  * ```
- * 
+ *
  * Features:
  * - Automatically respects motion preferences
  * - Gentle, comfortable animations (800ms duration)
@@ -122,15 +106,11 @@ export const AnimatedElement = React.forwardRef<HTMLDivElement, AnimatedElementP
     const { animationClasses } = usePregnancySafeAnimation(animation, delay);
 
     return (
-      <div
-        ref={ref}
-        className={cn(animationClasses, className)}
-        {...props}
-      >
+      <div ref={ref} className={cn(animationClasses, className)} {...props}>
         {children}
       </div>
     );
-  }
+  },
 );
 
 AnimatedElement.displayName = "AnimatedElement";
@@ -139,26 +119,23 @@ AnimatedElement.displayName = "AnimatedElement";
  * Pre-configured animation components for common Hero patterns
  */
 
-export const FadeInTitle = React.forwardRef<HTMLDivElement, Omit<AnimatedElementProps, "animation">>(
-  (props, ref) => (
-    <AnimatedElement ref={ref} animation="fade-up" {...props} />
-  )
-);
+export const FadeInTitle = React.forwardRef<
+  HTMLDivElement,
+  Omit<AnimatedElementProps, "animation">
+>((props, ref) => <AnimatedElement ref={ref} animation="fade-up" {...props} />);
 
 FadeInTitle.displayName = "FadeInTitle";
 
-export const FadeInSubtitle = React.forwardRef<HTMLDivElement, Omit<AnimatedElementProps, "animation">>(
-  (props, ref) => (
-    <AnimatedElement ref={ref} animation="fade-up" delay={200} {...props} />
-  )
-);
+export const FadeInSubtitle = React.forwardRef<
+  HTMLDivElement,
+  Omit<AnimatedElementProps, "animation">
+>((props, ref) => <AnimatedElement ref={ref} animation="fade-up" delay={200} {...props} />);
 
 FadeInSubtitle.displayName = "FadeInSubtitle";
 
-export const FadeInContainer = React.forwardRef<HTMLDivElement, Omit<AnimatedElementProps, "animation">>(
-  (props, ref) => (
-    <AnimatedElement ref={ref} animation="fade-in" {...props} />
-  )
-);
+export const FadeInContainer = React.forwardRef<
+  HTMLDivElement,
+  Omit<AnimatedElementProps, "animation">
+>((props, ref) => <AnimatedElement ref={ref} animation="fade-in" {...props} />);
 
 FadeInContainer.displayName = "FadeInContainer";

@@ -44,9 +44,7 @@ test.describe("Health Data Protection Compliance", () => {
     console.log("✓ HTTPS enforcement check completed");
   });
 
-  test("validates secure form handling for pregnancy data", async ({
-    page,
-  }) => {
+  test("validates secure form handling for pregnancy data", async ({ page }) => {
     await helpers.navigateSafely("/");
 
     // Look for forms that would handle sensitive pregnancy data
@@ -67,9 +65,7 @@ test.describe("Health Data Protection Compliance", () => {
     }
   });
 
-  test("protects against common pregnancy data vulnerabilities", async ({
-    page,
-  }) => {
+  test("protects against common pregnancy data vulnerabilities", async ({ page }) => {
     await helpers.navigateSafely("/");
 
     // Test XSS protection for pregnancy-related content
@@ -79,9 +75,7 @@ test.describe("Health Data Protection Compliance", () => {
     await page.goto(`${page.url()}?test=${encodeURIComponent(testScript)}`);
 
     // Verify script is not executed
-    const alertPromise = page
-      .waitForEvent("dialog", { timeout: 1000 })
-      .catch(() => null);
+    const alertPromise = page.waitForEvent("dialog", { timeout: 1000 }).catch(() => null);
     const alert = await alertPromise;
 
     expect(alert).toBeNull(); // No alert should appear
@@ -101,9 +95,7 @@ test.describe("Quebec Privacy Law Compliance", () => {
 
     // Check for privacy notice or consent mechanisms
     // Note: This would be expanded as privacy features are implemented
-    const privacyElements = page.locator(
-      '[data-privacy], [id*="privacy"], [class*="privacy"]',
-    );
+    const privacyElements = page.locator('[data-privacy], [id*="privacy"], [class*="privacy"]');
     const privacyCount = await privacyElements.count();
 
     console.log(`Found ${privacyCount} privacy-related elements`);
@@ -135,9 +127,7 @@ test.describe("Quebec Privacy Law Compliance", () => {
     // Filter out common CDNs that are acceptable
     const problematicRequests = externalRequests.filter(
       (hostname) =>
-        !hostname.includes("cdn") &&
-        !hostname.includes("font") &&
-        !hostname.includes("analytics"),
+        !hostname.includes("cdn") && !hostname.includes("font") && !hostname.includes("analytics"),
     );
 
     console.log(`External requests: ${externalRequests.length}`);
@@ -152,9 +142,7 @@ test.describe("Authentication and Session Security", () => {
     helpers = new PregnancySafeHelpers(page);
   });
 
-  test("implements secure session management for pregnancy users", async ({
-    page,
-  }) => {
+  test("implements secure session management for pregnancy users", async ({ page }) => {
     await helpers.navigateSafely("/");
 
     // Check for secure cookie settings (when auth is implemented)
@@ -174,9 +162,7 @@ test.describe("Authentication and Session Security", () => {
     }
   });
 
-  test("protects sensitive pregnancy information in storage", async ({
-    page,
-  }) => {
+  test("protects sensitive pregnancy information in storage", async ({ page }) => {
     await helpers.navigateSafely("/");
 
     // Verify no sensitive data is stored in localStorage
@@ -212,9 +198,7 @@ test.describe("Authentication and Session Security", () => {
       }
     }
 
-    console.log(
-      `Checked ${Object.keys(localStorageItems).length} localStorage items`,
-    );
+    console.log(`Checked ${Object.keys(localStorageItems).length} localStorage items`);
   });
 });
 
@@ -225,9 +209,7 @@ test.describe("Input Validation and Sanitization", () => {
     helpers = new PregnancySafeHelpers(page);
   });
 
-  test("validates Quebec health card number format securely", async ({
-    page,
-  }) => {
+  test("validates Quebec health card number format securely", async ({ page }) => {
     await helpers.navigateSafely("/");
 
     // Test health card validation (when forms are implemented)
@@ -313,9 +295,7 @@ test.describe("Content Security Policy", () => {
       expect(csp).toContain("default-src");
       console.log("✓ CSP header present");
     } else {
-      console.warn(
-        "Content Security Policy not found - should be implemented for health data",
-      );
+      console.warn("Content Security Policy not found - should be implemented for health data");
     }
   });
 

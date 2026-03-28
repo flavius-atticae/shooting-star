@@ -1,11 +1,9 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { BrowserRouter } from "react-router";
 import * as ReactRouter from "react-router";
-
-import DoulaPage from "../../routes/doula";
+import { BrowserRouter } from "react-router";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getDoulaContent } from "~/lib/content.server";
+import DoulaPage from "../../routes/doula";
 
 const renderDoulaPage = () =>
   render(
@@ -60,7 +58,6 @@ describe("Doula Route Integration Tests", () => {
       renderDoulaPage();
       const main = screen.getByRole("main");
       expect(main).toHaveAttribute("id", "main-content");
-      expect(main).toHaveAttribute("role", "main");
     });
 
     it("should support keyboard navigation", () => {

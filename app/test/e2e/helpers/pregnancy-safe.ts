@@ -1,8 +1,8 @@
-import { expect } from "@playwright/test";
-import type { Page, Locator } from "@playwright/test";
+import * as nodeCrypto from "node:crypto";
 import AxeBuilder from "@axe-core/playwright";
-import { TIMEOUTS, ACCESSIBILITY } from "./constants";
-import * as nodeCrypto from "crypto";
+import type { Locator, Page } from "@playwright/test";
+import { expect } from "@playwright/test";
+import { ACCESSIBILITY, TIMEOUTS } from "./constants";
 /**
  * Pregnancy-Safe Testing Utilities
  *
@@ -19,10 +19,7 @@ export class PregnancySafeHelpers {
 
   constructor(private page: Page) {
     // Use crypto.randomUUID() for secure session ID generation, with secure fallback for compatibility
-    if (
-      typeof crypto !== "undefined" &&
-      typeof crypto.randomUUID === "function"
-    ) {
+    if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
       this.sessionId = crypto.randomUUID();
     } else if (
       typeof window !== "undefined" &&
@@ -35,10 +32,7 @@ export class PregnancySafeHelpers {
       this.sessionId = Array.from(array)
         .map((num) => num.toString(16))
         .join("-");
-    } else if (
-      typeof nodeCrypto !== "undefined" &&
-      typeof nodeCrypto.randomBytes === "function"
-    ) {
+    } else if (typeof nodeCrypto !== "undefined" && typeof nodeCrypto.randomBytes === "function") {
       // Node.js fallback: use crypto.randomBytes
       this.sessionId = nodeCrypto.randomBytes(16).toString("hex");
     } else {
@@ -50,14 +44,12 @@ export class PregnancySafeHelpers {
   /**
    * Logging utility for pregnancy-safe testing
    */
+  // biome-ignore lint/suspicious/noExplicitAny: logging utility accepts any data
   private log(level: "info" | "warn" | "error", message: string, data?: any) {
     if (this.debugMode) {
       const timestamp = new Date().toISOString();
       const sessionInfo = `[${this.sessionId}]`;
-      console.log(
-        `${timestamp} ${sessionInfo} [${level.toUpperCase()}] ${message}`,
-        data || "",
-      );
+      console.log(`${timestamp} ${sessionInfo} [${level.toUpperCase()}] ${message}`, data || "");
     }
   }
 
@@ -125,9 +117,7 @@ export class PregnancySafeHelpers {
   /**
    * Fill form with pregnancy-safe patterns (auto-save, validation)
    */
-  async fillFormSafely(
-    inputs: Array<{ locator: Locator; value: string; label?: string }>,
-  ) {
+  async fillFormSafely(inputs: Array<{ locator: Locator; value: string; label?: string }>) {
     for (const input of inputs) {
       await expect(input.locator).toBeVisible();
 
@@ -154,12 +144,9 @@ export class PregnancySafeHelpers {
       .locator('[style*="animation"], [class*="animate"]')
       .count();
     if (reducedMotionElements > 0) {
-      console.warn(
-        `Found ${reducedMotionElements} potentially problematic animated elements`,
-      );
+      console.warn(`Found ${reducedMotionElements} potentially problematic animated elements`);
     }
 
-    // @ts-ignore - dynamic axe results
     const violations = results?.violations || [];
     if (violations.length > 0) {
       console.error("Accessibility violations found:", violations);
@@ -227,67 +214,68 @@ export class PregnancySafeHelpers {
       });
 
       return this.page.evaluate(() => {
-        return new Promise<{ lcp: number; fid: number; cls: number }>(
-          (resolve) => {
-            let lcp = 0;
-            let fid = 0;
-            let cls = 0;
+        return new Promise<{ lcp: number; fid: number; cls: number }>((resolve) => {
+          let lcp = 0;
+          let fid = 0;
+          let cls = 0;
 
-            // Measure LCP using PerformanceObserver for accuracy
-            const lcpObserver = new PerformanceObserver((list) => {
-              const entries = list.getEntries();
-              const lastEntry = entries[entries.length - 1] as any;
-              lcp = lastEntry?.startTime || 0;
+          // Measure LCP using PerformanceObserver for accuracy
+          const lcpObserver = new PerformanceObserver((list) => {
+            const entries = list.getEntries();
+            // biome-ignore lint/suspicious/noExplicitAny: PerformanceEntry subtype not in TS lib
+            const lastEntry = entries[entries.length - 1] as any;
+            lcp = lastEntry?.startTime || 0;
+          });
+
+          // Measure FID using PerformanceObserver
+          const fidObserver = new PerformanceObserver((list) => {
+            const entries = list.getEntries();
+            // biome-ignore lint/suspicious/noExplicitAny: PerformanceEntry subtype not in TS lib
+            entries.forEach((entry: any) => {
+              fid = entry.processingStart - entry.startTime;
             });
+          });
 
-            // Measure FID using PerformanceObserver
-            const fidObserver = new PerformanceObserver((list) => {
-              const entries = list.getEntries();
-              entries.forEach((entry: any) => {
-                fid = entry.processingStart - entry.startTime;
-              });
+          // Measure CLS using PerformanceObserver
+          const clsObserver = new PerformanceObserver((list) => {
+            // biome-ignore lint/suspicious/noExplicitAny: PerformanceEntry subtype not in TS lib
+            list.getEntries().forEach((entry: any) => {
+              if (!entry.hadRecentInput) {
+                cls += entry.value;
+              }
             });
+          });
 
-            // Measure CLS using PerformanceObserver
-            const clsObserver = new PerformanceObserver((list) => {
-              list.getEntries().forEach((entry: any) => {
-                if (!entry.hadRecentInput) {
-                  cls += entry.value;
-                }
-              });
+          try {
+            lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
+            fidObserver.observe({ entryTypes: ["first-input"] });
+            clsObserver.observe({ entryTypes: ["layout-shift"] });
+
+            // Wait for measurements and resolve
+            setTimeout(() => {
+              lcpObserver.disconnect();
+              fidObserver.disconnect();
+              clsObserver.disconnect();
+              resolve({ lcp, fid, cls });
+            }, 2000); // Wait 2 seconds for measurements
+          } catch (error) {
+            // Fallback to basic timing if PerformanceObserver not supported
+            const navigationTiming = performance.getEntriesByType(
+              "navigation",
+            )[0] as PerformanceNavigationTiming;
+            resolve({
+              lcp: navigationTiming
+                ? navigationTiming.loadEventEnd - navigationTiming.fetchStart
+                : 0,
+              fid: 0,
+              cls: 0,
             });
-
-            try {
-              lcpObserver.observe({ entryTypes: ["largest-contentful-paint"] });
-              fidObserver.observe({ entryTypes: ["first-input"] });
-              clsObserver.observe({ entryTypes: ["layout-shift"] });
-
-              // Wait for measurements and resolve
-              setTimeout(() => {
-                lcpObserver.disconnect();
-                fidObserver.disconnect();
-                clsObserver.disconnect();
-                resolve({ lcp, fid, cls });
-              }, 2000); // Wait 2 seconds for measurements
-            } catch (error) {
-              // Fallback to basic timing if PerformanceObserver not supported
-              const navigationTiming = performance.getEntriesByType(
-                "navigation",
-              )[0] as PerformanceNavigationTiming;
-              resolve({
-                lcp: navigationTiming
-                  ? navigationTiming.loadEventEnd - navigationTiming.fetchStart
-                  : 0,
-                fid: 0,
-                cls: 0,
-              });
-            }
-          },
-        );
+          }
+        });
       });
     };
 
-    let metrics;
+    let metrics: { lcp: number; fid: number; cls: number } | undefined;
     try {
       metrics = await collectMetrics();
     } catch (error) {
@@ -328,12 +316,9 @@ export class PregnancySafeHelpers {
 
     const descriptions = {
       fatigue: "pregnancy fatigue - slower decision making and movements",
-      morning_sickness:
-        "morning sickness - potential interruptions and discomfort",
-      brain_fog:
-        "pregnancy brain fog - difficulty concentrating and processing",
-      normal:
-        "normal pregnancy state - slightly slower than non-pregnant users",
+      morning_sickness: "morning sickness - potential interruptions and discomfort",
+      brain_fog: "pregnancy brain fog - difficulty concentrating and processing",
+      normal: "normal pregnancy state - slightly slower than non-pregnant users",
     };
 
     this.log("info", `Simulating ${context} with ${descriptions[delay]}`);
@@ -375,11 +360,7 @@ export class PregnancySafeHelpers {
         await recoveryAction();
         this.log("info", `Error recovery successful for ${context}`);
       } catch (recoveryError) {
-        this.log(
-          "error",
-          `Error recovery failed for ${context}`,
-          recoveryError,
-        );
+        this.log("error", `Error recovery failed for ${context}`, recoveryError);
         throw new Error(
           `Original error in ${context}: ${error.message}. Recovery also failed: ${recoveryError}`,
         );
@@ -448,9 +429,7 @@ const debugEnabled = process.env.PREGNANCY_SAFE_DEBUG === "true";
 
 if (debugEnabled) {
   console.log("\n🤰 Pregnancy-Safe Testing Utilities Loaded");
-  console.log(
-    `   Environment: ${isDevelopment ? "Development" : isCI ? "CI" : "Production"}`,
-  );
+  console.log(`   Environment: ${isDevelopment ? "Development" : isCI ? "CI" : "Production"}`);
   console.log(`   Debug mode: ${debugEnabled}`);
   console.log(`   Session: ${new Date().toISOString()}`);
 }

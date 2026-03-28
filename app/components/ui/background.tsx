@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "~/lib/utils";
 
 // ============================================================================
@@ -8,12 +8,7 @@ import { cn } from "~/lib/utils";
 /**
  * Background variant types
  */
-export type BackgroundVariant =
-  | "white"
-  | "accent"
-  | "soft"
-  | "gradient-soft"
-  | "gradient-warm";
+export type BackgroundVariant = "white" | "accent" | "soft" | "gradient-soft" | "gradient-warm";
 
 /**
  * Background pattern types
@@ -28,8 +23,7 @@ export type BackgroundPatternIntensity = "subtle" | "light";
 /**
  * Props for the Background component
  */
-export interface BackgroundProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
+export interface BackgroundProps extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   /** Content to render within the background */
   children: React.ReactNode;
   /** Background variant using Pauline Roussel color palette */
@@ -43,8 +37,7 @@ export interface BackgroundProps
 /**
  * Props for the BackgroundPattern component
  */
-export interface BackgroundPatternProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+export interface BackgroundPatternProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Pattern type */
   pattern?: BackgroundPatternType;
   /** Pattern intensity */
@@ -119,12 +112,10 @@ export function Background({
           soft: "bg-gradient-to-br from-white to-gris/30",
 
           // Advanced gradient variants pregnancy-safe
-          "gradient-soft":
-            "bg-gradient-to-br from-white via-soft/20 to-gris/40",
-          "gradient-warm":
-            "bg-gradient-to-br from-white via-warm/15 to-gris/25",
+          "gradient-soft": "bg-gradient-to-br from-white via-soft/20 to-gris/40",
+          "gradient-warm": "bg-gradient-to-br from-white via-warm/15 to-gris/25",
         }[variant],
-        className
+        className,
       )}
       {...props}
     >
@@ -177,16 +168,12 @@ export function BackgroundPattern({
 }: BackgroundPatternProps) {
   const patternClasses = {
     dots: {
-      subtle:
-        "bg-[radial-gradient(circle_at_1px_1px,theme(colors.gris)_1px,transparent_0)]",
-      light:
-        "bg-[radial-gradient(circle_at_2px_2px,theme(colors.gris)_1px,transparent_0)]",
+      subtle: "bg-[radial-gradient(circle_at_1px_1px,theme(colors.gris)_1px,transparent_0)]",
+      light: "bg-[radial-gradient(circle_at_2px_2px,theme(colors.gris)_1px,transparent_0)]",
     },
     lines: {
-      subtle:
-        "bg-[linear-gradient(90deg,theme(colors.gris)_1px,transparent_1px)]",
-      light:
-        "bg-[linear-gradient(90deg,theme(colors.gris)_2px,transparent_2px)]",
+      subtle: "bg-[linear-gradient(90deg,theme(colors.gris)_1px,transparent_1px)]",
+      light: "bg-[linear-gradient(90deg,theme(colors.gris)_2px,transparent_2px)]",
     },
     grid: {
       subtle:
@@ -217,7 +204,7 @@ export function BackgroundPattern({
         "absolute inset-0 pointer-events-none",
         patternClasses[pattern][intensity],
         sizeClasses[pattern][intensity],
-        className
+        className,
       )}
       {...props}
     />

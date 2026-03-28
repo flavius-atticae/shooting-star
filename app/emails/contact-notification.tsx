@@ -61,8 +61,7 @@ export function ContactNotification({
 
           <Section style={footerStyle}>
             <Text style={footerTextStyle}>
-              Ce message a été envoyé depuis le formulaire de contact de
-              paulineroussel.ca
+              Ce message a été envoyé depuis le formulaire de contact de paulineroussel.ca
             </Text>
           </Section>
         </Container>
@@ -77,8 +76,7 @@ export function ContactNotification({
 
 const bodyStyle: React.CSSProperties = {
   backgroundColor: "#f8f7f4",
-  fontFamily:
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   margin: 0,
   padding: 0,
 };

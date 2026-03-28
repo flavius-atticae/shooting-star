@@ -1,6 +1,5 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { Container } from "~/components/ui";
 
 describe("Container Component - Pregnancy-Safe Testing", () => {
@@ -8,7 +7,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
     it("should render sm size with correct TailwindCSS classes", () => {
       render(
         <Container size="sm" data-testid="container-sm">
-          <button>Test Button</button>
+          <button type="button">Test Button</button>
         </Container>,
       );
 
@@ -104,11 +103,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
 
     it("should accept custom className alongside size classes", () => {
       render(
-        <Container
-          size="sm"
-          className="custom-class"
-          data-testid="custom-container"
-        >
+        <Container size="sm" className="custom-class" data-testid="custom-container">
           <div>Custom content</div>
         </Container>,
       );
@@ -140,7 +135,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
     it("should provide adequate spacing for touch targets", () => {
       render(
         <Container size="md" data-testid="touch-container">
-          <button style={{ minHeight: "44px", margin: "8px" }}>
+          <button type="button" style={{ minHeight: "44px", margin: "8px" }}>
             Pregnancy-friendly button
           </button>
         </Container>,
@@ -168,8 +163,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
     });
 
     it("should maintain readability with proper content constraints", () => {
-      const longText =
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ".repeat(20);
+      const longText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. ".repeat(20);
 
       render(
         <Container size="sm" data-testid="readable-container">
@@ -230,13 +224,9 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
           data-testid="sr-container"
           aria-label="Pregnancy resources"
         >
-          <div
-            role="region"
-            aria-label="Helpful pregnancy information"
-            data-testid="inner-region"
-          >
+          <section aria-label="Helpful pregnancy information" data-testid="inner-region">
             <p>Content optimized for screen readers during pregnancy</p>
-          </div>
+          </section>
         </Container>,
       );
 
@@ -244,10 +234,7 @@ describe("Container Component - Pregnancy-Safe Testing", () => {
       const region = screen.getByTestId("inner-region");
 
       expect(container).toHaveAttribute("aria-label", "Pregnancy resources");
-      expect(region).toHaveAttribute(
-        "aria-label",
-        "Helpful pregnancy information",
-      );
+      expect(region).toHaveAttribute("aria-label", "Helpful pregnancy information");
     });
   });
 });

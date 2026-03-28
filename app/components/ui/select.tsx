@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 
 import { cn } from "~/lib/utils";
 
@@ -38,10 +38,7 @@ export interface SelectProps extends React.ComponentProps<"select"> {
  * </Select>
  * ```
  */
-export function Select({
-  className,
-  ...props
-}: SelectProps) {
+export function Select({ className, ...props }: SelectProps) {
   return (
     <select
       data-slot="select"
@@ -59,7 +56,7 @@ export function Select({
         "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
         // Invalid states
         "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
-        className
+        className,
       )}
       {...props}
     />

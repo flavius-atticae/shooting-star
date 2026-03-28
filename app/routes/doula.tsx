@@ -42,7 +42,7 @@ export default function DoulaPage() {
       {/* Header - Navigation principale */}
       <Header />
 
-      <main id="main-content" role="main">
+      <main id="main-content">
         {/* Hero Section - Accompagnement de doula */}
         <Hero
           variant="default"

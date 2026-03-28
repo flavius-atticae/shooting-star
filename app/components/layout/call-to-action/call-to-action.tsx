@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 import { Section } from "~/components/ui/section";
@@ -8,10 +8,7 @@ import { Container } from "~/components/ui/container";
 // Types
 // ============================================================================
 
-export interface CallToActionProps extends Omit<
-  React.HTMLAttributes<HTMLElement>,
-  "children"
-> {
+export interface CallToActionProps extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   /** Main title text - displayed in Ivyora Display font */
   title: string;
   /** Subtitle text - displayed in Barlow font */
@@ -104,27 +101,21 @@ export function CallToAction({
           {/* CTA Button - wrapped in max-width container to prevent overflow */}
           <div className="flex justify-center w-full">
             {(() => {
-              const buttonClasses = "max-w-full whitespace-normal sm:whitespace-nowrap px-6 sm:px-8";
-              
+              const buttonClasses =
+                "max-w-full whitespace-normal sm:whitespace-nowrap px-6 sm:px-8";
+
               return buttonHref ? (
                 <Button variant="cta" size="cta" asChild className={buttonClasses}>
                   <a
                     href={buttonHref}
                     target={buttonTarget}
-                    rel={
-                      buttonTarget === "_blank" ? "noopener noreferrer" : undefined
-                    }
+                    rel={buttonTarget === "_blank" ? "noopener noreferrer" : undefined}
                   >
                     {buttonText}
                   </a>
                 </Button>
               ) : (
-                <Button 
-                  variant="cta" 
-                  size="cta" 
-                  onClick={onButtonClick}
-                  className={buttonClasses}
-                >
+                <Button variant="cta" size="cta" onClick={onButtonClick} className={buttonClasses}>
                   {buttonText}
                 </Button>
               );

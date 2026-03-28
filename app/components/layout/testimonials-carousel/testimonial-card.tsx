@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "~/lib/utils";
 
 export interface Testimonial {
@@ -8,10 +8,8 @@ export interface Testimonial {
   context?: string;
 }
 
-export interface TestimonialCardProps extends Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  "children"
-> {
+export interface TestimonialCardProps
+  extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   testimonial: Testimonial;
   className?: string;
 }
@@ -41,24 +39,16 @@ export interface TestimonialCardProps extends Omit<
  * />
  * ```
  */
-export function TestimonialCard({
-  testimonial,
-  className,
-  ...props
-}: TestimonialCardProps) {
+export function TestimonialCard({ testimonial, className, ...props }: TestimonialCardProps) {
   return (
     <article
       className={cn(
         "bg-gris rounded-xl p-6 sm:p-8 flex flex-col h-full text-center",
         "transform-gpu motion-safe:transition-transform motion-safe:duration-200",
         "motion-reduce:transition-none",
-        className
+        className,
       )}
-      aria-label={
-        testimonial.author
-          ? `Témoignage de ${testimonial.author}`
-          : "Témoignage anonyme"
-      }
+      aria-label={testimonial.author ? `Témoignage de ${testimonial.author}` : "Témoignage anonyme"}
       {...props}
     >
       {/* Author as title - displayed first */}
@@ -78,9 +68,7 @@ export function TestimonialCard({
       {/* Context info */}
       {testimonial.context && (
         <div className="mt-auto pt-4">
-          <p className="font-sans text-sm text-primary/70">
-            {testimonial.context}
-          </p>
+          <p className="font-sans text-sm text-primary/70">{testimonial.context}</p>
         </div>
       )}
     </article>

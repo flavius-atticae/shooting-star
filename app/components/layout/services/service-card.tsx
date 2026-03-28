@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 
@@ -23,10 +23,7 @@ export interface ServiceItem {
   "aria-label"?: string;
 }
 
-export interface ServiceCardProps extends Omit<
-  React.HTMLAttributes<HTMLDivElement>,
-  "children"
-> {
+export interface ServiceCardProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "children"> {
   /** Service data */
   service: ServiceItem;
   /** Custom styling className */
@@ -72,7 +69,7 @@ export function ServiceCard({
         "bg-primary text-white rounded-xl p-6 sm:p-8 flex flex-col h-full",
         "transform-gpu motion-safe:transition-transform motion-safe:duration-200 motion-safe:hover:translate-y-[-2px] motion-reduce:hover:scale-100",
         "focus-within:outline-none focus-within:ring-2 focus-within:ring-white focus-within:ring-offset-2",
-        className
+        className,
       )}
       aria-label={ariaLabel || `Service: ${service.title}`}
       {...props}
@@ -93,24 +90,12 @@ export function ServiceCard({
       {/* CTA Button */}
       <div className="mt-auto flex justify-start">
         {service.buttonHref ? (
-          <Button
-            variant="service-card"
-            size="default"
-            className="px-6"
-            asChild
-          >
+          <Button variant="service-card" size="default" className="px-6" asChild>
             <a
               href={service.buttonHref}
               target={service.buttonTarget || "_self"}
-              rel={
-                service.buttonTarget === "_blank"
-                  ? "noopener noreferrer"
-                  : undefined
-              }
-              aria-label={
-                service["aria-label"] ||
-                `${service.buttonText} pour ${service.title}`
-              }
+              rel={service.buttonTarget === "_blank" ? "noopener noreferrer" : undefined}
+              aria-label={service["aria-label"] || `${service.buttonText} pour ${service.title}`}
             >
               {service.buttonText}
             </a>
@@ -121,10 +106,7 @@ export function ServiceCard({
             size="default"
             className="px-6"
             onClick={service.buttonAction}
-            aria-label={
-              service["aria-label"] ||
-              `${service.buttonText} pour ${service.title}`
-            }
+            aria-label={service["aria-label"] || `${service.buttonText} pour ${service.title}`}
           >
             {service.buttonText}
           </Button>

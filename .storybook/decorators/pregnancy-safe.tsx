@@ -1,9 +1,9 @@
-import React from 'react';
-import type { Decorator } from '@storybook/react';
+import React from "react";
+import type { Decorator } from "@storybook/react";
 
 /**
  * Pregnancy-Safe Decorators for Storybook
- * 
+ *
  * These decorators simulate different pregnancy-related contexts and accessibility needs
  * to ensure components work well for our Quebec perinatal market users.
  */
@@ -11,10 +11,10 @@ import type { Decorator } from '@storybook/react';
 // User persona types matching our E2E test personas
 export interface PregnancyPersona {
   name: string;
-  stage: 'first_pregnancy' | 'multiple_children' | 'high_risk' | 'postpartum';
+  stage: "first_pregnancy" | "multiple_children" | "high_risk" | "postpartum";
   gestationWeeks?: number;
-  language: 'fr' | 'en';
-  location: 'Montreal' | 'Quebec City' | 'Sherbrooke';
+  language: "fr" | "en";
+  location: "Montreal" | "Quebec City" | "Sherbrooke";
   accessibilityNeeds: {
     reducedMotion: boolean;
     highContrast: boolean;
@@ -22,20 +22,20 @@ export interface PregnancyPersona {
     extendedTimeouts: boolean;
   };
   preferences: {
-    deviceType: 'mobile' | 'tablet' | 'desktop';
-    colorScheme: 'light' | 'dark';
-    language: 'fr-CA' | 'en-CA';
+    deviceType: "mobile" | "tablet" | "desktop";
+    colorScheme: "light" | "dark";
+    language: "fr-CA" | "en-CA";
   };
 }
 
 // Our three main personas from E2E tests
 export const PREGNANCY_PERSONAS: Record<string, PregnancyPersona> = {
   MARIE: {
-    name: 'Marie Dubois',
-    stage: 'first_pregnancy',
+    name: "Marie Dubois",
+    stage: "first_pregnancy",
     gestationWeeks: 20,
-    language: 'fr',
-    location: 'Montreal',
+    language: "fr",
+    location: "Montreal",
     accessibilityNeeds: {
       reducedMotion: true,
       highContrast: false,
@@ -43,16 +43,16 @@ export const PREGNANCY_PERSONAS: Record<string, PregnancyPersona> = {
       extendedTimeouts: true,
     },
     preferences: {
-      deviceType: 'mobile',
-      colorScheme: 'light',
-      language: 'fr-CA',
-    }
+      deviceType: "mobile",
+      colorScheme: "light",
+      language: "fr-CA",
+    },
   },
   SOPHIE: {
-    name: 'Sophie Tremblay',
-    stage: 'multiple_children',
-    language: 'fr',
-    location: 'Quebec City',
+    name: "Sophie Tremblay",
+    stage: "multiple_children",
+    language: "fr",
+    location: "Quebec City",
     accessibilityNeeds: {
       reducedMotion: false,
       highContrast: true,
@@ -60,17 +60,17 @@ export const PREGNANCY_PERSONAS: Record<string, PregnancyPersona> = {
       extendedTimeouts: false,
     },
     preferences: {
-      deviceType: 'tablet',
-      colorScheme: 'light',
-      language: 'fr-CA',
-    }
+      deviceType: "tablet",
+      colorScheme: "light",
+      language: "fr-CA",
+    },
   },
   ALEXANDRA: {
-    name: 'Alexandra Johnson',
-    stage: 'high_risk',
+    name: "Alexandra Johnson",
+    stage: "high_risk",
     gestationWeeks: 28,
-    language: 'en',
-    location: 'Montreal',
+    language: "en",
+    location: "Montreal",
     accessibilityNeeds: {
       reducedMotion: true,
       highContrast: true,
@@ -78,10 +78,10 @@ export const PREGNANCY_PERSONAS: Record<string, PregnancyPersona> = {
       extendedTimeouts: true,
     },
     preferences: {
-      deviceType: 'desktop',
-      colorScheme: 'light',
-      language: 'en-CA',
-    }
+      deviceType: "desktop",
+      colorScheme: "light",
+      language: "en-CA",
+    },
   },
 };
 
@@ -91,7 +91,7 @@ export const PREGNANCY_PERSONAS: Record<string, PregnancyPersona> = {
 export const withReducedMotion: Decorator = (Story, context) => {
   React.useEffect(() => {
     // Apply reduced motion CSS
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -101,7 +101,7 @@ export const withReducedMotion: Decorator = (Story, context) => {
       }
     `;
     document.head.appendChild(style);
-    
+
     return () => {
       document.head.removeChild(style);
     };
@@ -119,11 +119,13 @@ export const withReducedMotion: Decorator = (Story, context) => {
  */
 export const withHighContrast: Decorator = (Story, context) => {
   return (
-    <div 
+    <div
       className="forced-colors-active"
-      style={{ 
-        filter: 'contrast(1.5)'
-      } as React.CSSProperties}
+      style={
+        {
+          filter: "contrast(1.5)",
+        } as React.CSSProperties
+      }
     >
       <Story {...context} />
     </div>
@@ -135,7 +137,7 @@ export const withHighContrast: Decorator = (Story, context) => {
  */
 export const withLargeText: Decorator = (Story, context) => {
   return (
-    <div style={{ fontSize: '1.2em' }}>
+    <div style={{ fontSize: "1.2em" }}>
       <Story {...context} />
     </div>
   );
@@ -146,10 +148,10 @@ export const withLargeText: Decorator = (Story, context) => {
  */
 export const withQuebecFrench: Decorator = (Story, context) => {
   React.useEffect(() => {
-    document.documentElement.lang = 'fr-CA';
-    
+    document.documentElement.lang = "fr-CA";
+
     return () => {
-      document.documentElement.lang = 'en';
+      document.documentElement.lang = "en";
     };
   }, []);
 
@@ -166,38 +168,38 @@ export const withQuebecFrench: Decorator = (Story, context) => {
 export const withPregnancyPersona = (persona: PregnancyPersona): Decorator => {
   return (Story, context) => {
     const { accessibilityNeeds, preferences } = persona;
-    
+
     React.useEffect(() => {
       // Apply persona-specific settings
       document.documentElement.lang = preferences.language;
-      
+
       if (accessibilityNeeds.reducedMotion) {
-        document.documentElement.style.setProperty('--motion-reduce', 'true');
+        document.documentElement.style.setProperty("--motion-reduce", "true");
       }
-      
+
       if (accessibilityNeeds.highContrast) {
-        document.documentElement.style.setProperty('--contrast-more', 'true');
+        document.documentElement.style.setProperty("--contrast-more", "true");
       }
-      
+
       return () => {
-        document.documentElement.style.removeProperty('--motion-reduce');
-        document.documentElement.style.removeProperty('--contrast-more');
+        document.documentElement.style.removeProperty("--motion-reduce");
+        document.documentElement.style.removeProperty("--contrast-more");
       };
     }, []);
 
     // Create wrapper with persona context
     const wrapperStyles: React.CSSProperties = {};
-    
+
     if (accessibilityNeeds.largeText) {
-      wrapperStyles.fontSize = '1.2em';
+      wrapperStyles.fontSize = "1.2em";
     }
-    
+
     if (accessibilityNeeds.highContrast) {
-      wrapperStyles.filter = 'contrast(1.5)';
+      wrapperStyles.filter = "contrast(1.5)";
     }
 
     return (
-      <div 
+      <div
         style={wrapperStyles}
         data-persona={persona.name}
         data-stage={persona.stage}
@@ -207,7 +209,7 @@ export const withPregnancyPersona = (persona: PregnancyPersona): Decorator => {
         lang={preferences.language}
       >
         <div className="pregnancy-persona-indicator bg-accent/10 p-2 mb-4 rounded text-xs">
-          <strong>👩‍🤱 Persona:</strong> {persona.name} • {persona.stage} 
+          <strong>👩‍🤱 Persona:</strong> {persona.name} • {persona.stage}
           {persona.gestationWeeks && ` • ${persona.gestationWeeks} semaines`} • {persona.location}
         </div>
         <Story {...context} />
@@ -222,7 +224,7 @@ export const withPregnancyPersona = (persona: PregnancyPersona): Decorator => {
 export const withTouchFriendly: Decorator = (Story, context) => {
   React.useEffect(() => {
     // Ensure all interactive elements meet minimum touch target size
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       [data-touch-friendly] button,
       [data-touch-friendly] a,
@@ -242,7 +244,7 @@ export const withTouchFriendly: Decorator = (Story, context) => {
       }
     `;
     document.head.appendChild(style);
-    
+
     return () => {
       document.head.removeChild(style);
     };
@@ -262,10 +264,10 @@ export const withMobilePregnancy: Decorator = (Story, context) => {
   return (
     <div className="mobile-pregnancy-context">
       <div className="bg-primary/5 p-3 mb-4 rounded-lg border-l-4 border-primary text-sm">
-        📱 <strong>Contexte mobile grossesse:</strong> Interface optimisée pour utilisation mobile 
+        📱 <strong>Contexte mobile grossesse:</strong> Interface optimisée pour utilisation mobile
         pendant la grossesse (fatigue, nausées, coordination réduite)
       </div>
-      <div style={{ maxWidth: '390px', margin: '0 auto' }}>
+      <div style={{ maxWidth: "390px", margin: "0 auto" }}>
         <Story {...context} />
       </div>
     </div>
@@ -278,7 +280,7 @@ export const withMobilePregnancy: Decorator = (Story, context) => {
 export const withPregnancySafeColors: Decorator = (Story, context) => {
   React.useEffect(() => {
     // Add pregnancy-safe color indicators
-    const style = document.createElement('style');
+    const style = document.createElement("style");
     style.textContent = `
       [data-pregnancy-safe-colors] {
         --pregnancy-safe-indicator: "🟢 Colors OK";
@@ -312,7 +314,7 @@ export const withPregnancySafeColors: Decorator = (Story, context) => {
       }
     `;
     document.head.appendChild(style);
-    
+
     return () => {
       document.head.removeChild(style);
     };

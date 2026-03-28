@@ -25,7 +25,7 @@ export function sanitizeInput(input: string): string {
   // harmless text fragments, but all tags and angle brackets are removed.
   while (result !== previous) {
     previous = result;
-    result = result.replace(/<[\/A-Za-z][^>]*>/g, "");
+    result = result.replace(/<[/A-Za-z][^>]*>/g, "");
   }
   return result.replace(/[<>]/g, "");
 }

@@ -100,8 +100,7 @@ export const WithoutImage: Story = {
 export const LongTitle: Story = {
   args: {
     id: "event-3",
-    title:
-      "Atelier spécial féminin sacré : célébration de la féminité et rituels de passage",
+    title: "Atelier spécial féminin sacré : célébration de la féminité et rituels de passage",
     date: "21 Juin 2025",
     time: "10:00",
     // imageUrl omitted - will use placeholder

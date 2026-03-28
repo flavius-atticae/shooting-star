@@ -13,9 +13,7 @@ test.describe("Marie - First Pregnancy Journey", () => {
   test("Marie discovers prenatal yoga services", async ({ mariePersona }) => {
     const { page, helpers, profile } = mariePersona;
 
-    console.log(
-      `Testing as ${profile.name} (${profile.stage}, ${profile.gestationWeeks} weeks)`,
-    );
+    console.log(`Testing as ${profile.name} (${profile.stage}, ${profile.gestationWeeks} weeks)`);
 
     // Navigate to homepage as a first-time visitor
     await helpers.navigateSafely("/");
@@ -28,15 +26,9 @@ test.describe("Marie - First Pregnancy Journey", () => {
     await expect(page).toHaveTitle(/Pauline Roussel/i);
 
     // Verify key primary navigation links are available
-    await expect(
-      page.getByRole("link", { name: /Doula/i }).first(),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("link", { name: /Yoga/i }).first(),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("link", { name: /Contact/i }).first(),
-    ).toBeVisible();
+    await expect(page.getByRole("link", { name: /Doula/i }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Yoga/i }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Contact/i }).first()).toBeVisible();
 
     // Check that the page doesn't trigger motion sickness
     await helpers.checkPregnancyAccessibility();
@@ -47,9 +39,7 @@ test.describe("Marie - First Pregnancy Journey", () => {
     await expect(mainContent.getByRole("heading", { level: 1 })).toBeVisible();
   });
 
-  test("Marie checks service availability in Montreal", async ({
-    mariePersona,
-  }) => {
+  test("Marie checks service availability in Montreal", async ({ mariePersona }) => {
     const { page, helpers, profile } = mariePersona;
 
     await helpers.navigateSafely("/");
@@ -69,9 +59,7 @@ test.describe("Marie - First Pregnancy Journey", () => {
 });
 
 test.describe("Sophie - Experienced Mother Journey", () => {
-  test("Sophie quickly finds postpartum services", async ({
-    sophiePersona,
-  }) => {
+  test("Sophie quickly finds postpartum services", async ({ sophiePersona }) => {
     const { page, helpers, profile } = sophiePersona;
 
     console.log(`Testing as ${profile.name} (${profile.stage}, postpartum)`);
@@ -89,15 +77,11 @@ test.describe("Sophie - Experienced Mother Journey", () => {
 
     // Verify bilingual capability
     await expect(page.locator("html")).toHaveAttribute("lang", /fr/);
-    await expect(
-      page.getByRole("link", { name: /Contact/i }).first(),
-    ).toBeVisible();
+    await expect(page.getByRole("link", { name: /Contact/i }).first()).toBeVisible();
     await expect(page.locator("main")).toBeVisible();
   });
 
-  test("Sophie manages multiple bookings efficiently", async ({
-    sophiePersona,
-  }) => {
+  test("Sophie manages multiple bookings efficiently", async ({ sophiePersona }) => {
     const { page, helpers, profile } = sophiePersona;
 
     await helpers.navigateSafely("/");
@@ -114,9 +98,7 @@ test.describe("Sophie - Experienced Mother Journey", () => {
 });
 
 test.describe("Alexandra - High-Risk Pregnancy Journey", () => {
-  test("Alexandra accesses specialized care information", async ({
-    alexandraPersona,
-  }) => {
+  test("Alexandra accesses specialized care information", async ({ alexandraPersona }) => {
     const { page, helpers, profile } = alexandraPersona;
 
     console.log(
@@ -130,23 +112,15 @@ test.describe("Alexandra - High-Risk Pregnancy Journey", () => {
 
     // Verify primary guidance paths are available from the landing page
     await expect(page.locator("main")).toBeVisible();
-    await expect(
-      page.getByRole("link", { name: /Doula/i }).first(),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("link", { name: /Yoga/i }).first(),
-    ).toBeVisible();
-    await expect(
-      page.getByRole("link", { name: /Contact/i }).first(),
-    ).toBeVisible();
+    await expect(page.getByRole("link", { name: /Doula/i }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Yoga/i }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Contact/i }).first()).toBeVisible();
 
     // Check high contrast and reduced motion
     await helpers.checkPregnancyAccessibility();
   });
 
-  test("Alexandra requires careful, accessible navigation", async ({
-    alexandraPersona,
-  }) => {
+  test("Alexandra requires careful, accessible navigation", async ({ alexandraPersona }) => {
     const { page, helpers, profile } = alexandraPersona;
 
     await helpers.navigateSafely("/", { waitForMotion: true });

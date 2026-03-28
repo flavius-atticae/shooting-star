@@ -1,11 +1,11 @@
-import * as React from "react";
+import type * as React from "react";
 import { Link } from "react-router";
 import { cn } from "~/lib/utils";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 import { NewsletterInput } from "./newsletter-input";
 import { SocialIcons } from "./social-icons";
-import type { SocialLink, SocialPlatform } from "./social-icons";
+import type { SocialLink } from "./social-icons";
 
 // Re-export social types for consumers
 export type { SocialLink, SocialPlatform } from "./social-icons";
@@ -29,10 +29,7 @@ export interface FooterNavLink {
 /**
  * Props for the main Footer component
  */
-export interface FooterProps extends Omit<
-  React.HTMLAttributes<HTMLElement>,
-  "children"
-> {
+export interface FooterProps extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   /** Custom section spacing override */
   spacing?: "none" | "compact" | "normal" | "spacious";
   /** Custom container size */
@@ -181,7 +178,6 @@ export function Footer({
         return "pt-16 md:pt-20";
       case "responsive":
         return "md:pt-16"; // Only applies on tablet+
-      case "none":
       default:
         return "";
     }
@@ -192,11 +188,7 @@ export function Footer({
       background="transparent"
       spacing="normal"
       as="footer"
-      className={cn(
-        "bg-primary w-full pb-0",
-        getOverlapCompensation(),
-        className
-      )}
+      className={cn("bg-primary w-full pb-0", getOverlapCompensation(), className)}
       aria-labelledby={ariaLabelledBy}
       aria-describedby={ariaDescribedBy}
       lang="fr"
@@ -211,7 +203,7 @@ export function Footer({
             // Vertical and horizontal alignment - top aligned for Figma conformance
             "items-start justify-items-start md:justify-items-center",
             // Padding for rounded container - Progressive Enhancement (48px → 64px → 80px)
-            "px-6 py-6 sm:px-8 md:py-8"
+            "px-6 py-6 sm:px-8 md:py-8",
           )}
         >
           {/* Column 1: Logo Section (inline) */}
@@ -228,7 +220,7 @@ export function Footer({
                 // Focus states for accessibility
                 "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary",
                 // Hover state (subtle animation)
-                "hover:scale-[1.05] active:scale-[0.95]"
+                "hover:scale-[1.05] active:scale-[0.95]",
               )}
               aria-label="Pauline Roussel - Retour à l'accueil"
             >
@@ -267,7 +259,7 @@ export function Footer({
                     // Hover and active states
                     "hover:scale-[1.02] active:scale-[0.98]",
                     // Border for better definition on mobile
-                    "border border-transparent hover:border-white/20 rounded-lg"
+                    "border border-transparent hover:border-white/20 rounded-lg",
                   )}
                   aria-label={link.ariaLabel}
                 >
@@ -284,7 +276,7 @@ export function Footer({
               <h3
                 className={cn(
                   "font-heading text-3xl sm:text-4xl lg:text-[40px] text-white",
-                  "mb-6"
+                  "mb-6",
                 )}
               >
                 Restons connectés
@@ -304,24 +296,15 @@ export function Footer({
 
             {/* Privacy Notice */}
             <div className="w-full">
-              <p
-                className={cn(
-                  "text-xs text-white/70 font-body leading-relaxed",
-                  "max-w-sm"
-                )}
-              >
-                En vous inscrivant, vous acceptez de recevoir nos
-                communications. Vous pourrez vous désabonner à tout moment.
+              <p className={cn("text-xs text-white/70 font-body leading-relaxed", "max-w-sm")}>
+                En vous inscrivant, vous acceptez de recevoir nos communications. Vous pourrez vous
+                désabonner à tout moment.
               </p>
             </div>
 
             {/* Social Media Section */}
             <div className="w-full">
-              <SocialIcons
-                links={socialLinks}
-                size="sm"
-                className="!justify-start"
-              />
+              <SocialIcons links={socialLinks} size="sm" className="!justify-start" />
             </div>
           </div>
         </div>
@@ -331,7 +314,7 @@ export function Footer({
           className={cn(
             "mx-6 sm:mx-8 pt-6 pb-2",
             "flex flex-col sm:flex-row items-center justify-between",
-            "gap-4 text-center sm:text-left"
+            "gap-4 text-center sm:text-left",
           )}
         >
           {/* Copyright */}
@@ -347,7 +330,7 @@ export function Footer({
                 "text-sm text-white/80 hover:text-white font-body",
                 "transition-colors duration-200",
                 "focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-primary",
-                "min-h-[44px] flex items-center px-2"
+                "min-h-[44px] flex items-center px-2",
               )}
             >
               Mentions légales
@@ -358,7 +341,7 @@ export function Footer({
                 "text-sm text-white/80 hover:text-white font-body",
                 "transition-colors duration-200",
                 "focus:outline-none focus:ring-2 focus:ring-white/50 focus:ring-offset-2 focus:ring-offset-primary",
-                "min-h-[44px] flex items-center px-2"
+                "min-h-[44px] flex items-center px-2",
               )}
             >
               Confidentialité

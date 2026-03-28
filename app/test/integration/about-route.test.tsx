@@ -1,8 +1,7 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { BrowserRouter } from "react-router";
 import * as ReactRouter from "react-router";
+import { BrowserRouter } from "react-router";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { getAboutContent } from "~/lib/content.server";
 
 /**
@@ -60,9 +59,7 @@ describe("About Route Integration Tests", () => {
       renderAboutPage();
 
       // Check for subtitle
-      expect(
-        screen.getByText("DOULA ET PROFESSEURE DE YOGA"),
-      ).toBeInTheDocument();
+      expect(screen.getByText("DOULA ET PROFESSEURE DE YOGA")).toBeInTheDocument();
     });
 
     it("should render About section with 4 subsections", () => {
@@ -74,18 +71,12 @@ describe("About Route Integration Tests", () => {
       ).toBeInTheDocument();
 
       // Verify all four subsection titles
-      expect(
-        screen.getByRole("heading", { level: 3, name: /Qui suis-je/i }),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { level: 3, name: /Mon parcours/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 3, name: /Qui suis-je/i })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 3, name: /Mon parcours/i })).toBeInTheDocument();
       expect(
         screen.getByRole("heading", { level: 3, name: /Ce qui m'inspire/i }),
       ).toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { level: 3, name: /Ma méthode/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 3, name: /Ma méthode/i })).toBeInTheDocument();
     });
 
     it("should render Mes inspirations section with 3 cards", () => {
@@ -97,15 +88,9 @@ describe("About Route Integration Tests", () => {
       ).toBeInTheDocument();
 
       // Verify all three inspiration card titles
-      expect(
-        screen.getByRole("heading", { level: 3, name: /Holistique/i }),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { level: 3, name: /Bienveillante/i }),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { level: 3, name: /Engagée/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 3, name: /Holistique/i })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 3, name: /Bienveillante/i })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 3, name: /Engagée/i })).toBeInTheDocument();
     });
 
     it("should render CallToAction section", () => {
@@ -154,7 +139,6 @@ describe("About Route Integration Tests", () => {
       // Main content should be properly labeled
       const main = screen.getByRole("main");
       expect(main).toHaveAttribute("id", "main-content");
-      expect(main).toHaveAttribute("role", "main");
     });
 
     it("should have proper heading hierarchy", () => {
@@ -200,28 +184,18 @@ describe("About Route Integration Tests", () => {
       ).toBeInTheDocument();
 
       // Verify French subtitle
-      expect(
-        screen.getByText("DOULA ET PROFESSEURE DE YOGA"),
-      ).toBeInTheDocument();
+      expect(screen.getByText("DOULA ET PROFESSEURE DE YOGA")).toBeInTheDocument();
 
       // Verify French About subsection titles
       expect(screen.getByText(/Qui suis-je/i)).toBeInTheDocument();
       expect(screen.getByText(/Mon parcours/i)).toBeInTheDocument();
       expect(screen.getByText(/Ce qui m'inspire/i)).toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { level: 3, name: /Ma méthode/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 3, name: /Ma méthode/i })).toBeInTheDocument();
 
       // Verify French Inspiration titles
-      expect(
-        screen.getByRole("heading", { level: 3, name: /Holistique/i }),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { level: 3, name: /Bienveillante/i }),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { level: 3, name: /Engagée/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 3, name: /Holistique/i })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 3, name: /Bienveillante/i })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 3, name: /Engagée/i })).toBeInTheDocument();
 
       // Verify French CTA text
       expect(screen.getByText(/douceur et bienveillance/i)).toBeInTheDocument();
@@ -232,29 +206,19 @@ describe("About Route Integration Tests", () => {
 
       // Verify French descriptions are present
       expect(
-        screen.getByText(
-          /Curieuse et ouverte, j'aime apprendre encore et encore/i,
-        ),
+        screen.getByText(/Curieuse et ouverte, j'aime apprendre encore et encore/i),
       ).toBeInTheDocument();
       expect(screen.getByText(/Danseuse classique/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/puissance et la résilience des femmes/i),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/Holistique et personnalisée/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/puissance et la résilience des femmes/i)).toBeInTheDocument();
+      expect(screen.getByText(/Holistique et personnalisée/i)).toBeInTheDocument();
     });
 
     it("should have French descriptions in Inspiration cards", () => {
       renderAboutPage();
 
       // Verify inspiration card descriptions
-      expect(
-        screen.getByText(/corps, mental, émotions et énergie/i),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/espace doux, sécurisant et empathique/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/corps, mental, émotions et énergie/i)).toBeInTheDocument();
+      expect(screen.getByText(/espace doux, sécurisant et empathique/i)).toBeInTheDocument();
       expect(screen.getByText(/Je m'implique pleinement/i)).toBeInTheDocument();
     });
   });
@@ -284,12 +248,8 @@ describe("About Route Integration Tests", () => {
       expect(footer).toBeInTheDocument();
 
       // Footer should come after main in DOM order
-      const mainIndex = Array.from(container.querySelectorAll("*")).indexOf(
-        main,
-      );
-      const footerIndex = Array.from(container.querySelectorAll("*")).indexOf(
-        footer,
-      );
+      const mainIndex = Array.from(container.querySelectorAll("*")).indexOf(main);
+      const footerIndex = Array.from(container.querySelectorAll("*")).indexOf(footer);
       expect(footerIndex).toBeGreaterThan(mainIndex);
     });
 
@@ -298,9 +258,7 @@ describe("About Route Integration Tests", () => {
 
       // About component uses Section with background="white" for the About page
       // Verify the about content exists
-      expect(
-        screen.getByRole("heading", { name: /À propos de moi/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /À propos de moi/i })).toBeInTheDocument();
     });
   });
 
@@ -350,39 +308,25 @@ describe("About Route Integration Tests", () => {
       renderAboutPage();
 
       // Qui suis-je?
-      expect(
-        screen.getByText(/Curieuse et ouverte, j'aime apprendre/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/Curieuse et ouverte, j'aime apprendre/i)).toBeInTheDocument();
 
       // Mon parcours
-      expect(
-        screen.getByText(/Danseuse classique et contemporaine/i),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/Devenir doula s'est imposé/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/Danseuse classique et contemporaine/i)).toBeInTheDocument();
+      expect(screen.getByText(/Devenir doula s'est imposé/i)).toBeInTheDocument();
 
       // Ce qui m'inspire
-      expect(
-        screen.getByText(/La puissance et la résilience des femmes/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/La puissance et la résilience des femmes/i)).toBeInTheDocument();
 
       // Ma méthode
-      expect(
-        screen.getByText(/Holistique et personnalisée/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/Holistique et personnalisée/i)).toBeInTheDocument();
     });
 
     it("should have photo placeholder with caption", () => {
       renderAboutPage();
 
       // Check for photo caption text
-      expect(
-        document.getElementById("pauline-photo-caption"),
-      ).toHaveTextContent("Pauline Roussel");
-      expect(
-        screen.getByText("Doula et professeure de yoga"),
-      ).toBeInTheDocument();
+      expect(document.getElementById("pauline-photo-caption")).toHaveTextContent("Pauline Roussel");
+      expect(screen.getByText("Doula et professeure de yoga")).toBeInTheDocument();
     });
   });
 
@@ -391,15 +335,9 @@ describe("About Route Integration Tests", () => {
       renderAboutPage();
 
       // Verify all three cards are present
-      expect(
-        screen.getByRole("heading", { name: /Holistique/i }),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { name: /Bienveillante/i }),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("heading", { name: /Engagée/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /Holistique/i })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /Bienveillante/i })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: /Engagée/i })).toBeInTheDocument();
     });
 
     it("should have inspiration cards with descriptions", () => {
@@ -410,9 +348,7 @@ describe("About Route Integration Tests", () => {
         screen.getByText(/Ma méthode considère la Femme dans sa globalité/i),
       ).toBeInTheDocument();
       expect(screen.getByText(/Je crée un espace doux/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/Je m'implique pleinement pour t'accompagner/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/Je m'implique pleinement pour t'accompagner/i)).toBeInTheDocument();
     });
   });
 
@@ -435,9 +371,7 @@ describe("About Route Integration Tests", () => {
 
       // Verify CTA subtitle is present
       expect(
-        screen.getByText(
-          /Curieuse et ouverte, je me nourris de chaque femme croisée/i,
-        ),
+        screen.getByText(/Curieuse et ouverte, je me nourris de chaque femme croisée/i),
       ).toBeInTheDocument();
     });
   });

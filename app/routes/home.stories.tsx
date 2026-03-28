@@ -62,9 +62,7 @@ export const MobileView: Story = {
     await expect(canvas.getByText(/Épanouir/i)).toBeInTheDocument();
 
     // Verify CTA section
-    await expect(
-      canvas.getByText(/Réservez votre accompagnement/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/Réservez votre accompagnement/i)).toBeInTheDocument();
 
     // Verify services are present (use getAllByText since text appears in multiple places)
     expect(canvas.getAllByText(/Doula/i).length).toBeGreaterThan(0);
@@ -151,17 +149,13 @@ export const ServicesSection: Story = {
     await expect(canvas.getByText(/Mes services/i)).toBeInTheDocument();
 
     // Find service cards by their aria-label (more specific than link text)
-    const serviceCards = canvasElement.querySelectorAll(
-      'article[aria-label^="Service:"]'
-    );
+    const serviceCards = canvasElement.querySelectorAll('article[aria-label^="Service:"]');
     expect(serviceCards.length).toBe(3);
 
     // Verify each service card exists with correct content
     const expectedServices = ["Doula", "Yoga", "Féminin"];
     expectedServices.forEach((service) => {
-      const card = canvasElement.querySelector(
-        `article[aria-label="Service: ${service}"]`
-      );
+      const card = canvasElement.querySelector(`article[aria-label="Service: ${service}"]`);
       expect(card).not.toBeNull();
     });
 
@@ -194,9 +188,7 @@ export const PageAccessibility: Story = {
     expect(heroTitle).toBeInTheDocument();
 
     // Verify sections are present by their content
-    await expect(
-      canvas.getByText(/Réservez votre accompagnement/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/Réservez votre accompagnement/i)).toBeInTheDocument();
 
     // Services section heading
     await expect(canvas.getByText(/Mes services/i)).toBeInTheDocument();
@@ -223,9 +215,7 @@ export const DesktopView: Story = {
 
     // All main content sections should be present
     await expect(canvas.getByText(/Épanouir/i)).toBeInTheDocument();
-    await expect(
-      canvas.getByText(/Réservez votre accompagnement/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/Réservez votre accompagnement/i)).toBeInTheDocument();
     await expect(canvas.getByText(/Mes services/i)).toBeInTheDocument();
   },
 };
@@ -243,9 +233,7 @@ export const FrenchContent: Story = {
     await expect(canvas.getByText(/Avec Pauline Roussel/i)).toBeInTheDocument();
 
     // CTA
-    await expect(
-      canvas.getByText(/Réservez votre accompagnement/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/Réservez votre accompagnement/i)).toBeInTheDocument();
     // Use getAllByText since "Contactez-moi" appears in header and CTA
     expect(canvas.getAllByText(/Contactez-moi/i).length).toBeGreaterThan(0);
 

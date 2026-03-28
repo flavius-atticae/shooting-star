@@ -14,7 +14,7 @@ export function loader() {
   };
 }
 
-export function meta({}: Route.MetaArgs) {
+export function meta(_args: Route.MetaArgs) {
   return [
     {
       title: "Pauline Roussel - Yoga Prénatal & Accompagnement à la Naissance",
@@ -40,13 +40,9 @@ export default function Home() {
       {/* Header - Navigation principale */}
       <Header />
 
-      <main id="main-content" role="main">
+      <main id="main-content">
         {/* Hero Section - "Épanouir sa féminité" */}
-        <Hero
-          variant="default"
-          title={"Épanouir\nsa féminité"}
-          subtitle="Avec Pauline Roussel"
-        />
+        <Hero variant="default" title={"Épanouir\nsa féminité"} subtitle="Avec Pauline Roussel" />
 
         {/* CTA Section - Placement stratégique après Hero */}
         <CallToAction

@@ -1,6 +1,6 @@
 /**
  * Footer Component Exports
- * 
+ *
  * Barrel export file for the Footer component system following established patterns.
  * Simplified structure: Footer + NewsletterInput + SocialIcons
  */
@@ -17,7 +17,7 @@ export type {
   FooterProps,
   FooterNavLink,
   SocialLink,
-  SocialPlatform
+  SocialPlatform,
 } from "./footer";
 
 export type { NewsletterInputProps } from "./newsletter-input";

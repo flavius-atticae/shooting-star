@@ -1,6 +1,5 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect } from "vitest";
 
 import { ErrorBoundary } from "~/root";
 
@@ -25,9 +24,7 @@ describe("ErrorBoundary — French localization", () => {
   it("should display a generic error message in French for unknown errors", () => {
     render(<ErrorBoundary error={new Error("something broke")} params={{}} />);
 
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Oups!",
-    );
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Oups!");
     expect(screen.getByText("something broke")).toBeInTheDocument();
   });
 
@@ -37,9 +34,7 @@ describe("ErrorBoundary — French localization", () => {
     render(<ErrorBoundary error={error} params={{}} />);
 
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("404");
-    expect(
-      screen.getByText("La page demandée est introuvable."),
-    ).toBeInTheDocument();
+    expect(screen.getByText("La page demandée est introuvable.")).toBeInTheDocument();
   });
 
   it("should display a generic route error heading in French for non-404 HTTP errors", () => {
@@ -47,9 +42,7 @@ describe("ErrorBoundary — French localization", () => {
 
     render(<ErrorBoundary error={error} params={{}} />);
 
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
-      "Erreur",
-    );
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("Erreur");
     expect(screen.getByText("Internal Server Error")).toBeInTheDocument();
   });
 
@@ -57,11 +50,7 @@ describe("ErrorBoundary — French localization", () => {
     render(<ErrorBoundary error={new Error("boom")} params={{}} />);
 
     expect(screen.queryByText(/Oops!/i)).not.toBeInTheDocument();
-    expect(
-      screen.queryByText("An unexpected error occurred."),
-    ).not.toBeInTheDocument();
-    expect(
-      screen.queryByText("The requested page could not be found."),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText("An unexpected error occurred.")).not.toBeInTheDocument();
+    expect(screen.queryByText("The requested page could not be found.")).not.toBeInTheDocument();
   });
 });

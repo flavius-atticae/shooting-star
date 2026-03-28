@@ -5,8 +5,8 @@
  * with proper SSR handling. Critical for pregnancy-safe UX.
  */
 
-import { useState, useEffect, useMemo } from 'react'
-import { prefersReducedMotion } from '~/lib/browser-support'
+import { useState, useEffect, useMemo } from "react";
+import { prefersReducedMotion } from "~/lib/browser-support";
 
 /**
  * Hook for motion preferences (pregnancy-safe UX)
@@ -28,39 +28,45 @@ import { prefersReducedMotion } from '~/lib/browser-support'
  * ```
  */
 export function useMotionPreferences() {
-  const [isReduced, setIsReduced] = useState<boolean>(false)
+  const [isReduced, setIsReduced] = useState<boolean>(false);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setIsReduced(prefersReducedMotion())
+    if (typeof window !== "undefined") {
+      setIsReduced(prefersReducedMotion());
     }
-  }, [])
+  }, []);
 
-  const helpers = useMemo(() => ({
-    /**
-     * Should animations be enabled?
-     * Respects user's motion preferences
-     */
-    shouldAnimate: !isReduced,
+  const helpers = useMemo(
+    () => ({
+      /**
+       * Should animations be enabled?
+       * Respects user's motion preferences
+       */
+      shouldAnimate: !isReduced,
 
-    /**
-     * Get appropriate animation class based on preferences
-     */
-    getAnimationClass: (animationClass: string, fallbackClass: string = '') => {
-      return isReduced ? fallbackClass : animationClass
-    },
+      /**
+       * Get appropriate animation class based on preferences
+       */
+      getAnimationClass: (animationClass: string, fallbackClass: string = "") => {
+        return isReduced ? fallbackClass : animationClass;
+      },
 
-    /**
-     * Get transition duration based on preferences
-     * Shorter durations for motion-sensitive users
-     */
-    getTransitionDuration: (normal: string = 'duration-300', reduced: string = 'duration-150') => {
-      return isReduced ? reduced : normal
-    }
-  }), [isReduced])
+      /**
+       * Get transition duration based on preferences
+       * Shorter durations for motion-sensitive users
+       */
+      getTransitionDuration: (
+        normal: string = "duration-300",
+        reduced: string = "duration-150",
+      ) => {
+        return isReduced ? reduced : normal;
+      },
+    }),
+    [isReduced],
+  );
 
   return {
     prefersReduced: isReduced,
-    ...helpers
-  }
+    ...helpers,
+  };
 }

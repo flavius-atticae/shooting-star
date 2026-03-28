@@ -9,9 +9,7 @@ import { TEST_DATA } from "../fixtures/test-data";
  */
 
 test.describe("Comprehensive User Journey Testing", () => {
-  test("Marie completes her first yoga class booking", async ({
-    mariePersona,
-  }) => {
+  test("Marie completes her first yoga class booking", async ({ mariePersona }) => {
     const { page, helpers, profile } = mariePersona;
 
     // Marie's journey: Nervous first-time user booking prenatal yoga
@@ -36,18 +34,14 @@ test.describe("Comprehensive User Journey Testing", () => {
 
     // Performance check - important for mobile pregnancy users
     const metrics = await helpers.measurePerformance();
-    expect(metrics.lcp).toBeLessThan(
-      TEST_DATA.PERFORMANCE_THRESHOLDS.LCP_THRESHOLD,
-    );
+    expect(metrics.lcp).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.LCP_THRESHOLD);
 
     console.log(
       `✓ Marie's journey completed successfully (${profile.gestationWeeks} weeks pregnant)`,
     );
   });
 
-  test("Sophie efficiently manages postpartum class schedule", async ({
-    sophiePersona,
-  }) => {
+  test("Sophie efficiently manages postpartum class schedule", async ({ sophiePersona }) => {
     const { page, helpers, profile } = sophiePersona;
 
     // Sophie's journey: Busy mom of 2, needs quick efficient booking
@@ -154,12 +148,8 @@ test.describe("Quebec Healthcare Integration Scenarios", () => {
       // Validate hospital data structure
       expect(hospital.name).toBeTruthy();
       expect(hospital.location).toBeTruthy();
-      expect(
-        TEST_DATA.VALIDATION_PATTERNS.POSTAL_CODE.test(hospital.postalCode),
-      ).toBe(true);
-      expect(
-        TEST_DATA.VALIDATION_PATTERNS.QUEBEC_PHONE.test(hospital.phone),
-      ).toBe(true);
+      expect(TEST_DATA.VALIDATION_PATTERNS.POSTAL_CODE.test(hospital.postalCode)).toBe(true);
+      expect(TEST_DATA.VALIDATION_PATTERNS.QUEBEC_PHONE.test(hospital.phone)).toBe(true);
     }
 
     console.log(`✓ Verified ${hospitals.length} maternity ward records`);
@@ -167,17 +157,13 @@ test.describe("Quebec Healthcare Integration Scenarios", () => {
 });
 
 test.describe("Accessibility Compliance Testing", () => {
-  test("meets WCAG 2.1 AA standards for pregnancy users", async ({
-    alexandraPersona,
-  }) => {
+  test("meets WCAG 2.1 AA standards for pregnancy users", async ({ alexandraPersona }) => {
     const { page, helpers } = alexandraPersona;
 
     await helpers.navigateSafely("/");
 
     // Test each accessibility scenario
-    for (const [key, scenario] of Object.entries(
-      TEST_DATA.ACCESSIBILITY_SCENARIOS,
-    )) {
+    for (const [key, scenario] of Object.entries(TEST_DATA.ACCESSIBILITY_SCENARIOS)) {
       console.log(`Testing: ${scenario.description}`);
 
       if (key === "LARGE_TOUCH_TARGETS") {
@@ -195,12 +181,8 @@ test.describe("Accessibility Compliance Testing", () => {
             typeof scenario.requirements === "object" &&
             "minWidth" in scenario.requirements
           ) {
-            expect(boundingBox.width).toBeGreaterThanOrEqual(
-              scenario.requirements.minWidth,
-            );
-            expect(boundingBox.height).toBeGreaterThanOrEqual(
-              scenario.requirements.minHeight,
-            );
+            expect(boundingBox.width).toBeGreaterThanOrEqual(scenario.requirements.minWidth);
+            expect(boundingBox.height).toBeGreaterThanOrEqual(scenario.requirements.minHeight);
           }
         }
       }
@@ -212,9 +194,7 @@ test.describe("Accessibility Compliance Testing", () => {
 });
 
 test.describe("Performance Testing for Pregnancy Users", () => {
-  test("meets Core Web Vitals targets for pregnancy-safe experience", async ({
-    mariePersona,
-  }) => {
+  test("meets Core Web Vitals targets for pregnancy-safe experience", async ({ mariePersona }) => {
     const { page, helpers } = mariePersona;
 
     await helpers.navigateSafely("/");
@@ -223,24 +203,16 @@ test.describe("Performance Testing for Pregnancy Users", () => {
     const metrics = await helpers.measurePerformance();
 
     // Use pregnancy-adjusted thresholds (slightly more lenient)
-    expect(metrics.lcp).toBeLessThan(
-      TEST_DATA.PERFORMANCE_THRESHOLDS.LCP_THRESHOLD,
-    );
-    expect(metrics.fid).toBeLessThan(
-      TEST_DATA.PERFORMANCE_THRESHOLDS.FID_THRESHOLD,
-    );
-    expect(metrics.cls).toBeLessThan(
-      TEST_DATA.PERFORMANCE_THRESHOLDS.CLS_THRESHOLD,
-    );
+    expect(metrics.lcp).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.LCP_THRESHOLD);
+    expect(metrics.fid).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.FID_THRESHOLD);
+    expect(metrics.cls).toBeLessThan(TEST_DATA.PERFORMANCE_THRESHOLDS.CLS_THRESHOLD);
 
     console.log(`✓ Performance targets met - LCP: ${metrics.lcp}ms`);
   });
 });
 
 test.describe("Error Handling and Recovery", () => {
-  test("handles pregnancy brain fog form errors gracefully", async ({
-    mariePersona,
-  }) => {
+  test("handles pregnancy brain fog form errors gracefully", async ({ mariePersona }) => {
     const { page, helpers } = mariePersona;
 
     await helpers.navigateSafely("/contact");

@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as LabelPrimitive from "@radix-ui/react-label";
+import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
 import {
   Controller,
@@ -46,8 +46,7 @@ export interface FormItemProps extends React.ComponentProps<"div"> {
 /**
  * Props for the FormLabel component
  */
-export interface FormLabelProps
-  extends React.ComponentProps<typeof LabelPrimitive.Root> {
+export interface FormLabelProps extends React.ComponentProps<typeof LabelPrimitive.Root> {
   /** Custom className */
   className?: string;
 }
@@ -77,13 +76,9 @@ export interface FormMessageProps extends React.ComponentProps<"p"> {
 // Context
 // ============================================================================
 
-const FormFieldContext = React.createContext<FormFieldContextValue>(
-  {} as FormFieldContextValue
-);
+const FormFieldContext = React.createContext<FormFieldContextValue>({} as FormFieldContextValue);
 
-const FormItemContext = React.createContext<FormItemContextValue>(
-  {} as FormItemContextValue
-);
+const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue);
 
 // ============================================================================
 // Form Components
@@ -165,11 +160,7 @@ export function FormItem({ className, ...props }: FormItemProps) {
 
   return (
     <FormItemContext.Provider value={{ id }}>
-      <div
-        data-slot="form-item"
-        className={cn("grid gap-2", className)}
-        {...props}
-      />
+      <div data-slot="form-item" className={cn("grid gap-2", className)} {...props} />
     </FormItemContext.Provider>
   );
 }
@@ -213,18 +204,13 @@ export function FormLabel({ className, ...props }: FormLabelProps) {
  * ```
  */
 export function FormControl({ ...props }: FormControlProps) {
-  const { error, formItemId, formDescriptionId, formMessageId } =
-    useFormField();
+  const { error, formItemId, formDescriptionId, formMessageId } = useFormField();
 
   return (
     <Slot
       data-slot="form-control"
       id={formItemId}
-      aria-describedby={
-        !error
-          ? `${formDescriptionId}`
-          : `${formDescriptionId} ${formMessageId}`
-      }
+      aria-describedby={!error ? `${formDescriptionId}` : `${formDescriptionId} ${formMessageId}`}
       aria-invalid={!!error}
       {...props}
     />
@@ -244,10 +230,7 @@ export function FormControl({ ...props }: FormControlProps) {
  * </FormDescription>
  * ```
  */
-export function FormDescription({
-  className,
-  ...props
-}: FormDescriptionProps) {
+export function FormDescription({ className, ...props }: FormDescriptionProps) {
   const { formDescriptionId } = useFormField();
 
   return (

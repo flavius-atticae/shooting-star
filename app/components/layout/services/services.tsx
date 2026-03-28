@@ -1,13 +1,10 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "~/lib/utils";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
 import { ServiceCard, type ServiceItem } from "./service-card";
 
-export interface ServicesProps extends Omit<
-  React.HTMLAttributes<HTMLElement>,
-  "children"
-> {
+export interface ServicesProps extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   /** Section title - "Mes services" by default */
   title?: string;
   /** Array of services to display */
@@ -91,24 +88,18 @@ export function Services({
             "md:grid-cols-2", // Tablet: 2 columns
             "lg:grid-cols-3", // Desktop: 3 columns
             // Ensure equal height cards
-            "auto-rows-fr"
+            "auto-rows-fr",
           )}
         >
           {services.map((service) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
-              className="h-full"
-            />
+            <ServiceCard key={service.id} service={service} className="h-full" />
           ))}
         </div>
 
         {/* Empty state - for development/debugging */}
         {services.length === 0 && (
           <div className="text-center py-12">
-            <p className="text-neutral text-lg">
-              Aucun service à afficher pour le moment.
-            </p>
+            <p className="text-neutral text-lg">Aucun service à afficher pour le moment.</p>
           </div>
         )}
       </Container>

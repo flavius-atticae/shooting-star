@@ -5,12 +5,8 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // Detect if running in Storybook context
 // The React Router Vite plugin is incompatible with Storybook's build process
-const isStorybook = process.argv[1]?.includes('storybook') || process.env.STORYBOOK === 'true';
+const isStorybook = process.argv[1]?.includes("storybook") || process.env.STORYBOOK === "true";
 
 export default defineConfig({
-  plugins: [
-    tailwindcss(),
-    !isStorybook && reactRouter(),
-    tsconfigPaths()
-  ].filter(Boolean),
+  plugins: [tailwindcss(), !isStorybook && reactRouter(), tsconfigPaths()].filter(Boolean),
 });

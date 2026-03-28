@@ -1,8 +1,7 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect } from "vitest";
-import { createMemoryRouter, RouterProvider } from "react-router";
 import type { RouteObject } from "react-router";
+import { createMemoryRouter, RouterProvider } from "react-router";
+import { describe, expect, it } from "vitest";
 
 /**
  * Integration tests for /yoga route
@@ -65,9 +64,7 @@ describe("Yoga Route Integration Tests", () => {
       render(<RouterProvider router={router} />);
 
       // Verify all three course sections
-      expect(
-        screen.getByRole("heading", { level: 3, name: /Cours privés/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 3, name: /Cours privés/i })).toBeInTheDocument();
       expect(
         screen.getByRole("heading", { level: 3, name: /Cours en studio/i }),
       ).toBeInTheDocument();
@@ -126,7 +123,6 @@ describe("Yoga Route Integration Tests", () => {
       // Main content should be properly labeled
       const main = screen.getByRole("main");
       expect(main).toHaveAttribute("id", "main-content");
-      expect(main).toHaveAttribute("role", "main");
     });
 
     it("should have proper heading hierarchy", () => {
@@ -195,12 +191,8 @@ describe("Yoga Route Integration Tests", () => {
       render(<RouterProvider router={router} />);
 
       // Verify French descriptions are present
-      expect(
-        screen.getByText(/accompagnement personnalisé/i),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByText(/espace chaleureux et sécurisant/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/accompagnement personnalisé/i)).toBeInTheDocument();
+      expect(screen.getByText(/espace chaleureux et sécurisant/i)).toBeInTheDocument();
       expect(screen.getByText(/moment de ressourcement/i)).toBeInTheDocument();
     });
   });
@@ -232,12 +224,8 @@ describe("Yoga Route Integration Tests", () => {
       expect(footer).toBeInTheDocument();
 
       // Footer should come after main in DOM order
-      const mainIndex = Array.from(container.querySelectorAll("*")).indexOf(
-        main,
-      );
-      const footerIndex = Array.from(container.querySelectorAll("*")).indexOf(
-        footer,
-      );
+      const mainIndex = Array.from(container.querySelectorAll("*")).indexOf(main);
+      const footerIndex = Array.from(container.querySelectorAll("*")).indexOf(footer);
       expect(footerIndex).toBeGreaterThan(mainIndex);
     });
 
@@ -364,9 +352,7 @@ describe("Yoga Route Integration Tests", () => {
 
       // Verify CTA subtitle is present
       expect(screen.getByText(/Curieuse et ouverte/i)).toBeInTheDocument();
-      expect(
-        screen.getByText(/accompagnement sensible et doux/i),
-      ).toBeInTheDocument();
+      expect(screen.getByText(/accompagnement sensible et doux/i)).toBeInTheDocument();
     });
   });
 });

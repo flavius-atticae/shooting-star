@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from '@storybook/react'
-import { Background, BackgroundPattern, useBackgroundClasses } from './background'
+import type { Meta, StoryObj } from "@storybook/react";
+import { Background, BackgroundPattern, useBackgroundClasses } from "./background";
 
 const meta: Meta<typeof Background> = {
-  title: 'Foundation/3. Background',
+  title: "Foundation/3. Background",
   component: Background,
   parameters: {
-    layout: 'fullscreen',
+    layout: "fullscreen",
     docs: {
       description: {
         component: `
@@ -31,36 +31,36 @@ les nausées pendant la grossesse.
   },
   argTypes: {
     variant: {
-      control: 'select',
-      options: ['white', 'accent', 'soft', 'gradient-soft', 'gradient-warm'],
-      description: 'Variante de l\'arrière-plan',
+      control: "select",
+      options: ["white", "accent", "soft", "gradient-soft", "gradient-warm"],
+      description: "Variante de l'arrière-plan",
       table: {
-        type: { summary: 'white | accent | soft | gradient-soft | gradient-warm' },
-        defaultValue: { summary: 'white' },
+        type: { summary: "white | accent | soft | gradient-soft | gradient-warm" },
+        defaultValue: { summary: "white" },
       },
     },
     as: {
-      control: 'text',
-      description: 'Élément HTML à utiliser comme racine',
+      control: "text",
+      description: "Élément HTML à utiliser comme racine",
       table: {
-        type: { summary: 'React.ElementType' },
-        defaultValue: { summary: 'div' },
+        type: { summary: "React.ElementType" },
+        defaultValue: { summary: "div" },
       },
     },
     children: {
-      control: 'text',
-      description: 'Contenu à afficher sur l\'arrière-plan',
+      control: "text",
+      description: "Contenu à afficher sur l'arrière-plan",
     },
     className: {
-      control: 'text',
-      description: 'Classes CSS supplémentaires',
+      control: "text",
+      description: "Classes CSS supplémentaires",
     },
   },
-  tags: ['autodocs'],
-}
+  tags: ["autodocs"],
+};
 
-export default meta
-type Story = StoryObj<typeof Background>
+export default meta;
+type Story = StoryObj<typeof Background>;
 
 // Contenu de démonstration pour tester la lisibilité
 const SampleContent = ({ title = "Contenu d'exemple" }: { title?: string }) => (
@@ -68,27 +68,33 @@ const SampleContent = ({ title = "Contenu d'exemple" }: { title?: string }) => (
     <h2 className="text-3xl font-semibold text-primary mb-6">{title}</h2>
     <div className="space-y-4 text-neutral">
       <p className="leading-relaxed text-lg">
-        Ce contenu démontre la lisibilité sur l'arrière-plan sélectionné. 
-        Les couleurs sont optimisées pour le confort visuel pendant la grossesse.
+        Ce contenu démontre la lisibilité sur l'arrière-plan sélectionné. Les couleurs sont
+        optimisées pour le confort visuel pendant la grossesse.
       </p>
       <p className="text-base">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod 
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-        quis nostrud exercitation ullamco laboris.
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut
+        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+        laboris.
       </p>
       <div className="flex gap-4 pt-4">
-        <button className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 
-                           min-h-[44px] font-medium transition-colors">
+        <button
+          type="button"
+          className="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary/90 
+                           min-h-[44px] font-medium transition-colors"
+        >
           Action Primaire
         </button>
-        <button className="bg-secondary text-white px-6 py-3 rounded-lg hover:bg-secondary/90
-                           min-h-[44px] font-medium transition-colors">
+        <button
+          type="button"
+          className="bg-secondary text-white px-6 py-3 rounded-lg hover:bg-secondary/90
+                           min-h-[44px] font-medium transition-colors"
+        >
           Action Secondaire
         </button>
       </div>
     </div>
   </div>
-)
+);
 
 /**
  * Arrière-plan blanc par défaut.
@@ -96,7 +102,7 @@ const SampleContent = ({ title = "Contenu d'exemple" }: { title?: string }) => (
  */
 export const White: Story = {
   args: {
-    variant: 'white',
+    variant: "white",
     children: <SampleContent title="Arrière-plan Blanc (par défaut)" />,
   },
   parameters: {
@@ -113,7 +119,7 @@ C'est la base neutre recommandée pour la plupart des sections.
       },
     },
   },
-}
+};
 
 /**
  * Arrière-plan accent avec le gris clair de la palette.
@@ -121,7 +127,7 @@ C'est la base neutre recommandée pour la plupart des sections.
  */
 export const Accent: Story = {
   args: {
-    variant: 'accent',
+    variant: "accent",
     children: <SampleContent title="Arrière-plan Accent (gris clair)" />,
   },
   parameters: {
@@ -138,7 +144,7 @@ Couleur apaisante issue de la palette Pauline Roussel.
       },
     },
   },
-}
+};
 
 /**
  * Gradient doux blanc vers gris.
@@ -146,7 +152,7 @@ Couleur apaisante issue de la palette Pauline Roussel.
  */
 export const SoftGradient: Story = {
   args: {
-    variant: 'soft',
+    variant: "soft",
     children: <SampleContent title="Gradient Doux (blanc → gris)" />,
   },
   parameters: {
@@ -163,7 +169,7 @@ Particulièrement adapté pour les interfaces pregnancy-friendly.
       },
     },
   },
-}
+};
 
 /**
  * Gradient complexe avec rose pâle.
@@ -171,7 +177,7 @@ Particulièrement adapté pour les interfaces pregnancy-friendly.
  */
 export const ComplexGradient: Story = {
   args: {
-    variant: 'gradient-soft',
+    variant: "gradient-soft",
     children: <SampleContent title="Gradient Complexe (avec rose pâle)" />,
   },
   parameters: {
@@ -188,7 +194,7 @@ Utilise la couleur "soft" (#ffddd3) de la palette Pauline Roussel.
       },
     },
   },
-}
+};
 
 /**
  * Gradient chaleureux avec beige.
@@ -196,7 +202,7 @@ Utilise la couleur "soft" (#ffddd3) de la palette Pauline Roussel.
  */
 export const WarmGradient: Story = {
   args: {
-    variant: 'gradient-warm',
+    variant: "gradient-warm",
     children: <SampleContent title="Gradient Chaleureux (avec beige)" />,
   },
   parameters: {
@@ -213,7 +219,7 @@ Utilise la couleur "warm" (#ceaf9b) pour une sensation de chaleur.
       },
     },
   },
-}
+};
 
 /**
  * Comparaison de toutes les variantes d'arrière-plan.
@@ -225,19 +231,20 @@ export const AllVariants: Story = {
       <h2 className="text-2xl font-bold text-primary p-6 bg-white">
         Comparaison des variantes Background
       </h2>
-      
-      {(['white', 'accent', 'soft', 'gradient-soft', 'gradient-warm'] as const).map((variant) => (
+
+      {(["white", "accent", "soft", "gradient-soft", "gradient-warm"] as const).map((variant) => (
         <Background key={variant} variant={variant}>
           <div className="p-6 min-h-[200px] flex items-center">
             <div className="max-w-2xl mx-auto text-center">
-              <h3 className="text-xl font-semibold text-primary mb-3">
-                Variante "{variant}"
-              </h3>
+              <h3 className="text-xl font-semibold text-primary mb-3">Variante "{variant}"</h3>
               <p className="text-neutral mb-4">
                 Démonstration de lisibilité et de confort visuel sur cette variante d'arrière-plan.
               </p>
-              <button className="bg-primary text-white px-4 py-2 rounded min-h-[44px] 
-                               hover:bg-primary/90 transition-colors">
+              <button
+                type="button"
+                className="bg-primary text-white px-4 py-2 rounded min-h-[44px] 
+                               hover:bg-primary/90 transition-colors"
+              >
                 Bouton test
               </button>
             </div>
@@ -258,7 +265,7 @@ Vue comparative de toutes les variantes d'arrière-plan pour évaluer :
       },
     },
   },
-}
+};
 
 /**
  * Background avec élément HTML personnalisé (section).
@@ -266,8 +273,8 @@ Vue comparative de toutes les variantes d'arrière-plan pour évaluer :
  */
 export const CustomElement: Story = {
   args: {
-    variant: 'soft',
-    as: 'section',
+    variant: "soft",
+    as: "section",
     children: <SampleContent title="Background comme élément <section>" />,
   },
   parameters: {
@@ -280,7 +287,7 @@ comme racine pour respecter la sémantique (section, aside, header, etc.).
       },
     },
   },
-}
+};
 
 /**
  * Background avec classes CSS personnalisées.
@@ -288,8 +295,8 @@ comme racine pour respecter la sémantique (section, aside, header, etc.).
  */
 export const WithCustomStyles: Story = {
   args: {
-    variant: 'gradient-warm',
-    className: 'border-t-4 border-primary shadow-inner',
+    variant: "gradient-warm",
+    className: "border-t-4 border-primary shadow-inner",
     children: <SampleContent title="Background avec styles personnalisés" />,
   },
   parameters: {
@@ -302,7 +309,7 @@ pour des effets visuels spéciaux (bordures, ombres, etc.).
       },
     },
   },
-}
+};
 
 /**
  * Démonstration du composant BackgroundPattern.
@@ -314,27 +321,24 @@ export const WithPatterns: Story = {
       <h2 className="text-2xl font-bold text-primary p-6 bg-white">
         Background avec motifs subtils
       </h2>
-      
-      {(['dots', 'lines', 'grid'] as const).map((pattern) => (
+
+      {(["dots", "lines", "grid"] as const).map((pattern) => (
         <div key={pattern} className="relative min-h-[300px]">
           <Background variant="accent">
-            <BackgroundPattern 
-              pattern={pattern} 
-              intensity="subtle" 
-              className="opacity-50" 
-            />
+            <BackgroundPattern pattern={pattern} intensity="subtle" className="opacity-50" />
             <div className="relative z-10 p-8">
-              <h3 className="text-xl font-semibold text-primary mb-4">
-                Motif "{pattern}" subtil
-              </h3>
+              <h3 className="text-xl font-semibold text-primary mb-4">Motif "{pattern}" subtil</h3>
               <p className="text-neutral max-w-2xl">
-                Les motifs de fond sont conçus pour être pregnancy-safe : 
-                très subtils pour éviter la fatigue visuelle et les nausées, 
-                tout en ajoutant une texture délicate à l'interface.
+                Les motifs de fond sont conçus pour être pregnancy-safe : très subtils pour éviter
+                la fatigue visuelle et les nausées, tout en ajoutant une texture délicate à
+                l'interface.
               </p>
               <div className="mt-6">
-                <button className="bg-secondary text-white px-6 py-3 rounded-lg 
-                                 hover:bg-secondary/90 min-h-[44px] font-medium">
+                <button
+                  type="button"
+                  className="bg-secondary text-white px-6 py-3 rounded-lg 
+                                 hover:bg-secondary/90 min-h-[44px] font-medium"
+                >
                   Test de lisibilité
                 </button>
               </div>
@@ -359,7 +363,7 @@ Idéal pour enrichir visuellement sans compromettre la lisibilité.
       },
     },
   },
-}
+};
 
 /**
  * Démonstration du hook useBackgroundClasses.
@@ -367,18 +371,16 @@ Idéal pour enrichir visuellement sans compromettre la lisibilité.
  */
 export const UseBackgroundClasses: Story = {
   render: () => {
-    const backgroundClasses = useBackgroundClasses()
-    
+    const backgroundClasses = useBackgroundClasses();
+
     return (
       <div className="p-6 space-y-4">
-        <h2 className="text-2xl font-bold text-primary mb-6">
-          Hook useBackgroundClasses
-        </h2>
+        <h2 className="text-2xl font-bold text-primary mb-6">Hook useBackgroundClasses</h2>
         <p className="text-neutral mb-6">
-          Ce hook permet d'obtenir les classes CSS des backgrounds pour 
-          une utilisation directe dans les composants.
+          Ce hook permet d'obtenir les classes CSS des backgrounds pour une utilisation directe dans
+          les composants.
         </p>
-        
+
         {Object.entries(backgroundClasses).map(([key, classes]) => (
           <div key={key} className="space-y-2">
             <h4 className="font-semibold text-neutral">Variante "{key}":</h4>
@@ -391,7 +393,7 @@ export const UseBackgroundClasses: Story = {
           </div>
         ))}
       </div>
-    )
+    );
   },
   parameters: {
     docs: {
@@ -406,4 +408,4 @@ les classes CSS des variantes de background. Pratique pour :
       },
     },
   },
-}
+};

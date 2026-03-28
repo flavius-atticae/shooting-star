@@ -31,7 +31,7 @@ describe("Test Setup Verification", () => {
     const testDate = new Date("2024-12-25");
     const formatter = new Intl.DateTimeFormat("fr-CA");
     const formatted = formatter.format(testDate);
-    
+
     // Should format as DD/MM/YYYY or similar French Canadian format
     expect(formatted).toBeDefined();
     expect(typeof formatted).toBe("string");
@@ -39,12 +39,12 @@ describe("Test Setup Verification", () => {
 
   it("should format currency in CAD", () => {
     const price = 150.75;
-    const formatter = new Intl.NumberFormat("fr-CA", { 
-      style: "currency", 
-      currency: "CAD" 
+    const formatter = new Intl.NumberFormat("fr-CA", {
+      style: "currency",
+      currency: "CAD",
     });
     const formatted = formatter.format(price);
-    
+
     expect(formatted).toBeDefined();
     expect(formatted).toContain("CAD");
   });

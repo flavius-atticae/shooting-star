@@ -10,10 +10,7 @@ import type { CallToActionProps } from "./call-to-action";
  * Accepts optional overrides for spacing and other CallToAction props.
  */
 export function DefaultCallToAction(
-  props: Omit<
-    CallToActionProps,
-    "title" | "subtitle" | "buttonText" | "buttonHref"
-  >,
+  props: Omit<CallToActionProps, "title" | "subtitle" | "buttonText" | "buttonHref">,
 ) {
   return <CallToAction {...getCallToActionContent()} {...props} />;
 }
