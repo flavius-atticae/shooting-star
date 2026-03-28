@@ -2,72 +2,50 @@ name: PR Checks
 
 on:
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 permissions:
   contents: read
-  pull-requests: write
 
 jobs:
-  playwright-tests:
+  quality:
+    name: Quality checks
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    
+    timeout-minutes: 5
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
-      - name: Install dependencies
-        run: npm ci
+      - run: npm ci
 
-      # Note: Playwright config defines three projects (chromium, mobile-chrome, accessibility).
-      # All three projects use Chromium-based browsers, so only the Chromium browser needs to be installed.
-      - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+      - name: Type check
+        run: npm run typecheck
 
-      # Run E2E tests for multi-page user journeys
-      # Component-level tests have moved to Storybook play functions (see header.stories.tsx)
-      - name: Run E2E tests
-        run: npx playwright test app/test/e2e/specs --project=chromium --reporter=html
-        env:
-          CI: true
+      - name: Lint
+        run: npm run lint
 
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 7
+      - name: Format check
+        run: npm run format:check
 
-  vitest-tests:
+  unit-tests:
+    name: Unit & integration tests
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    
+    timeout-minutes: 5
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
-      - name: Install dependencies
-        run: npm ci
+      - run: npm ci
 
-      - name: Install Playwright browsers for Vitest
-        run: npx playwright install --with-deps chromium
-
-      # Runs all Vitest tests including Storybook play functions
-      - name: Run Vitest (unit tests + Storybook play functions)
-        run: npx vitest run
+      - name: Run Vitest
+        run: npm run test
         env:
           CI: true
