@@ -10,8 +10,6 @@
     "includes": [
       "**",
       "!build",
-      "!storybook-static",
-      "!.storybook",
       "!.react-router",
       "!public",
       "!playwright-report",
