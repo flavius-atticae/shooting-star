@@ -1,10 +1,9 @@
 # Shooting Star ✨
 
 <!-- CI/CD & Quality Badges -->
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/flavius-atticae/shooting-star/deploy-storybook.yml?label=storybook&logo=github)](https://github.com/flavius-atticae/shooting-star/actions/workflows/deploy-storybook.yml)
-[![PR Checks](https://img.shields.io/github/actions/workflow/status/flavius-atticae/shooting-star/pr-checks.yml?label=tests&logo=playwright)](https://github.com/flavius-atticae/shooting-star/actions/workflows/pr-checks.yml)
+[![PR Checks](https://img.shields.io/github/actions/workflow/status/flavius-atticae/shooting-star/pr-checks.yml?label=PR%20checks&logo=github)](https://github.com/flavius-atticae/shooting-star/actions/workflows/pr-checks.yml)
+[![Main Monitoring](https://img.shields.io/github/actions/workflow/status/flavius-atticae/shooting-star/main-monitoring.yml?label=E2E%20monitoring&logo=github)](https://github.com/flavius-atticae/shooting-star/actions/workflows/main-monitoring.yml)
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/de4d964491334b96b86f423b7b198fc7)](https://app.codacy.com/gh/flavius-atticae/shooting-star/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
-[![Storybook](https://img.shields.io/badge/📖_Storybook-Live-FF4785)](https://flavius-atticae.github.io/shooting-star/)
 
 <!-- Tech Stack Badges -->
 ![React Router](https://img.shields.io/badge/React_Router-v7.7.1-CA4245?logo=react-router)
@@ -21,7 +20,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <!-- Standards & Docs -->
-[![Documentation](https://img.shields.io/badge/📚_Documentation-Available-4CAF50)](docs/README.md)
+[![AGENTS.md](https://img.shields.io/badge/🤖_AGENTS.md-Universal-4CAF50)](AGENTS.md)
 ![WCAG](https://img.shields.io/badge/WCAG-2.1_AA-green?style=flat-square)
 
 **Professional website for Pauline Roussel – Prenatal Yoga & Birth Accompaniment**
@@ -60,12 +59,12 @@ Pauline Roussel is a certified prenatal yoga instructor and birth companion spec
 
 ### Core Technologies
 
-- **Framework**: React Router v7.7.1 with Server-Side Rendering  
-- **Styling**: TailwindCSS v4.1.4 with a custom design system  
-- **Component Development**: Storybook 9.1 with TailwindCSS integration  
-- **Language**: TypeScript 5.8.3 with strict mode enabled  
-- **Build Tool**: Vite 6.3.3 with optimized bundling  
-- **Runtime**: Node.js with React 19.1.0  
+- **Framework**: React Router v7 with Server-Side Rendering  
+- **Styling**: TailwindCSS v4 with a custom design system  
+- **Language**: TypeScript 5 with strict mode enabled  
+- **Build Tool**: Vite with optimized bundling  
+- **Runtime**: Node.js with React 19  
+- **Linting**: Biome (lint + format)  
 
 ### Design System Features
 
@@ -108,22 +107,36 @@ Your application will be available at `http://localhost:5173` with hot module re
 ```bash
 npm run dev          # Start development server with HMR at http://localhost:5173
 npm run typecheck    # Generate React Router types and run TypeScript compiler
-npm run storybook    # Start Storybook development server at http://localhost:6006
+```
+
+#### Code quality
+
+```bash
+npm run lint         # Lint with Biome
+npm run lint:fix     # Lint and auto-fix
+npm run format       # Format with Biome
+npm run format:check # Check formatting (used in CI)
+npm run check        # Lint + format check combined
+```
+
+#### Tests
+
+```bash
+npm run test         # Run Vitest (unit + integration)
+npm run test:watch   # Watch mode
+npm run test:e2e     # Run Playwright E2E tests (requires running server)
 ```
 
 #### Production
 
 ```bash
-npm run build            # Create optimized production build
-npm run start            # Run production server from ./build/server/index.js
-npm run build-storybook  # Build static Storybook for GitHub Pages deployment
+npm run build   # Create optimized production build
+npm run start   # Run production server from ./build/server/index.js
 ```
 
 #### Quick Links
 
 - **Local Development**: <http://localhost:5173>  
-- **Storybook Dev**: <http://localhost:6006>  
-- **Storybook Production**: <https://flavius-atticae.github.io/shooting-star/>  
 
 #### Project Structure
 
@@ -135,12 +148,10 @@ shooting-star/
 │   ├── app.css            # Global styles and TailwindCSS v4
 │   ├── routes/            # Page components
 │   ├── components/        # Reusable UI components (shadcn/ui)
-│   ├── lib/               # Utility functions
-│   └── test/              # Application tests
-├── .storybook/            # Storybook configuration
-├── stories/               # Additional Storybook stories
+│   ├── lib/               # Utility functions and server logic
+│   └── test/              # Application tests (unit, integration, e2e)
+├── AGENTS.md              # Universal AI agent instructions
 ├── public/                # Static assets (fonts, favicon, etc.)
-├── docs/                  # Project documentation
 └── build/                 # Production build output (generated)
 ```
 
@@ -203,18 +214,18 @@ cp .env.example .env
 
 ## 🤝 Contribution Guidelines
 
-> For AI-assisted workflows and coding conventions, see **[Copilot Instructions](.github/instructions/copilot.instructions.md)**.
+> For AI-assisted workflows and coding conventions, see **[AGENTS.md](AGENTS.md)**.
 
 ### Development Workflow
 
 1. **Create Feature Branch**:  
    Use issue-based branches, for example:  
-   `feature/issue-025-home-page`  
+   `feature/issue-025-home-page`
 2. **Follow Commit Conventions**:  
-   Prefix commit messages with issue numbers, e.g. `[ #25 ] Implement home page hero section`.  
+   Conventional commits with issue scope, e.g. `feat(#25): implement home page hero section`.  
 3. **Test Changes**:  
-   - Run relevant tests under `app/test` when available.  
-   - Validate accessibility and visual changes via Storybook.  
+   - Run `npm run test` for unit and integration tests.  
+   - Run `npm run check` to validate lint and formatting.  
 4. **Submit PR**:  
    - Target `main`.  
    - Include `Related to #<issue-number>` in the PR body.  
@@ -228,13 +239,11 @@ cp .env.example .env
 - **Accessibility**: Semantic HTML, ARIA labels where appropriate, keyboard navigation support  
 - **Performance**: Lazy loading where appropriate, optimized images, minimal bundle size  
 
-### Testing & Storybook
+### Testing
 
-- Tests live under `app/test`.  
-- Use Storybook for:
-  - Visual documentation of components  
-  - Accessibility checks (WCAG 2.1 AA)  
-  - Pregnancy-safe UX validation (touch targets, motion, contrast)
+- Unit and integration tests live under `app/test/`.
+- E2E tests (Playwright) live under `app/test/e2e/` and run on push to `main` via CI.
+- Run `npm run test` locally before opening a PR.
 
 ---
 
@@ -249,28 +258,10 @@ npm run start
 
 This generates an optimized production build and starts the server from `./build/server/index.js`.
 
-### Storybook Deployment
+The main application runs on Node.js and is deployed to Fly.io:
 
-Storybook is deployed automatically to GitHub Pages via CI:
-
-- Workflow: [deploy-storybook.yml](.github/workflows/deploy-storybook.yml)  
-- Live URL: <https://flavius-atticae.github.io/shooting-star/>
-
-The main application is designed to run on a Node.js environment and can be deployed to platforms such as Fly.io or other Node/container platforms.
-
----
-
-## 📚 Documentation
-
-For detailed technical and product documentation, visit the **[Documentation Hub](docs/README.md)**.
-
-### Quick Navigation
-
-- **[Documentation Hub](docs/README.md)** – Complete documentation index  
-- **[Copilot Instructions](.github/instructions/)** – GitHub Copilot and AI collaboration guide  
-- **[Storybook Documentation](https://flavius-atticae.github.io/shooting-star/)** – Component library and design system  
-- **[GitHub Issues](../../issues)** – Current tasks and progress tracking  
-- **[Project Board](../../projects)** – Planning and coordination  
+- **Staging**: auto-deployed on push to `main`
+- **Production**: manual trigger via GitHub Actions (`deploy-fly.yml`)
 
 ---
 
@@ -285,7 +276,7 @@ For detailed technical and product documentation, visit the **[Documentation Hub
 
 - **Development**: GitHub Issues and Pull Requests  
 - **Project Planning**: GitHub Project boards  
-- **Documentation**: Markdown files under `docs/` and `.github/instructions/`  
+- **Documentation**: `AGENTS.md` and `.github/instructions/`  
 
 ### Support & Maintenance
 
