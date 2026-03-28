@@ -1,23 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import { Container } from "~/components/ui/container";
 import { Button } from "~/components/ui/button";
+import { Container } from "~/components/ui/container";
+import { NAVIGATION_LINKS } from "~/config/navigation";
 import { cn } from "~/lib/utils";
 import { MobileMenu } from "./mobile-menu";
-
-// ============================================================================
-// Types
-// ============================================================================
-
-/**
- * Desktop navigation links configuration
- */
-const desktopNavLinks = [
-  { label: "Doula", href: "/doula" },
-  { label: "Yoga", href: "/yoga" },
-  { label: "Féminin", href: "/feminin-sacre" },
-  { label: "À propos", href: "/a-propos" },
-] as const;
 
 export interface HeaderProps {
   className?: string;
@@ -110,7 +97,7 @@ export function Header({ className, defaultOpen = false }: HeaderProps) {
               className="hidden lg:flex items-center gap-4 ml-4"
               aria-label="Navigation principale du site"
             >
-              {desktopNavLinks.map((link) => (
+              {NAVIGATION_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   to={link.href}

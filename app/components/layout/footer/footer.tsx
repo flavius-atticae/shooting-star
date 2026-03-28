@@ -1,14 +1,16 @@
 import type * as React from "react";
 import { Link } from "react-router";
-import { cn } from "~/lib/utils";
-import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
+import { Section } from "~/components/ui/section";
+import { NAVIGATION_LINKS } from "~/config/navigation";
+import type { SocialLink } from "~/config/social";
+import { SOCIAL_LINKS } from "~/config/social";
+import { cn } from "~/lib/utils";
 import { NewsletterInput } from "./newsletter-input";
 import { SocialIcons } from "./social-icons";
-import type { SocialLink } from "./social-icons";
 
 // Re-export social types for consumers
-export type { SocialLink, SocialPlatform } from "./social-icons";
+export type { SocialLink, SocialPlatform } from "~/config/social";
 
 // ============================================================================
 // Types
@@ -63,30 +65,16 @@ export interface FooterProps extends Omit<React.HTMLAttributes<HTMLElement>, "ch
 // Default Data
 // ============================================================================
 
-/**
- * Default navigation links for the footer
- */
 const defaultNavLinks: FooterNavLink[] = [
-  {
-    label: "Doula",
-    href: "/doula",
-    ariaLabel: "Découvrir mes services d'accompagnement doula",
-  },
-  {
-    label: "Yoga",
-    href: "/yoga",
-    ariaLabel: "Découvrir mes cours de yoga périnatal",
-  },
-  {
-    label: "Féminin sacré",
-    href: "/feminin-sacre",
-    ariaLabel: "Découvrir mes accompagnements féminin sacré",
-  },
-  {
-    label: "À propos",
-    href: "/a-propos",
-    ariaLabel: "En savoir plus sur Pauline Roussel",
-  },
+  ...NAVIGATION_LINKS.map((link) => ({
+    ...link,
+    ariaLabel: {
+      "/doula": "Découvrir mes services d'accompagnement doula",
+      "/yoga": "Découvrir mes cours de yoga périnatal",
+      "/feminin-sacre": "Découvrir mes accompagnements féminin sacré",
+      "/a-propos": "En savoir plus sur Pauline Roussel",
+    }[link.href] as string,
+  })),
   {
     label: "Contact",
     href: "/contact",
@@ -94,31 +82,7 @@ const defaultNavLinks: FooterNavLink[] = [
   },
 ];
 
-/**
- * Default social media links
- */
-const defaultSocialLinks: SocialLink[] = [
-  {
-    platform: "instagram",
-    url: "https://instagram.com/paulinerousseldoula",
-    label: "Suivre Pauline Roussel sur Instagram",
-  },
-  {
-    platform: "linkedin",
-    url: "https://linkedin.com/in/pauline-roussel-doula",
-    label: "Contacter Pauline Roussel sur LinkedIn",
-  },
-  {
-    platform: "facebook",
-    url: "https://facebook.com/paulinerousseldoula",
-    label: "Suivre Pauline Roussel sur Facebook",
-  },
-  {
-    platform: "youtube",
-    url: "https://youtube.com/@paulinerousseldoula",
-    label: "Voir les vidéos de Pauline Roussel sur YouTube",
-  },
-];
+const defaultSocialLinks: SocialLink[] = SOCIAL_LINKS;
 
 // ============================================================================
 // Footer Component

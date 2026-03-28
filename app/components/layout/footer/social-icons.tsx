@@ -1,22 +1,9 @@
 import type * as React from "react";
+import type { SocialLink, SocialPlatform } from "~/config/social";
+import { SOCIAL_LINKS } from "~/config/social";
 import { cn } from "~/lib/utils";
 
-/**
- * Social media platforms supported in the footer
- */
-export type SocialPlatform = "instagram" | "linkedin" | "facebook" | "youtube";
-
-/**
- * Social media link configuration
- */
-export interface SocialLink {
-  /** Platform identifier */
-  platform: SocialPlatform;
-  /** Social media profile URL */
-  url: string;
-  /** Accessible label in French */
-  label: string;
-}
+export type { SocialLink, SocialPlatform };
 
 /**
  * Props for Social Icons component
@@ -67,54 +54,7 @@ const socialIconMap: Record<SocialPlatform, React.ComponentType<{ className?: st
   youtube: YouTubeIcon,
 };
 
-/**
- * Default social media links
- */
-const defaultSocialLinks: SocialLink[] = [
-  {
-    platform: "instagram",
-    url: "https://instagram.com/paulinerousseldoula",
-    label: "Suivre Pauline Roussel sur Instagram",
-  },
-  {
-    platform: "linkedin",
-    url: "https://linkedin.com/in/pauline-roussel-doula",
-    label: "Contacter Pauline Roussel sur LinkedIn",
-  },
-  {
-    platform: "facebook",
-    url: "https://facebook.com/paulinerousseldoula",
-    label: "Suivre Pauline Roussel sur Facebook",
-  },
-  {
-    platform: "youtube",
-    url: "https://youtube.com/@paulinerousseldoula",
-    label: "Voir les vidéos de Pauline Roussel sur YouTube",
-  },
-];
-
-/**
- * Social Icons Component
- *
- * Icônes de réseaux sociaux dans le footer avec :
- * - Icônes blanches circulaires sur fond primary (vert #618462)
- * - Touch targets 48x48px minimum (confort grossesse)
- * - États hover avec animation subtle
- * - Accessibilité WCAG 2.1 AA avec labels français
- * - Support Instagram, LinkedIn, Facebook, YouTube
- * - Layout horizontal avec espacement approprié
- *
- * Usage:
- * ```tsx
- * <SocialIcons />
- * <SocialIcons links={customLinks} size="lg" />
- * ```
- */
-export function SocialIcons({
-  links = defaultSocialLinks,
-  className,
-  size = "md",
-}: SocialIconsProps) {
+export function SocialIcons({ links = SOCIAL_LINKS, className, size = "md" }: SocialIconsProps) {
   // Size variants - All sizes respect WCAG 2.1 AA minimum 44px touch target
   const sizeClasses = {
     sm: "h-11 w-11 min-h-11 min-w-11", // 44px - WCAG minimum

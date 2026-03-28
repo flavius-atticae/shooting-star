@@ -1,8 +1,8 @@
 import * as React from "react";
-import { cn } from "~/lib/utils";
-import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
-import { FadeInTitle, FadeInSubtitle } from "./hero-animations";
+import { Section } from "~/components/ui/section";
+import { cn } from "~/lib/utils";
+import { FadeInSubtitle, FadeInTitle } from "./hero-animations";
 
 // ============================================================================
 // Types
@@ -16,7 +16,7 @@ export type HeroVariant = "default" | "full-height";
 /**
  * Hero variant height configurations
  */
-export const HERO_VARIANTS = {
+const HERO_VARIANTS = {
   default: {
     mobile: 400,
     tablet: 500,
@@ -29,16 +29,6 @@ export const HERO_VARIANTS = {
     desktop: "calc(100vh - 80px)",
     classes: "min-h-[calc(100vh-80px)]",
   },
-} as const;
-
-/**
- * Hero responsive breakpoints for consistent sizing
- */
-export const HERO_BREAKPOINTS = {
-  mobile: 400,
-  tablet: 500,
-  desktop: 600,
-  borderRadius: 12, // rounded-xl, consistent with CTA section
 } as const;
 
 export interface HeroProps {

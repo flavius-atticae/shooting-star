@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useReducedMotion } from "~/hooks/use-reduced-motion";
 import { cn } from "~/lib/utils";
 
 export interface AnimatedElementProps {
@@ -30,23 +31,7 @@ export const usePregnancySafeAnimation = (
   delay: number = 0,
 ) => {
   const [isVisible, setIsVisible] = React.useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
-
-  // Check for reduced motion preference
-  React.useEffect(() => {
-    // SSR safety check
-    if (typeof window === "undefined") return;
-
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
+  const prefersReducedMotion = useReducedMotion();
 
   // Trigger animation after mount + delay
   React.useEffect(() => {
@@ -132,10 +117,3 @@ export const FadeInSubtitle = React.forwardRef<
 >((props, ref) => <AnimatedElement ref={ref} animation="fade-up" delay={200} {...props} />);
 
 FadeInSubtitle.displayName = "FadeInSubtitle";
-
-export const FadeInContainer = React.forwardRef<
-  HTMLDivElement,
-  Omit<AnimatedElementProps, "animation">
->((props, ref) => <AnimatedElement ref={ref} animation="fade-in" {...props} />);
-
-FadeInContainer.displayName = "FadeInContainer";

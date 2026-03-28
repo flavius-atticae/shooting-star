@@ -74,7 +74,7 @@ export function NewsletterInput({
         await onSubmit(email.trim());
         setEmail(""); // Clear on success
       }
-    } catch (err) {
+    } catch (_err) {
       setError("Une erreur s'est produite. Veuillez réessayer.");
     } finally {
       setIsValidating(false);

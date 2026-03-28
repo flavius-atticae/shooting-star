@@ -9,13 +9,13 @@
  * into client-side JavaScript.
  */
 
-import { servicesData } from "~/data/home";
-import { doulaServices, doulaTestimonials, approachItems } from "~/data/doula";
 import { inspirationItems } from "~/data/about";
+import { approachItems, doulaServices, doulaTestimonials } from "~/data/doula";
 import { eventsData, introText } from "~/data/feminin-sacre";
+import { servicesData } from "~/data/home";
 import {
-  getCallToActionContent as getSharedCallToActionContent,
   type CallToActionContent,
+  getCallToActionContent as getSharedCallToActionContent,
 } from "~/lib/content";
 
 // ============================================================================
@@ -33,9 +33,6 @@ export interface DoulaContent {
   testimonials: typeof doulaTestimonials;
   approachItems: typeof approachItems;
 }
-
-/** Content returned by {@link getYogaContent}. */
-export type YogaContent = Record<string, never>;
 
 /** Content returned by {@link getAboutContent}. */
 export interface AboutContent {
@@ -64,11 +61,6 @@ export function getDoulaContent(): DoulaContent {
     testimonials: doulaTestimonials,
     approachItems,
   };
-}
-
-/** Returns the content contract for the yoga page (currently empty). */
-export function getYogaContent(): YogaContent {
-  return {};
 }
 
 /** Returns the complete content needed by the about page. */

@@ -5,20 +5,17 @@
  * Simplified structure: Footer + NewsletterInput + SocialIcons
  */
 
-// Main Footer Component
-export { Footer } from "./footer";
-
-// Sub-components (kept separate for reusability and complex logic)
-export { NewsletterInput } from "./newsletter-input";
-export { SocialIcons } from "./social-icons";
-
 // Types and Interfaces
 export type {
-  FooterProps,
   FooterNavLink,
+  FooterProps,
   SocialLink,
   SocialPlatform,
 } from "./footer";
-
+// Main Footer Component
+export { Footer } from "./footer";
 export type { NewsletterInputProps } from "./newsletter-input";
+// Sub-components (kept separate for reusability and complex logic)
+export { NewsletterInput } from "./newsletter-input";
 export type { SocialIconsProps } from "./social-icons";
+export { SocialIcons } from "./social-icons";
