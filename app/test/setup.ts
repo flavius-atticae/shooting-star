@@ -66,32 +66,45 @@ Object.defineProperty(navigator, "languages", {
 });
 
 // Mock Intl for consistent date/currency formatting in tests
-// Must use regular functions (not arrow functions) since Intl constructors are called with `new`
+// Must use class syntax — Biome converts function expressions to arrow functions,
+// and arrow functions cannot be used as constructors (called with `new`)
+class MockDateTimeFormat {
+  private _locale: string;
+  constructor(locale: string, _options?: Intl.DateTimeFormatOptions) {
+    this._locale = locale;
+  }
+  format(date: Date): string {
+    if (this._locale?.includes("fr")) {
+      return date.toLocaleDateString("fr-CA");
+    }
+    return date.toLocaleDateString("en-CA");
+  }
+  formatToParts = vi.fn();
+  resolvedOptions = vi.fn();
+}
+
+class MockNumberFormat {
+  private _locale: string;
+  private _options: Intl.NumberFormatOptions;
+  constructor(locale: string, options?: Intl.NumberFormatOptions) {
+    this._locale = locale;
+    this._options = options ?? {};
+  }
+  format(number: number): string {
+    if (this._options?.style === "currency") {
+      return `${number.toFixed(2)} $ CAD`;
+    }
+    return number.toLocaleString(this._locale);
+  }
+  formatToParts = vi.fn();
+  resolvedOptions = vi.fn(() => this._options);
+}
+
 global.Intl = {
   ...global.Intl,
-  DateTimeFormat: vi
-    .fn()
-    .mockImplementation((locale: string, options: Intl.DateTimeFormatOptions) => ({
-      format: vi.fn((date: Date) => {
-        if (locale?.includes("fr")) {
-          return date.toLocaleDateString("fr-CA");
-        }
-        return date.toLocaleDateString("en-CA");
-      }),
-      formatToParts: vi.fn(),
-      resolvedOptions: vi.fn(() => options),
-    })),
-  NumberFormat: vi.fn().mockImplementation((locale: string, options: Intl.NumberFormatOptions) => ({
-    format: vi.fn((number: number) => {
-      if (options?.style === "currency") {
-        return `${number.toFixed(2)} $ CAD`;
-      }
-      return number.toLocaleString(locale);
-    }),
-    formatToParts: vi.fn(),
-    resolvedOptions: vi.fn(() => options),
-  })),
-} as any;
+  DateTimeFormat: MockDateTimeFormat as unknown as typeof Intl.DateTimeFormat,
+  NumberFormat: MockNumberFormat as unknown as typeof Intl.NumberFormat,
+};
 
 // Mock window.matchMedia for responsive/dark mode testing
 // Default to reduced motion to match accessibility best practices
