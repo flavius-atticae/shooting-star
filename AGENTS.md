@@ -99,9 +99,12 @@ Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>
 
 ## Pull requests
 
-- Always target `main`.
-- Reference the issue: `Closes #<number>` or `Related to #<number>`.
-- PR description must include: context, main changes, accessibility impact, performance impact.
+Before opening or updating a PR:
+
+1. **Read `.github/pull_request_template.md`** and fill every section.
+2. Run all validation commands and check the boxes only after they pass locally.
+3. Always target `main`.
+4. Reference the issue: `Closes #<number>` or `Related to #<number>`.
 
 ---
 
