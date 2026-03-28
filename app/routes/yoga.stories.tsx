@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { expect, within, userEvent, waitFor } from "storybook/test";
+import { expect, within, userEvent } from "storybook/test";
 import { withReactRouter } from "../../.storybook/react-router-decorator";
 import YogaPage from "./yoga";
 
@@ -182,40 +182,34 @@ export const FullPageIntegration: Story = {
       canvas.getByRole("heading", {
         level: 3,
         name: /Cours privés/i,
-      })
+      }),
     ).toBeInTheDocument();
 
     await expect(
       canvas.getByRole("heading", {
         level: 3,
         name: /Cours en studio/i,
-      })
+      }),
     ).toBeInTheDocument();
 
     await expect(
       canvas.getByRole("heading", {
         level: 3,
         name: /Cours en entreprises/i,
-      })
+      }),
     ).toBeInTheDocument();
 
     // Verify FeatureBlock descriptions are present
-    await expect(
-      canvas.getByText(/accompagnement personnalisé/i)
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByText(/espace chaleureux et sécurisant/i)
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByText(/moment de ressourcement/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/accompagnement personnalisé/i)).toBeInTheDocument();
+    await expect(canvas.getByText(/espace chaleureux et sécurisant/i)).toBeInTheDocument();
+    await expect(canvas.getByText(/moment de ressourcement/i)).toBeInTheDocument();
 
     // Verify CallToAction section
     await expect(
       canvas.getByRole("heading", {
         level: 2,
         name: /douceur et bienveillance/i,
-      })
+      }),
     ).toBeInTheDocument();
 
     const ctaButton = canvas.getByRole("link", {
@@ -333,12 +327,8 @@ export const FrenchContent: Story = {
     await expect(canvas.getByText(/Cours en entreprises/i)).toBeInTheDocument();
 
     // Verify French CTA content
-    await expect(
-      canvas.getByText(/douceur et bienveillance/i)
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByText(/RÉSERVEZ UN APPEL DÉCOUVERTE/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/douceur et bienveillance/i)).toBeInTheDocument();
+    await expect(canvas.getByText(/RÉSERVEZ UN APPEL DÉCOUVERTE/i)).toBeInTheDocument();
   },
 };
 

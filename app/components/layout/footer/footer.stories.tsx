@@ -91,8 +91,7 @@ export const WithOverlap: Story = {
     },
     docs: {
       description: {
-        story:
-          "Footer avec compensation pour le chevauchement de la section About.",
+        story: "Footer avec compensation pour le chevauchement de la section About.",
       },
     },
   },
@@ -192,10 +191,7 @@ export const AccessibilityStructure: Story = {
     // Verify navigation landmark exists
     const nav = canvasElement.querySelector("nav");
     await expect(nav).toBeInTheDocument();
-    await expect(nav).toHaveAttribute(
-      "aria-label",
-      "Navigation principale du site"
-    );
+    await expect(nav).toHaveAttribute("aria-label", "Navigation principale du site");
   },
 };
 
@@ -293,7 +289,7 @@ export const NewsletterSection: Story = {
 
     // Verify privacy notice text
     await expect(
-      canvas.getByText(/vous acceptez de recevoir nos communications/i)
+      canvas.getByText(/vous acceptez de recevoir nos communications/i),
     ).toBeInTheDocument();
   },
 };
@@ -337,14 +333,8 @@ export const SocialMediaIcons: Story = {
     await expect(youtubeLink).toBeInTheDocument();
 
     // Verify links have proper URLs
-    await expect(instagramLink).toHaveAttribute(
-      "href",
-      expect.stringContaining("instagram.com")
-    );
-    await expect(linkedinLink).toHaveAttribute(
-      "href",
-      expect.stringContaining("linkedin.com")
-    );
+    await expect(instagramLink).toHaveAttribute("href", expect.stringContaining("instagram.com"));
+    await expect(linkedinLink).toHaveAttribute("href", expect.stringContaining("linkedin.com"));
   },
 };
 

@@ -19,12 +19,9 @@ import { Honeypot } from "remix-utils/honeypot/server";
  *
  * @see https://github.com/sergiodxa/remix-utils#form-honeypot
  */
-const hasProcessEnv =
-  typeof process !== "undefined" && typeof process.env !== "undefined";
+const hasProcessEnv = typeof process !== "undefined" && typeof process.env !== "undefined";
 
-let encryptionSeed = hasProcessEnv
-  ? process.env.HONEYPOT_ENCRYPTION_SEED
-  : undefined;
+let encryptionSeed = hasProcessEnv ? process.env.HONEYPOT_ENCRYPTION_SEED : undefined;
 
 if (!encryptionSeed) {
   if (hasProcessEnv && process.env.NODE_ENV === "production") {

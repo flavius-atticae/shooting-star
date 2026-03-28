@@ -43,34 +43,29 @@ const manyTestimonials: Testimonial[] = [
   ...placeholderTestimonials,
   {
     id: "6",
-    quote:
-      "Une doula exceptionnelle qui m'a vraiment accompagnée avec son cœur.",
+    quote: "Une doula exceptionnelle qui m'a vraiment accompagnée avec son cœur.",
     author: "Anne",
     context: "Accompagnée en 2023",
   },
   {
     id: "7",
-    quote:
-      "Je recommande vivement Pauline pour son professionnalisme et sa douceur.",
+    quote: "Je recommande vivement Pauline pour son professionnalisme et sa douceur.",
     author: "Catherine",
   },
   {
     id: "8",
-    quote:
-      "Le soutien post-partum m'a été d'une aide précieuse dans les premiers jours.",
+    quote: "Le soutien post-partum m'a été d'une aide précieuse dans les premiers jours.",
     author: "Émilie",
     context: "Maman de 3 enfants",
   },
   {
     id: "9",
-    quote:
-      "Une présence rassurante pendant mon accouchement. Merci infiniment!",
+    quote: "Une présence rassurante pendant mon accouchement. Merci infiniment!",
     author: "Véronique",
   },
   {
     id: "10",
-    quote:
-      "Les ateliers de préparation à la naissance étaient parfaits pour mon couple.",
+    quote: "Les ateliers de préparation à la naissance étaient parfaits pour mon couple.",
     author: "Sarah",
     context: "Accompagnée en 2024",
   },
@@ -262,8 +257,7 @@ export const NoNavigation: Story = {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story:
-          "Carrousel sans flèches de navigation (swipe et dots seulement).",
+        story: "Carrousel sans flèches de navigation (swipe et dots seulement).",
       },
     },
   },
@@ -283,8 +277,7 @@ export const NoPagination: Story = {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story:
-          "Carrousel sans indicateurs de pagination (flèches et swipe seulement).",
+        story: "Carrousel sans indicateurs de pagination (flèches et swipe seulement).",
       },
     },
   },
@@ -304,8 +297,7 @@ export const AnonymousTestimonials: Story = {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story:
-          "Témoignages sans noms d'auteurs pour préserver la confidentialité.",
+        story: "Témoignages sans noms d'auteurs pour préserver la confidentialité.",
       },
     },
   },
@@ -420,10 +412,7 @@ export const TouchNavigation: Story = {
     // Verify carousel region
     const carousel = canvasElement.querySelector('[role="region"]');
     await expect(carousel).toBeInTheDocument();
-    await expect(carousel).toHaveAttribute(
-      "aria-label",
-      "Carrousel de témoignages"
-    );
+    await expect(carousel).toHaveAttribute("aria-label", "Carrousel de témoignages");
 
     // Verify slides exist
     const slides = canvasElement.querySelectorAll('[role="group"]');
@@ -452,8 +441,7 @@ export const ReducedMotion: Story = {
     chromatic: { disableSnapshot: true },
     docs: {
       description: {
-        story:
-          "Respecte prefers-reduced-motion : désactive auto-play et transitions.",
+        story: "Respecte prefers-reduced-motion : désactive auto-play et transitions.",
       },
     },
   },

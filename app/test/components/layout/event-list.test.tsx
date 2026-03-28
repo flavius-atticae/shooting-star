@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import { EventList } from "~/components/layout/event-list";
@@ -36,17 +35,13 @@ describe("EventList Component - Pregnancy-Safe Testing", () => {
     it("should render event list with default title", () => {
       render(<EventList events={mockEvents} />);
 
-      expect(
-        screen.getByRole("heading", { name: "Tous les événements" }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Tous les événements" })).toBeInTheDocument();
     });
 
     it("should render with custom title", () => {
       render(<EventList events={mockEvents} title="Prochains ateliers" />);
 
-      expect(
-        screen.getByRole("heading", { name: "Prochains ateliers" }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Prochains ateliers" })).toBeInTheDocument();
     });
 
     it("should render intro text when provided", () => {
@@ -76,9 +71,7 @@ describe("EventList Component - Pregnancy-Safe Testing", () => {
     it("should display empty state message when no events", () => {
       render(<EventList events={[]} />);
 
-      expect(
-        screen.getByText("Aucun événement à venir pour le moment."),
-      ).toBeInTheDocument();
+      expect(screen.getByText("Aucun événement à venir pour le moment.")).toBeInTheDocument();
     });
 
     it("should not render event cards in empty state", () => {
@@ -96,9 +89,7 @@ describe("EventList Component - Pregnancy-Safe Testing", () => {
         />,
       );
 
-      expect(
-        screen.getByRole("heading", { name: "Événements à venir" }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { name: "Événements à venir" })).toBeInTheDocument();
       expect(screen.getByText(/Revenez bientôt/)).toBeInTheDocument();
     });
   });
@@ -115,9 +106,7 @@ describe("EventList Component - Pregnancy-Safe Testing", () => {
       render(<EventList events={mockEvents} />);
 
       // EventList wraps content in a Section component
-      const section = screen
-        .getByRole("heading", { level: 2 })
-        .closest("section");
+      const section = screen.getByRole("heading", { level: 2 }).closest("section");
       expect(section).toBeInTheDocument();
     });
 
@@ -195,18 +184,14 @@ describe("EventList Component - Pregnancy-Safe Testing", () => {
     });
 
     it("should support custom container size", () => {
-      const { container } = render(
-        <EventList events={mockEvents} containerSize="lg" />,
-      );
+      const { container } = render(<EventList events={mockEvents} containerSize="lg" />);
 
       const containerDiv = container.querySelector(".max-w-6xl");
       expect(containerDiv).toBeInTheDocument();
     });
 
     it("should support full width container", () => {
-      const { container } = render(
-        <EventList events={mockEvents} containerSize="full" />,
-      );
+      const { container } = render(<EventList events={mockEvents} containerSize="full" />);
 
       const containerDiv = container.querySelector(".w-full");
       expect(containerDiv).toBeInTheDocument();
@@ -221,8 +206,7 @@ describe("EventList Component - Pregnancy-Safe Testing", () => {
     });
 
     it("should handle French intro text correctly", () => {
-      const frenchIntro =
-        "Découvrez nos ateliers du féminin sacré dans un espace bienveillant.";
+      const frenchIntro = "Découvrez nos ateliers du féminin sacré dans un espace bienveillant.";
       render(<EventList events={mockEvents} introText={frenchIntro} />);
 
       expect(screen.getByText(frenchIntro)).toBeInTheDocument();
@@ -231,9 +215,7 @@ describe("EventList Component - Pregnancy-Safe Testing", () => {
     it("should display French empty state message", () => {
       render(<EventList events={[]} />);
 
-      expect(
-        screen.getByText("Aucun événement à venir pour le moment."),
-      ).toBeInTheDocument();
+      expect(screen.getByText("Aucun événement à venir pour le moment.")).toBeInTheDocument();
     });
   });
 
@@ -268,9 +250,7 @@ describe("EventList Component - Pregnancy-Safe Testing", () => {
 
   describe("Custom Styling", () => {
     it("should accept custom className", () => {
-      const { container } = render(
-        <EventList events={mockEvents} className="custom-event-list" />,
-      );
+      const { container } = render(<EventList events={mockEvents} className="custom-event-list" />);
 
       const section = container.querySelector(".custom-event-list");
       expect(section).toBeInTheDocument();

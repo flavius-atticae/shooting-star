@@ -74,10 +74,7 @@ export async function action({ request }: Route.ActionArgs) {
 
   const result = contactFormSchema.safeParse(raw);
   if (!result.success) {
-    return data(
-      { errors: result.error.flatten().fieldErrors },
-      { status: 400 },
-    );
+    return data({ errors: result.error.flatten().fieldErrors }, { status: 400 });
   }
 
   // 4. Data is already sanitized by Zod transforms
@@ -112,8 +109,7 @@ export function meta(_args: Route.MetaArgs) {
     },
     {
       name: "keywords",
-      content:
-        "contact, rendez-vous, yoga prénatal, doula, Montréal, accompagnement grossesse",
+      content: "contact, rendez-vous, yoga prénatal, doula, Montréal, accompagnement grossesse",
     },
   ];
 }
@@ -143,7 +139,7 @@ export default function Contact() {
       {/* Header - Navigation principale */}
       <Header />
 
-      <main id="main-content" role="main">
+      <main id="main-content">
         {/* Page Header - Title and subtitle on white background */}
         <Section spacing="normal" background="white">
           <Container size="xl" className="px-4 sm:px-6 lg:px-8">

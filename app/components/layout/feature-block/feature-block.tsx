@@ -1,4 +1,3 @@
-import * as React from "react";
 import { cn } from "~/lib/utils";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
@@ -74,11 +73,13 @@ export function FeatureBlock({
   const isTextLeft = layout === "text-left";
 
   // Image placeholder if no image provided
-  const displayImageSrc = imageSrc || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%23dae6ea'/%3E%3C/svg%3E";
-  
+  const displayImageSrc =
+    imageSrc ||
+    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%23dae6ea'/%3E%3C/svg%3E";
+
   // Generate meaningful alt text if not provided
   const displayImageAlt = imageAlt ?? `Illustration - ${title}`;
-  
+
   return (
     <Section
       background={background}
@@ -95,7 +96,7 @@ export function FeatureBlock({
             // Mobile: always stack vertically
             "grid-cols-1",
             // Desktop: 2 columns with equal width
-            "lg:grid-cols-2"
+            "lg:grid-cols-2",
           )}
           aria-labelledby={ariaLabelledBy}
           lang="fr"
@@ -105,7 +106,7 @@ export function FeatureBlock({
             className={cn(
               "space-y-4 sm:space-y-6",
               // Desktop ordering based on layout
-              isTextLeft ? "lg:order-1" : "lg:order-2"
+              isTextLeft ? "lg:order-1" : "lg:order-2",
             )}
           >
             {/* Title */}
@@ -124,7 +125,7 @@ export function FeatureBlock({
             className={cn(
               "relative aspect-[4/3] rounded-xl overflow-hidden",
               // Desktop ordering based on layout
-              isTextLeft ? "lg:order-2" : "lg:order-1"
+              isTextLeft ? "lg:order-2" : "lg:order-1",
             )}
           >
             <img

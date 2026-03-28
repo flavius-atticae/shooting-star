@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "~/lib/utils";
 import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
@@ -8,10 +8,7 @@ import { AboutContent } from "./about-content";
 // Types
 // ============================================================================
 
-export interface AboutProps extends Omit<
-  React.HTMLAttributes<HTMLElement>,
-  "children"
-> {
+export interface AboutProps extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   /** Custom section spacing override */
   spacing?: "none" | "compact" | "normal" | "spacious";
   /** Custom container size */
@@ -111,7 +108,6 @@ const getOverlapClass = (size: OverlapSize): string => {
       return "-mb-16 md:-mb-20 relative z-10";
     case "responsive":
       return "md:-mb-16 relative z-10"; // Only applies on tablet+
-    case "none":
     default:
       return "";
   }
@@ -188,20 +184,20 @@ export function About({
             </h2>
 
             {/* Method Columns Grid */}
-            <div
+            <ul
               className={cn(
                 "grid gap-8 sm:gap-10 lg:gap-0",
                 // Responsive grid layout
                 "grid-cols-1", // Mobile: 1 column (stacked)
                 "lg:grid-cols-3", // Desktop: 3 columns
                 // Desktop layout with separators
-                "lg:divide-x lg:divide-secondary/20"
+                "lg:divide-x lg:divide-secondary/20",
+                "list-none",
               )}
-              role="list"
               aria-labelledby="method-heading"
             >
               {items.map((item, index) => (
-                <div
+                <li
                   key={item.id}
                   className={cn(
                     // Desktop padding for separator spacing
@@ -209,9 +205,8 @@ export function About({
                     // First column: no left padding
                     index === 0 && "lg:pl-0",
                     // Last column: no right padding
-                    index === items.length - 1 && "lg:pr-0"
+                    index === items.length - 1 && "lg:pr-0",
                   )}
-                  role="listitem"
                 >
                   {/* Method Column - Inline */}
                   <article
@@ -224,7 +219,7 @@ export function About({
                       id={`method-${item.id}-title`}
                       className={cn(
                         "font-medium text-2xl sm:text-4xl text-secondary leading-tight",
-                        useAccentFont ? "font-accent" : "font-heading"
+                        useAccentFont ? "font-accent" : "font-heading",
                       )}
                     >
                       {item.title}
@@ -238,9 +233,9 @@ export function About({
                       {item.description}
                     </p>
                   </article>
-                </div>
+                </li>
               ))}
-            </div>
+            </ul>
           </section>
         </div>
       </Container>

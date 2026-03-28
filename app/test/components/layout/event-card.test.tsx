@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import userEvent from "@testing-library/user-event";
@@ -17,12 +16,8 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
       render(<EventCard {...mockEvent} detailsHref="#" />);
 
       expect(screen.getByText(mockEvent.title)).toBeInTheDocument();
-      expect(
-        screen.getByText(`${mockEvent.date} - ${mockEvent.time}`),
-      ).toBeInTheDocument();
-      expect(
-        screen.getByRole("link", { name: /détails/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByText(`${mockEvent.date} - ${mockEvent.time}`)).toBeInTheDocument();
+      expect(screen.getByRole("link", { name: /détails/i })).toBeInTheDocument();
     });
 
     it("should render with placeholder when no image provided", () => {
@@ -52,13 +47,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
     });
 
     it("should use title as alt text when imageAlt not provided", () => {
-      render(
-        <EventCard
-          {...mockEvent}
-          imageUrl="/images/events/test.jpg"
-          detailsHref="#"
-        />,
-      );
+      render(<EventCard {...mockEvent} imageUrl="/images/events/test.jpg" detailsHref="#" />);
 
       const image = screen.getByRole("img");
       expect(image).toHaveAttribute("alt", mockEvent.title);
@@ -71,10 +60,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
 
       const article = screen.getByRole("article");
       expect(article).toBeInTheDocument();
-      expect(article).toHaveAttribute(
-        "aria-labelledby",
-        `event-title-${mockEvent.id}`,
-      );
+      expect(article).toHaveAttribute("aria-labelledby", `event-title-${mockEvent.id}`);
     });
 
     it("should have proper heading with id for aria-labelledby", () => {
@@ -88,9 +74,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
     it("should have semantic time element with dateTime attribute", () => {
       render(<EventCard {...mockEvent} detailsHref="#" />);
 
-      const timeElement = screen.getByText(
-        `${mockEvent.date} - ${mockEvent.time}`,
-      );
+      const timeElement = screen.getByText(`${mockEvent.date} - ${mockEvent.time}`);
       expect(timeElement.tagName).toBe("TIME");
       expect(timeElement).toHaveAttribute("dateTime", "2025-06-07T13:00");
     });
@@ -112,13 +96,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
     });
 
     it("should support lazy loading for images", () => {
-      render(
-        <EventCard
-          {...mockEvent}
-          imageUrl="/images/events/test.jpg"
-          detailsHref="#"
-        />,
-      );
+      render(<EventCard {...mockEvent} imageUrl="/images/events/test.jpg" detailsHref="#" />);
 
       const image = screen.getByRole("img");
       expect(image).toHaveAttribute("loading", "lazy");
@@ -208,9 +186,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
     it("should display DÉTAILS button in French", () => {
       render(<EventCard {...mockEvent} detailsHref="#" />);
 
-      expect(screen.getByRole("link", { name: /détails/i })).toHaveTextContent(
-        "DÉTAILS",
-      );
+      expect(screen.getByRole("link", { name: /détails/i })).toHaveTextContent("DÉTAILS");
     });
   });
 
@@ -238,13 +214,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
 
   describe("Custom Styling", () => {
     it("should accept custom className", () => {
-      render(
-        <EventCard
-          {...mockEvent}
-          detailsHref="#"
-          className="custom-event-card"
-        />,
-      );
+      render(<EventCard {...mockEvent} detailsHref="#" className="custom-event-card" />);
 
       const article = screen.getByRole("article");
       expect(article).toHaveClass("custom-event-card");
@@ -252,12 +222,7 @@ describe("EventCard Component - Pregnancy-Safe Testing", () => {
 
     it("should forward additional HTML attributes", () => {
       render(
-        <EventCard
-          {...mockEvent}
-          detailsHref="#"
-          data-testid="custom-event"
-          role="article"
-        />,
+        <EventCard {...mockEvent} detailsHref="#" data-testid="custom-event" role="article" />,
       );
 
       const article = screen.getByTestId("custom-event");

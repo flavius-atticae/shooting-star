@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "~/lib/utils";
 
 // ============================================================================
@@ -18,12 +18,7 @@ export type RoundedSize = "none" | "sm" | "md" | "lg" | "xl";
 /**
  * Background variant options
  */
-export type BackgroundVariant =
-  | "white"
-  | "primary"
-  | "accent"
-  | "soft"
-  | "transparent";
+export type BackgroundVariant = "white" | "primary" | "accent" | "soft" | "transparent";
 
 /**
  * Spacing variant options
@@ -33,8 +28,7 @@ export type SpacingVariant = "none" | "compact" | "normal" | "spacious";
 /**
  * Props for the Section component
  */
-export interface SectionProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
+export interface SectionProps extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   /** Content to render within the section */
   children: React.ReactNode;
   /** Vertical spacing variant */
@@ -76,7 +70,6 @@ function getInsetXClass(insetX: InsetSize): string {
       return "px-6 sm:px-8 lg:px-12";
     case "lg":
       return "px-8 sm:px-12 lg:px-16";
-    case "none":
     default:
       return "";
   }
@@ -93,7 +86,6 @@ function getInsetYClass(insetY: InsetSize): string {
       return "py-6 sm:py-8 lg:py-12";
     case "lg":
       return "py-8 sm:py-12 lg:py-16";
-    case "none":
     default:
       return "";
   }
@@ -112,7 +104,6 @@ function getRoundedClass(rounded: RoundedSize): string {
       return "rounded-2xl";
     case "xl":
       return "rounded-3xl";
-    case "none":
     default:
       return "";
   }
@@ -131,7 +122,6 @@ function getBackgroundClass(background: BackgroundVariant): string {
       return "bg-gris";
     case "soft":
       return "bg-gradient-to-br from-white to-gris/30";
-    case "transparent":
     default:
       return "bg-transparent";
   }
@@ -148,7 +138,6 @@ function getSpacingClass(spacing: SpacingVariant): string {
       return "py-8";
     case "spacious":
       return "py-16 lg:py-24";
-    case "normal":
     default:
       return "py-12 lg:py-16";
   }
@@ -231,7 +220,7 @@ export function Section({
         getSpacingClass(spacing),
         getRoundedClass(rounded),
         getBackgroundClass(background),
-        className
+        className,
       )}
       {...props}
     >
@@ -243,9 +232,7 @@ export function Section({
   const hasInset = insetX !== "none" || insetY !== "none";
   if (hasInset) {
     return (
-      <div
-        className={cn("w-full", getInsetXClass(insetX), getInsetYClass(insetY))}
-      >
+      <div className={cn("w-full", getInsetXClass(insetX), getInsetYClass(insetY))}>
         {sectionContent}
       </div>
     );

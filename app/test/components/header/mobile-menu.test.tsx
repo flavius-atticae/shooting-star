@@ -1,11 +1,5 @@
-import React from "react";
-import {
-  render,
-  screen,
-  fireEvent,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import type React from "react";
+import { render, screen, fireEvent, within } from "@testing-library/react";
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
 import userEvent from "@testing-library/user-event";
 import { BrowserRouter } from "react-router";
@@ -75,8 +69,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       expect(navigation).toBeInTheDocument();
 
       // Check backdrop
-      const backdrop =
-        navigation.parentElement?.querySelector(".bg-neutral\\/20");
+      const backdrop = navigation.parentElement?.querySelector(".bg-neutral\\/20");
       expect(backdrop).toBeInTheDocument();
     });
 
@@ -92,13 +85,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       });
 
       // Should position below header
-      expect(menuContent).toHaveClass(
-        "fixed",
-        "inset-x-0",
-        "top-14",
-        "sm:top-16",
-        "z-50",
-      );
+      expect(menuContent).toHaveClass("fixed", "inset-x-0", "top-14", "sm:top-16", "z-50");
       expect(menuContent).toHaveClass("lg:hidden"); // Hidden on desktop
     });
   });
@@ -183,14 +170,12 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
     });
 
     it("should handle imprecise clicks from swollen fingers", async () => {
+      // biome-ignore lint/style/noNonNullAssertion: element guaranteed present by test setup
       const firstNavLink = screen.getByText("Doula").closest("a")!;
 
       // Simulate multiple imprecise clicks
       for (let i = 0; i < 3; i++) {
-        await PregnancySafeTestUtils.simulateSwollenFingerClick(
-          firstNavLink,
-          user,
-        );
+        await PregnancySafeTestUtils.simulateSwollenFingerClick(firstNavLink, user);
       }
 
       // Navigation should remain stable
@@ -198,13 +183,11 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
     });
 
     it("should handle pregnancy brain interactions gracefully", async () => {
+      // biome-ignore lint/style/noNonNullAssertion: element guaranteed present by test setup
       const contactButton = screen.getByText("Contactez-moi").closest("a")!;
 
       // Simulate delayed/interrupted interaction pattern
-      await PregnancySafeTestUtils.simulatePregnancyBrainInteraction(
-        contactButton,
-        user,
-      );
+      await PregnancySafeTestUtils.simulatePregnancyBrainInteraction(contactButton, user);
 
       expect(contactButton).toBeInTheDocument();
     });
@@ -232,17 +215,11 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       );
 
       // Should add event listener when open
-      expect(document.addEventListener).toHaveBeenCalledWith(
-        "keydown",
-        expect.any(Function),
-      );
+      expect(document.addEventListener).toHaveBeenCalledWith("keydown", expect.any(Function));
 
       // Should clean up on unmount
       unmount();
-      expect(document.removeEventListener).toHaveBeenCalledWith(
-        "keydown",
-        expect.any(Function),
-      );
+      expect(document.removeEventListener).toHaveBeenCalledWith("keydown", expect.any(Function));
     });
 
     it("should support tab navigation through menu items", async () => {
@@ -272,10 +249,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       const navigation = screen.getByRole("navigation", {
         name: /Menu de navigation principal/i,
       });
-      expect(navigation).toHaveAttribute(
-        "aria-label",
-        "Menu de navigation principal",
-      );
+      expect(navigation).toHaveAttribute("aria-label", "Menu de navigation principal");
 
       const navList = screen.getByRole("list");
       expect(navList).toBeInTheDocument();
@@ -289,10 +263,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       );
 
       const doulaLink = screen.getByText("Doula").closest("a");
-      expect(doulaLink).toHaveAttribute(
-        "aria-describedby",
-        "menu-item-doula-desc",
-      );
+      expect(doulaLink).toHaveAttribute("aria-describedby", "menu-item-doula-desc");
 
       const doulaDesc = screen.getByText("Accompagnement de doula");
       expect(doulaDesc).toHaveAttribute("id", "menu-item-doula-desc");
@@ -413,6 +384,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
     });
 
     it("should handle Enter key on navigation links", async () => {
+      // biome-ignore lint/style/noNonNullAssertion: element guaranteed present by test setup
       const doulaLink = screen.getByText("Doula").closest("a")!;
 
       doulaLink.focus();
@@ -442,11 +414,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       expect(menuContainer).toHaveClass("bg-white");
 
       // Gentle border and shadow
-      expect(menuContainer).toHaveClass(
-        "border-b",
-        "border-gris/30",
-        "shadow-xl",
-      );
+      expect(menuContainer).toHaveClass("border-b", "border-gris/30", "shadow-xl");
     });
 
     it("should have gentle slide-in animation", () => {
@@ -456,11 +424,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       const menuContainer = navigation;
 
       // Gentle slide-in animation (≤ 200ms for pregnancy)
-      expect(menuContainer).toHaveClass(
-        "animate-in",
-        "slide-in-from-top-2",
-        "duration-200",
-      );
+      expect(menuContainer).toHaveClass("animate-in", "slide-in-from-top-2", "duration-200");
     });
 
     it("should use pregnancy-safe contact button styling", () => {
@@ -471,9 +435,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       expect(contactButton).toHaveClass("rounded-full");
 
       // Validate colors are pregnancy-safe
-      PregnancySafeTestUtils.validatePregnancySafeColor(
-        PREGNANCY_SAFE_COLORS.primary,
-      );
+      PregnancySafeTestUtils.validatePregnancySafeColor(PREGNANCY_SAFE_COLORS.primary);
     });
 
     it("should have high contrast for pregnancy fatigue", () => {
@@ -529,10 +491,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
           name: /Menu de navigation principal/i,
         })
         .querySelector(".max-h-\\[calc\\(100vh-3\\.5rem\\)\\]");
-      expect(scrollContainer).toHaveClass(
-        "max-h-[calc(100vh-3.5rem)]",
-        "overflow-y-auto",
-      );
+      expect(scrollContainer).toHaveClass("max-h-[calc(100vh-3.5rem)]", "overflow-y-auto");
     });
   });
 
@@ -545,9 +504,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       );
 
       expect(screen.getByText("Pauline Roussel")).toBeInTheDocument();
-      expect(
-        screen.getByText("Yoga prénatal • Accompagnement à la naissance"),
-      ).toBeInTheDocument();
+      expect(screen.getByText("Yoga prénatal • Accompagnement à la naissance")).toBeInTheDocument();
       expect(screen.getByText("Québec, Canada")).toBeInTheDocument();
     });
 
@@ -649,6 +606,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       expect(() => {
         render(
           <TestWrapper>
+            {/* biome-ignore lint/suspicious/noExplicitAny: testing defensive behavior with invalid prop */}
             <MobileMenu isOpen={true} onClose={undefined as any} />
           </TestWrapper>,
         );
@@ -677,9 +635,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
           name: /Menu de navigation principal/i,
         }),
       ).not.toBeInTheDocument();
-      expect(
-        document.querySelector(".bg-neutral\\/20"),
-      ).not.toBeInTheDocument();
+      expect(document.querySelector(".bg-neutral\\/20")).not.toBeInTheDocument();
     });
 
     it("should clean up event listeners properly", () => {
@@ -692,10 +648,7 @@ describe("MobileMenu Component - Pregnancy-Safe Design", () => {
       // Should clean up on unmount
       unmount();
 
-      expect(document.removeEventListener).toHaveBeenCalledWith(
-        "keydown",
-        expect.any(Function),
-      );
+      expect(document.removeEventListener).toHaveBeenCalledWith("keydown", expect.any(Function));
       expect(document.body.style.overflow).toBe("unset");
     });
 

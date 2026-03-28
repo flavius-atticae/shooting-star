@@ -67,12 +67,12 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
           "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
           // Invalid states
           "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
-          className
+          className,
         )}
         {...props}
       />
     );
-  }
+  },
 );
 
 Input.displayName = "Input";

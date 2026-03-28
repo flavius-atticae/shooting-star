@@ -149,17 +149,14 @@ export const CustomContent: Story = {
   render: (args) => (
     <Hero {...args}>
       <div className="flex flex-col items-start gap-4">
-        <span className="text-sm font-sans uppercase tracking-wider text-primary/70">
-          Nouveau
-        </span>
+        <span className="text-sm font-sans uppercase tracking-wider text-primary/70">Nouveau</span>
         <h1 className="font-heading text-5xl md:text-7xl text-primary font-medium">
           Ateliers de groupe
         </h1>
         <p className="font-sans text-lg text-primary max-w-md">
-          Rejoignez notre communauté de futures mamans pour des séances de yoga
-          en groupe.
+          Rejoignez notre communauté de futures mamans pour des séances de yoga en groupe.
         </p>
-        <button className="mt-4 px-6 py-3 bg-primary text-white rounded-lg font-sans font-bold uppercase text-sm">
+        <button type="button" className="mt-4 px-6 py-3 bg-primary text-white rounded-lg font-sans font-bold uppercase text-sm">
           Découvrir
         </button>
       </div>

@@ -11,13 +11,11 @@ configure({
 });
 
 // Mock IntersectionObserver for components that use it
-const mockIntersectionObserver = vi.fn(function () {
-  return {
+const mockIntersectionObserver = vi.fn(() => ({
     disconnect: vi.fn(),
     observe: vi.fn(),
     unobserve: vi.fn(),
-  };
-});
+  }));
 
 Object.defineProperty(window, "IntersectionObserver", {
   writable: true,
@@ -32,13 +30,11 @@ Object.defineProperty(global, "IntersectionObserver", {
 });
 
 // Mock ResizeObserver for responsive components
-const mockResizeObserver = vi.fn(function () {
-  return {
+const mockResizeObserver = vi.fn(() => ({
     disconnect: vi.fn(),
     observe: vi.fn(),
     unobserve: vi.fn(),
-  };
-});
+  }));
 
 Object.defineProperty(window, "ResizeObserver", {
   writable: true,
@@ -72,8 +68,7 @@ Object.defineProperty(navigator, "languages", {
 // Mock Intl for consistent date/currency formatting in tests
 global.Intl = {
   ...global.Intl,
-  DateTimeFormat: vi.fn().mockImplementation(function (locale, options) {
-    return {
+  DateTimeFormat: vi.fn().mockImplementation((locale, options) => ({
       format: vi.fn((date: Date) => {
         // Quebec format: DD/MM/YYYY
         if (locale?.includes("fr")) {
@@ -83,10 +78,8 @@ global.Intl = {
       }),
       formatToParts: vi.fn(),
       resolvedOptions: vi.fn(() => options),
-    };
-  }),
-  NumberFormat: vi.fn().mockImplementation(function (locale, options) {
-    return {
+    })),
+  NumberFormat: vi.fn().mockImplementation((locale, options) => ({
       format: vi.fn((number: number) => {
         // CAD currency formatting
         if (options?.style === "currency") {
@@ -96,8 +89,7 @@ global.Intl = {
       }),
       formatToParts: vi.fn(),
       resolvedOptions: vi.fn(() => options),
-    };
-  }),
+    })),
 } as any;
 
 // Mock window.matchMedia for responsive/dark mode testing

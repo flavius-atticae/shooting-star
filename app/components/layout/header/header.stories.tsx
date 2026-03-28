@@ -115,22 +115,14 @@ export const MenuInteraction: Story = {
         const navLabel = canvas.getByLabelText(/menu de navigation principal/i);
         expect(navLabel).toBeInTheDocument();
       },
-      { timeout: 2000 }
+      { timeout: 2000 },
     );
 
     // Verify navigation links are present within mobile menu
-    await expect(
-      canvas.getByRole("link", { name: /Doula/i })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByRole("link", { name: /Yoga/i })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByRole("link", { name: /Féminin/i })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByRole("link", { name: /À propos/i })
-    ).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: /Doula/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: /Yoga/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: /Féminin/i })).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: /À propos/i })).toBeInTheDocument();
 
     // Test close with Escape
     await userEvent.keyboard("{Escape}");
@@ -186,23 +178,15 @@ export const AriaLabels: Story = {
 
     // French ARIA labels verification
     await expect(
-      canvas.getByLabelText(/Pauline Roussel - Retour à l'accueil/i)
+      canvas.getByLabelText(/Pauline Roussel - Retour à l'accueil/i),
     ).toBeInTheDocument();
     await expect(canvas.getByLabelText(/Ouvrir le menu/i)).toBeInTheDocument();
     await expect(canvas.getByRole("banner")).toBeInTheDocument();
 
     // Verify navigation links
-    await expect(
-      canvas.getByRole("link", { name: "Doula" })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByRole("link", { name: "Yoga" })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByRole("link", { name: "Féminin" })
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByRole("link", { name: "À propos" })
-    ).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: "Doula" })).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: "Yoga" })).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: "Féminin" })).toBeInTheDocument();
+    await expect(canvas.getByRole("link", { name: "À propos" })).toBeInTheDocument();
   },
 };

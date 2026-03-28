@@ -268,9 +268,7 @@ export const ServicesSection: Story = {
     await expect(servicesTitle).toBeInTheDocument();
 
     // Verify specific service titles are present (all 9 services)
-    await expect(
-      canvas.getByText("Préparation à la naissance")
-    ).toBeInTheDocument();
+    await expect(canvas.getByText("Préparation à la naissance")).toBeInTheDocument();
     await expect(canvas.getByText("Examen de grossesse")).toBeInTheDocument();
     await expect(canvas.getByText("Post-partum immédiat")).toBeInTheDocument();
     await expect(canvas.getByText("Yoga prénatal")).toBeInTheDocument();
@@ -280,9 +278,7 @@ export const ServicesSection: Story = {
     const mamaBlessingElements = canvas.getAllByText("Mama Blessing");
     await expect(mamaBlessingElements.length).toBeGreaterThanOrEqual(2);
 
-    await expect(
-      canvas.getByText("Yoga prénatal avec partenaire")
-    ).toBeInTheDocument();
+    await expect(canvas.getByText("Yoga prénatal avec partenaire")).toBeInTheDocument();
     await expect(canvas.getByText("Consultation doula")).toBeInTheDocument();
     await expect(canvas.getByText("Consultation extra")).toBeInTheDocument();
 
@@ -327,16 +323,16 @@ export const FullPageIntegration: Story = {
 
     // Verify all 5 approach items
     await expect(
-      canvas.getByRole("heading", { level: 3, name: /Pendant la grossesse/i })
+      canvas.getByRole("heading", { level: 3, name: /Pendant la grossesse/i }),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByRole("heading", { level: 3, name: /L'accouchement/i })
+      canvas.getByRole("heading", { level: 3, name: /L'accouchement/i }),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByRole("heading", { level: 3, name: /4e trimestre/i })
+      canvas.getByRole("heading", { level: 3, name: /4e trimestre/i }),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByRole("heading", { level: 3, name: /Sur mesure/i })
+      canvas.getByRole("heading", { level: 3, name: /Sur mesure/i }),
     ).toBeInTheDocument();
 
     // Verify Services section with "À la carte"
@@ -348,16 +344,14 @@ export const FullPageIntegration: Story = {
 
     // Verify CallToAction
     await expect(
-      canvas.getByText(/Prête à vivre ta maternité en toute sérénité/i)
+      canvas.getByText(/Prête à vivre ta maternité en toute sérénité/i),
     ).toBeInTheDocument();
     await expect(
-      canvas.getByRole("link", { name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i })
+      canvas.getByRole("link", { name: /RÉSERVEZ UN APPEL DÉCOUVERTE/i }),
     ).toBeInTheDocument();
 
     // Verify TestimonialsCarousel (pas de titre global, chaque témoignage a son propre titre)
-    await expect(
-      canvas.getByText(/douceur et une écoute incroyables/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/douceur et une écoute incroyables/i)).toBeInTheDocument();
     // Vérifier qu'un des auteurs est affiché comme titre H3
     const testimonialAuthor = canvas.getByRole("heading", {
       level: 3,
@@ -415,9 +409,7 @@ export const AccessibilityStructure: Story = {
     await expect(heroRegion).toBeInTheDocument();
 
     // Verify carousel region
-    const carouselRegion = canvasElement.querySelector(
-      '[role="region"][aria-label*="Carrousel"]'
-    );
+    const carouselRegion = canvasElement.querySelector('[role="region"][aria-label*="Carrousel"]');
     await expect(carouselRegion).toBeInTheDocument();
 
     // Verify footer contentinfo
@@ -463,9 +455,7 @@ export const KeyboardNavigation: Story = {
     await expect(ctaButton).toHaveAttribute("href", "/contact");
 
     // Testimonials navigation buttons (if visible)
-    const navButtons = canvasElement.querySelectorAll(
-      'button[aria-label*="témoignage"]'
-    );
+    const navButtons = canvasElement.querySelectorAll('button[aria-label*="témoignage"]');
     if (navButtons.length > 0) {
       navButtons.forEach((button) => {
         expect(button).toBeInTheDocument();

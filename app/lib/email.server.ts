@@ -17,8 +17,7 @@ function getResendClient(): Resend {
     const apiKey = process.env.RESEND_API_KEY;
     if (!apiKey) {
       throw new Error(
-        "RESEND_API_KEY environment variable is not set. " +
-          "Provide it before sending emails.",
+        "RESEND_API_KEY environment variable is not set. " + "Provide it before sending emails.",
       );
     }
     _resend = new Resend(apiKey);
@@ -71,9 +70,7 @@ function getContactRecipient(): string {
  *
  * Retries once on failure before giving up.
  */
-export async function sendContactNotification(
-  formData: ContactFormData,
-): Promise<void> {
+export async function sendContactNotification(formData: ContactFormData): Promise<void> {
   const from = getFromAddress();
   const contactRecipient = getContactRecipient();
 
@@ -98,10 +95,7 @@ export async function sendContactNotification(
  *
  * Retries once on failure before giving up.
  */
-export async function sendContactConfirmation(
-  email: string,
-  name: string,
-): Promise<void> {
+export async function sendContactConfirmation(email: string, name: string): Promise<void> {
   const from = getFromAddress();
   const contactRecipient = getContactRecipient();
 
@@ -124,9 +118,7 @@ export async function sendContactConfirmation(
  * - If only the confirmation fails, we log but do NOT fail the request —
  *   the user's message was already received.
  */
-export async function sendContactEmails(
-  formData: ContactFormData,
-): Promise<void> {
+export async function sendContactEmails(formData: ContactFormData): Promise<void> {
   const [notificationResult, confirmationResult] = await Promise.allSettled([
     sendContactNotification(formData),
     sendContactConfirmation(formData.email, formData.name),
@@ -139,10 +131,7 @@ export async function sendContactEmails(
 
   // Confirmation failure is non-critical — log and continue
   if (confirmationResult.status === "rejected") {
-    console.error(
-      "Failed to send confirmation email:",
-      confirmationResult.reason,
-    );
+    console.error("Failed to send confirmation email:", confirmationResult.reason);
   }
 }
 

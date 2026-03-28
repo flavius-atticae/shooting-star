@@ -15,10 +15,7 @@ export interface ApproachItem {
   description: string;
 }
 
-export interface ApproachSectionProps extends Omit<
-  React.HTMLAttributes<HTMLElement>,
-  "children"
-> {
+export interface ApproachSectionProps extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
   /** Section title - "Mon approche" by default */
   title?: string;
   /** Array of approach items to display */
@@ -94,16 +91,11 @@ export function ApproachSection({
         </h2>
 
         {/* Approach Items */}
-        <div
-          className="flex flex-col"
-          role="list"
-          aria-labelledby="approach-heading"
-        >
+        <ul className="flex flex-col list-none" aria-labelledby="approach-heading">
           {items.map((item, index) => (
-            <React.Fragment key={item.id}>
+            <li key={item.id}>
               <article
                 className="space-y-4 sm:space-y-6 py-8 sm:py-10 lg:py-12"
-                role="listitem"
                 lang="fr"
                 aria-labelledby={`approach-${item.id}-title`}
               >
@@ -116,9 +108,7 @@ export function ApproachSection({
                 </h3>
 
                 {/* Description Paragraph */}
-                <p
-                  className="font-sans text-base sm:text-lg text-secondary text-center max-w-3xl mx-auto leading-relaxed"
-                >
+                <p className="font-sans text-base sm:text-lg text-secondary text-center max-w-3xl mx-auto leading-relaxed">
                   {item.description}
                 </p>
               </article>
@@ -126,17 +116,17 @@ export function ApproachSection({
               {/* Vertical Divider - progressively shorter for each item */}
               {index < items.length - 1 && (
                 <div className="flex justify-center" aria-hidden="true">
-                  <div 
+                  <div
                     className="w-px bg-secondary"
                     style={{
-                      height: `${Math.max(20, 96 - (index * 16))}px`,
+                      height: `${Math.max(20, 96 - index * 16)}px`,
                     }}
                   ></div>
                 </div>
               )}
-            </React.Fragment>
+            </li>
           ))}
-        </div>
+        </ul>
 
         {/* Empty state - for development/debugging */}
         {items.length === 0 && (

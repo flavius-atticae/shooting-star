@@ -40,7 +40,7 @@ export default function FemininSacre() {
       {/* Header - Navigation principale */}
       <Header />
 
-      <main id="main-content" role="main">
+      <main id="main-content">
         {/* Hero Section - "Le féminin sacré ateliers variés" */}
         <Hero
           variant="default"

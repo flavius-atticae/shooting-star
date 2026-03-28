@@ -25,10 +25,7 @@ describe("hooks/use-browser-support", () => {
       const animationClass = "animate-fadeIn";
       const fallbackClass = "opacity-100";
 
-      const resultClass = result.current.getAnimationClass(
-        animationClass,
-        fallbackClass
-      );
+      const resultClass = result.current.getAnimationClass(animationClass, fallbackClass);
 
       // Should return one of the two classes
       expect([animationClass, fallbackClass]).toContain(resultClass);
@@ -40,10 +37,7 @@ describe("hooks/use-browser-support", () => {
       const normalDuration = "duration-300";
       const reducedDuration = "duration-150";
 
-      const resultDuration = result.current.getTransitionDuration(
-        normalDuration,
-        reducedDuration
-      );
+      const resultDuration = result.current.getTransitionDuration(normalDuration, reducedDuration);
 
       expect([normalDuration, reducedDuration]).toContain(resultDuration);
     });

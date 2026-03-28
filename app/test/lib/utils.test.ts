@@ -83,34 +83,26 @@ describe("lib/performance-thresholds", () => {
 
     it("should have more lenient TIME_TO_INTERACTIVE than standard", () => {
       // Pregnancy performance should be more lenient (3.5s vs typical 3s)
-      expect(PREGNANCY_PERFORMANCE.TIME_TO_INTERACTIVE).toBeGreaterThanOrEqual(
-        3000
-      );
+      expect(PREGNANCY_PERFORMANCE.TIME_TO_INTERACTIVE).toBeGreaterThanOrEqual(3000);
     });
   });
 
   describe("PERFORMANCE_THRESHOLDS (combined)", () => {
     it("should contain all Core Web Vitals", () => {
-      expect(PERFORMANCE_THRESHOLDS.LCP_THRESHOLD).toBe(
-        CORE_WEB_VITALS.LCP_THRESHOLD
-      );
-      expect(PERFORMANCE_THRESHOLDS.FID_THRESHOLD).toBe(
-        CORE_WEB_VITALS.FID_THRESHOLD
-      );
-      expect(PERFORMANCE_THRESHOLDS.CLS_THRESHOLD).toBe(
-        CORE_WEB_VITALS.CLS_THRESHOLD
-      );
+      expect(PERFORMANCE_THRESHOLDS.LCP_THRESHOLD).toBe(CORE_WEB_VITALS.LCP_THRESHOLD);
+      expect(PERFORMANCE_THRESHOLDS.FID_THRESHOLD).toBe(CORE_WEB_VITALS.FID_THRESHOLD);
+      expect(PERFORMANCE_THRESHOLDS.CLS_THRESHOLD).toBe(CORE_WEB_VITALS.CLS_THRESHOLD);
     });
 
     it("should contain pregnancy-specific metrics", () => {
       expect(PERFORMANCE_THRESHOLDS.TIME_TO_INTERACTIVE).toBe(
-        PREGNANCY_PERFORMANCE.TIME_TO_INTERACTIVE
+        PREGNANCY_PERFORMANCE.TIME_TO_INTERACTIVE,
       );
       expect(PERFORMANCE_THRESHOLDS.BUNDLE_SIZE_LIMIT).toBe(
-        PREGNANCY_PERFORMANCE.BUNDLE_SIZE_LIMIT
+        PREGNANCY_PERFORMANCE.BUNDLE_SIZE_LIMIT,
       );
       expect(PERFORMANCE_THRESHOLDS.IMAGE_OPTIMIZATION).toEqual(
-        PREGNANCY_PERFORMANCE.IMAGE_OPTIMIZATION
+        PREGNANCY_PERFORMANCE.IMAGE_OPTIMIZATION,
       );
     });
   });

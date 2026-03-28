@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "~/lib/utils";
 import { Mail, MapPin } from "lucide-react";
 
@@ -40,7 +40,7 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
         // No background - inherits from parent section
         // Text color - primary green
         "text-primary",
-        className
+        className,
       )}
       {...props}
     >
@@ -48,41 +48,27 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
       <h2
         className={cn(
           "font-heading font-medium text-4xl sm:text-5xl lg:text-6xl",
-          "text-primary mb-4"
+          "text-primary mb-4",
         )}
       >
         Écris-moi
       </h2>
 
       {/* Introduction */}
-      <p
-        className={cn(
-          "font-body text-base sm:text-lg leading-relaxed",
-          "text-primary/90 mb-2"
-        )}
-      >
-        Contacte-moi pour échanger sur ton parcours, tes besoins et découvrir
-        comment je peux te soutenir à chaque étape. Chaque expérience est
-        unique, créons-la ensemble !
+      <p className={cn("font-body text-base sm:text-lg leading-relaxed", "text-primary/90 mb-2")}>
+        Contacte-moi pour échanger sur ton parcours, tes besoins et découvrir comment je peux te
+        soutenir à chaque étape. Chaque expérience est unique, créons-la ensemble !
       </p>
 
       {/* Location */}
       <div className="flex items-start gap-3 mb-2">
-        <MapPin
-          className="w-5 h-5 mt-1 flex-shrink-0 text-primary"
-          aria-hidden="true"
-        />
-        <p className="font-body text-base sm:text-lg text-primary/90">
-          Grande région de Montréal
-        </p>
+        <MapPin className="w-5 h-5 mt-1 flex-shrink-0 text-primary" aria-hidden="true" />
+        <p className="font-body text-base sm:text-lg text-primary/90">Grande région de Montréal</p>
       </div>
 
       {/* Email */}
       <div className="flex items-start gap-3 mb-4">
-        <Mail
-          className="w-5 h-5 mt-1 flex-shrink-0 text-primary"
-          aria-hidden="true"
-        />
+        <Mail className="w-5 h-5 mt-1 flex-shrink-0 text-primary" aria-hidden="true" />
         <a
           href="mailto:pauline@paulineroussel.ca"
           className={cn(
@@ -91,7 +77,7 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
             // Accessibility - focus states
             "outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
             // Touch target - pregnancy-safe minimum 44px
-            "min-h-[44px] flex items-center"
+            "min-h-[44px] flex items-center",
           )}
           aria-label="Envoyer un courriel à Pauline Roussel"
         >
@@ -100,12 +86,7 @@ export function ContactInfo({ className, ...props }: ContactInfoProps) {
       </div>
 
       {/* Personal message */}
-      <p
-        className={cn(
-          "font-heading text-2xl sm:text-3xl italic",
-          "text-primary mt-4"
-        )}
-      >
+      <p className={cn("font-heading text-2xl sm:text-3xl italic", "text-primary mt-4")}>
         J'ai hâte de faire ta rencontre
       </p>
     </div>

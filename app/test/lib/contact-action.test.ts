@@ -60,6 +60,7 @@ async function createFormRequest(
  * React Router's data() returns a DataWithResponseInit object,
  * not a standard Response. Extract data and status from it.
  */
+// biome-ignore lint/suspicious/noExplicitAny: test utility for dynamic React Router response shape
 function getActionResult(result: any): { data: any; status?: number } {
   // DataWithResponseInit shape: { type, data, init }
   return {
@@ -92,6 +93,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
+      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data } = getActionResult(result);
@@ -119,6 +121,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
+      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data } = getActionResult(result);
@@ -142,6 +145,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
+      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data } = getActionResult(result);
@@ -171,6 +175,7 @@ describe("contact route action", () => {
           request: await makeRequest(),
           params: {},
           context: {},
+        // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
         } as any);
         const { data } = getActionResult(result);
         expect(data.success).toBe(true);
@@ -181,6 +186,7 @@ describe("contact route action", () => {
         request: await makeRequest(),
         params: {},
         context: {},
+      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data, status } = getActionResult(result);
@@ -201,6 +207,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
+      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data, status } = getActionResult(result);
@@ -221,6 +228,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
+      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data, status } = getActionResult(result);
@@ -240,6 +248,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
+      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data, status } = getActionResult(result);
@@ -259,6 +268,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
+      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data } = getActionResult(result);
@@ -269,9 +279,7 @@ describe("contact route action", () => {
 
   describe("email sending errors", () => {
     it("should return 500 when sendContactEmails throws", async () => {
-      mockedSendContactEmails.mockRejectedValueOnce(
-        new Error("Resend API error"),
-      );
+      mockedSendContactEmails.mockRejectedValueOnce(new Error("Resend API error"));
 
       const request = await createFormRequest({
         name: "Marie Tremblay",
@@ -283,6 +291,7 @@ describe("contact route action", () => {
         request,
         params: {},
         context: {},
+      // biome-ignore lint/suspicious/noExplicitAny: test utility for React Router action args
       } as any);
 
       const { data, status } = getActionResult(result);

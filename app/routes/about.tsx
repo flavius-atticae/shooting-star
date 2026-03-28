@@ -40,13 +40,9 @@ export default function AboutPage() {
       {/* Header - Navigation principale */}
       <Header />
 
-      <main id="main-content" role="main">
+      <main id="main-content">
         {/* Hero Section - "Pauline Roussel" */}
-        <Hero
-          variant="default"
-          title="Pauline Roussel"
-          subtitle="DOULA ET PROFESSEURE DE YOGA"
-        />
+        <Hero variant="default" title="Pauline Roussel" subtitle="DOULA ET PROFESSEURE DE YOGA" />
 
         {/* About Section - À propos de moi + Mes inspirations */}
         <About
@@ -75,7 +71,7 @@ export default function AboutPage() {
  */
 function AboutContentWithSections() {
   return (
-    <div
+    <section
       className="grid gap-6 sm:gap-8 lg:gap-12 grid-cols-1 lg:grid-cols-3"
       lang="fr"
       aria-labelledby="about-heading"
@@ -91,10 +87,7 @@ function AboutContentWithSections() {
         </h2>
 
         {/* Content - Four subsections */}
-        <div
-          className="space-y-8 sm:space-y-10"
-          aria-labelledby="about-heading"
-        >
+        <section className="space-y-8 sm:space-y-10" aria-labelledby="about-heading">
           {/* Qui suis-je? */}
           <article className="space-y-4" aria-labelledby="qui-suis-je-title">
             <h3
@@ -104,15 +97,13 @@ function AboutContentWithSections() {
               Qui suis-je?
             </h3>
             <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
-              Curieuse et ouverte, j'aime apprendre encore et encore pour mieux
-              servir. Passionnée par la Femme, sa complexité et les multiples
-              rites de passage qui jalonnent sa vie, je me nourris de toutes
-              celles que je rencontre et de leurs innombrables facettes. Maman
-              d'une petite fille, j'ai découvert à travers ma propre maternité
-              la puissance et la vulnérabilité de ces transitions, et le besoin
-              vital de revenir à soi pour retrouver équilibre et énergie. On dit
-              de moi que je suis douce et bienveillante – deux qualités qui
-              m'accompagnent dans ma mission.
+              Curieuse et ouverte, j'aime apprendre encore et encore pour mieux servir. Passionnée
+              par la Femme, sa complexité et les multiples rites de passage qui jalonnent sa vie, je
+              me nourris de toutes celles que je rencontre et de leurs innombrables facettes. Maman
+              d'une petite fille, j'ai découvert à travers ma propre maternité la puissance et la
+              vulnérabilité de ces transitions, et le besoin vital de revenir à soi pour retrouver
+              équilibre et énergie. On dit de moi que je suis douce et bienveillante – deux qualités
+              qui m'accompagnent dans ma mission.
             </p>
           </article>
 
@@ -126,22 +117,19 @@ function AboutContentWithSections() {
             </h3>
             <div className="space-y-4">
               <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
-                Danseuse classique et contemporaine de formation, le mouvement a
-                toujours été mon langage. Après avoir exploré le fitness et
-                l'entraînement, c'est le yoga qui m'a permis de ralentir, de
-                relier le corps, le mental et l'émotionnel. J'ai alors senti
-                l'élan de partager cette pratique, d'en faire un outil
-                holistique de soin et d'expression. Ma fascination pour le
-                féminin, enrichie par ma propre maternité, m'a naturellement
-                conduite vers le yoga pré- et postnatal, puis vers le yoga de la
-                femme, un espace pour se reconnecter à son énergie féminine, à
-                ses cycles et à son identité profonde.
+                Danseuse classique et contemporaine de formation, le mouvement a toujours été mon
+                langage. Après avoir exploré le fitness et l'entraînement, c'est le yoga qui m'a
+                permis de ralentir, de relier le corps, le mental et l'émotionnel. J'ai alors senti
+                l'élan de partager cette pratique, d'en faire un outil holistique de soin et
+                d'expression. Ma fascination pour le féminin, enrichie par ma propre maternité, m'a
+                naturellement conduite vers le yoga pré- et postnatal, puis vers le yoga de la
+                femme, un espace pour se reconnecter à son énergie féminine, à ses cycles et à son
+                identité profonde.
               </p>
               <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
-                Devenir doula s'est imposé comme la suite logique : soutenir les
-                parents dans leur cheminement, les outiller et leur offrir une
-                présence rassurante et humaine pour accueillir bébé avec
-                confiance et sérénité.
+                Devenir doula s'est imposé comme la suite logique : soutenir les parents dans leur
+                cheminement, les outiller et leur offrir une présence rassurante et humaine pour
+                accueillir bébé avec confiance et sérénité.
               </p>
             </div>
           </article>
@@ -155,13 +143,11 @@ function AboutContentWithSections() {
               Ce qui m'inspire
             </h3>
             <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
-              La puissance et la résilience des femmes. La nature et ses cycles.
-              La capacité du corps humain à traverser, s'adapter et rayonner.
-              J'entretiens cette inspiration en me formant sans cesse, en
-              travaillant main dans la main avec des professionnelles de
-              confiance, et en me laissant toucher par les retours des personnes
-              que j'accompagne – véritables preuves que cette démarche a un
-              impact réel et profond.
+              La puissance et la résilience des femmes. La nature et ses cycles. La capacité du
+              corps humain à traverser, s'adapter et rayonner. J'entretiens cette inspiration en me
+              formant sans cesse, en travaillant main dans la main avec des professionnelles de
+              confiance, et en me laissant toucher par les retours des personnes que j'accompagne –
+              véritables preuves que cette démarche a un impact réel et profond.
             </p>
           </article>
 
@@ -174,14 +160,13 @@ function AboutContentWithSections() {
               Ma méthode
             </h3>
             <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
-              Holistique et personnalisée, ancrée dans le respect et l'écoute.
-              Je propose un accompagnement qui invite les femmes à se révéler, à
-              s'écouter et à s'épanouir. C'est un chemin d'ancrage et de
-              rayonnement, où l'on se sent soutenue, entourée et pleinement
-              honorée.
+              Holistique et personnalisée, ancrée dans le respect et l'écoute. Je propose un
+              accompagnement qui invite les femmes à se révéler, à s'écouter et à s'épanouir. C'est
+              un chemin d'ancrage et de rayonnement, où l'on se sent soutenue, entourée et
+              pleinement honorée.
             </p>
           </article>
-        </div>
+        </section>
       </div>
 
       {/* Image Placeholder - Takes 3rd column on desktop */}
@@ -207,11 +192,11 @@ function AboutContentWithSections() {
 
           {/* Hidden description for accessibility */}
           <div id="pauline-photo-description" className="sr-only">
-            Photo de Pauline Roussel, doula et professeure de yoga spécialisée
-            en périnatal et accompagnement de la femme.
+            Photo de Pauline Roussel, doula et professeure de yoga spécialisée en périnatal et
+            accompagnement de la femme.
           </div>
         </figure>
       </div>
-    </div>
+    </section>
   );
 }

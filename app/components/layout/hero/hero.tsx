@@ -88,10 +88,7 @@ export interface HeroContentProps {
  * - Pregnancy-safe animations with reduced motion support
  */
 export const Hero = React.forwardRef<HTMLElement, HeroProps>(
-  (
-    { className, title, subtitle, variant = "default", children, ...props },
-    ref
-  ) => {
+  ({ className, title, subtitle, variant = "default", children, ...props }, ref) => {
     const variantConfig = HERO_VARIANTS[variant];
 
     return (
@@ -113,7 +110,7 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
           // Rounded bottom edges - skip for full-height variant
           variant !== "full-height" && "rounded-b-xl",
 
-          className
+          className,
         )}
         role="region"
         aria-label="Section principale d'accueil"
@@ -125,14 +122,14 @@ export const Hero = React.forwardRef<HTMLElement, HeroProps>(
             "px-4 sm:px-8 md:px-10",
             "h-full flex items-center",
             // Safe area padding for mobile devices
-            "pb-[env(safe-area-inset-bottom)]"
+            "pb-[env(safe-area-inset-bottom)]",
           )}
         >
           {children || <HeroContent title={title} subtitle={subtitle} />}
         </Container>
       </Section>
     );
-  }
+  },
 );
 
 Hero.displayName = "Hero";
@@ -157,6 +154,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
       if (titleText.includes("\n")) {
         const lines = titleText.split("\n");
         return lines.map((line, index) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: title lines have no stable key (split by newline)
           <React.Fragment key={index}>
             {line}
             {index < lines.length - 1 && <br />}
@@ -167,11 +165,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
     };
 
     return (
-      <div
-        ref={ref}
-        className={cn("flex flex-col items-start", className)}
-        {...props}
-      >
+      <div ref={ref} className={cn("flex flex-col items-start", className)} {...props}>
         {/* Main Title - Mobile-first with Figma desktop specs */}
         <FadeInTitle>
           <h1
@@ -192,7 +186,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               "tracking-tight lg:tracking-[-0.02em]",
 
               // Weight
-              "font-medium"
+              "font-medium",
             )}
           >
             {renderTitle(title || defaultTitle)}
@@ -228,7 +222,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
               "text-left",
 
               // Margin - closer to title
-              "mt-1 sm:mt-2"
+              "mt-1 sm:mt-2",
             )}
           >
             {subtitle || defaultSubtitle}
@@ -236,7 +230,7 @@ export const HeroContent = React.forwardRef<HTMLDivElement, HeroContentProps>(
         </FadeInSubtitle>
       </div>
     );
-  }
+  },
 );
 
 HeroContent.displayName = "HeroContent";

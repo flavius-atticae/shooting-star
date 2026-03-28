@@ -28,9 +28,7 @@ test.describe("Core Web Vitals for Pregnancy Users", () => {
     // Pregnancy-adjusted LCP target (2.5s vs standard 2.0s)
     expect(metrics.lcp).toBeLessThan(PERFORMANCE_THRESHOLDS.LCP_THRESHOLD);
 
-    console.log(
-      `LCP: ${metrics.lcp}ms (target: <${PERFORMANCE_THRESHOLDS.LCP_THRESHOLD}ms)`
-    );
+    console.log(`LCP: ${metrics.lcp}ms (target: <${PERFORMANCE_THRESHOLDS.LCP_THRESHOLD}ms)`);
   });
 
   test("FID accommodates pregnancy interaction delays", async ({ page }) => {
@@ -46,9 +44,7 @@ test.describe("Core Web Vitals for Pregnancy Users", () => {
       const interactionTime = Date.now() - startTime;
 
       // Should respond within pregnancy-safe timeouts
-      expect(interactionTime).toBeLessThan(
-        PERFORMANCE_THRESHOLDS.FID_THRESHOLD
-      );
+      expect(interactionTime).toBeLessThan(PERFORMANCE_THRESHOLDS.FID_THRESHOLD);
     }
   });
 
@@ -92,9 +88,7 @@ test.describe("Device Performance Testing", () => {
     console.log(`Slow device load time: ${loadTime}ms`);
   });
 
-  test("handles network conditions during medical appointments", async ({
-    page,
-  }) => {
+  test("handles network conditions during medical appointments", async ({ page }) => {
     // Simulate slow network (often occurs during medical appointments)
     await page.route("**/*", (route) => {
       setTimeout(() => route.continue(), 500); // 500ms delay
@@ -114,9 +108,7 @@ test.describe("Bundle Size and Loading Performance", () => {
     helpers = new PregnancySafeHelpers(page);
   });
 
-  test("JavaScript bundle size optimized for pregnancy users", async ({
-    page,
-  }) => {
+  test("JavaScript bundle size optimized for pregnancy users", async ({ page }) => {
     // Monitor network requests
     const responses: Array<{ url: string; size: number }> = [];
 
@@ -142,10 +134,7 @@ test.describe("Bundle Size and Loading Performance", () => {
     await page.waitForTimeout(2000);
 
     // Calculate total JS bundle size
-    const totalSize = responses.reduce(
-      (sum, response) => sum + response.size,
-      0
-    );
+    const totalSize = responses.reduce((sum, response) => sum + response.size, 0);
     const totalSizeKB = Math.round(totalSize / 1024);
 
     console.log(`Total JS bundle size: ${totalSizeKB}KB`);
@@ -199,9 +188,7 @@ test.describe("Accessibility Performance", () => {
 
     // Verify semantic HTML structure for fast screen reader navigation
     const headings = await page.locator("h1, h2, h3, h4, h5, h6").count();
-    const landmarks = await page
-      .locator("main, nav, aside, header, footer")
-      .count();
+    const landmarks = await page.locator("main, nav, aside, header, footer").count();
 
     expect(headings).toBeGreaterThan(0);
     expect(landmarks).toBeGreaterThan(0);

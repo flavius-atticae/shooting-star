@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { useFetcher } from "react-router";
 import { cn } from "~/lib/utils";
 import { Section } from "~/components/ui/section";
@@ -8,10 +8,7 @@ import { ContactForm, type ContactFormData } from "./contact-form";
 /**
  * Props for the ContactSection component
  */
-export interface ContactSectionProps extends Omit<
-  React.HTMLAttributes<HTMLElement>,
-  "onSubmit"
-> {
+export interface ContactSectionProps extends Omit<React.HTMLAttributes<HTMLElement>, "onSubmit"> {
   /** Callback when form is successfully submitted (legacy/Storybook mode) */
   onSubmit?: (data: ContactFormData) => void | Promise<void>;
   /** Whether the form is in loading state */
@@ -75,7 +72,7 @@ export function ContactSection({
           // Padding inside the container
           "p-8 md:p-12 lg:p-16",
           // Max width and centering
-          "w-full max-w-6xl mx-auto"
+          "w-full max-w-6xl mx-auto",
         )}
       >
         {/* Two-column grid layout */}
@@ -84,7 +81,7 @@ export function ContactSection({
             // Grid setup
             "grid grid-cols-1 md:grid-cols-2",
             // Gap between columns
-            "gap-8 md:gap-12 lg:gap-16"
+            "gap-8 md:gap-12 lg:gap-16",
           )}
         >
           {/* Left Column - Contact Info */}

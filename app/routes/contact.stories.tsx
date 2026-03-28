@@ -202,9 +202,7 @@ export const FullPageIntegration: Story = {
     await expect(title).toHaveTextContent("Contact");
 
     // Verify subtitle
-    await expect(
-      canvas.getByText(/envie d'en savoir plus/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/envie d'en savoir plus/i)).toBeInTheDocument();
 
     // Verify contact form fields
     const nameInput = canvas.getByLabelText(/nom/i);
@@ -310,9 +308,7 @@ export const FormInteraction: Story = {
     await expect(emailInput).toHaveValue("marie@example.com");
 
     await userEvent.type(messageInput, "Bonjour, je souhaite en savoir plus.");
-    await expect(messageInput).toHaveValue(
-      "Bonjour, je souhaite en savoir plus."
-    );
+    await expect(messageInput).toHaveValue("Bonjour, je souhaite en savoir plus.");
   },
 };
 
@@ -331,9 +327,7 @@ export const FrenchContent: Story = {
     await expect(title).toHaveTextContent("Contact");
 
     // Verify French subtitle
-    await expect(
-      canvas.getByText(/envie d'en savoir plus/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/envie d'en savoir plus/i)).toBeInTheDocument();
 
     // Verify French form labels
     await expect(canvas.getByLabelText(/nom/i)).toBeInTheDocument();
@@ -341,9 +335,7 @@ export const FrenchContent: Story = {
     await expect(canvas.getByLabelText(/message/i)).toBeInTheDocument();
 
     // Verify French submit button
-    await expect(
-      canvas.getByRole("button", { name: /envoyer/i })
-    ).toBeInTheDocument();
+    await expect(canvas.getByRole("button", { name: /envoyer/i })).toBeInTheDocument();
   },
 };
 
@@ -370,9 +362,7 @@ export const PageStructure: Story = {
     await expect(main).toBeInTheDocument();
 
     // Verify no Hero component (title is simple h1, not in a hero region)
-    const heroRegion = canvasElement.querySelector(
-      '[aria-label="Section principale d\'accueil"]'
-    );
+    const heroRegion = canvasElement.querySelector('[aria-label="Section principale d\'accueil"]');
     await expect(heroRegion).not.toBeInTheDocument();
 
     // Verify title is a simple heading

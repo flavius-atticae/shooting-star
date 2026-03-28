@@ -62,9 +62,8 @@ export function Header({ className, defaultOpen = false }: HeaderProps) {
         "bg-primary backdrop-blur-[15px] border-b border-primary/20",
         // Height responsive
         "h-14 sm:h-16", // 56px mobile, 64px desktop
-        className
+        className,
       )}
-      role="banner"
     >
       <Container size="xl" className="h-full px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-3 items-center h-full">
@@ -82,11 +81,9 @@ export function Header({ className, defaultOpen = false }: HeaderProps) {
                 // Colors - white background with primary icons (Figma mockup)
                 "bg-white text-primary hover:text-primary/90",
                 // Focus
-                "focus-visible:ring-2 focus-visible:ring-white/50"
+                "focus-visible:ring-2 focus-visible:ring-white/50",
               )}
-              aria-label={
-                isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"
-              }
+              aria-label={isMobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
               aria-expanded={isMobileMenuOpen}
               aria-controls="mobile-navigation"
             >
@@ -100,18 +97,10 @@ export function Header({ className, defaultOpen = false }: HeaderProps) {
               >
                 {isMobileMenuOpen ? (
                   // Close icon (X)
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M6 6l12 12M6 18L18 6"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6l12 12M6 18L18 6" />
                 ) : (
                   // Hamburger icon - 2 traits seulement
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 8h16M4 16h16"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 8h16M4 16h16" />
                 )}
               </svg>
             </Button>
@@ -135,7 +124,7 @@ export function Header({ className, defaultOpen = false }: HeaderProps) {
                     // Transitions
                     "transition-colors duration-200",
                     // Focus states for accessibility
-                    "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary rounded-sm"
+                    "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2 focus-visible:ring-offset-primary rounded-sm",
                   )}
                 >
                   {link.label}
@@ -162,7 +151,7 @@ export function Header({ className, defaultOpen = false }: HeaderProps) {
                 // Focus states for accessibility
                 "outline-none focus-visible:ring-2 focus-visible:ring-white/50 focus-visible:ring-offset-2",
                 // Hover state
-                "hover:scale-[1.02] active:scale-[0.98]"
+                "hover:scale-[1.02] active:scale-[0.98]",
               )}
               aria-label="Pauline Roussel - Retour à l'accueil"
             >
@@ -189,7 +178,7 @@ export function Header({ className, defaultOpen = false }: HeaderProps) {
                   // Focus enhancement for accessibility
                   "outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-offset-2",
                   // Transitions
-                  "transition-all duration-200"
+                  "transition-all duration-200",
                 )}
                 aria-label="Contactez Pauline Roussel"
               >
@@ -201,10 +190,7 @@ export function Header({ className, defaultOpen = false }: HeaderProps) {
       </Container>
 
       {/* Mobile Menu Overlay */}
-      <MobileMenu
-        isOpen={isMobileMenuOpen}
-        onClose={() => setIsMobileMenuOpen(false)}
-      />
+      <MobileMenu isOpen={isMobileMenuOpen} onClose={() => setIsMobileMenuOpen(false)} />
     </header>
   );
 }

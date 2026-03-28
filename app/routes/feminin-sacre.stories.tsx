@@ -5,7 +5,7 @@ import FemininSacrePage from "./feminin-sacre";
 
 /**
  * Féminin Sacré Page - Complete Storybook Tests (Phase 4)
- * 
+ *
  * This story provides comprehensive testing for the Féminin Sacré page with:
  * - Complete page composition with all sections
  * - Hero section with "Le féminin sacré\nateliers variés" title
@@ -15,7 +15,7 @@ import FemininSacrePage from "./feminin-sacre";
  * - Accessibility validation (WCAG 2.1 AA)
  * - Keyboard navigation tests
  * - Integration tests validating all sections
- * 
+ *
  * Technical details:
  * - Uses existing Header, Hero, EventList, CallToAction, Footer components
  * - Follows pattern from home.tsx, yoga.tsx and doula.tsx
@@ -73,7 +73,7 @@ type Story = StoryObj<typeof meta>;
 
 /**
  * Default Féminin Sacré Page - Complete page with all sections
- * 
+ *
  * Visual regression testing across all breakpoints (320 → 1440px)
  */
 export const Default: Story = {
@@ -86,7 +86,7 @@ export const Default: Story = {
 
 /**
  * Mobile Viewport - Focused mobile rendering test
- * 
+ *
  * Tests responsive behavior on mobile devices (375px width).
  * All sections should stack vertically.
  */
@@ -108,7 +108,7 @@ export const MobileViewport: Story = {
 
 /**
  * Tablet Viewport - Tablet rendering test
- * 
+ *
  * Tests responsive behavior on tablet devices (768px width).
  */
 export const TabletViewport: Story = {
@@ -129,7 +129,7 @@ export const TabletViewport: Story = {
 
 /**
  * Desktop Viewport - Desktop rendering test
- * 
+ *
  * Tests responsive behavior on desktop (1920px width).
  * This is the primary design target.
  */
@@ -156,7 +156,7 @@ export const DesktopViewport: Story = {
 
 /**
  * Full Page Integration Test - Validates all sections
- * 
+ *
  * Tests the complete page composition and all critical elements:
  * - Hero section with correct title
  * - EventList with title "Tous les événements"
@@ -210,7 +210,7 @@ export const FullPageIntegration: Story = {
 
 /**
  * Accessibility Structure Validation - WCAG 2.1 AA
- * 
+ *
  * Validates semantic HTML structure and accessibility:
  * - Proper landmark regions
  * - Correct heading hierarchy
@@ -254,7 +254,7 @@ export const AccessibilityStructure: Story = {
 
 /**
  * Keyboard Navigation Test
- * 
+ *
  * Tests that all interactive elements are keyboard accessible:
  * - Tab navigation through event details buttons
  * - Tab navigation through CTA button
@@ -295,7 +295,7 @@ export const KeyboardNavigation: Story = {
 
 /**
  * French Content Validation
- * 
+ *
  * Ensures all text content is properly displayed in French (fr-CA).
  */
 export const FrenchContent: Story = {
@@ -304,36 +304,28 @@ export const FrenchContent: Story = {
     const canvas = within(canvasElement);
 
     // Verify French hero title
-    await expect(
-      canvas.getByText(/Le féminin sacré/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/Le féminin sacré/i)).toBeInTheDocument();
     await expect(canvas.getByText(/ateliers variés/i)).toBeInTheDocument();
 
     // Verify French subtitle
     await expect(canvas.getByText(/AVEC PAULINE ROUSSEL/i)).toBeInTheDocument();
 
     // Verify French EventList title
-    await expect(
-      canvas.getByText(/Tous les événements/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/Tous les événements/i)).toBeInTheDocument();
 
     // Verify French event details buttons
     const detailsButtons = canvas.getAllByRole("link", { name: /détails/i });
     await expect(detailsButtons.length).toBeGreaterThanOrEqual(3);
 
     // Verify French CTA content
-    await expect(
-      canvas.getByText(/douceur et bienveillance/i)
-    ).toBeInTheDocument();
-    await expect(
-      canvas.getByText(/RÉSERVEZ UN APPEL DÉCOUVERTE/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/douceur et bienveillance/i)).toBeInTheDocument();
+    await expect(canvas.getByText(/RÉSERVEZ UN APPEL DÉCOUVERTE/i)).toBeInTheDocument();
   },
 };
 
 /**
  * Page Structure Validation
- * 
+ *
  * Validates that the page has the correct structure:
  * - Header at top
  * - Hero as first element in main
@@ -379,7 +371,7 @@ export const PageStructure: Story = {
 
 /**
  * EventList Integration Test
- * 
+ *
  * Validates the EventList section integration:
  * - Correct title "Tous les événements"
  * - Intro text is present
@@ -399,9 +391,7 @@ export const EventListSection: Story = {
     await expect(eventListTitle).toBeInTheDocument();
 
     // Verify intro text is present (contains key phrases)
-    await expect(
-      canvas.getByText(/Tu ressens l'élan de te reconnecter/i)
-    ).toBeInTheDocument();
+    await expect(canvas.getByText(/Tu ressens l'élan de te reconnecter/i)).toBeInTheDocument();
 
     // Verify 3 event cards with details buttons
     const detailsButtons = canvas.getAllByRole("link", { name: /détails/i });
@@ -419,7 +409,7 @@ export const EventListSection: Story = {
 
 /**
  * CallToAction Integration Test
- * 
+ *
  * Validates the CallToAction section integration:
  * - Correct title and subtitle
  * - Button with correct text and href
@@ -451,7 +441,7 @@ export const CallToActionSection: Story = {
 
 /**
  * Event Cards Validation
- * 
+ *
  * Validates that event cards are properly displayed:
  * - Each card has a title
  * - Each card has date and time
@@ -487,7 +477,7 @@ export const EventCardsValidation: Story = {
     detailsButtons.forEach((button) => {
       // Verify button has href
       expect(button).toHaveAttribute("href");
-      
+
       // Verify touch target size
       const rect = button.getBoundingClientRect();
       expect(rect.width).toBeGreaterThanOrEqual(44);
@@ -498,7 +488,7 @@ export const EventCardsValidation: Story = {
 
 /**
  * Responsive Layout Test
- * 
+ *
  * Validates that the page layout adapts correctly across breakpoints:
  * - Mobile: single column
  * - Tablet: appropriate spacing

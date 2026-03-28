@@ -106,8 +106,7 @@ export const WithoutIntro: Story = {
 export const CustomTitle: Story = {
   args: {
     title: "Prochains ateliers",
-    introText:
-      "Découvrez les prochains événements du féminin sacré organisés par Pauline Roussel.",
+    introText: "Découvrez les prochains événements du féminin sacré organisés par Pauline Roussel.",
     events: sampleEvents,
     containerSize: "xl",
   },

@@ -4,9 +4,7 @@ import { sanitizeInput } from "~/lib/form-security";
 describe("lib/form-security", () => {
   describe("sanitizeInput", () => {
     it("should strip HTML tags from input", () => {
-      expect(sanitizeInput("<script>alert('xss')</script>")).toBe(
-        "alert('xss')",
-      );
+      expect(sanitizeInput("<script>alert('xss')</script>")).toBe("alert('xss')");
     });
 
     it("should strip angle brackets that are not part of tags", () => {
@@ -36,9 +34,9 @@ describe("lib/form-security", () => {
     it("should handle nested/broken tag constructs", () => {
       // Split-tag obfuscation leaves harmless text fragments ("ipt")
       // but all tags and angle brackets are removed — no XSS risk.
-      expect(
-        sanitizeInput("<scr<script>ipt>alert('xss')</scr</script>ipt>"),
-      ).toBe("iptalert('xss')ipt");
+      expect(sanitizeInput("<scr<script>ipt>alert('xss')</scr</script>ipt>")).toBe(
+        "iptalert('xss')ipt",
+      );
     });
   });
 });

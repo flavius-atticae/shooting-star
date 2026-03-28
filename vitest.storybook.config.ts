@@ -12,11 +12,7 @@ const storybookDir = path.join(dirname, ".storybook");
 
 // Vitest configuration dedicated to Storybook-driven visual/browser tests
 export default defineConfig({
-  plugins: [
-    tailwindcss(),
-    tsconfigPaths(),
-    storybookTest({ configDir: storybookDir }),
-  ],
+  plugins: [tailwindcss(), tsconfigPaths(), storybookTest({ configDir: storybookDir })],
   optimizeDeps: {
     include: ["react/jsx-dev-runtime"],
   },

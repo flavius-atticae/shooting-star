@@ -16,10 +16,7 @@ function TestWrapper({ children }: { children: React.ReactNode }) {
 }
 
 // Custom render function that includes our providers
-const customRender = (
-  ui: ReactElement,
-  options?: Omit<RenderOptions, "wrapper">
-) => {
+const customRender = (ui: ReactElement, options?: Omit<RenderOptions, "wrapper">) => {
   return render(ui, { wrapper: TestWrapper, ...options });
 };
 
@@ -43,20 +40,20 @@ export const checkAccessibility = async (container: HTMLElement) => {
       // Ensure proper heading structure (cognitive load during pregnancy)
       "heading-order": { enabled: true },
       // Ensure form labels are proper (important for focus issues)
-      "label": { enabled: true },
+      label: { enabled: true },
       // Ensure interactive elements have accessible names
       "button-name": { enabled: true },
     },
   });
-  
+
   // Custom assertion for accessibility violations
   if (results.violations.length > 0) {
     const violationMessages = results.violations.map(
-      (violation) => `${violation.id}: ${violation.description}`
+      (violation) => `${violation.id}: ${violation.description}`,
     );
-    throw new Error(`Accessibility violations found:\n${violationMessages.join('\n')}`);
+    throw new Error(`Accessibility violations found:\n${violationMessages.join("\n")}`);
   }
-  
+
   return results;
 };
 
@@ -104,7 +101,7 @@ export const simulatePregnancyConditions = {
       });
     });
   },
-  
+
   highContrast: () => {
     beforeEach(() => {
       Object.defineProperty(window, "matchMedia", {
@@ -122,7 +119,7 @@ export const simulatePregnancyConditions = {
       });
     });
   },
-  
+
   fatigue: () => {
     // Simulate slower interactions due to fatigue
     return userEvent.setup({

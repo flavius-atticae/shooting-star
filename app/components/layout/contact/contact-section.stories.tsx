@@ -36,9 +36,7 @@ export const WithSubmitHandler: Story = {
   args: {
     onSubmit: (data) => {
       console.log("Form submitted with data:", data);
-      alert(
-        `Form submitted!\nName: ${data.name}\nEmail: ${data.email}\nMessage: ${data.message}`
-      );
+      alert(`Form submitted!\nName: ${data.name}\nEmail: ${data.email}\nMessage: ${data.message}`);
     },
   },
 };

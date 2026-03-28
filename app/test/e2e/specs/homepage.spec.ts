@@ -48,9 +48,7 @@ test.describe("Homepage - Pregnancy-Safe User Experience", () => {
     await helpers.verifyFrenchContent(frenchPhrases);
   });
 
-  test("provides accessible navigation for pregnancy fatigue", async ({
-    page,
-  }) => {
+  test("provides accessible navigation for pregnancy fatigue", async ({ page }) => {
     await helpers.navigateSafely("/");
 
     // Check navigation is accessible and has proper touch targets
@@ -85,14 +83,10 @@ test.describe("Homepage - Pregnancy-Safe User Experience", () => {
     await helpers.navigateSafely("/");
 
     // Verify no problematic animations are present
-    const animatedElements = await page
-      .locator('[class*="animate"], [style*="animation"]')
-      .count();
+    const animatedElements = await page.locator('[class*="animate"], [style*="animation"]').count();
 
     // Log for monitoring - in production this would be more sophisticated
-    console.log(
-      `Found ${animatedElements} animated elements (should respect reduced motion)`
-    );
+    console.log(`Found ${animatedElements} animated elements (should respect reduced motion)`);
   });
 });
 

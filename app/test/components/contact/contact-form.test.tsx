@@ -1,4 +1,4 @@
-import React from "react";
+import type React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import type { RenderOptions } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
@@ -15,16 +15,11 @@ const HONEYPOT_TEST_PROPS = {
 
 /** Wrapper that provides the HoneypotProvider context required by HoneypotInputs. */
 function HoneypotWrapper({ children }: { children: React.ReactNode }) {
-  return (
-    <HoneypotProvider {...HONEYPOT_TEST_PROPS}>{children}</HoneypotProvider>
-  );
+  return <HoneypotProvider {...HONEYPOT_TEST_PROPS}>{children}</HoneypotProvider>;
 }
 
 /** Render helper that automatically wraps components in HoneypotProvider. */
-function renderWithHoneypot(
-  ui: React.ReactElement,
-  options?: Omit<RenderOptions, "wrapper">,
-) {
+function renderWithHoneypot(ui: React.ReactElement, options?: Omit<RenderOptions, "wrapper">) {
   return render(ui, { wrapper: HoneypotWrapper, ...options });
 }
 
@@ -37,18 +32,14 @@ describe("ContactForm Component", () => {
       expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/plage horaire/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/message/i)).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: /envoyer/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /envoyer/i })).toBeInTheDocument();
     });
 
     it("should render placeholders correctly", () => {
       renderWithHoneypot(<ContactForm />);
 
       expect(screen.getByPlaceholderText("John Appleseed")).toBeInTheDocument();
-      expect(
-        screen.getByPlaceholderText("example@email.com"),
-      ).toBeInTheDocument();
+      expect(screen.getByPlaceholderText("example@email.com")).toBeInTheDocument();
       expect(screen.getByPlaceholderText("Message")).toBeInTheDocument();
     });
 
@@ -76,9 +67,7 @@ describe("ContactForm Component", () => {
       await user.click(submitButton);
 
       await waitFor(() => {
-        expect(
-          screen.getByText(/nom doit contenir au moins 2 caractères/i),
-        ).toBeInTheDocument();
+        expect(screen.getByText(/nom doit contenir au moins 2 caractères/i)).toBeInTheDocument();
       });
     });
 
@@ -150,10 +139,7 @@ describe("ContactForm Component", () => {
 
       await user.type(screen.getByLabelText(/nom/i), "Jane Smith");
       await user.type(screen.getByLabelText(/email/i), "jane@example.com");
-      await user.selectOptions(
-        screen.getByLabelText(/plage horaire/i),
-        "morning",
-      );
+      await user.selectOptions(screen.getByLabelText(/plage horaire/i), "morning");
       await user.type(
         screen.getByLabelText(/message/i),
         "I would like to book a prenatal yoga session",
@@ -176,16 +162,11 @@ describe("ContactForm Component", () => {
 
       await user.type(screen.getByLabelText(/nom/i), "John Doe");
       await user.type(screen.getByLabelText(/email/i), "john@example.com");
-      await user.type(
-        screen.getByLabelText(/message/i),
-        "This is a test message",
-      );
+      await user.type(screen.getByLabelText(/message/i), "This is a test message");
       await user.click(screen.getByRole("button", { name: /envoyer/i }));
 
       await waitFor(() => {
-        expect(
-          screen.getByText(/merci pour votre message/i),
-        ).toBeInTheDocument();
+        expect(screen.getByText(/merci pour votre message/i)).toBeInTheDocument();
       });
     });
 
@@ -195,9 +176,7 @@ describe("ContactForm Component", () => {
 
       const nameInput = screen.getByLabelText(/nom/i) as HTMLInputElement;
       const emailInput = screen.getByLabelText(/email/i) as HTMLInputElement;
-      const messageInput = screen.getByLabelText(
-        /message/i,
-      ) as HTMLTextAreaElement;
+      const messageInput = screen.getByLabelText(/message/i) as HTMLTextAreaElement;
 
       await user.type(nameInput, "John Doe");
       await user.type(emailInput, "john@example.com");
@@ -214,9 +193,7 @@ describe("ContactForm Component", () => {
     it("should display loading state when isLoading is true", () => {
       renderWithHoneypot(<ContactForm isLoading={true} />);
 
-      expect(
-        screen.getByRole("button", { name: /envoi en cours/i }),
-      ).toBeDisabled();
+      expect(screen.getByRole("button", { name: /envoi en cours/i })).toBeDisabled();
     });
   });
 
@@ -236,10 +213,7 @@ describe("ContactForm Component", () => {
 
       await user.type(screen.getByLabelText(/nom/i), "John Doe");
       await user.type(screen.getByLabelText(/email/i), "john@example.com");
-      await user.type(
-        screen.getByLabelText(/message/i),
-        "This is a test message",
-      );
+      await user.type(screen.getByLabelText(/message/i), "This is a test message");
       await user.click(screen.getByRole("button", { name: /envoyer/i }));
 
       await waitFor(() => {
@@ -285,9 +259,7 @@ describe("ContactForm Component", () => {
       expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/plage horaire/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/message/i)).toBeInTheDocument();
-      expect(
-        screen.getByRole("button", { name: /envoyer/i }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /envoyer/i })).toBeInTheDocument();
     });
   });
 
@@ -297,15 +269,9 @@ describe("ContactForm Component", () => {
       const onSubmit = vi.fn();
       renderWithHoneypot(<ContactForm onSubmit={onSubmit} />);
 
-      await user.type(
-        screen.getByLabelText(/nom/i),
-        "John <script>alert</script>",
-      );
+      await user.type(screen.getByLabelText(/nom/i), "John <script>alert</script>");
       await user.type(screen.getByLabelText(/email/i), "john@example.com");
-      await user.type(
-        screen.getByLabelText(/message/i),
-        "Hello <b>world</b> this is a test",
-      );
+      await user.type(screen.getByLabelText(/message/i), "Hello <b>world</b> this is a test");
       await user.click(screen.getByRole("button", { name: /envoyer/i }));
 
       await waitFor(() => {

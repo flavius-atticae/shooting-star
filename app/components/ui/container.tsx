@@ -92,13 +92,9 @@ function getContainerSizeClass(size: ContainerSize): string {
 export const Container = React.forwardRef<HTMLDivElement, ContainerProps>(
   ({ className, size = "md", as: Component = "div", ...props }, ref) => {
     return (
-      <Component
-        ref={ref}
-        className={cn(getContainerSizeClass(size), className)}
-        {...props}
-      />
+      <Component ref={ref} className={cn(getContainerSizeClass(size), className)} {...props} />
     );
-  }
+  },
 );
 
 Container.displayName = "Container";

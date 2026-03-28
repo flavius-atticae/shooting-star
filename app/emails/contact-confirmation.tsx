@@ -39,15 +39,13 @@ export function ContactConfirmation({ name }: ContactConfirmationProps) {
           <Text style={textStyle}>Bonjour {name},</Text>
 
           <Text style={textStyle}>
-            J&apos;ai bien reçu votre message et je vous en remercie
-            chaleureusement. Je prends le temps de lire chaque demande
-            attentivement.
+            J&apos;ai bien reçu votre message et je vous en remercie chaleureusement. Je prends le
+            temps de lire chaque demande attentivement.
           </Text>
 
           <Text style={textStyle}>
-            Je vous répondrai dans un délai de <strong>48 heures</strong>.
-            N&apos;hésitez pas à répondre directement à ce courriel si vous
-            souhaitez ajouter quelque chose entre-temps.
+            Je vous répondrai dans un délai de <strong>48 heures</strong>. N&apos;hésitez pas à
+            répondre directement à ce courriel si vous souhaitez ajouter quelque chose entre-temps.
           </Text>
 
           <Text style={textStyle}>Au plaisir d&apos;échanger avec vous,</Text>
@@ -64,8 +62,8 @@ export function ContactConfirmation({ name }: ContactConfirmationProps) {
 
           <Section style={footerStyle}>
             <Text style={footerTextStyle}>
-              Ce courriel confirme la réception de votre message envoyé via
-              paulineroussel.ca. Aucune action n&apos;est requise de votre part.
+              Ce courriel confirme la réception de votre message envoyé via paulineroussel.ca.
+              Aucune action n&apos;est requise de votre part.
             </Text>
           </Section>
         </Container>
@@ -80,8 +78,7 @@ export function ContactConfirmation({ name }: ContactConfirmationProps) {
 
 const bodyStyle: React.CSSProperties = {
   backgroundColor: "#f8f7f4",
-  fontFamily:
-    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
+  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
   margin: 0,
   padding: 0,
 };

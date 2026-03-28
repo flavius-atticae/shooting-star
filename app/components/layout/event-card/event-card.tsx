@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "~/lib/utils";
 import { Button } from "~/components/ui/button";
 
@@ -159,7 +159,7 @@ export function EventCard({
   if (process.env.NODE_ENV === "development") {
     if (!detailsHref && !onDetailsClick) {
       console.warn(
-        `EventCard "${title}" (id: ${id}): Neither detailsHref nor onDetailsClick provided. Button will not render.`
+        `EventCard "${title}" (id: ${id}): Neither detailsHref nor onDetailsClick provided. Button will not render.`,
       );
     }
   }
@@ -169,7 +169,7 @@ export function EventCard({
       className={cn(
         "flex flex-col w-full",
         "motion-safe:transition-transform motion-safe:duration-200",
-        className
+        className,
       )}
       aria-labelledby={`event-title-${id}`}
       {...props}
@@ -188,10 +188,7 @@ export function EventCard({
 
         {/* Right: Date/Time (aligned to bottom) */}
         <div className="flex items-end">
-          <time
-            dateTime={dateTimeValue}
-            className="font-sans text-sm text-primary/80"
-          >
+          <time dateTime={dateTimeValue} className="font-sans text-sm text-primary/80">
             {dateTimeLabel}
           </time>
         </div>
@@ -207,7 +204,7 @@ export function EventCard({
           className={cn(
             "mx-4 w-48 h-48 md:w-56 md:h-56 rounded-xl overflow-hidden flex-shrink-0",
             "bg-cool", // Fallback background color
-            imageUrl ? "" : "flex items-center justify-center"
+            imageUrl ? "" : "flex items-center justify-center",
           )}
         >
           {imageUrl ? (

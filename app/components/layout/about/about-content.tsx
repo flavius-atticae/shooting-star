@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 import { cn } from "~/lib/utils";
 
 export interface AboutContentProps extends React.ComponentProps<"div"> {
@@ -45,7 +45,7 @@ export function AboutContent({
         // Responsive grid layout
         "grid-cols-1", // Mobile: 1 column (stacked)
         "lg:grid-cols-3", // Desktop: 3 columns (2+1)
-        className
+        className,
       )}
       lang="fr"
       {...props}
@@ -61,11 +61,11 @@ export function AboutContent({
         </h2>
 
         {/* Content Text */}
-        <div className="space-y-4 sm:space-y-6" aria-labelledby="about-heading">
+        <section className="space-y-4 sm:space-y-6" aria-labelledby="about-heading">
           <p className="font-sans text-base sm:text-lg text-secondary leading-relaxed">
             {content || defaultContent}
           </p>
-        </div>
+        </section>
       </div>
 
       {/* Image Placeholder - Takes 3rd column on desktop (aligns with method section separators) */}
@@ -78,7 +78,7 @@ export function AboutContent({
             "transition-colors duration-200",
             "p-6",
             // Ensure minimum height on mobile
-            "min-h-[350px] sm:min-h-[450px] lg:min-h-0"
+            "min-h-[350px] sm:min-h-[450px] lg:min-h-0",
           )}
           role="img"
           aria-labelledby="image-placeholder-caption"
@@ -99,8 +99,8 @@ export function AboutContent({
 
           {/* Hidden description for accessibility */}
           <div id="image-placeholder-description" className="sr-only">
-            Emplacement réservé pour la photo de Pauline Roussel, instructrice
-            de yoga périnatal et doula. Photo prochainement disponible.
+            Emplacement réservé pour la photo de Pauline Roussel, instructrice de yoga périnatal et
+            doula. Photo prochainement disponible.
           </div>
         </figure>
       </div>
