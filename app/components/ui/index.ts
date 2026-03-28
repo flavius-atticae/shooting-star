@@ -1,47 +1,29 @@
 // Background System - Phase 1 Final
+
+export type {
+  BackgroundPatternIntensity,
+  BackgroundPatternProps,
+  BackgroundPatternType,
+  BackgroundProps,
+} from "~/components/ui/background";
 export {
   Background,
   BackgroundPattern,
   useBackgroundClasses,
 } from "~/components/ui/background";
-export type {
-  BackgroundProps,
-  BackgroundPatternProps,
-  BackgroundPatternType,
-  BackgroundPatternIntensity,
-} from "~/components/ui/background";
-
+export type { ButtonProps } from "~/components/ui/button";
 // Foundation Components - Phase 1
 export { Button, buttonVariants } from "~/components/ui/button";
-export type { ButtonProps } from "~/components/ui/button";
-
-export {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "~/components/ui/card";
+export type { ContainerProps, ContainerSize } from "~/components/ui/container";
+// Layout Components - Phase 1
+export { Container } from "~/components/ui/container";
 export type {
-  CardActionProps,
-  CardContentProps,
-  CardDescriptionProps,
-  CardFooterProps,
-  CardHeaderProps,
-  CardProps,
-  CardTitleProps,
-} from "~/components/ui/card";
-
-export { Input } from "~/components/ui/input";
-export type { InputProps } from "~/components/ui/input";
-export { Label } from "~/components/ui/label";
-export type { LabelProps } from "~/components/ui/label";
-export { Textarea } from "~/components/ui/textarea";
-export type { TextareaProps } from "~/components/ui/textarea";
-export { Select } from "~/components/ui/select";
-export type { SelectProps } from "~/components/ui/select";
+  FormControlProps,
+  FormDescriptionProps,
+  FormItemProps,
+  FormLabelProps,
+  FormMessageProps,
+} from "~/components/ui/form";
 export {
   Form,
   FormControl,
@@ -52,16 +34,13 @@ export {
   FormMessage,
   useFormField,
 } from "~/components/ui/form";
-export type {
-  FormControlProps,
-  FormDescriptionProps,
-  FormItemProps,
-  FormLabelProps,
-  FormMessageProps,
-} from "~/components/ui/form";
-
-// Layout Components - Phase 1
-export { Container } from "~/components/ui/container";
-export type { ContainerProps, ContainerSize } from "~/components/ui/container";
-export { Section } from "~/components/ui/section";
+export type { InputProps } from "~/components/ui/input";
+export { Input } from "~/components/ui/input";
+export type { LabelProps } from "~/components/ui/label";
+export { Label } from "~/components/ui/label";
 export type { SectionProps } from "~/components/ui/section";
+export { Section } from "~/components/ui/section";
+export type { SelectProps } from "~/components/ui/select";
+export { Select } from "~/components/ui/select";
+export type { TextareaProps } from "~/components/ui/textarea";
+export { Textarea } from "~/components/ui/textarea";
