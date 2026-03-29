@@ -65,15 +65,17 @@ export interface FooterProps extends Omit<React.HTMLAttributes<HTMLElement>, "ch
 // Default Data
 // ============================================================================
 
+const ariaLabels: Record<(typeof NAVIGATION_LINKS)[number]["href"], string> = {
+  "/doula": "Découvrir mes services d'accompagnement doula",
+  "/yoga": "Découvrir mes cours de yoga périnatal",
+  "/feminin-sacre": "Découvrir mes accompagnements féminin sacré",
+  "/a-propos": "En savoir plus sur Pauline Roussel",
+};
+
 const defaultNavLinks: FooterNavLink[] = [
   ...NAVIGATION_LINKS.map((link) => ({
     ...link,
-    ariaLabel: {
-      "/doula": "Découvrir mes services d'accompagnement doula",
-      "/yoga": "Découvrir mes cours de yoga périnatal",
-      "/feminin-sacre": "Découvrir mes accompagnements féminin sacré",
-      "/a-propos": "En savoir plus sur Pauline Roussel",
-    }[link.href] as string,
+    ariaLabel: ariaLabels[link.href],
   })),
   {
     label: "Contact",

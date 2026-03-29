@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-const routes = ["/", "/yoga", "/doula", "/about", "/contact", "/feminin-sacre"];
+const routes = ["/", "/yoga", "/doula", "/a-propos", "/contact", "/feminin-sacre"];
 
 test.describe("Navigation", () => {
   test("header is visible on all routes", async ({ page }) => {
@@ -24,10 +24,11 @@ test.describe("Navigation", () => {
     const count = await navLinks.count();
     expect(count).toBeGreaterThan(0);
 
-    // Tab through nav links and verify focus is visible
-    await page.keyboard.press("Tab");
-    const focused = page.locator(":focus");
-    await expect(focused).toBeVisible();
+    // Tab through nav links and verify each one receives focus in order
+    for (let i = 0; i < count; i += 1) {
+      await page.keyboard.press("Tab");
+      await expect(navLinks.nth(i)).toBeFocused();
+    }
   });
 
   test("mobile menu opens and closes", async ({ page }) => {
@@ -35,12 +36,17 @@ test.describe("Navigation", () => {
     await page.goto("/");
 
     const menuButton = page.getByRole("button", { name: /menu/i });
-    if (await menuButton.isVisible()) {
-      await menuButton.click();
-      // Nav should now be expanded
-      await expect(page.locator("nav")).toBeVisible();
-      await menuButton.click();
-    }
+    await expect(menuButton).toBeVisible();
+
+    const initialExpanded = await menuButton.getAttribute("aria-expanded");
+    await menuButton.click();
+    await expect(page.locator("nav")).toBeVisible();
+    const expanded = await menuButton.getAttribute("aria-expanded");
+    expect(expanded).not.toBe(initialExpanded);
+
+    await menuButton.click();
+    const collapsedAgain = await menuButton.getAttribute("aria-expanded");
+    expect(collapsedAgain).toBe(initialExpanded);
   });
 
   test("all route pages load with 200 status", async ({ page }) => {

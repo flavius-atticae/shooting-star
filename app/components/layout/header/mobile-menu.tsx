@@ -9,15 +9,17 @@ export interface MobileMenuProps {
   className?: string;
 }
 
+const descriptions: Record<(typeof NAVIGATION_LINKS)[number]["href"], string> = {
+  "/doula": "Accompagnement de doula",
+  "/yoga": "Enseignement du yoga",
+  "/feminin-sacre": "Le féminin sacré - ateliers variés",
+  "/a-propos": "Pauline Roussel, Doula et professeure de Yoga",
+};
+
 // Navigation items for the mobile menu — extends shared links with descriptions
 const navigationItems = NAVIGATION_LINKS.map((link) => ({
   ...link,
-  description: {
-    "/doula": "Accompagnement de doula",
-    "/yoga": "Enseignement du yoga",
-    "/feminin-sacre": "Le féminin sacré - ateliers variés",
-    "/a-propos": "Pauline Roussel, Doula et professeure de Yoga",
-  }[link.href] as string,
+  description: descriptions[link.href],
 }));
 
 /**
