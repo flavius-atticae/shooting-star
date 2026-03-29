@@ -144,18 +144,45 @@ One `describe` per component or module. Nest `describe` blocks for logical group
 
 Specs live in `app/test/e2e/specs/`. Playwright config is `playwright.config.ts` at project root. Two projects run: `chromium` (desktop) and `mobile-chrome` (Pixel 5), both with `fr-CA` locale.
 
-### Spec structure
+### E2E test structure
+
+Group related interactions with `test.step()` for readable reports. Use `beforeEach` for shared navigation:
 
 ```ts
-import { expect, test } from "@playwright/test";
+test.describe("Contact form", () => {
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/contact");
+  });
 
-test.describe("Feature name", () => {
-  test("user can do X", async ({ page }) => {
-    await page.goto("/route");
-    await expect(page.locator("main")).toBeVisible();
+  test("user can submit the form", async ({ page }) => {
+    await test.step("fill in fields", async () => {
+      await page.getByLabel(/nom/i).fill("Marie Tremblay");
+      await page.getByLabel(/email/i).fill("marie@example.com");
+    });
+
+    await test.step("submit and verify success", async () => {
+      await page.getByRole("button", { name: /envoyer/i }).click();
+      await expect(page.getByRole("alert")).toBeVisible();
+    });
   });
 });
 ```
+
+### Aria snapshot assertions
+
+Use `toMatchAriaSnapshot` to assert the accessibility tree of a component rather than its visual structure:
+
+```ts
+await expect(page.getByRole("navigation")).toMatchAriaSnapshot(`
+  - navigation:
+    - link "Doula"
+    - link "Yoga"
+    - link "Féminin sacré"
+    - link "À propos"
+`);
+```
+
+Prefer this over counting elements or asserting text when the test intent is about accessible structure.
 
 ### Accessibility scans
 

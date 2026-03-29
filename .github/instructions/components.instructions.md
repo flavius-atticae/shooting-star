@@ -132,3 +132,52 @@ import { SOCIAL_LINKS } from "~/config/social";
 ## Accessibility requirements
 
 Every interactive element needs a keyboard-accessible state and an ARIA label when the visual label is insufficient. Touch targets must be ≥ 44×44 px. Use semantic HTML (`<nav>`, `<main>`, `<footer>`, `<header>`, `<section>`, `<article>`) before reaching for `role=`.
+
+### Skip link
+
+Every page layout must include a skip link as the **first focusable element** in `<header>`:
+
+```tsx
+<a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4">
+  Passer au contenu principal
+</a>
+// ...
+<main id="main-content" tabIndex={-1}>
+```
+
+`tabIndex={-1}` on `<main>` allows programmatic focus without making it part of the tab order.
+
+### SVG icons
+
+Always use `currentColor` for SVG fills and strokes — icons adapt automatically to forced-colors mode and theme changes:
+
+```tsx
+// ✅
+<svg fill="currentColor" stroke="currentColor" aria-hidden="true">
+
+// ❌
+<svg fill="#618462">
+```
+
+### Focus styles in forced-colors mode
+
+When using `box-shadow` for focus rings, add a transparent `outline` fallback so it renders in Windows High Contrast / forced-colors mode:
+
+```tsx
+// ✅ — box-shadow is suppressed in forced-colors; outline takes over
+className="focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline focus-visible:outline-transparent"
+```
+
+### Reflow at 320px (WCAG 1.4.10)
+
+Flex children must be able to shrink and wrap — never use fixed widths that force horizontal scrolling at narrow viewports:
+
+```tsx
+// ✅
+className="flex flex-wrap gap-4 min-w-0"
+
+// ❌ — breaks reflow
+className="flex w-[400px] overflow-hidden"
+```
+
+Never use `overflow: hidden` on text containers at narrow widths without verifying the content is still accessible.

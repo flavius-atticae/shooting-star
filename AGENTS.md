@@ -59,6 +59,7 @@ app/
     components.instructions.md  → applyTo: app/components/**
     routes.instructions.md      → applyTo: app/routes/**
     tests.instructions.md       → applyTo: app/test/**
+    security.instructions.md    → applyTo: app/routes/**, app/components/layout/contact/**
 ```
 
 ---
