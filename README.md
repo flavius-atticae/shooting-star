@@ -6,7 +6,7 @@
 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/de4d964491334b96b86f423b7b198fc7)](https://app.codacy.com/gh/flavius-atticae/shooting-star/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 <!-- Tech Stack Badges -->
-![React Router](https://img.shields.io/badge/React_Router-v7.7.1-CA4245?logo=react-router)
+![React Router](https://img.shields.io/badge/React_Router-v7-CA4245?logo=react-router)
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-v4.1.4-06B6D4?logo=tailwindcss)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.8.3-3178C6?logo=typescript)
 ![Vite](https://img.shields.io/badge/Vite-6.3.3-646CFF?logo=vite)

@@ -5,10 +5,12 @@ import { useReducedMotion } from "~/hooks/use-reduced-motion";
 describe("useReducedMotion", () => {
   let listeners: Array<(e: MediaQueryListEvent) => void>;
   let mockMatches: boolean;
+  let originalMatchMedia: typeof window.matchMedia;
 
   beforeEach(() => {
     listeners = [];
     mockMatches = false;
+    originalMatchMedia = window.matchMedia;
 
     Object.defineProperty(window, "matchMedia", {
       writable: true,
@@ -30,6 +32,10 @@ describe("useReducedMotion", () => {
   });
 
   afterEach(() => {
+    Object.defineProperty(window, "matchMedia", {
+      writable: true,
+      value: originalMatchMedia,
+    });
     vi.restoreAllMocks();
   });
 
