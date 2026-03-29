@@ -1,12 +1,13 @@
-import * as React from "react";
-import useEmblaCarousel from "embla-carousel-react";
 import type { EmblaCarouselType } from "embla-carousel";
-import { cn } from "~/lib/utils";
-import { Section } from "~/components/ui/section";
-import { Container } from "~/components/ui/container";
-import { Button } from "~/components/ui/button";
+import useEmblaCarousel from "embla-carousel-react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { TestimonialCard, type Testimonial } from "./testimonial-card";
+import * as React from "react";
+import { Button } from "~/components/ui/button";
+import { Container } from "~/components/ui/container";
+import { Section } from "~/components/ui/section";
+import { useReducedMotion } from "~/hooks/use-reduced-motion";
+import { cn } from "~/lib/utils";
+import { type Testimonial, TestimonialCard } from "./testimonial-card";
 
 export interface TestimonialsCarouselProps
   extends Omit<React.HTMLAttributes<HTMLElement>, "children"> {
@@ -75,23 +76,8 @@ export function TestimonialsCarousel({
   const [scrollSnaps, setScrollSnaps] = React.useState<number[]>([]);
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
-  const [prefersReducedMotion, setPrefersReducedMotion] = React.useState(false);
+  const prefersReducedMotion = useReducedMotion();
   const carouselContainerRef = React.useRef<HTMLDivElement>(null);
-
-  // Check for prefers-reduced-motion
-  React.useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    setPrefersReducedMotion(mediaQuery.matches);
-
-    const handleChange = (e: MediaQueryListEvent) => {
-      setPrefersReducedMotion(e.matches);
-    };
-
-    mediaQuery.addEventListener("change", handleChange);
-    return () => mediaQuery.removeEventListener("change", handleChange);
-  }, []);
 
   // Initialize carousel state
   const onInit = React.useCallback((emblaApi: EmblaCarouselType) => {

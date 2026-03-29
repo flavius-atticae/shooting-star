@@ -52,11 +52,6 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: "setup",
-      testMatch: "**/*.setup.ts",
-    },
-
     // Desktop browser (primary testing)
     {
       name: "chromium",
@@ -65,7 +60,6 @@ export default defineConfig({
         locale: "fr-CA",
         timezoneId: "America/Montreal",
       },
-      dependencies: ["setup"],
     },
 
     // Mobile testing (primary target audience)
@@ -75,22 +69,7 @@ export default defineConfig({
         ...devices["Pixel 5"],
         locale: "fr-CA",
         timezoneId: "America/Montreal",
-        geolocation: { longitude: -73.567256, latitude: 45.501689 }, // Montreal
-        permissions: ["geolocation"],
       },
-      dependencies: ["setup"],
-    },
-
-    // Accessibility testing
-    {
-      name: "accessibility",
-      use: {
-        ...devices["Desktop Chrome"],
-        colorScheme: "light",
-        locale: "fr-CA",
-        timezoneId: "America/Montreal",
-      },
-      dependencies: ["setup"],
     },
   ],
 

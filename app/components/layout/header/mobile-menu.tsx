@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router";
+import { NAVIGATION_LINKS } from "~/config/navigation";
 import { cn } from "~/lib/utils";
 
 export interface MobileMenuProps {
@@ -8,29 +9,18 @@ export interface MobileMenuProps {
   className?: string;
 }
 
-// Navigation items for the mobile menu
-const navigationItems = [
-  {
-    label: "Doula",
-    href: "/doula",
-    description: "Accompagnement de doula",
-  },
-  {
-    label: "Yoga",
-    href: "/yoga",
-    description: "Enseignement du yoga",
-  },
-  {
-    label: "Féminin",
-    href: "/feminin-sacre",
-    description: "Le féminin sacré - ateliers variés",
-  },
-  {
-    label: "À propos",
-    href: "/a-propos",
-    description: "Pauline Roussel, Doula et professeure de Yoga",
-  },
-];
+const descriptions: Record<(typeof NAVIGATION_LINKS)[number]["href"], string> = {
+  "/doula": "Accompagnement de doula",
+  "/yoga": "Enseignement du yoga",
+  "/feminin-sacre": "Le féminin sacré - ateliers variés",
+  "/a-propos": "Pauline Roussel, Doula et professeure de Yoga",
+};
+
+// Navigation items for the mobile menu — extends shared links with descriptions
+const navigationItems = NAVIGATION_LINKS.map((link) => ({
+  ...link,
+  description: descriptions[link.href],
+}));
 
 /**
  * Mobile Menu overlay component
