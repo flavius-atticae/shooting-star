@@ -48,9 +48,84 @@ className={"base-class " + className}
 
 The last argument to `cn()` must always be the `className` prop so consumers can override.
 
+## React 19 patterns
+
+### ref as prop
+
+In React 19, `ref` is a regular prop — no `forwardRef` needed for new components. Only keep `forwardRef` on **existing** primitives to avoid a breaking change:
+
+```tsx
+// ✅ new components
+export function Input({ ref, className, ...props }: InputProps & { ref?: React.Ref<HTMLInputElement> }) {
+  return <input ref={ref} className={cn("...", className)} {...props} />;
+}
+
+// ✅ existing forwardRef — keep to avoid breaking consumers
+export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, ...props }, ref) => (
+  <button ref={ref} className={cn("...", className)} {...props} />
+));
+Button.displayName = "Button";
+```
+
+### Context without `.Provider`
+
+```tsx
+// ✅ React 19
+const ThemeContext = createContext("light");
+<ThemeContext value="dark"> … </ThemeContext>
+
+// ❌ legacy
+<ThemeContext.Provider value="dark"> … </ThemeContext.Provider>
+```
+
+### Form patterns (contact form)
+
+Use `useActionState` + `useFormStatus` for the contact form — no need for manual loading state:
+
+```tsx
+// form-action.ts (server action or route action)
+export async function contactAction(_prev: FormState, formData: FormData): Promise<FormState> {
+  const result = await sendEmail(formData);
+  return result.ok ? { success: true } : { error: "Erreur lors de l'envoi." };
+}
+
+// contact-form.tsx
+import { useActionState } from "react";
+import { contactAction } from "./form-action";
+
+export function ContactForm() {
+  const [state, action, isPending] = useActionState(contactAction, null);
+
+  return (
+    <form action={action}>
+      <SubmitButton />
+      {state?.error && <p role="alert">{state.error}</p>}
+    </form>
+  );
+}
+
+// submit-button.tsx — reads pending state from nearest form
+import { useFormStatus } from "react-dom";
+
+function SubmitButton() {
+  const { pending } = useFormStatus();
+  return (
+    <button type="submit" disabled={pending} aria-busy={pending}>
+      {pending ? "Envoi en cours…" : "Envoyer"}
+    </button>
+  );
+}
+```
+
+Use `useOptimistic` when you need to update UI immediately before the server responds (e.g., inline confirmation message):
+
+```tsx
+const [optimisticState, setOptimistic] = useOptimistic(state);
+```
+
 ## forwardRef
 
-Use `React.forwardRef` for **UI primitive components** (`Button`, `Input`, `Container`, `Textarea`, `Select`) — not for layout/section components (`Footer`, `Services`, `Hero`).
+Keep `React.forwardRef` only for **existing UI primitives** (`Button`, `Input`, `Container`, `Textarea`, `Select`) — do not add it to new components (use the React 19 `ref` prop pattern above).
 
 Every `forwardRef` component must set `displayName`:
 
