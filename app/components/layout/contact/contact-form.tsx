@@ -1,9 +1,8 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import * as React from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { HoneypotInputs } from "remix-utils/honeypot/react";
-import { cn } from "~/lib/utils";
-import { contactFormSchema, type ContactFormData } from "~/lib/contact-form-schema";
+import { Button } from "~/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,14 +12,16 @@ import {
   FormMessage,
 } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
-import { Textarea } from "~/components/ui/textarea";
 import { Select } from "~/components/ui/select";
-import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
+import { AVAILABILITY_OPTIONS } from "~/config/form-options";
+import { type ContactFormData, contactFormSchema } from "~/lib/contact-form-schema";
+import { cn } from "~/lib/utils";
 
 // Re-export schema and type for backward compatibility
 export {
-  contactFormSchema,
   type ContactFormData,
+  contactFormSchema,
 } from "~/lib/contact-form-schema";
 
 /**
@@ -49,16 +50,6 @@ interface FetcherLike {
     },
   ) => void;
 }
-
-/**
- * Availability options for the time slot select
- */
-const AVAILABILITY_OPTIONS = [
-  { value: "", label: "Flexible" },
-  { value: "morning", label: "Matin (9h-12h)" },
-  { value: "afternoon", label: "Après-midi (12h-17h)" },
-  { value: "evening", label: "Soir (17h-20h)" },
-] as const;
 
 /**
  * Props for the ContactForm component
