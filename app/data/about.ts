@@ -1,5 +1,8 @@
 import type { MethodItem } from "~/components/layout/about";
 
+export const ABOUT_DEFAULT_CONTENT =
+  "Je suis Pauline, femme, maman, doula, professeure de yoga et grande curieuse du vivant. Depuis toujours, j'apprends et je cherche à comprendre pour mieux accompagner. Mon parcours m'a guidé, du monde de la danse et du mouvement vers l'univers du féminin, de la maternité, de la transformation. Je suis profondément touchée par la puissance, la complexité et la beauté des femmes. Douce et bienveillante, je vous accompagne avec respect, écoute et sensibilité, dans toutes les transitions de la vie.";
+
 // Custom inspirations for the About page
 export const inspirationItems: MethodItem[] = [
   {
