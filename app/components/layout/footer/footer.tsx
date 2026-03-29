@@ -75,6 +75,7 @@ const ariaLabels: Record<(typeof NAVIGATION_LINKS)[number]["href"], string> = {
 const defaultNavLinks: FooterNavLink[] = [
   ...NAVIGATION_LINKS.map((link) => ({
     ...link,
+    label: link.longLabel,
     ariaLabel: ariaLabels[link.href],
   })),
   {
