@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
-import { toIsoDateTime } from "~/components/layout/event-card/event-card";
+import { describe, expect, it } from "vitest";
+import { toIsoDateTime } from "~/lib/date-utils";
 
 describe("toIsoDateTime", () => {
   it("converts French month with accent to ISO", () => {

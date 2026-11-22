@@ -1,4 +1,5 @@
 import type * as React from "react";
+import { ABOUT_DEFAULT_CONTENT } from "~/data/about";
 import { cn } from "~/lib/utils";
 
 export interface AboutContentProps extends React.ComponentProps<"div"> {
@@ -35,8 +36,7 @@ export function AboutContent({
   imageAlt = "Photo de Pauline Roussel - À venir",
   ...props
 }: AboutContentProps) {
-  const defaultContent =
-    "Je suis Pauline, femme, maman, doula, professeure de yoga et grande curieuse du vivant. Depuis toujours, j'apprends et je cherche à comprendre pour mieux accompagner. Mon parcours m'a guidé, du monde de la danse et du mouvement vers l'univers du féminin, de la maternité, de la transformation. Je suis profondément touchée par la puissance, la complexité et la beauté des femmes. Douce et bienveillante, je vous accompagne avec respect, écoute et sensibilité, dans toutes les transitions de la vie.";
+  const defaultContent = ABOUT_DEFAULT_CONTENT;
 
   return (
     <div

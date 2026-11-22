@@ -1,16 +1,7 @@
 // Background System - Phase 1 Final
 
-export type {
-  BackgroundPatternIntensity,
-  BackgroundPatternProps,
-  BackgroundPatternType,
-  BackgroundProps,
-} from "~/components/ui/background";
-export {
-  Background,
-  BackgroundPattern,
-  useBackgroundClasses,
-} from "~/components/ui/background";
+export type { BackgroundProps, BackgroundVariant } from "~/components/ui/background";
+export { Background } from "~/components/ui/background";
 export type { ButtonProps } from "~/components/ui/button";
 // Foundation Components - Phase 1
 export { Button, buttonVariants } from "~/components/ui/button";

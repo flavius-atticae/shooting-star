@@ -1,7 +1,8 @@
 import type * as React from "react";
-import { cn } from "~/lib/utils";
-import { Section } from "~/components/ui/section";
 import { Container } from "~/components/ui/container";
+import { Section } from "~/components/ui/section";
+import { defaultMethodItems } from "~/data/about";
+import { cn } from "~/lib/utils";
 import { AboutContent } from "./about-content";
 
 // ============================================================================
@@ -127,29 +128,7 @@ export function About({
   "aria-describedby": ariaDescribedBy,
   ...props
 }: AboutProps) {
-  // Contenu par défaut pour la méthode
-  const defaultMethodItems: MethodItem[] = [
-    {
-      id: "ecoute",
-      title: "Écoute",
-      description:
-        "Une attention particulière portée à vos besoins, à votre rythme et à votre vécu unique.",
-    },
-    {
-      id: "bienveillance",
-      title: "Bienveillance",
-      description:
-        "Un accompagnement respectueux et sans jugement, dans la douceur et la confiance.",
-    },
-    {
-      id: "adaptation",
-      title: "Adaptation",
-      description:
-        "Des pratiques personnalisées selon votre état, vos capacités et vos envies du moment.",
-    },
-  ];
-
-  const items = methodItems || defaultMethodItems;
+  const items = methodItems ?? defaultMethodItems;
 
   return (
     <Section
